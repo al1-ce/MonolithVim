@@ -36,6 +36,7 @@ And much more. For sources and other plugins with descriptions see `lua/core/plu
 - Python
 - Rigrep
 - Yarn
+- Dfmt (for D formatting)
 
 ## Installation
 ```bash

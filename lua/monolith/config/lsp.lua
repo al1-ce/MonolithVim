@@ -1,5 +1,9 @@
 require("mason").setup()
-require("mason-lspconfig").setup()
+require("mason-lspconfig").setup({
+    'sumneko_lua',
+    'jsonls',
+    'serve_d'
+})
 require("mason-null-ls").setup({})
 require('mason-nvim-dap').setup({ automatic_setup = true })
 
