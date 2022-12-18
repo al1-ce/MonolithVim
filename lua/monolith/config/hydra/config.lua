@@ -32,7 +32,7 @@ function M.hydra() return Hydra({
         config = colors.passAllow(),
         mode = '',
         heads = {
-            { 'e', cmd 'tabnew $MYVIMRC <bar> tcd %:h' },
+            { 'e', cmd 'edit $MYVIMRC <bar> tcd %:h' },
             { 'r', fUpdateConf },
             { 's',
             

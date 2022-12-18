@@ -9,7 +9,14 @@ g.gruvbox_baby_transparent_mode = 1
 vim.cmd.colorscheme('gruvbox')
 
 vim.cmd[[
-autocmd BufEnter * syn match   dCustomFunc     "\w\+\s*(\@="
+autocmd BufEnter *.d,
+    \*.c,*.h,
+    \*.cpp,*.hpp,
+    \*.cs,*.java,*.class,*.kt,*.kts,*.ktm,
+    \*.dart,*.js,*.ts,*.jspp,*.jpp,
+    \*.py,*.lua,*.swift,*.go,
+    \*.rs,*.rlib,*.hx,*.r,*.rb
+    \ syn match   dCustomFunc     "\w\+\s*(\@="
 hi def link dCustomFunc Function
 
 hi! link LspSagaCodeActionBorder  LspSagaDiagnosticBorder

@@ -124,6 +124,8 @@ require('packer').startup({ function(use)
     use 'ray-x/lsp_signature.nvim'
     -- Show icons in snippets
     use 'onsails/lspkind.nvim'
+    -- Nvim lua api
+    use 'folke/neodev.nvim'
 
     -- ------------------------------- Formatting ------------------------------- --
     -- Toggle comments

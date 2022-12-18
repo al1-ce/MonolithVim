@@ -10,7 +10,7 @@ local colors = require('monolith.config.hydra.colors');
 local hintLeader = [[
 ┌────── Menu ──────┐
 │ _f_: Files         │
-│ _t_: Text/Terminal │
+│ _t_: Text/Term/Tab │
 ├───── Devenv ─────┤
 │ _l_: Lsp           │
 │ _g_: Git           │
@@ -24,8 +24,7 @@ local hintLeader = [[
 │ _o_: Options       │
 │ _h_: Help          │
 ├───── Motion ─────┤
-│ _s_: Window        │
-│ _S_: Tabs          │
+│ _s_: Split         │
 │ _w_: Save file     │
 │ _q_: Close file    │
 │ _Q_: Close all     │
@@ -59,7 +58,6 @@ Hydra({
         { 'h', callback.hydraCallback('manual') }, 
 
         { 's', callback.hydraCallback('window') },
-        { 'S', callback.hydraCallback('tabs') },
         { 'w', cmd 'update' },
         { 'q', cmd 'x' },
         { 'Q', cmd 'qa!' },

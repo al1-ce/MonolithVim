@@ -5,11 +5,11 @@ local cmd = require('hydra.keymap-util').cmd
 local M = {}
 
 local hintGit = [[
-┌──── Git ────┐
+┌──── git ────┐
 │ _s_: Status   │
 │ _b_: Branches │
 │ _c_: Commits  │
-│ _S_: Stash    │
+│ _s_: Stash    │
 ├─────────────┤
 │ _q_: Quit     │
 └─────────────┘

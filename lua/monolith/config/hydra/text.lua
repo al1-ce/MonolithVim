@@ -23,6 +23,10 @@ local hintText = [[
 ├───────── Terminal ────────┤
 │ _t_: Toggle terminal        │
 │ _f_: Float terminal         │
+├─────────── Tabs ──────────┤
+│ _n_: New tab                │
+│ _w_: Close tab              │
+│ _o_: Close other tabs       │
 ├─────────── Plugin ────────┤
 │ _d_: Draw                   │
 │ _p_: Pick color             │
@@ -83,6 +87,10 @@ function M.hydra() return Hydra({
 
         { 't', cmd 'ToggleTerm direction="horizontal"' },
         { 'f', cmd 'ToggleTerm direction="float"' },
+
+        { 'n', cmd '$tabnew' },
+        { 'w', cmd 'tabclose' },
+        { 'o', cmd 'tabonly' },
 
         { 'd', callback.hydraCallback('draw'); },
         { 'p', cmd 'PickColor' },

@@ -6,10 +6,11 @@ local M = {}
 
 local hintLsp = [[
 ┌──────── Lsp ────────┐
-│ _d_: Definition       │
+│ _D_: Definition       │
 │ _i_: Implementations  │
 │ _r_: References       │
 │ _s_: Symbols          │
+│ _d_: Diagnostic       │
 │ _f_: Format           │
 │ _a_: Code actions     │
 | _x_: Scratchpad       |
@@ -24,10 +25,11 @@ function M.hydra() return Hydra({
         config = colors.passAllow(),
         mode = '',
         heads = {
-            { 'd', cmd 'Telescope lsp_definitions' },
+            { 'D', cmd 'Telescope lsp_definitions' },
             { 'i', cmd 'Telescope lsp_implementations' },
             { 'r', cmd 'Telescope lsp_references' },
             { 's', cmd 'Telescope lsp_document_symbols' },
+            { 'd', cmd 'Lspsaga show_line_diagnostics' },
             { 'f', vim.lsp.buf.format },
             { 'a', cmd 'Lspsaga code_action' },
             { 'x', cmd 'Codi javascript' },

@@ -86,3 +86,4 @@ require'nvim-lastplace'.setup {
 }
 
 require('spectre').setup({})
+require('neodev').setup()

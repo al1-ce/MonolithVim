@@ -259,6 +259,11 @@ _G.packer_plugins = {
     path = "/home/al1-ce/.local/share/nvim/site/pack/packer/start/mkdir.nvim",
     url = "https://github.com/jghauser/mkdir.nvim"
   },
+  ["neodev.nvim"] = {
+    loaded = true,
+    path = "/home/al1-ce/.local/share/nvim/site/pack/packer/start/neodev.nvim",
+    url = "https://github.com/folke/neodev.nvim"
+  },
   ["neogruvbox.nvim"] = {
     loaded = true,
     path = "/home/al1-ce/.local/share/nvim/site/pack/packer/start/neogruvbox.nvim",
@@ -518,6 +523,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/al1-ce/.local/share/nvim/site/pack/packer/start/vim-dispatch",
     url = "https://github.com/tpope/vim-dispatch"
+  },
+  ["vim-easy-align"] = {
+    loaded = true,
+    path = "/home/al1-ce/.local/share/nvim/site/pack/packer/start/vim-easy-align",
+    url = "https://github.com/junegunn/vim-easy-align"
   },
   ["vim-easymotion"] = {
     loaded = true,
