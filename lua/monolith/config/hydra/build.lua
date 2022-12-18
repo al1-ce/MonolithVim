@@ -11,6 +11,7 @@ local hintBuild = [[
 │ _a_: All build tasks    │
 ├──────── Debug ────────┤
 │ _d_: Open debugger      │
+│ _p_: Toggle breakpoint  │
 ├──────── Other ────────┤
 │ _T_: Todo               │
 │ _t_: Toggle terminal    │
@@ -31,6 +32,7 @@ function M.hydra() return Hydra({
             { 'a', cmd 'Telescope yabs tasks' },
 
             { 'd', function() require("dapui").toggle() end },
+            { 'p', cmd 'DapToggleBreakpoint' },
             
             { 'T', cmd 'TODOTelescope' },
             { 't', cmd 'ToggleTerm direction="horizontal"' },

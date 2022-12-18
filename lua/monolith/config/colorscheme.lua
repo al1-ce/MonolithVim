@@ -43,6 +43,8 @@ execute 'let style_sign_warning="cterm=NONE gui=NONE ctermbg=11 guibg=#352C28"'
 execute 'let style_sign_error="cterm=NONE gui=NONE ctermbg=1 guibg=#302828"'
 execute 'let style_sign_warningfg="cterm=NONE gui=NONE ctermfg=11 ctermbg=3 guibg=#352C28 guifg=#fe8019"'
 execute 'let style_sign_errorfg="cterm=NONE gui=NONE ctermfg=9 ctermbg=1 guibg=#302828 guifg=#fb4934"'
+execute 'let style_sign_breakpoint="cterm=NONE gui=NONE ctermbg=4 guibg=#283030"'
+execute 'let style_sign_breakpointfg="cterm=NONE gui=NONE ctermfg=12 ctermbg=4 guibg=#283030 guifg=#83a598"'
 
 execute 'hi Normal ' . style_normal
 execute 'hi NormalFloat ' . style_normal
@@ -111,10 +113,18 @@ execute 'hi DiagnosticSignWarn ' . style_sign_warning
 execute 'hi def DiagnosticSignErrorNumber ' . style_sign_errorfg
 execute 'hi def DiagnosticSignWarnNumber ' . style_sign_warningfg
 
+execute 'hi def DapSignBreakpoint ' . style_sign_breakpoint
+execute 'hi def DapSignStopped ' . style_sign_error
+execute 'hi def DapSignBreakpointNumber ' . style_sign_breakpointfg
+execute 'hi def DapSignStoppedNumber ' . style_sign_errorfg
+
 sign define DiagnosticSignError text=E texthl=DiagnosticSignError linehl=DiagnosticSignError numhl=DiagnosticSignErrorNumber
 sign define DiagnosticSignWarn text=W texthl=DiagnosticSignWarn linehl=DiagnosticSignWarn numhl=DiagnosticSignWarnNumber
 sign define DiagnosticSignInfo text=I texthl=DiagnosticSignInfo linehl= numhl=DiagnosticSignInfo
 sign define DiagnosticSignHint text=H texthl=DiagnosticSignHint linehl= numhl=DiagnosticSignHint
+
+sign define DapBreakpoint text=B texthl=DapSignBreakpoint linehl=DapSignBreakpoint numhl=DapSignBreakpointNumber
+sign define DapStopped text=S texthl=DapSignStopped linehl=DapSignStopped numhl=DapSignStoppedNumber
 ]])
 
 -- vim.cmd([[hi FloatBorder guibg=NONE]]) -- if you don't want weird border background colors around the popup.
