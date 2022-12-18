@@ -3,9 +3,6 @@ local opts = { noremap = true, silent = true }
 
 local keymap = vim.keymap
 
--- TODO:
---     Comment blocks by A-x - line, A-S-x - Block, A-C-x - Empty line
---     perhaps https://github.com/LudoPinelli/comment-box.nvim
 
 -- All leader related keys are in lua/config/hydra.lua
 
@@ -39,11 +36,11 @@ keymap.set("", "q", "<nop>", opts)
 keymap.set("", "<C-z>", "<nop>", opts)
 
 -- copy/paste
-keymap.set("", "<C-c>", "\"+y", opts)
+-- keymap.set("", "<C-c>", "\"+y", opts)
 -- keymap.set("i", "<C-c>", "<nop>", opts)
 -- ditto
 -- keymap.set("", "<C-v>", "\"+p", opts)
-keymap.set("i", "<C-v>", "<Esc>\"+pi<right><right>", opts)
+-- keymap.set("i", "<C-v>", "<Esc>\"+pi<right><right>", opts)
 -- undo/redo
 -- keymap.set("", "<C-z>", ":undo<cr>", opts)
 -- keymap.set("i", "<C-z>", "<C-o>:undo<cr>", opts)

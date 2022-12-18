@@ -122,6 +122,8 @@ require('packer').startup({ function(use)
     use 'b0o/schemastore.nvim'
     -- Show function signature
     use 'ray-x/lsp_signature.nvim'
+    -- Show icons in snippets
+    use 'onsails/lspkind.nvim'
 
     -- ------------------------------- Formatting ------------------------------- --
     -- Toggle comments

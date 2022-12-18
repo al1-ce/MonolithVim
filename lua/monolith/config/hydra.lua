@@ -10,14 +10,15 @@ local colors = require('monolith.config.hydra.colors');
 local hintLeader = [[
 ┌────── Menu ──────┐
 │ _f_: Files         │
-│ _t_: Text          │
+│ _t_: Text/Terminal │
 ├───── Devenv ─────┤
 │ _l_: Lsp           │
 │ _g_: Git           │
 │ _b_: Build         │
 ├────── Misc ──────┤
 │ _d_: Dashboard     │
-│ _p_: Preview/Pkg   │
+│ _p_: Package       │
+│ _v_: View          │
 ├──── Settings ────┤
 │ _c_: Config/Dir    │
 │ _o_: Options       │
@@ -28,7 +29,7 @@ local hintLeader = [[
 │ _w_: Save file     │
 │ _q_: Close file    │
 │ _Q_: Close all     │
-│ _v_: Select pasted │
+│ _P_: Select pasted │
 │ _/_: Clear search  │
 ├──────────────────┤
 │ _x_: Quit          │
@@ -49,8 +50,9 @@ Hydra({
         { 'g', callback.hydraCallback('git') },
         { 'b', callback.hydraCallback('build') },
 
-        { 'p', callback.hydraCallback('packages') },
         { 'd', cmd 'Alpha' }, 
+        { 'p', callback.hydraCallback('packages') },
+        { 'v', callback.hydraCallback('view') },
 
         { 'c', callback.hydraCallback('config') },
         { 'o', callback.hydraCallback('options') },
@@ -61,7 +63,7 @@ Hydra({
         { 'w', cmd 'update' },
         { 'q', cmd 'x' },
         { 'Q', cmd 'qa!' },
-        { 'v', "printf('`[%s`]', getregtype()[0])", { expr = true } },
+        { 'P', "printf('`[%s`]', getregtype()[0])", { expr = true } },
         { '/', ':nohl<cr>:lua MiniMap.refresh()<cr>' },
 
         { 'x', nil, { exit = true, nowait = true } },

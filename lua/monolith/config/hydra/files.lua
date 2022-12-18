@@ -6,14 +6,14 @@ local M = {}
 
 local hintFiles = [[
 ┌───── Files ─────┐
-│ _f_: Files        │
+│ _f_: Find file    │
 │ _r_: Recent files │
 │ _p_: Projects     │
 │ _b_: Browser      │
 │ _s_: Swap alt     │
-│ _e_: New file     │
+│ _e_: Edit new     │
 ├───── Regex ─────┤
-│ _F_: Search       │
+│ _F_: Find in file │
 │ _R_: Replace file │
 │ _g_: Live grep    │
 ├───── Trees ─────┤

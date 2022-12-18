@@ -7,15 +7,11 @@ local M = {}
 local hintBuild = [[
 ┌──────── Build ────────┐
 │ _b_: Default build task │
-│ _s_: Select build task  │
-│ _a_: All build tasks    │
+│ _B_: Select build task  │
+│ _T_: All build tasks    │
 ├──────── Debug ────────┤
 │ _d_: Open debugger      │
-│ _p_: Toggle breakpoint  │
-├──────── Other ────────┤
-│ _T_: Todo               │
-│ _t_: Toggle terminal    │
-│ _f_: Float terminal     │
+│ _t_: Toggle breakpoint  │
 ├───────────────────────┤
 │ _q_: Quit               │
 └───────────────────────┘
@@ -28,15 +24,12 @@ function M.hydra() return Hydra({
         mode = '',
         heads = {
             { 'b', cmd 'YabsDefaultTask' },
-            { 's', cmd 'Telescope yabs current_language_tasks' },
-            { 'a', cmd 'Telescope yabs tasks' },
+            { 'B', cmd 'Telescope yabs current_language_tasks' },
+            { 'T', cmd 'Telescope yabs tasks' },
 
             { 'd', function() require("dapui").toggle() end },
-            { 'p', cmd 'DapToggleBreakpoint' },
+            { 't', cmd 'DapToggleBreakpoint' },
             
-            { 'T', cmd 'TODOTelescope' },
-            { 't', cmd 'ToggleTerm direction="horizontal"' },
-            { 'f', cmd 'ToggleTerm direction="float"' },
             
             { 'q', nil, { exit = true, nowait = true } },
             { '<Esc>', nil, { exit = true, nowait = true, desc = false } },

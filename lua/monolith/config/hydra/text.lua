@@ -6,15 +6,19 @@ local M = {}
 
 local hintText = [[
 ┌─────────── Text ──────────┐
-│ _t_: Toggle bool            │
+│ _B_: Toggle bool            │
+│ _s_: Surround word          │
+│ _S_: Surround line          │
+│ _r_: Remove surround        │
+│ _R_: Replace surround       │
 ├───────── Comments ────────┤
 │ _/_: Toggle comment lines   │
 │ _?_: Toggle comment block   │
-│ _s_: Add comment separator  │
+│ _l_: Add comment line       │
 │ _b_: Add comment box        │
-├──────── Navigation ───────┤
-│ _h_: Headers                │
-│ _c_: Clipboard              │
+├───────── Terminal ────────┤
+│ _t_: Toggle terminal        │
+│ _f_: Float terminal         │
 ├─────────── Plugin ────────┤
 │ _d_: Draw                   │
 │ _p_: Pick color             │
@@ -58,15 +62,19 @@ function M.hydra() return Hydra({
         -- { '=', '<C-w>=' },
         -- { 's', cmd 'split' },
         -- { '/', commentApi.toggle.linewise.current },
-        { 't', require('nvim-toggler').toggle },
+        { 'B', require('nvim-toggler').toggle },
+        { 's', '<Plug>Ysurroundiw' },
+        { 'S', '<Plug>Yssurround' },
+        { 'r', '<Plug>Dsurround' },
+        { 'R', '<Plug>Csurround' },
 
         { '/', commentLines },
         { '?', commentBlocks },
-        { 's', require('nvim-comment-frame').add_comment },
+        { 'l', require('nvim-comment-frame').add_comment },
         { 'b', require('nvim-comment-frame').add_multiline_comment },
 
-        { 'h', cmd 'Telescope heading' },
-        { 'c', cmd 'Telescope neoclip' },
+        { 't', cmd 'ToggleTerm direction="horizontal"' },
+        { 'f', cmd 'ToggleTerm direction="float"' },
 
         { 'd', callback.hydraCallback('draw'); },
         { 'p', cmd 'PickColor' },

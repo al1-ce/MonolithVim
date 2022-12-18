@@ -34,14 +34,6 @@ local hintPackages = [[
 │ _l_: List                  │
 ├──────── Language ────────┤
 │ _m_: Mason lsp manager     │
-├────────── View ──────────┤
-│ _g_: Preview markdown glow │
-│ _M_: Preview markdown web  │
-├────────── Link ──────────┤
-│ _V_: VimAwesome            │
-│ _N_: Neocraft              │
-│ _A_: Awesome Vim           │
-│ _L_: Vim plugin list       │
 ├──────────────────────────┤
 │ _q_: Quit                  │
 └──────────────────────────┘
@@ -61,18 +53,13 @@ function M.hydra() return Hydra({
 
         { 'm', cmd 'Mason' },
 
-        { 'g', cmd 'Glow' },
-        { 'M', cmd 'MarkdownPreview', {exit = true, nowait = true} },
-        
-        { 'V', cmd 'silent! !xdg-open https://vimawesome.com' },
-        { 'N', cmd 'silent! !xdg-open https://neovimcraft.com' },
-        { 'A', cmd 'silent! !xdg-open https://github.com/rockerBOO/awesome-neovim' },
-        { 'L', cmd 'silent! !xdg-open https://github.com/altermo/vim-plugin-list' },
-        
         { 'q', nil, { exit = true, nowait = true } },
         { '<Esc>', nil, { exit = true, nowait = true, desc = false } },
     }
     })
 end
+----------------------------------------------------------------------
+--                             comment                              --
+----------------------------------------------------------------------
 
 return M;

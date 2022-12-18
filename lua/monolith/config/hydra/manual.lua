@@ -16,7 +16,7 @@ local hintHelp = [[
 │ _?_: Search history       │
 ├──────── Pickers ────────┤
 │ _p_: All pickers          │
-│ _u_: Links                │
+│ _u_: Url in current file  │
 │ _l_: Licenses             │
 ├─────────────────────────┤
 │ _q_: Quit                 │

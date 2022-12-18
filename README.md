@@ -24,6 +24,7 @@
 - Debug Adapter Protocol with nvim-dap
 - Powerful shortcut engine with Hydra
 - Build system with Yabs
+- Preconfigured for D 
 
 And much more. For sources and other plugins with descriptions see `lua/core/plugins.lua` file.
 
