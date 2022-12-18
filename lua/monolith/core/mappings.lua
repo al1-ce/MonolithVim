@@ -62,9 +62,9 @@ keymap.set("", "<C-z>", "<nop>", opts)
 
 -- see barbar
 -- new tab
-keymap.set("n", "<C-t>", ":$tabnew<cr>", opts)
+-- keymap.set("n", "<C-t>", ":$tabnew<cr>", opts)
 -- close tab
-keymap.set("n", "<C-w>", ":tabclose<cr>", opts)
+-- keymap.set("n", "<C-w>", ":tabclose<cr>", opts)
 -- tab navigation
 keymap.set("n", "<A-.>", ":tabnext<cr>", opts)
 keymap.set("n", "<A-,>", ":tabprevious<cr>", opts)
@@ -188,7 +188,7 @@ keymap.set("v", "<S-right>", "<right>", opts)
 -- keymap.set("v", "<right>", "<Esc><right>", opts)
 
 -- backspace
-keymap.set("v", "<BS>", '"_<Del>', opts);
+keymap.set("v", "<BS>", '"_X', opts);
 
 -- move tabs
 keymap.set("v", "<Tab>", ">`<V`>", opts)
