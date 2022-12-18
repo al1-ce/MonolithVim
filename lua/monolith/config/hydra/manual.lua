@@ -26,7 +26,7 @@ local hintHelp = [[
 function M.hydra() return Hydra({
         name = 'Help',
         hint = hintHelp,
-        config = colors.persistQuitMiddle(),
+        config = colors.passAllowMiddle(),
         mode = '',
         heads = {
             { 'c', cmd 'Telescope commands' },

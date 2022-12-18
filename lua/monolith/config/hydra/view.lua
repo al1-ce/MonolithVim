@@ -29,7 +29,7 @@ function M.hydra() return Hydra({
     mode = '',
     heads = {
         { 'm', cmd 'Glow' },
-        { 'M', cmd 'MarkdownPreview', {exit = true, nowait = true} },
+        { 'M', cmd 'MarkdownPreview' },
         { 't', cmd 'TODOTelescope' },
         { 'h', cmd 'Telescope heading' },
         { 'c', cmd 'Telescope neoclip' },

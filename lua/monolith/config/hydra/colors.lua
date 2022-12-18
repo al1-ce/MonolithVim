@@ -9,6 +9,15 @@ function M.passAllow() return {
     }
 } end
 
+function M.passAllowMiddle() return {
+    color = 'blue',
+    invoke_on_body = true,
+    hint = {
+        border = 'solid',
+        position = 'middle',
+    }
+} end
+
 function M.passBlock() return {
     color = 'teal',
     invoke_on_body = true,
