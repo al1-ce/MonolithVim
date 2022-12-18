@@ -241,3 +241,7 @@ for _, key in ipairs({ 'n', 'N', '*', '#' }) do
         '<Cmd>lua MiniMap.refresh({}, {lines = false, scrollbar = false})<CR>'
     )
 end
+
+keymap.set('v', 'ga', '<Plug>(EasyAlign)')
+keymap.set('n', 'ga', '<Plug>(EasyAlign)')
+

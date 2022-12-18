@@ -24,7 +24,6 @@ hi! link LspsagaGroupName  LspSagaDiagnosticBorder
 hi! link LspSagaDiagnosticError  LspSagaDiagnosticBorder
 ]]
 
-
 vim.cmd([[ 
 execute 'let style_normal="cterm=NONE gui=NONE ctermfg=15 ctermbg=0 guifg=' . g:terminal_color_{15} . ' guibg=' . g:terminal_color_{0} . '"'
 " execute 'let style_normal="cterm=NONE gui=NONE ctermfg=15 ctermbg=0 guifg=' . g:terminal_color_{15} . ' guibg=' . g:terminal_color_{0} . '"'
@@ -43,7 +42,7 @@ execute 'let style_sign_warning="cterm=NONE gui=NONE ctermbg=11 guibg=#352C28"'
 execute 'let style_sign_error="cterm=NONE gui=NONE ctermbg=1 guibg=#302828"'
 execute 'let style_sign_warningfg="cterm=NONE gui=NONE ctermfg=11 ctermbg=3 guibg=#352C28 guifg=#fe8019"'
 execute 'let style_sign_errorfg="cterm=NONE gui=NONE ctermfg=9 ctermbg=1 guibg=#302828 guifg=#fb4934"'
-execute 'let style_sign_breakpoint="cterm=NONE gui=NONE ctermbg=4 guibg=#283030"'
+execute 'let style_sign_breakpoint="cterm=NONE gui=NONE ctermbg=4 guibg=#282830"'
 execute 'let style_sign_breakpointfg="cterm=NONE gui=NONE ctermfg=12 ctermbg=4 guibg=#283030 guifg=#83a598"'
 
 execute 'hi Normal ' . style_normal

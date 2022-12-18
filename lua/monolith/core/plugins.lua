@@ -132,6 +132,8 @@ require('packer').startup({ function(use)
     use 'lukas-reineke/lsp-format.nvim'
     -- Comment frame
     use 's1n7ax/nvim-comment-frame'
+    -- Alisgn text
+    use 'junegunn/vim-easy-align'
 
     -- ----------------------------------- GUI ---------------------------------- --
     -- powerline

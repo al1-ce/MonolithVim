@@ -7,10 +7,14 @@ local M = {}
 local hintText = [[
 ┌─────────── Text ──────────┐
 │ _B_: Toggle bool            │
+├───────── Surround ────────┤
 │ _s_: Surround word          │
 │ _S_: Surround line          │
 │ _r_: Remove surround        │
 │ _R_: Replace surround       │
+├────────── Aligns ─────────┤
+│ _a_: Align around first     │
+│ _A_: Align around all       │
 ├───────── Comments ────────┤
 │ _/_: Toggle comment lines   │
 │ _?_: Toggle comment block   │
@@ -63,6 +67,10 @@ function M.hydra() return Hydra({
         -- { 's', cmd 'split' },
         -- { '/', commentApi.toggle.linewise.current },
         { 'B', require('nvim-toggler').toggle },
+
+        { 'a', '<Plug>(EasyAlign)ip=' },
+        { 'A', '<Plug>(EasyAlign)ip*=' },
+
         { 's', '<Plug>Ysurroundiw' },
         { 'S', '<Plug>Yssurround' },
         { 'r', '<Plug>Dsurround' },
