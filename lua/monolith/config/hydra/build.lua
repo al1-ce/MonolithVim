@@ -28,7 +28,7 @@ function M.hydra() return Hydra({
             { 'b', builder.run_default_task },
             { 'B', builder.run_build_select_lang },
             { 'T', builder.run_build_select },
-            { 'S', cmd 'AsyncStop[!]' },
+            { 'S', cmd 'AsyncStop!' },
 
             ---@diagnostic disable-next-line: missing-parameter
             { 'd', function() require("dapui").toggle() end },
