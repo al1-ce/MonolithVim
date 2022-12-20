@@ -12,6 +12,8 @@ local hintText = [[
 │ _S_: Surround line          │
 │ _r_: Remove surround        │
 │ _R_: Replace surround       │
+│ _'_: Surround around        │
+│ _"_: Surround in            │
 ├────────── Aligns ─────────┤
 │ _a_: Align around first     │
 │ _A_: Align around all       │
@@ -55,7 +57,7 @@ local commentBlocks = function()
     local mode = vim.api.nvim_get_mode().mode
     if mode == 'v' or mode == 'V' or mode == '^V' then
         vim.api.nvim_feedkeys(commentEsc, 'nx', false)
-        commentApi.toggle.blockwise(vim.fn.visualmode()) 
+        commentApi.toggle.blockwise(vim.fn.visualmode())
     else
         commentApi.toggle.blockwise.current()
     end
@@ -79,6 +81,8 @@ function M.hydra() return Hydra({
         { 'S', '<Plug>Yssurround' },
         { 'r', '<Plug>Dsurround' },
         { 'R', '<Plug>Csurround' },
+        { "'", '<Plug>Ysurround2i' },
+        { '"', '<Plug>Ysurroundi' },
 
         { '/', commentLines },
         { '?', commentBlocks },

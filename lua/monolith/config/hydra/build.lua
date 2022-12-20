@@ -1,14 +1,15 @@
 local Hydra = require('hydra')
 local colors = require('monolith.config.hydra.colors')
 local cmd = require('hydra.keymap-util').cmd
-
+local builder = require('monolith.config.justbuild')
 local M = {}
 
 local hintBuild = [[
 ┌──────── Build ────────┐
 │ _b_: Default build task │
-│ _B_: Select build task  │
+│ _B_: File build tasks   │
 │ _T_: All build tasks    │
+│ _S_: Stop build process │
 ├──────── Debug ────────┤
 │ _d_: Open debugger      │
 │ _t_: Toggle breakpoint  │
@@ -17,20 +18,23 @@ local hintBuild = [[
 └───────────────────────┘
 ]]
 
+
 function M.hydra() return Hydra({
         name = 'Build',
         hint = hintBuild,
         config = colors.passAllow(),
         mode = '',
         heads = {
-            { 'b', cmd 'YabsDefaultTask' },
-            { 'B', cmd 'Telescope yabs current_language_tasks' },
-            { 'T', cmd 'Telescope yabs tasks' },
+            { 'b', builder.run_default_task },
+            { 'B', builder.run_build_select_lang },
+            { 'T', builder.run_build_select },
+            { 'S', cmd 'AsyncStop[!]' },
 
+            ---@diagnostic disable-next-line: missing-parameter
             { 'd', function() require("dapui").toggle() end },
             { 't', cmd 'DapToggleBreakpoint' },
-            
-            
+
+
             { 'q', nil, { exit = true, nowait = true } },
             { '<Esc>', nil, { exit = true, nowait = true, desc = false } },
         }

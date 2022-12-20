@@ -6,7 +6,8 @@ local masonconf = require('mason-lspconfig')
 
 masonconf.setup_handlers({
     function(server_name)
-        lspconf[server_name].setup({})
+        lspconf[server_name].setup({
+        })
     end,
     ['serve_d'] = function ()
         lspconf.serve_d.setup({

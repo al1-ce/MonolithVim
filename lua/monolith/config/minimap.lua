@@ -17,5 +17,3 @@ MiniMap.setup({
         scroll_view = ''
     }
 })
-
-

@@ -1,21 +1,24 @@
-
-require('yabs'):setup({
-    languages = {
-        d = {
-            tasks = {
-                build = {
-                    command = '/home/al1-ce/.config/nvim/yabs/dlang.sh',
-                    type = 'shell',
-                    output = 'quickfix'
-                }
-            }
-        }
-    },
-    opts = {
-        output_types = {
-            quickfix = {
-                open_on_run = 'always'
-            }
-        }
-    }
-})
+--
+-- local dTasks = {
+--     tasks = {
+--         build = {
+--             command = '{echo dub build: $PWD} && {hr ─} && {dub build --} && { hr ─ ; echo "Finished." } || { hr ─ ; echo "Failed." }',
+--             type = 'shell',
+--             output = 'quickfix'
+--         }
+--     }
+-- }
+--
+--
+-- require('yabs'):setup({
+--     languages = {
+--         d = dTasks
+--     },
+--     opts = {
+--         output_types = {
+--             quickfix = {
+--                 open_on_run = 'always'
+--             }
+--         }
+--     }
+-- })

@@ -32,6 +32,8 @@ require('packer').startup({ function(use)
     use 'lewis6991/impatient.nvim'
     -- Async rulez
     use 'tpope/vim-dispatch'
+    -- Simple :AsyncRun command
+    use 'skywind3000/asyncrun.vim'
     -- > All the lua functions I don't want to write twice.
     use 'nvim-lua/plenary.nvim'
     -- web icons
@@ -192,7 +194,7 @@ require('packer').startup({ function(use)
     -- visit links
     use 'xiyaowong/link-visitor.nvim'
     -- use tasks
-    use 'pianocomposer321/yabs.nvim'
+    use { 'pianocomposer321/yabs.nvim', branch = 'rewrite' }
 
     -- Draw boxes
     use 'jbyuki/venn.nvim'

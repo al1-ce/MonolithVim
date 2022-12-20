@@ -87,3 +87,6 @@ require'nvim-lastplace'.setup {
 
 require('spectre').setup({})
 require('neodev').setup()
+
+-- g.asyncrun_exit = "Start! aplay ~/.config/nvim/res/notify1.wav"
+g.asyncrun_open = 8

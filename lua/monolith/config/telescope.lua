@@ -57,7 +57,7 @@ require("telescope").setup({
 
 require('telescope').load_extension('projects')
 require('telescope').load_extension('file_browser')
-require('telescope').load_extension('yabs')
+-- require('telescope').load_extension('yabs')
 require('telescope').load_extension('coc')
 require('telescope').load_extension('neoclip')
 require("telescope").load_extension("vimspector")
@@ -112,3 +112,5 @@ require("project_nvim").setup({
 require("urlview").setup({
     default_picker = "telescope",
 })
+
+

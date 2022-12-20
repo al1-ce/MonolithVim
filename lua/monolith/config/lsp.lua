@@ -102,7 +102,12 @@ require("lsp_signature").setup({
 require("fidget").setup({
     window = {
         blend = 0
-    }
+    },
+    sources = {
+        alpha = {
+            ignore = false,
+        },
+    },
 })
 
 require("lsp-colors").setup({})
