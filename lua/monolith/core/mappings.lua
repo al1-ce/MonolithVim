@@ -163,7 +163,7 @@ keymap.set('v', '<A-S-up>', '<S-v>"mxk"mp"mP`[V`]v', opts)
 keymap.set('v', '<A-S-down>', '<S-v>"mx"mP`]"mp`[V`]v', opts)
 
 -- erase one tab
-keymap.set("i", "<S-Tab>", "<C-o>v<", opts);
+keymap.set("i", "<S-Tab>", "<C-o><<", opts);
 
 -- -------------------------------------------------------------------------- --
 --                                 Visual Mode                                --

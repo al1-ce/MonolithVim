@@ -7,7 +7,16 @@
 # be as:
 # LangName_Default
 # and accept no arguments
+#
+# Also commands can have comments:
+# # This is a comment for command C_Make
+# C_Make:
 
+# This just file can be overriden by creating
+# another "justfile" in root of a project
+# If justfile exists in root of a project then
+# it's only going to override commands
+# that exist in both files.
 
 set positional-arguments
 
@@ -35,5 +44,4 @@ Python_Default:
 Python_Run File:
     python $1
 
-GetCurrentDir:
-    pwd
+

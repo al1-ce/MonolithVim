@@ -23,7 +23,7 @@
 - Language Server Protocol with Native LSP
 - Debug Adapter Protocol with nvim-dap
 - Powerful shortcut engine with Hydra
-- Build system with Yabs
+- Build system with Just
 - Preconfigured for D 
 
 And much more. For sources and other plugins with descriptions see `lua/core/plugins.lua` file.
@@ -37,6 +37,7 @@ And much more. For sources and other plugins with descriptions see `lua/core/plu
 - Rigrep
 - Yarn
 - Dfmt (for D formatting)
+- Just (for building projects)
 
 ## Installation
 ```bash

@@ -70,9 +70,144 @@ local function __TS__ArrayFilter(self, callbackfn, thisArg)
     return result
 end
 
+local function __TS__CountVarargs(...)
+    return select("#", ...)
+end
+
+local function __TS__ArraySplice(self, ...)
+    local args = {...}
+    local len = #self
+    local actualArgumentCount = __TS__CountVarargs(...)
+    local start = args[1]
+    local deleteCount = args[2]
+    if start < 0 then
+        start = len + start
+        if start < 0 then
+            start = 0
+        end
+    elseif start > len then
+        start = len
+    end
+    local itemCount = actualArgumentCount - 2
+    if itemCount < 0 then
+        itemCount = 0
+    end
+    local actualDeleteCount
+    if actualArgumentCount == 0 then
+        actualDeleteCount = 0
+    elseif actualArgumentCount == 1 then
+        actualDeleteCount = len - start
+    else
+        local ____deleteCount_0 = deleteCount
+        if ____deleteCount_0 == nil then
+            ____deleteCount_0 = 0
+        end
+        actualDeleteCount = ____deleteCount_0
+        if actualDeleteCount < 0 then
+            actualDeleteCount = 0
+        end
+        if actualDeleteCount > len - start then
+            actualDeleteCount = len - start
+        end
+    end
+    local out = {}
+    for k = 1, actualDeleteCount do
+        local from = start + k
+        if self[from] ~= nil then
+            out[k] = self[from]
+        end
+    end
+    if itemCount < actualDeleteCount then
+        for k = start + 1, len - actualDeleteCount do
+            local from = k + actualDeleteCount
+            local to = k + itemCount
+            if self[from] then
+                self[to] = self[from]
+            else
+                self[to] = nil
+            end
+        end
+        for k = len - actualDeleteCount + itemCount + 1, len do
+            self[k] = nil
+        end
+    elseif itemCount > actualDeleteCount then
+        for k = len - actualDeleteCount, start + 1, -1 do
+            local from = k + actualDeleteCount
+            local to = k + itemCount
+            if self[from] then
+                self[to] = self[from]
+            else
+                self[to] = nil
+            end
+        end
+    end
+    local j = start + 1
+    for i = 3, actualArgumentCount do
+        self[j] = args[i]
+        j = j + 1
+    end
+    for k = #self, len - actualDeleteCount + itemCount + 1, -1 do
+        self[k] = nil
+    end
+    return out
+end
+
+local function __TS__ArrayIsArray(value)
+    return type(value) == "table" and (value[1] ~= nil or next(value) == nil)
+end
+
+local function __TS__ArrayConcat(self, ...)
+    local items = {...}
+    local result = {}
+    local len = 0
+    for i = 1, #self do
+        len = len + 1
+        result[len] = self[i]
+    end
+    for i = 1, #items do
+        local item = items[i]
+        if __TS__ArrayIsArray(item) then
+            for j = 1, #item do
+                len = len + 1
+                result[len] = item[j]
+            end
+        else
+            len = len + 1
+            result[len] = item
+        end
+    end
+    return result
+end
+
+local function __TS__ArrayIncludes(self, searchElement, fromIndex)
+    if fromIndex == nil then
+        fromIndex = 0
+    end
+    local len = #self
+    local k = fromIndex
+    if fromIndex < 0 then
+        k = len + fromIndex
+    end
+    if k < 0 then
+        k = 0
+    end
+    for i = k + 1, len do
+        if self[i] == searchElement then
+            return true
+        end
+    end
+    return false
+end
+
+local function __TS__StringStartsWith(self, searchString, position)
+    if position == nil or position < 0 then
+        position = 0
+    end
+    return string.sub(self, position + 1, #searchString + position) == searchString
+end
+
 -- End of Lua Library inline imports
 local ____exports = {}
-local telescope_ = require("telescope")
 local pickers = require("telescope.pickers")
 local finders = require("telescope.finders")
 local conf = require("telescope.config").values
@@ -98,41 +233,95 @@ local function get_build_names(lang)
     local arr = __TS__StringSplit(outlist, "\n")
     table.remove(arr, 1)
     table.remove(arr)
-    local newArr = {}
+    local pjustfile = vim.fn.getcwd() .. "/justfile"
+    if vim.fn.filereadable(pjustfile) == 1 then
+        local overrideList = vim.fn.system(("just -f " .. pjustfile) .. " --list")
+        local oarr = __TS__StringSplit(overrideList, "\n")
+        table.remove(oarr, 1)
+        table.remove(oarr)
+        local rem = false
+        do
+            local i = 0
+            while i < #arr do
+                do
+                    local j = 0
+                    while j < #oarr do
+                        local fnor = __TS__ArrayFilter(
+                            __TS__StringSplit(arr[i + 1], " "),
+                            function(____, e) return e ~= "" end
+                        )[1]
+                        local fnov = __TS__ArrayFilter(
+                            __TS__StringSplit(oarr[j + 1], " "),
+                            function(____, e) return e ~= "" end
+                        )[1]
+                        if fnor == fnov then
+                            rem = true
+                        end
+                        j = j + 1
+                    end
+                end
+                if rem then
+                    __TS__ArraySplice(arr, i, 1)
+                end
+                rem = false
+                i = i + 1
+            end
+        end
+        arr = __TS__ArrayConcat(arr, oarr)
+    end
+    local tbl = {}
     do
         local i = 0
         while i < #arr do
-            local options = __TS__StringSplit(arr[i + 1], " ")
+            local comment = __TS__StringSplit(arr[i + 1], "#")[2]
+            local options = __TS__StringSplit(
+                __TS__StringSplit(arr[i + 1], "#")[1],
+                " "
+            )
             options = __TS__ArrayFilter(
                 options,
                 function(____, e) return e ~= "" end
             )
             local name = options[1]
-            if string.lower(name) == string.lower(lang) or lang == "" then
-                newArr[#newArr + 1] = name
+            if string.lower(__TS__StringSplit(name, "_")[1]) == string.lower(lang) or lang == "" then
+                local parts = __TS__StringSplit(name, "_")
+                local out
+                if #parts == 1 then
+                    out = parts[1]
+                else
+                    out = parts[1] .. ": "
+                    table.remove(parts, 1)
+                    out = out .. table.concat(parts, " ")
+                end
+                local wd = 34
+                local rn = math.max(0, wd - #out)
+                out = out .. (string.rep(
+                    " ",
+                    math.floor(rn)
+                ) .. " ") .. (comment == nil and "" or comment)
+                tbl[#tbl + 1] = {out, name}
             end
             i = i + 1
         end
     end
-    return newArr
-end
-local function fix_build_names(arr_names)
-    local arr = {}
-    do
-        local i = 0
-        while i < #arr_names do
-            local parts = arr_names[i + 1]:split("_")
-            local out = parts[1] .. ": "
-            table.remove(parts, 1)
-            out = out .. table.concat(parts, " ")
-            arr[#arr + 1] = {out, arr_names[i + 1]}
-            i = i + 1
-        end
-    end
-    return arr
+    return tbl
 end
 local function get_build_args(build_name)
-    local outshow = vim.fn.system((just .. " -s ") .. build_name)
+    local justloc = just
+    local pjustfile = vim.fn.getcwd() .. "/justfile"
+    if vim.fn.filereadable(pjustfile) == 1 then
+        local bd = vim.fn.system(("just -f " .. pjustfile) .. " --summary")
+        if __TS__ArrayIncludes(
+            __TS__StringSplit(bd, " "),
+            build_name
+        ) then
+            justloc = "just -f " .. pjustfile
+        end
+    end
+    local outshow = vim.fn.system((justloc .. " -s ") .. build_name)
+    if __TS__StringStartsWith(outshow, "#") then
+        outshow = __TS__StringSplit(outshow, "\n")[2]
+    end
     local outinfo = __TS__StringSplit(outshow, ":")[1]
     local args = __TS__StringSplit(outinfo, " ")
     table.remove(args, 1)
@@ -153,7 +342,18 @@ local function get_build_args(build_name)
 end
 local function build_runner(build_name)
     local args = get_build_args(build_name)
-    local command = (((just .. " -d . ") .. build_name) .. " ") .. table.concat(args, " ")
+    local justloc = just
+    local pjustfile = vim.fn.getcwd() .. "/justfile"
+    if vim.fn.filereadable(pjustfile) == 1 then
+        local bd = vim.fn.system(("just -f " .. pjustfile) .. " --summary")
+        if __TS__ArrayIncludes(
+            __TS__StringSplit(bd, " "),
+            build_name
+        ) then
+            justloc = "just -f " .. pjustfile
+        end
+    end
+    local command = (((justloc .. " -d . ") .. build_name) .. " ") .. table.concat(args, " ")
     local success = "aplay ~/.config/nvim/res/build_success.wav -q"
     local ____error = "aplay ~/.config/nvim/res/build_error.wav -q"
     local lcom = (((((":AsyncRun ( " .. command) .. " ) && ( ") .. success) .. " ) || ( ") .. ____error) .. " )"
@@ -179,7 +379,7 @@ function ____exports.build_select(opts)
                 "└"
             },
             finder = finders.new_table({
-                results = fix_build_names(get_build_names()),
+                results = get_build_names(),
                 entry_maker = function(entry)
                     return {value = entry, display = entry[1], ordinal = entry[1]}
                 end
@@ -218,7 +418,7 @@ function ____exports.build_select_lang(opts)
                 "└"
             },
             finder = finders.new_table({
-                results = fix_build_names(get_build_names(vim.bo.filetype)),
+                results = get_build_names(vim.bo.filetype),
                 entry_maker = function(entry)
                     return {value = entry, display = entry[1], ordinal = entry[1]}
                 end
@@ -278,10 +478,10 @@ function ____exports.run_default_task()
     do
         local i = 1
         while i < #tasks do
-            local opts = __TS__StringSplit(tasks[i + 1], "_")
+            local opts = __TS__StringSplit(tasks[i + 1][2], "_")
             if #opts == 2 then
                 if string.lower(opts[1]) == string.lower(cmp1) and string.lower(opts[2]) == "default" then
-                    build_runner(tasks[i + 1])
+                    build_runner(tasks[i + 1][2])
                     return
                 end
             end

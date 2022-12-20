@@ -8,14 +8,16 @@ declare function print(val: any): void;
 
 declare namespace vim {
     namespace fn {
-        function system(com: string): string;
-        function input(prompt: string, val: string): string;
+        function system(this: void, com: string): string;
+        function input(this: void, prompt: string, val: string): string;
+        function getcwd(this: void): string;
+        function filereadable(this: void, file: string): number;
     }
-    function inspect(val: any): any;
+    function inspect(this: void, val: any): any;
     namespace bo {
         var filetype: string;
     }
-    function cmd(expr: string): any;
+    function cmd(this: void, expr: string): any;
 }
 
 /** @noSelf */
@@ -43,10 +45,13 @@ declare namespace telescope {
     namespace themes {
         function get_dropdown(this: void, opts: any): any;
     }
-    function register_extension(opts: any): any;
 }
 
-let telescope_ = require("telescope") as typeof telescope;
+declare namespace io {
+    function open(this: void, name: string, mode: string): any;
+    function close(this: void, file: any): any;
+}
+
 let pickers = require("telescope.pickers") as typeof telescope.pickers;
 let finders = require("telescope.finders") as typeof telescope.finders;
 let conf = require("telescope.config").values as typeof telescope.config.values;
@@ -62,57 +67,78 @@ function popup(message: string, errlvl: string = "info", title: string = "Info")
 
 let just = "just -f ~/.config/nvim/justfile";
 
-// function string::split(sep) {
-//     if (sep == nil) {
-//         sep = "%s";
-//     }
-//     let t = [];
-//     for (str in string.gmatch(self, "([^" .. sep .. "]+)")) {
-//         table.insert(t, str); 
-//     }
-//     return t;
-// }
-
-function get_build_names(lang: string = ""): string[] {
+function get_build_names(lang: string = ""): string[][] {
     let outlist: string = vim.fn.system(`${just} --list`);
     let arr: string[] = outlist.split('\n');
     // table.remove(tbl, 1);
     arr.shift();
     arr.pop();
+    
+    let pjustfile: string = `${vim.fn.getcwd()}/justfile`;
+    if (vim.fn.filereadable(pjustfile) == 1) { 
+        let overrideList: string = vim.fn.system(`just -f ${pjustfile} --list`);
+        let oarr: string[] = overrideList.split("\n");
+        oarr.shift();
+        oarr.pop();
+        let rem: boolean = false;
+        for (let i = 0; i < arr.length; ++i) {
+            for (let j = 0; j < oarr.length; ++j) {
+                let fnor: string =  arr[i].split(" ").filter(e => e !== '')[0];
+                let fnov: string = oarr[j].split(" ").filter(e => e !== '')[0];
+                // popup(`${fnor} : ${fnov}`);
+                if (fnor == fnov) {
+                    rem = true;
+                }
+            }
+            if (rem) arr.splice(i, 1);
+            rem = false;
+        }
+        arr = arr.concat(oarr);
+    }
+    //////////////////// add vim.fn.cwd()
     // table.remove(tbl, #tbl);
-    let newArr: string[] = [];
+    let tbl: string[][] = [];
     for (let i = 0; i < arr.length; ++i) {
         // popup(tbl[i]);
-        let options = arr[i].split(" ");
+        let comment: string = arr[i].split("#")[1];
+        let options: string[] = arr[i].split("#")[0].split(" ");
         options = options.filter(e => e !== '');
         // print(vim.inspect(options));
         let name = options[0];
-        if (name.toLowerCase() == lang.toLowerCase() || lang == "") {
-            newArr.push(name);    
+        if ((name.split("_")[0]).toLowerCase() == lang.toLowerCase() || lang == "") {
+            // tbl.push(name);
+            let parts: string[] = name.split("_");
+            let out: string;
+            if (parts.length == 1) {
+                out = parts[0];
+            } else {
+                out = `${parts[0]}: `;
+                parts.shift();
+                out += parts.join(" ");
+            }
+            let wd = 34;
+            let rn = Math.max(0, wd - out.length);
+            out += `${" ".repeat(rn)} ${comment == null ? "" : comment}`;
+            tbl.push([out, name]);
         } 
         // popup(`${name}: ${options.length}`, "info", "Info");
     }
-    return newArr;
-}
-
-function fix_build_names(arr_names: any[]): any[] {
-    let arr: any[] = [];
-    for (let i = 0; i < arr_names.length; ++i) {
-        let parts: string[] = arr_names[i].split("_");
-        // print(vim.inspect(parts));
-        let out: string = `${parts[0]}: `;
-        // table.remove(parts, 1);
-        parts.shift();
-        // out = out + table.concat(parts, " ");
-        out += parts.join(" ");
-        // table.insert(t, [ out, tbl[i] ]);
-        arr.push([out, arr_names[i]]);
-    }
-    return arr;
+    return tbl;
 }
 
 function get_build_args(build_name: string): string[] {
-    let outshow = vim.fn.system(`${just} -s ${build_name}`)
+    let justloc = just;
+    let pjustfile: string = `${vim.fn.getcwd()}/justfile`;
+    if (vim.fn.filereadable(pjustfile) == 1) { 
+        let bd: string = vim.fn.system(`just -f ${pjustfile} --summary`);
+        if (bd.split(" ").includes(build_name)) {
+            justloc = `just -f ${pjustfile}`; 
+        }
+    }
+    let outshow = vim.fn.system(`${justloc} -s ${build_name}`);
+    if (outshow.startsWith("#")) {
+        outshow = outshow.split("\n")[1];
+    }
     let outinfo = outshow.split(":")[0];
     // print(vim.inspect(outinfo));
     let args = outinfo.split(" ");
@@ -132,7 +158,15 @@ function get_build_args(build_name: string): string[] {
 
 function build_runner(build_name: string): void {
     let args: string[] = get_build_args(build_name);
-    let command: string = `${just} -d . ${build_name} ${args.join(" ")}`;
+    let justloc = just;
+    let pjustfile: string = `${vim.fn.getcwd()}/justfile`;
+    if (vim.fn.filereadable(pjustfile) == 1) { 
+        let bd: string = vim.fn.system(`just -f ${pjustfile} --summary`);
+        if (bd.split(" ").includes(build_name)) {
+            justloc = `just -f ${pjustfile}`; 
+        }
+    }
+    let command: string = `${justloc} -d . ${build_name} ${args.join(" ")}`;
     // popup(command);
     let success: string = "aplay ~/.config/nvim/res/build_success.wav -q"; 
     let error: string = "aplay ~/.config/nvim/res/build_error.wav -q"; 
@@ -149,7 +183,7 @@ export function build_select(opts: any): void {
         border: {},
         borderchars: [ "─", "│", "─", "│", "┌", "┐", "┘", "└" ], 
         finder: finders.new_table({
-            results: fix_build_names(get_build_names()),
+            results: get_build_names(),
             entry_maker: (entry: any[]) => {
                 return {
                     value: entry,
@@ -179,7 +213,7 @@ export function build_select_lang(opts: any): void {
         border: {},
         borderchars: [ "─", "│", "─", "│", "┌", "┐", "┘", "└" ], 
         finder: finders.new_table({
-            results: fix_build_names(get_build_names(vim.bo.filetype)),
+            results: get_build_names(vim.bo.filetype),
             entry_maker: (entry: any[]) => {
                 return {
                     value: entry,
@@ -220,14 +254,14 @@ export function run_build_select_lang(): void {
 export function run_default_task(): void {
     let current_language = vim.bo.filetype;
     let cmp1 = current_language.toLowerCase();
-    let tasks: string[] = get_build_names();
+    let tasks: string[][] = get_build_names();
     for (let i = 1; i < tasks.length; ++i) {
-        let opts: string[] = tasks[i].split("_");
+        let opts: string[] = tasks[i][1].split("_");
         if (opts.length == 2) {
             if (opts[0].toLowerCase() == cmp1.toLowerCase() &&
                 opts[1].toLowerCase() == "default") {
                 // popup(`Executing default task for '${current_language}'.`, "info", "Build");
-                build_runner(tasks[i]);
+                build_runner(tasks[i][1]);
                 return;
             }
         }
