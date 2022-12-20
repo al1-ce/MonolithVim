@@ -9,7 +9,7 @@ local hintGit = [[
 │ _s_: Status   │
 │ _b_: Branches │
 │ _c_: Commits  │
-│ _s_: Stash    │
+│ _S_: Stash    │
 ├─────────────┤
 │ _q_: Quit     │
 └─────────────┘
