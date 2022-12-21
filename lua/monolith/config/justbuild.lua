@@ -234,7 +234,7 @@ local function get_build_names(lang)
     table.remove(arr, 1)
     table.remove(arr)
     local pjustfile = vim.fn.getcwd() .. "/justfile"
-    if vim.fn.filereadable(pjustfile) == 1 then
+    if vim.fn.filereadable(pjustfile) == 1 and pjustfile ~= vim.fn.expand("~/.config/nvim/justfile") then
         local overrideList = vim.fn.system(("just -f " .. pjustfile) .. " --list")
         local oarr = __TS__StringSplit(overrideList, "\n")
         table.remove(oarr, 1)
@@ -283,7 +283,8 @@ local function get_build_names(lang)
                 function(____, e) return e ~= "" end
             )
             local name = options[1]
-            if string.lower(__TS__StringSplit(name, "_")[1]) == string.lower(lang) or lang == "" then
+            local langname = string.lower(__TS__StringSplit(name, "_")[1])
+            if langname == string.lower(lang) or lang == "" or langname == "any" then
                 local parts = __TS__StringSplit(name, "_")
                 local out
                 if #parts == 1 then
@@ -305,6 +306,80 @@ local function get_build_names(lang)
         end
     end
     return tbl
+end
+---
+-- @summary Checks if argument is defined as keyword (i.e "FILEPATH", "FILEEXT") and 
+-- returns corresponding string. If argument is not keyword function returns single space
+-- @param arg Argument to check
+local function check_keyword_arg(arg)
+    repeat
+        local ____switch17 = arg
+        local ____cond17 = ____switch17 == "FILEPATH"
+        if ____cond17 then
+            return vim.fn.expand("%:p")
+        end
+        ____cond17 = ____cond17 or ____switch17 == "FILENAME"
+        if ____cond17 then
+            return vim.fn.expand("%:t")
+        end
+        ____cond17 = ____cond17 or ____switch17 == "FILEDIR"
+        if ____cond17 then
+            return vim.fn.expand("%:p:h")
+        end
+        ____cond17 = ____cond17 or ____switch17 == "FILEEXT"
+        if ____cond17 then
+            return vim.fn.expand("%:e")
+        end
+        ____cond17 = ____cond17 or ____switch17 == "FILENOEXT"
+        if ____cond17 then
+            return vim.fn.expand("%:t:r")
+        end
+        ____cond17 = ____cond17 or ____switch17 == "CWD"
+        if ____cond17 then
+            return vim.fn.getcwd()
+        end
+        ____cond17 = ____cond17 or ____switch17 == "RELPATH"
+        if ____cond17 then
+            return vim.fn.expand("%")
+        end
+        ____cond17 = ____cond17 or ____switch17 == "RELDIR"
+        if ____cond17 then
+            return vim.fn.expand("%:h")
+        end
+        ____cond17 = ____cond17 or ____switch17 == "TIME"
+        if ____cond17 then
+            return os.date("%H:%M:%S")
+        end
+        ____cond17 = ____cond17 or ____switch17 == "DATE"
+        if ____cond17 then
+            return os.date("%d/%m/%Y")
+        end
+        ____cond17 = ____cond17 or ____switch17 == "USDATE"
+        if ____cond17 then
+            return os.date("%m/%d/%Y")
+        end
+        ____cond17 = ____cond17 or ____switch17 == "USERNAME"
+        if ____cond17 then
+            return os.getenv("USER")
+        end
+        ____cond17 = ____cond17 or ____switch17 == "PCNAME"
+        if ____cond17 then
+            return __TS__StringSplit(
+                vim.fn.system("uname -a"),
+                " "
+            )[2]
+        end
+        ____cond17 = ____cond17 or ____switch17 == "OS"
+        if ____cond17 then
+            return __TS__StringSplit(
+                vim.fn.system("uname"),
+                "\n"
+            )[1]
+        end
+        do
+            return " "
+        end
+    until true
 end
 local function get_build_args(build_name)
     local justloc = just
@@ -333,8 +408,16 @@ local function get_build_args(build_name)
         local i = 0
         while i < #args do
             local arg = args[i + 1]
-            local a = vim.fn.input(arg .. ": ", "")
-            argsout[#argsout + 1] = a
+            local keywd = check_keyword_arg(arg)
+            if keywd == " " then
+                local a = vim.fn.input(arg .. ": ", "")
+                argsout[#argsout + 1] = ("\"" .. a) .. "\""
+            else
+                if keywd == "" then
+                    keywd = " "
+                end
+                argsout[#argsout + 1] = ("\"" .. keywd) .. "\""
+            end
             i = i + 1
         end
     end
@@ -476,11 +559,14 @@ function ____exports.run_default_task()
     local cmp1 = string.lower(current_language)
     local tasks = get_build_names()
     do
-        local i = 1
+        local i = 0
         while i < #tasks do
             local opts = __TS__StringSplit(tasks[i + 1][2], "_")
             if #opts == 2 then
                 if string.lower(opts[1]) == string.lower(cmp1) and string.lower(opts[2]) == "default" then
+                    build_runner(tasks[i + 1][2])
+                    return
+                elseif string.lower(opts[1]) == "any" and string.lower(opts[2]) == "default" then
                     build_runner(tasks[i + 1][2])
                     return
                 end

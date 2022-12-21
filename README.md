@@ -1,6 +1,17 @@
 # MonolithVim
 
+#### This distro is not supposed or intended to be perfect out of the box experience. It is preconfigured to be vanilla-like friendly experience, but for your personal needs changing configs will be required.
+#### If this doesn't suit you then please look at [other NeoVim distributions](#other-neovim-distributions)
+
 > And 1984 would not be like 1984
+
+<!--toc:start-->
+  - [Preview](#preview)
+  - [Features](#features)
+  - [Requirements](#requirements)
+  - [Installation](#installation)
+  - [Other NeoVim distributions](#other-neovim-distributions)
+<!--toc:end-->
 
 ## Preview
 #### Custom stylish industrial dashboard
@@ -23,10 +34,10 @@
 - Language Server Protocol with Native LSP
 - Debug Adapter Protocol with nvim-dap
 - Powerful shortcut engine with Hydra
-- Build system with Just
+- Build system with Just ([docs](readme/build.md))
 - Preconfigured for D 
 
-And much more. For sources and other plugins with descriptions see `lua/core/plugins.lua` file.
+And much more. For sources and other plugins with descriptions see [lua/monolith/core/plugins.lua](lua/monolith/core/plugins.lua) file.
 
 ## Requirements
 - Nerd Fonts

@@ -9,6 +9,10 @@ g.gruvbox_baby_transparent_mode = 1
 vim.cmd.colorscheme('gruvbox')
 
 vim.cmd[[
+fun! s:AddCustomFunctionHighlight()
+    syn match   dCustomFunc     "\w\+\s*(\@="
+endfun
+
 autocmd BufEnter *.d,
     \*.c,*.h,
     \*.cpp,*.hpp,
@@ -16,7 +20,7 @@ autocmd BufEnter *.d,
     \*.dart,*.js,*.ts,*.jspp,*.jpp,
     \*.py,*.lua,*.swift,*.go,
     \*.rs,*.rlib,*.hx,*.r,*.rb
-    \ syn match   dCustomFunc     "\w\+\s*(\@="
+    \ call s:AddCustomFunctionHighlight()
 hi def link dCustomFunc Function
 
 hi! link LspSagaCodeActionBorder  LspSagaDiagnosticBorder
@@ -29,6 +33,35 @@ hi! link LspSagaSignatureHelpBorder  LspSagaDiagnosticBorder
 hi! link LSOutlinePreviewBorder  LspSagaDiagnosticBorder
 hi! link LspsagaGroupName  LspSagaDiagnosticBorder
 hi! link LspSagaDiagnosticError  LspSagaDiagnosticBorder
+
+fun! s:DetectShebangPattern()
+    if getline(1) == '#!/usr/bin/env node'
+        set ft=javascript
+        call s:AddCustomFunctionHighlight()
+    endif
+    if getline(1) == '#!/usr/bin/rdmd'
+        set ft=d
+        call s:AddCustomFunctionHighlight()
+    endif
+    if getline(1) == '#!/usr/bin/rund'
+        set ft=d
+        call s:AddCustomFunctionHighlight()
+    endif
+    if getline(1) == '#!/usr/bin/env dub'
+        set ft=d
+        call s:AddCustomFunctionHighlight()
+    endif
+    if getline(1) == '#!/usr/bin/env rdmd'
+        set ft=d
+        call s:AddCustomFunctionHighlight()
+    endif
+    if getline(1) == '#!/usr/bin/env rund'
+        set ft=d
+        call s:AddCustomFunctionHighlight()
+    endif
+endfun
+
+autocmd BufNewFile,BufRead * call s:DetectShebangPattern()
 ]]
 
 vim.cmd([[

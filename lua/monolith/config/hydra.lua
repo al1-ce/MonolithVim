@@ -26,6 +26,7 @@ local hintLeader = [[
 ├───── Motion ─────┤
 │ _s_: Split         │
 │ _w_: Save file     │
+│ _W_: Force save    │
 │ _q_: Close file    │
 │ _Q_: Close all     │
 │ _P_: Select pasted │
@@ -59,6 +60,7 @@ Hydra({
 
         { 's', callback.hydraCallback('window') },
         { 'w', cmd 'update' },
+        { 'W', cmd 'update!' },
         { 'q', cmd 'x' },
         { 'Q', cmd 'qa!' },
         { 'P', "printf('`[%s`]', getregtype()[0])", { expr = true } },

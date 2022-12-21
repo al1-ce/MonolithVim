@@ -12,6 +12,7 @@ declare namespace vim {
         function input(this: void, prompt: string, val: string): string;
         function getcwd(this: void): string;
         function filereadable(this: void, file: string): number;
+        function expand(this: void, str: string): string;
     }
     function inspect(this: void, val: any): any;
     namespace bo {
@@ -52,6 +53,12 @@ declare namespace io {
     function close(this: void, file: any): any;
 }
 
+declare namespace os {
+    function date(format: string): string;
+    function getenv(varname: string): string;
+    function execute(command: string): string;
+}
+
 let pickers = require("telescope.pickers") as typeof telescope.pickers;
 let finders = require("telescope.finders") as typeof telescope.finders;
 let conf = require("telescope.config").values as typeof telescope.config.values;
@@ -75,7 +82,7 @@ function get_build_names(lang: string = ""): string[][] {
     arr.pop();
     
     let pjustfile: string = `${vim.fn.getcwd()}/justfile`;
-    if (vim.fn.filereadable(pjustfile) == 1) { 
+    if (vim.fn.filereadable(pjustfile) == 1 && pjustfile != vim.fn.expand("~/.config/nvim/justfile")) { 
         let overrideList: string = vim.fn.system(`just -f ${pjustfile} --list`);
         let oarr: string[] = overrideList.split("\n");
         oarr.shift();
@@ -105,7 +112,9 @@ function get_build_names(lang: string = ""): string[][] {
         options = options.filter(e => e !== '');
         // print(vim.inspect(options));
         let name = options[0];
-        if ((name.split("_")[0]).toLowerCase() == lang.toLowerCase() || lang == "") {
+        let langname = (name.split("_")[0]).toLowerCase();
+        // popup(langname);
+        if (langname == lang.toLowerCase() || lang == "" || langname == "any") {
             // tbl.push(name);
             let parts: string[] = name.split("_");
             let out: string;
@@ -124,6 +133,45 @@ function get_build_names(lang: string = ""): string[][] {
         // popup(`${name}: ${options.length}`, "info", "Info");
     }
     return tbl;
+}
+
+/**
+@summary Checks if argument is defined as keyword (i.e "FILEPATH", "FILEEXT") and 
+returns corresponding string. If argument is not keyword function returns single space 
+@param arg Argument to check
+*/
+function check_keyword_arg(arg: string): string {
+    switch (arg) {
+        // Full file path
+        case "FILEPATH": return vim.fn.expand("%:p"); 
+        // Full file name
+        case "FILENAME": return vim.fn.expand("%:t");
+        // File path without filename
+        case "FILEDIR": return vim.fn.expand("%:p:h");
+        // File extension
+        case "FILEEXT": return vim.fn.expand("%:e");
+        // File name without extension
+        case "FILENOEXT": return vim.fn.expand("%:t:r");
+        // Current directory
+        case "CWD": return vim.fn.getcwd();
+        // Relative file path
+        case "RELPATH": return vim.fn.expand("%");
+        // Relative file path without filename
+        case "RELDIR": return vim.fn.expand("%:h");
+        // Time and date consts
+        case "TIME": return os.date("%H:%M:%S");
+        // Date in Day/Month/Year format
+        case "DATE": return os.date("%d/%m/%Y");
+        // Date in Month/Day/Year format
+        case "USDATE": return os.date("%m/%d/%Y");
+        // User name
+        case "USERNAME": return os.getenv("USER");
+        // PC name
+        case "PCNAME": return vim.fn.system("uname -a").split(" ")[1]; 
+        // OS
+        case "OS": return vim.fn.system("uname").split("\n")[0];
+        default: return " ";
+    } 
 }
 
 function get_build_args(build_name: string): string[] {
@@ -148,9 +196,17 @@ function get_build_args(build_name: string): string[] {
     let argsout: string[] = [];
     for (let i = 0; i < args.length; ++i) {
         let arg = args[i];
-        let a = vim.fn.input(`${arg}: `, "");
-        // table.insert(argsout, a);
-        argsout.push(a);
+        let keywd = check_keyword_arg(arg);
+        if (keywd == " ") {
+            let a: string = vim.fn.input(`${arg}: `, "");
+            // table.inser;t(argsout, a);
+            // print(vim.inspect(a));
+            // argsout.push(`"${a}"`);
+            argsout.push(`"${a}"`);
+        } else {
+            if (keywd == "") keywd = " ";
+            argsout.push(`"${keywd}"`);
+        }
     }
     // popup(`Command args: ${argsout.join(" ")}`);
     return argsout;
@@ -172,6 +228,8 @@ function build_runner(build_name: string): void {
     let error: string = "aplay ~/.config/nvim/res/build_error.wav -q"; 
     let lcom: string = `:AsyncRun ( ${command} ) && ( ${success} ) || ( ${error} )`;
     // vim.cmd(":copen");
+    // popup(lcom);
+    // print(vim.inspect(lcom));
     vim.cmd(lcom);
     // popup("Done");
 }
@@ -252,18 +310,25 @@ export function run_build_select_lang(): void {
 }
 
 export function run_default_task(): void {
-    let current_language = vim.bo.filetype;
-    let cmp1 = current_language.toLowerCase();
+    let current_language: string = vim.bo.filetype;
+    let cmp1: string = current_language.toLowerCase();
     let tasks: string[][] = get_build_names();
-    for (let i = 1; i < tasks.length; ++i) {
+    for (let i = 0; i < tasks.length; ++i) {
         let opts: string[] = tasks[i][1].split("_");
+        // popup(tasks[i][0]);
         if (opts.length == 2) {
+            // popup(`${opts[0].toLowerCase()} == ${cmp1.toLowerCase()} : ${opts[1].toLowerCase()}`)
             if (opts[0].toLowerCase() == cmp1.toLowerCase() &&
                 opts[1].toLowerCase() == "default") {
                 // popup(`Executing default task for '${current_language}'.`, "info", "Build");
                 build_runner(tasks[i][1]);
                 return;
-            }
+            } else if (opts[0].toLowerCase() == "any" &&
+                opts[1].toLowerCase() == "default") {
+                // popup(`Executing default task for '${current_language}'.`, "info", "Build");
+                build_runner(tasks[i][1]);
+                return;
+            } 
         }
     }
     popup(`Could not find default task for '${current_language}'. \nPlease select task from list.`, "warn", "Build");
