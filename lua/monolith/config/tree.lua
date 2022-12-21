@@ -13,7 +13,7 @@ nvim_tree.setup {
     sort_by = "name",
     update_cwd = false,
     sync_root_with_cwd = true,
-    respect_buf_cmd = true,
+    respect_buf_cwd = true,
     prefer_startup_root = true,
     view = {
         width = 25,
