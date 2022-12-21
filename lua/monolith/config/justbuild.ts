@@ -13,6 +13,7 @@ declare namespace vim {
         function getcwd(this: void): string;
         function filereadable(this: void, file: string): number;
         function expand(this: void, str: string): string;
+        function fnamemodify(this: void, str: string, flags: string): string;
     }
     function inspect(this: void, val: any): any;
     namespace bo {
@@ -72,7 +73,11 @@ function popup(message: string, errlvl: string = "info", title: string = "Info")
     notify(message, errlvl, { title: title });
 }
 
-let just = "just -f ~/.config/nvim/justfile";
+function getConfigDir(): string {
+    return vim.fn.fnamemodify(vim.fn.expand("$MYVIMRC"), ":p:h");
+}
+
+let just = `just -f ${getConfigDir()}/justfile`;
 
 function get_build_names(lang: string = ""): string[][] {
     let outlist: string = vim.fn.system(`${just} --list`);
@@ -82,7 +87,7 @@ function get_build_names(lang: string = ""): string[][] {
     arr.pop();
     
     let pjustfile: string = `${vim.fn.getcwd()}/justfile`;
-    if (vim.fn.filereadable(pjustfile) == 1 && pjustfile != vim.fn.expand("~/.config/nvim/justfile")) { 
+    if (vim.fn.filereadable(pjustfile) == 1 && pjustfile != `${getConfigDir()}/justfile`) { 
         let overrideList: string = vim.fn.system(`just -f ${pjustfile} --list`);
         let oarr: string[] = overrideList.split("\n");
         oarr.shift();
@@ -224,8 +229,8 @@ function build_runner(build_name: string): void {
     }
     let command: string = `${justloc} -d . ${build_name} ${args.join(" ")}`;
     // popup(command);
-    let success: string = "aplay ~/.config/nvim/res/build_success.wav -q"; 
-    let error: string = "aplay ~/.config/nvim/res/build_error.wav -q"; 
+    let success: string = `aplay ${getConfigDir()}/res/build_success.wav -q`; 
+    let error: string = `aplay ${getConfigDir()}/res/build_error.wav -q`; 
     let lcom: string = `:AsyncRun ( ${command} ) && ( ${success} ) || ( ${error} )`;
     // vim.cmd(":copen");
     // popup(lcom);

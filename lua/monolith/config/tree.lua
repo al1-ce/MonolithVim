@@ -13,6 +13,7 @@ nvim_tree.setup {
     sort_by = "name",
     update_cwd = false,
     sync_root_with_cwd = true,
+    respect_buf_cmd = true,
     prefer_startup_root = true,
     view = {
         width = 25,
@@ -54,8 +55,9 @@ nvim_tree.setup {
         auto_open = true,
     },
     update_focused_file = {
-        enable = false,
+        enable = true, -- false 
         update_cwd = false,
+        update_root = true, -- wasnt there
         ignore_list = {},
     },
     ignore_ft_on_setup = {},

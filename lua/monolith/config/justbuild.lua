@@ -224,7 +224,13 @@ local function popup(message, errlvl, title)
     end
     notify(message, errlvl, {title = title})
 end
-local just = "just -f ~/.config/nvim/justfile"
+local function getConfigDir()
+    return vim.fn.fnamemodify(
+        vim.fn.expand("$MYVIMRC"),
+        ":p:h"
+    )
+end
+local just = ("just -f " .. getConfigDir()) .. "/justfile"
 local function get_build_names(lang)
     if lang == nil then
         lang = ""
@@ -234,7 +240,7 @@ local function get_build_names(lang)
     table.remove(arr, 1)
     table.remove(arr)
     local pjustfile = vim.fn.getcwd() .. "/justfile"
-    if vim.fn.filereadable(pjustfile) == 1 and pjustfile ~= vim.fn.expand("~/.config/nvim/justfile") then
+    if vim.fn.filereadable(pjustfile) == 1 and pjustfile ~= getConfigDir() .. "/justfile" then
         local overrideList = vim.fn.system(("just -f " .. pjustfile) .. " --list")
         local oarr = __TS__StringSplit(overrideList, "\n")
         table.remove(oarr, 1)
@@ -313,64 +319,64 @@ end
 -- @param arg Argument to check
 local function check_keyword_arg(arg)
     repeat
-        local ____switch17 = arg
-        local ____cond17 = ____switch17 == "FILEPATH"
-        if ____cond17 then
+        local ____switch18 = arg
+        local ____cond18 = ____switch18 == "FILEPATH"
+        if ____cond18 then
             return vim.fn.expand("%:p")
         end
-        ____cond17 = ____cond17 or ____switch17 == "FILENAME"
-        if ____cond17 then
+        ____cond18 = ____cond18 or ____switch18 == "FILENAME"
+        if ____cond18 then
             return vim.fn.expand("%:t")
         end
-        ____cond17 = ____cond17 or ____switch17 == "FILEDIR"
-        if ____cond17 then
+        ____cond18 = ____cond18 or ____switch18 == "FILEDIR"
+        if ____cond18 then
             return vim.fn.expand("%:p:h")
         end
-        ____cond17 = ____cond17 or ____switch17 == "FILEEXT"
-        if ____cond17 then
+        ____cond18 = ____cond18 or ____switch18 == "FILEEXT"
+        if ____cond18 then
             return vim.fn.expand("%:e")
         end
-        ____cond17 = ____cond17 or ____switch17 == "FILENOEXT"
-        if ____cond17 then
+        ____cond18 = ____cond18 or ____switch18 == "FILENOEXT"
+        if ____cond18 then
             return vim.fn.expand("%:t:r")
         end
-        ____cond17 = ____cond17 or ____switch17 == "CWD"
-        if ____cond17 then
+        ____cond18 = ____cond18 or ____switch18 == "CWD"
+        if ____cond18 then
             return vim.fn.getcwd()
         end
-        ____cond17 = ____cond17 or ____switch17 == "RELPATH"
-        if ____cond17 then
+        ____cond18 = ____cond18 or ____switch18 == "RELPATH"
+        if ____cond18 then
             return vim.fn.expand("%")
         end
-        ____cond17 = ____cond17 or ____switch17 == "RELDIR"
-        if ____cond17 then
+        ____cond18 = ____cond18 or ____switch18 == "RELDIR"
+        if ____cond18 then
             return vim.fn.expand("%:h")
         end
-        ____cond17 = ____cond17 or ____switch17 == "TIME"
-        if ____cond17 then
+        ____cond18 = ____cond18 or ____switch18 == "TIME"
+        if ____cond18 then
             return os.date("%H:%M:%S")
         end
-        ____cond17 = ____cond17 or ____switch17 == "DATE"
-        if ____cond17 then
+        ____cond18 = ____cond18 or ____switch18 == "DATE"
+        if ____cond18 then
             return os.date("%d/%m/%Y")
         end
-        ____cond17 = ____cond17 or ____switch17 == "USDATE"
-        if ____cond17 then
+        ____cond18 = ____cond18 or ____switch18 == "USDATE"
+        if ____cond18 then
             return os.date("%m/%d/%Y")
         end
-        ____cond17 = ____cond17 or ____switch17 == "USERNAME"
-        if ____cond17 then
+        ____cond18 = ____cond18 or ____switch18 == "USERNAME"
+        if ____cond18 then
             return os.getenv("USER")
         end
-        ____cond17 = ____cond17 or ____switch17 == "PCNAME"
-        if ____cond17 then
+        ____cond18 = ____cond18 or ____switch18 == "PCNAME"
+        if ____cond18 then
             return __TS__StringSplit(
                 vim.fn.system("uname -a"),
                 " "
             )[2]
         end
-        ____cond17 = ____cond17 or ____switch17 == "OS"
-        if ____cond17 then
+        ____cond18 = ____cond18 or ____switch18 == "OS"
+        if ____cond18 then
             return __TS__StringSplit(
                 vim.fn.system("uname"),
                 "\n"
@@ -437,8 +443,8 @@ local function build_runner(build_name)
         end
     end
     local command = (((justloc .. " -d . ") .. build_name) .. " ") .. table.concat(args, " ")
-    local success = "aplay ~/.config/nvim/res/build_success.wav -q"
-    local ____error = "aplay ~/.config/nvim/res/build_error.wav -q"
+    local success = ("aplay " .. getConfigDir()) .. "/res/build_success.wav -q"
+    local ____error = ("aplay " .. getConfigDir()) .. "/res/build_error.wav -q"
     local lcom = (((((":AsyncRun ( " .. command) .. " ) && ( ") .. success) .. " ) || ( ") .. ____error) .. " )"
     vim.cmd(lcom)
 end
