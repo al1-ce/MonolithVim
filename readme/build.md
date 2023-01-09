@@ -57,7 +57,7 @@ Any_Log RELDIR FILENOEXT DATE TIME CWD Message:
 ```
 
 #### Language default task
-Default task for language should be defined as follows: `Lang_Default`, case doesn't matter, but it's more visually pleasing when first two words (separated by underscore) are capitalised (Telescope is going to render `Lang_Build_package_width_config` as `Lang: Build package with config` and single word `Taskname` will be rendered as is). It can be called with `\bb`.
+Default task for language should be defined as follows: `Lang_Default` or `Lang_Default_Run`, case doesn't matter, but it's more visually pleasing when first two words (separated by underscore) are capitalised (Telescope is going to render `Lang_Build_package_width_config` as `Lang: Build package with config` and single word `Taskname` will be rendered as is). It can be called with `\bb`.
 ```conf
 set positional-arguments
 # Default task for files that doesn't have a default task
@@ -73,7 +73,10 @@ Lua_Default FILEPATH:
     lua $1
 
 # Default D task
-D_Default FILEPATH:
+D_Default:
+    dub build
+
+D_Default_Run FILEPATH:
     rdmd $1
 
 # NOT default python task

@@ -583,6 +583,29 @@ function ____exports.run_default_task()
     popup(("Could not find default task for '" .. current_language) .. "'. \nPlease select task from list.", "warn", "Build")
     ____exports.run_build_select()
 end
+function ____exports.run_default_run_task()
+    local current_language = vim.bo.filetype
+    local cmp1 = string.lower(current_language)
+    local tasks = get_build_names()
+    do
+        local i = 0
+        while i < #tasks do
+            local opts = __TS__StringSplit(tasks[i + 1][2], "_")
+            if #opts == 3 then
+                if string.lower(opts[1]) == string.lower(cmp1) and string.lower(opts[2]) == "default" and string.lower(opts[3]) == "run" then
+                    build_runner(tasks[i + 1][2])
+                    return
+                elseif string.lower(opts[1]) == "any" and string.lower(opts[2]) == "default" and string.lower(opts[3]) == "run" then
+                    build_runner(tasks[i + 1][2])
+                    return
+                end
+            end
+            i = i + 1
+        end
+    end
+    popup(("Could not find default run task for '" .. current_language) .. "'. \nPlease select task from list.", "warn", "Build")
+    ____exports.run_build_select()
+end
 return ____exports
  end,
 }

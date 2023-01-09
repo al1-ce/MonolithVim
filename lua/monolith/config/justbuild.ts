@@ -340,6 +340,35 @@ export function run_default_task(): void {
     run_build_select();
 }
 
+export function run_default_run_task(): void {
+    // popup("Running");
+    let current_language: string = vim.bo.filetype;
+    let cmp1: string = current_language.toLowerCase();
+    let tasks: string[][] = get_build_names();
+    for (let i = 0; i < tasks.length; ++i) {
+        let opts: string[] = tasks[i][1].split("_");
+        // popup(tasks[i][0]);
+        if (opts.length == 3) {
+            // popup(`${opts[0].toLowerCase()} == ${cmp1.toLowerCase()} : ${opts[1].toLowerCase()}`)
+            if (opts[0].toLowerCase() == cmp1.toLowerCase() &&
+                opts[1].toLowerCase() == "default" &&
+                opts[2].toLowerCase() == "run") {
+                // popup(`Executing default task for '${current_language}'.`, "info", "Build");
+                build_runner(tasks[i][1]);
+                return;
+            } else if (opts[0].toLowerCase() == "any" &&
+                opts[1].toLowerCase() == "default" &&
+                opts[2].toLowerCase() == "run") {
+                // popup(`Executing default task for '${current_language}'.`, "info", "Build");
+                build_runner(tasks[i][1]);
+                return;
+            } 
+        }
+    }
+    popup(`Could not find default run task for '${current_language}'. \nPlease select task from list.`, "warn", "Build");
+    run_build_select();
+}
+
 // run_build_select();
 // run_default_task();
 

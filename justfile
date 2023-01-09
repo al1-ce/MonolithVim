@@ -5,6 +5,9 @@ set positional-arguments
 D_Default:
     dub build
 
+D_Default_Run:
+    dub run
+
 D_Build BuildType:
     dub build -b $1
 
@@ -29,6 +32,6 @@ Python_Default:
 Python_Run FILEPATH:
     python $1
 
-# Typescript_To_Lua:
-#     tstl -p tsconfig.json
+Typescript_To_Lua:
+    tstl -p tsconfig.json
 

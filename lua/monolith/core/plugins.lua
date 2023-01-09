@@ -242,6 +242,8 @@ require('packer').startup({ function(use)
         run = function() vim.fn["mkdp#util#install"]() end,
     })
 
+    use 'lambdalisue/suda.vim'
+
     if packer_bootstrap then
         require("packer").sync()
     end

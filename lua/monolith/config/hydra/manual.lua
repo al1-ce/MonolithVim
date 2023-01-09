@@ -18,6 +18,9 @@ local hintHelp = [[
 │ _p_: All pickers          │
 │ _u_: Url in current file  │
 │ _l_: Licenses             │
+├────────── Sudo ─────────┤
+│ _w_: Write with sudo      │
+│ _r_: Reopen with sudo     │
 ├─────────────────────────┤
 │ _q_: Quit                 │
 └─────────────────────────┘
@@ -42,6 +45,9 @@ function M.hydra() return Hydra({
             { 'u', cmd 'UrlView' },
             
             { 'l', cmd 'Telescope software-licenses find' },
+            
+            { 'w', cmd 'SudaWrite' },
+            { 'r', cmd 'SudaRead' },
             
             { 'q', nil, { exit = true, nowait = true } },
             { '<Esc>', nil, { exit = true, nowait = true, desc = false } },

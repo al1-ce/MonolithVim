@@ -7,9 +7,10 @@ local M = {}
 local hintBuild = [[
 ┌──────── Build ────────┐
 │ _b_: Default build task │
+│ _r_: Default run task   │
 │ _B_: File build tasks   │
-│ _T_: All build tasks    │
-│ _S_: Stop build process │
+│ _T_: All tasks          │
+│ _S_: Stop task process  │
 ├──────── Debug ────────┤
 │ _d_: Open debugger      │
 │ _t_: Toggle breakpoint  │
@@ -26,6 +27,7 @@ function M.hydra() return Hydra({
         mode = '',
         heads = {
             { 'b', builder.run_default_task },
+            { 'r', builder.run_default_run_task },
             { 'B', builder.run_build_select_lang },
             { 'T', builder.run_build_select },
             { 'S', cmd 'AsyncStop!' },
@@ -33,7 +35,6 @@ function M.hydra() return Hydra({
             ---@diagnostic disable-next-line: missing-parameter
             { 'd', function() require("dapui").toggle() end },
             { 't', cmd 'DapToggleBreakpoint' },
-
 
             { 'q', nil, { exit = true, nowait = true } },
             { '<Esc>', nil, { exit = true, nowait = true, desc = false } },
