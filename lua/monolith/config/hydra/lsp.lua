@@ -6,15 +6,22 @@ local M = {}
 
 local hintLsp = [[
 ┌──────── Lsp ────────┐
-│ _D_: Definition       │
-│ _i_: Implementations  │
-│ _r_: References       │
-│ _s_: Symbols          │
-│ _d_: Diagnostic       │
-│ _R_: Rename symbol    │
-│ _f_: Format           │
 │ _a_: Code actions     │
+│ _d_: Diagnostic       │
+│ _f_: Finder           │
+├────── Symbols ──────┤
+│ _p_: Peek definition  │
+│ _r_: Rename symbol    │
+│ _s_: Symbol list      │
+├─────── Go to ───────┤
+│ _D_: Definition       │
+│ _R_: References       │
+│ _I_: Implementations  │
+├─────── Files ───────┤
+│ _F_: Format           │
 │ _x_: Scratchpad       │
+├────── Servers ──────┤
+│ _i_: Info             │
 │ _T_: Stop in current  │
 ├─────────────────────┤
 │ _q_: Quit             │
@@ -34,17 +41,24 @@ function M.hydra() return Hydra({
         config = colors.passAllow(),
         mode = '',
         heads = {
-            { 'D', cmd 'Telescope lsp_definitions' },
-            { 'i', cmd 'Telescope lsp_implementations' },
-            { 'r', cmd 'Telescope lsp_references' },
-            { 's', cmd 'Telescope lsp_document_symbols' },
-            { 'd', cmd 'Lspsaga show_line_diagnostics' },
-            { 'R', cmd 'Lspsaga rename' },
-            { 'f', vim.lsp.buf.format },
             { 'a', cmd 'Lspsaga code_action' },
+            { 'd', cmd 'Lspsaga show_line_diagnostics' },
+            { 'f', cmd 'Lspsaga lsp_finder' },
+
+            { 'p', cmd 'Lspsaga peek_definition' },
+            { 'r', cmd 'Lspsaga rename' },
+            { 's', cmd 'Telescope lsp_document_symbols' },
+
+            { 'D', cmd 'Telescope lsp_definitions' },
+            { 'R', cmd 'Telescope lsp_references' },
+            { 'I', cmd 'Telescope lsp_implementations' },
+
+            { 'F', vim.lsp.buf.format },
             { 'x', cmd 'Codi javascript' },
+
+            { 'i', cmd 'LspInfo'},
             { 'T', stopLspInBuffer },
-            
+
             { 'q', nil, { exit = true, nowait = true } },
             { '<Esc>', nil, { exit = true, nowait = true, desc = false } },
         }

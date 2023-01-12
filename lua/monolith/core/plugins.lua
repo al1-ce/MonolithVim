@@ -58,12 +58,14 @@ require('packer').startup({ function(use)
     use 'folke/tokyonight.nvim'
     use 'elvessousa/sobrio'
     use 'yonlu/omni.vim'
+    
+    -- --------------------------------- Syntax --------------------------------- --
+    use 'fladson/vim-kitty'
 
     -- ------------------------------ File managers ----------------------------- --
     use 'nvim-telescope/telescope.nvim'
     -- extensions:
     use 'nvim-telescope/telescope-file-browser.nvim'
-    use 'fannheyward/telescope-coc.nvim'
     use 'nvim-telescope/telescope-vimspector.nvim'
     use 'chip/telescope-software-licenses.nvim'
     use 'crispgm/telescope-heading.nvim'
@@ -223,6 +225,9 @@ require('packer').startup({ function(use)
 
     -- Session manager
     use 'natecraddock/sessions.nvim'
+    -- Better session manager
+    use 'EricDriussi/remember-me.nvim'
+
     -- jj to exit
     use 'jdhao/better-escape.vim'
     -- remember last edited line

@@ -97,6 +97,29 @@ keymap.set('', '<S-ScrollWheelDown>', '3zl', opts)
 keymap.set('i', '<S-ScrollWheelUp>', '<C-o>3zh', opts)
 keymap.set('i', '<S-ScrollWheelDown>', '<C-o>3zl', opts)
 
+function lineHome()
+    local x = vim.fn.col('.')
+    vim.fn.execute('normal ^')
+    if x == vim.fn.col('.') then
+        vim.fn.execute('normal 0')
+    end
+end
+
+function lineEnd()
+    local x = vim.fn.col('.')
+    vim.fn.execute('normal g_')
+    if x == vim.fn.col('.') then
+        vim.fn.execute('normal $')
+    end
+end
+
+keymap.set('n', "<Home>", lineHome, opts)
+keymap.set('i', "<Home>", lineHome, opts)
+keymap.set('v', "<Home>", lineHome, opts)
+keymap.set('n', "<End>", lineEnd, opts)
+keymap.set('i', "<End>", lineEnd, opts)
+keymap.set('v', "<End>", lineEnd, opts)
+
 -- -------------------------------------------------------------------------- --
 --                                 Normal Mode                                --
 -- -------------------------------------------------------------------------- --
@@ -247,4 +270,19 @@ end
 
 keymap.set('v', 'ga', '<Plug>(EasyAlign)')
 keymap.set('n', 'ga', '<Plug>(EasyAlign)')
+
+-- ----------------------------------- Helpers ------------------------------ --
+
+local function setKeymapFiletype(ft, name, mode, map, action)
+    vim.api.nvim_create_autocmd('FileType', {
+        pattern = ft,
+        group = vim.api.nvim_create_augroup(name, {clear = true}),
+        callback = function()
+            keymap.set(mode, map, action, {silent = true, buffer = true})
+        end
+    })
+end
+
+setKeymapFiletype('NvimTree', 'NvimTree_Help', 'n', '?', '<cmd>h nvim-tree-default-mappings<cr>')
+
 

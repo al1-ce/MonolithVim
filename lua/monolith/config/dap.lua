@@ -30,6 +30,7 @@ dap.configurations.cpp = { {
     cwd = '${workspaceFolder}',
     stopOnEntry = false,
     args = {},
+    console = "integratedTerminal",
 },
 }
 dap.configurations.d = { {
@@ -42,6 +43,7 @@ dap.configurations.d = { {
     cwd = '${workspaceFolder}',
     stopOnEntry = false,
     args = {},
+    console = "integratedTerminal",
 },
 }
 
