@@ -232,7 +232,7 @@ function build_runner(build_name: string): void {
     // popup(command);
     let success: string = `aplay ${getConfigDir()}/res/build_success.wav -q`; 
     let error: string = `aplay ${getConfigDir()}/res/build_error.wav -q`; 
-    let lcom: string = `:AsyncRun ( ${command} ) && ( ${success} ) || ( ${error} )`;
+    let lcom: string = `:AsyncRun /bin/bash -c '( ${command} ) && ( ${success} ) || ( ${error} )'`;
     // vim.cmd(":copen");
     // popup(lcom);
     // print(vim.inspect(lcom));

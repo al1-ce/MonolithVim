@@ -445,7 +445,7 @@ local function build_runner(build_name)
     local command = (((justloc .. " -d . ") .. build_name) .. " ") .. table.concat(args, " ")
     local success = ("aplay " .. getConfigDir()) .. "/res/build_success.wav -q"
     local ____error = ("aplay " .. getConfigDir()) .. "/res/build_error.wav -q"
-    local lcom = (((((":AsyncRun ( " .. command) .. " ) && ( ") .. success) .. " ) || ( ") .. ____error) .. " )"
+    local lcom = (((((":AsyncRun /bin/bash -c '( " .. command) .. " ) && ( ") .. success) .. " ) || ( ") .. ____error) .. " )'"
     vim.cmd(lcom)
 end
 function ____exports.build_select(opts)
