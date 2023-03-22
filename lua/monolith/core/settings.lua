@@ -13,6 +13,8 @@ g.mapleader = ","                   -- sets , as leader key
 o.clipboard = "unnamedplus"         -- set clipboard to be system
 opt.cmdheight = 1                   -- cmd height
 
+o.virtualedit = "onemore"
+
 cmd [[language en_US.UTF-8]]
 
 -- opt.colorcolumn = '120'             -- 80 symbol split

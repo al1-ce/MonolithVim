@@ -61,6 +61,7 @@ require('packer').startup({ function(use)
     
     -- --------------------------------- Syntax --------------------------------- --
     use 'fladson/vim-kitty'
+    use 'tikhomirov/vim-glsl'
 
     -- ------------------------------ File managers ----------------------------- --
     use 'nvim-telescope/telescope.nvim'
@@ -191,17 +192,15 @@ require('packer').startup({ function(use)
     -- Color picker
     use 'ziontee113/color-picker.nvim'
 
-    -- cool smart surrounding, think about it
+    -- cool smart surrounding
     use 'tpope/vim-surround'
     -- visit links
     use 'xiyaowong/link-visitor.nvim'
-    -- use tasks
-    use { 'pianocomposer321/yabs.nvim', branch = 'rewrite' }
 
     -- Draw boxes
     use 'jbyuki/venn.nvim'
 
-    -- Create plugins
+    -- Emacs menus
     use 'anuvyklack/hydra.nvim'
 
     -- TodoTree
@@ -228,8 +227,6 @@ require('packer').startup({ function(use)
     -- Better session manager
     use 'EricDriussi/remember-me.nvim'
 
-    -- jj to exit
-    use 'jdhao/better-escape.vim'
     -- remember last edited line
     use 'ethanholz/nvim-lastplace'
 
@@ -247,6 +244,7 @@ require('packer').startup({ function(use)
         run = function() vim.fn["mkdp#util#install"]() end,
     })
 
+    -- Sudo edit/save
     use 'lambdalisue/suda.vim'
 
     if packer_bootstrap then

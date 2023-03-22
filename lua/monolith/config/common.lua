@@ -14,9 +14,6 @@ g.EasyMotion_use_smartsign_us = 1
 g.undotree_SplitWidth = 10
 g.undotree_WindowLayout = 3
 
-g.better_escape_shortcut = 'jj'
-g.better_escape_interval = 200
-
 require("colorizer").setup({
     filetypes = { "*" },
     user_default_options = { names = false, },
@@ -37,7 +34,7 @@ require("toggleterm").setup({
 
 require("winshift").setup({
     keymaps = {
-        disable_defaults = false, 
+        disable_defaults = false,
     }
 })
 

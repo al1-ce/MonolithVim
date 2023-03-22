@@ -81,6 +81,7 @@ let just = `just -f ${getConfigDir()}/justfile`;
 
 function get_build_names(lang: string = ""): string[][] {
     let outlist: string = vim.fn.system(`${just} --list`);
+    // notify(outlist);
     let arr: string[] = outlist.split('\n');
     // table.remove(tbl, 1);
     arr.shift();

@@ -97,6 +97,8 @@ keymap.set('', '<S-ScrollWheelDown>', '3zl', opts)
 keymap.set('i', '<S-ScrollWheelUp>', '<C-o>3zh', opts)
 keymap.set('i', '<S-ScrollWheelDown>', '<C-o>3zl', opts)
 
+keymap.set('i', '<Esc>', '<Esc>l', opts);
+
 function lineHome()
     local x = vim.fn.col('.')
     vim.fn.execute('normal ^')
@@ -108,8 +110,10 @@ end
 function lineEnd()
     local x = vim.fn.col('.')
     vim.fn.execute('normal g_')
+    -- vim.fn.execute('normal! \\<Right>')
+    vim.fn.execute("normal l")
     if x == vim.fn.col('.') then
-        vim.fn.execute('normal $')
+        vim.fn.execute('normal g$')
     end
 end
 

@@ -34,6 +34,10 @@ augroup END
 " autocmd BufNewFile,BufRead * if getline(1) =~# '#!/usr/bin/env\ dub' | setf perl | endif
 ]])
 
+cmd([[
+autocmd! BufNewFile,BufRead *.vs,*.fs set ft=glsl
+]])
+
 --[[
 DLang stuff
 " Duplicating for "|| a/b/..." output

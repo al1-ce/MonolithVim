@@ -144,4 +144,6 @@ List of keywords:
 - **PCNAME** - your PC name (`VimEnjoyer2006PC`)
 - **OS** - your OS (`Linux`)
 
+### Errors
+- If you are getting error that contains "__TS__StringSplit" and "find" when trying to use any of build tasks then there's probably an error with your default shell (i.e. fish printing welcome message in non-interactive (not in terminal) mode) which might result in vim.fn.shell outputing rubbish instead of contents of justfile.
 

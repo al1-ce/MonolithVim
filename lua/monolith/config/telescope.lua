@@ -106,7 +106,7 @@ require('telescope').setup({
 
 require("project_nvim").setup({
     show_hidden = true,
-    silent_chdir = false,
+    silent_chdir = true,
     patterns = { "dub.json", "dub.sdl", ".git", "src", "source" }
 })
 

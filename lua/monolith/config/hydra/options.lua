@@ -33,7 +33,7 @@ function M.hydra() return Hydra({
             end },
             { 'v', function()
                 if vim.o.virtualedit == 'all' then
-                    vim.o.virtualedit = 'block'
+                    vim.o.virtualedit = 'onemore'
                 else
                     vim.o.virtualedit = 'all'
                 end
