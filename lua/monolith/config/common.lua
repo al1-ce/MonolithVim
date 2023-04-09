@@ -67,8 +67,16 @@ require('notify').setup({
 
 require('nvim-toggler').setup({
     inverses = {
-        ['1'] = '0'
-    }
+        ['TRUE'] = 'FALSE',
+        ['True'] = 'False',
+        ['1'] = '0',
+        ['public'] = 'private',
+        ['[ ]'] = '[x]',
+        ['++'] = '--',
+        ['""'] = "''",
+        ['struct'] = 'class',
+    },
+    remove_default_keybinds = true,
 })
 
 require("sessions").setup({

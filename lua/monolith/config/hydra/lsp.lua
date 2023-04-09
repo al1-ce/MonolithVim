@@ -7,14 +7,14 @@ local M = {}
 local hintLsp = [[
 ┌──────── Lsp ────────┐
 │ _a_: Code actions     │
-│ _d_: Diagnostic       │
+│ _D_: Diagnostic       │
 │ _f_: Finder           │
 ├────── Symbols ──────┤
 │ _p_: Peek definition  │
 │ _r_: Rename symbol    │
 │ _s_: Symbol list      │
 ├─────── Go to ───────┤
-│ _D_: Definition       │
+│ _d_: Definition       │
 │ _R_: References       │
 │ _I_: Implementations  │
 ├─────── Files ───────┤
@@ -42,14 +42,14 @@ function M.hydra() return Hydra({
         mode = '',
         heads = {
             { 'a', cmd 'Lspsaga code_action' },
-            { 'd', cmd 'Lspsaga show_line_diagnostics' },
+            { 'D', cmd 'Lspsaga show_line_diagnostics' },
             { 'f', cmd 'Lspsaga lsp_finder' },
 
             { 'p', cmd 'Lspsaga peek_definition' },
             { 'r', cmd 'Lspsaga rename' },
             { 's', cmd 'Telescope lsp_document_symbols' },
 
-            { 'D', cmd 'Telescope lsp_definitions' },
+            { 'd', cmd 'Telescope lsp_definitions' },
             { 'R', cmd 'Telescope lsp_references' },
             { 'I', cmd 'Telescope lsp_implementations' },
 

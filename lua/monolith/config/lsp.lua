@@ -1,6 +1,6 @@
 require("mason").setup()
 require("mason-lspconfig").setup({
-    'sumneko_lua',
+    'lua_ls',
     'jsonls',
     'serve_d',
     'codelldb'
@@ -171,7 +171,7 @@ vim.diagnostic.config({
     update_in_insert = true,
 })
 
-require('lspsaga').init_lsp_saga({
+require('lspsaga').setup({
     border_style = 'single',
     code_action_icon = '',
     saga_winblend = 0

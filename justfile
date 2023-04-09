@@ -17,6 +17,12 @@ D_Build_package Package:
 D_Build_config Config:
     dub build -c $1
 
+D_Build_single FILEPATH:
+    dub build --single $1
+
+D_Build_single_release FILEPATH:
+    dub build --single -b release $1
+
 D_Run FILEPATH:
     $1
 

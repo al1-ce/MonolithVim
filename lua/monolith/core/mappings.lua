@@ -243,6 +243,9 @@ keymap.set("i", "<Del>", '<C-o>"_x', opts)
 keymap.set("n", "S", "<Plug>(easymotion-overwin-f)", opts)
 keymap.set("n", "s", "<Plug>(easymotion-overwin-f2)", opts)
 
+-- -------------------------------- other ----------------------------------- --
+keymap.set("n", "<C-`>", require('nvim-toggler').toggle)
+
 -- -------------------------------- comments -------------------------------- --
 local commentApi = require("Comment.api")
 local commentEsc = vim.api.nvim_replace_termcodes(

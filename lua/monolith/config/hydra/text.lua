@@ -6,12 +6,12 @@ local M = {}
 
 local hintText = [[
 ┌─────────── Text ──────────┐
-│ _B_: Toggle bool            │
+│ _b_: Toggle bool            │
 ├───────── Surround ────────┤
 │ _s_: Surround word          │
 │ _S_: Surround line          │
-│ _r_: Remove surround        │
-│ _R_: Replace surround       │
+│ _r_: Replace surround       │
+│ _R_: Remove surround        │
 │ _'_: Surround around        │
 │ _"_: Surround in            │
 ├────────── Aligns ─────────┤
@@ -21,7 +21,7 @@ local hintText = [[
 │ _/_: Toggle comment lines   │
 │ _?_: Toggle comment block   │
 │ _l_: Add comment line       │
-│ _b_: Add comment box        │
+│ _B_: Add comment box        │
 ├───────── Terminal ────────┤
 │ _t_: Toggle terminal        │
 │ _f_: Float terminal         │
@@ -72,22 +72,22 @@ function M.hydra() return Hydra({
         -- { '=', '<C-w>=' },
         -- { 's', cmd 'split' },
         -- { '/', commentApi.toggle.linewise.current },
-        { 'B', require('nvim-toggler').toggle },
+        { 'b', require('nvim-toggler').toggle },
 
         { 'a', '<Plug>(EasyAlign)ip=' },
         { 'A', '<Plug>(EasyAlign)ip*=' },
 
         { 's', '<Plug>Ysurroundiw' },
         { 'S', '<Plug>Yssurround' },
-        { 'r', '<Plug>Dsurround' },
-        { 'R', '<Plug>Csurround' },
+        { 'r', '<Plug>Csurround' },
+        { 'R', '<Plug>Dsurround' },
         { "'", '<Plug>Ysurround2i' },
         { '"', '<Plug>Ysurroundi' },
 
         { '/', commentLines },
         { '?', commentBlocks },
         { 'l', require('nvim-comment-frame').add_comment },
-        { 'b', require('nvim-comment-frame').add_multiline_comment },
+        { 'B', require('nvim-comment-frame').add_multiline_comment },
 
         { 't', cmd 'ToggleTerm direction="horizontal"' },
         { 'f', cmd 'ToggleTerm direction="float"' },

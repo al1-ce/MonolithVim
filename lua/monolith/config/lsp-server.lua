@@ -1,6 +1,6 @@
 local lspconf = require('lspconfig')
 
-lspconf.sumneko_lua.setup({})
+lspconf.lua_ls.setup({})
 
 local masonconf = require('mason-lspconfig')
 
