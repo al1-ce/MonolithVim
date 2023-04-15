@@ -9,6 +9,7 @@ local hintLsp = [[
 │ _a_: Code actions     │
 │ _D_: Diagnostic       │
 │ _f_: Finder           │
+│ _h_: Hover doc        │
 ├────── Symbols ──────┤
 │ _p_: Peek definition  │
 │ _r_: Rename symbol    │
@@ -44,6 +45,7 @@ function M.hydra() return Hydra({
             { 'a', cmd 'Lspsaga code_action' },
             { 'D', cmd 'Lspsaga show_line_diagnostics' },
             { 'f', cmd 'Lspsaga lsp_finder' },
+            { 'h', cmd 'Lspsaga hover_doc' },
 
             { 'p', cmd 'Lspsaga peek_definition' },
             { 'r', cmd 'Lspsaga rename' },
