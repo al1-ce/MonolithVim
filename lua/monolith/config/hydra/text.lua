@@ -24,12 +24,15 @@ local hintText = [[
 │ _B_: Add comment box        │
 ├───────── Terminal ────────┤
 │ _t_: Toggle terminal        │
-│ _f_: Float terminal         │
+│ _f_: Float terminal (saga)  │
+│ _F_: Float terminal (tgtm)  │
 ├─────────── Tabs ──────────┤
 │ _n_: New tab                │
 │ _w_: Close tab              │
 │ _o_: Close other tabs       │
-├─────────── Plugin ────────┤
+├───────── Telescope ───────┤
+│ _m_: Marks                  │
+├────────── Plugin ─────────┤
 │ _d_: Draw                   │
 │ _p_: Pick color             │
 │ _u_: Symbols                │
@@ -90,11 +93,14 @@ function M.hydra() return Hydra({
         { 'B', require('nvim-comment-frame').add_multiline_comment },
 
         { 't', cmd 'ToggleTerm direction="horizontal"' },
-        { 'f', cmd 'ToggleTerm direction="float"' },
+        { 'f', cmd 'Lspsaga term_toggle' },
+        { 'F', cmd 'ToggleTerm direction="float"' },
 
         { 'n', cmd '$tabnew' },
         { 'w', cmd 'tabclose' },
         { 'o', cmd 'tabonly' },
+
+        { 'm', cmd 'Telescope marks' },
 
         { 'd', callback.hydraCallback('draw'); },
         { 'p', cmd 'PickColor' },

@@ -61,21 +61,27 @@ end,
 o.mouse = "nvi"             -- normal, visual, insert
 o.mousemodel = "extend"     -- sets right mouse click to extend selection
 
-opt.guifont = { "Cascadia Mono PL,Nerd", ":h11" }
+o.guifont = "Cascadia Mono PL:h11"
 
 -- ----------------------------- neovide configs ---------------------------- --
-g.neovide_transparency = 0.9
-g.neovide_scale_factor = 1
-g.neovide_cursor_animation_length = 0
-g.neovide_hide_mouse_when_typing = false
-g.neovide_scroll_animation_length = 0.3
-g.neovide_remember_window_size = false
-g.neovide_remember_window_position = true
-
-g.neovide_confirm_quit = true
-
--- g.neovide_padding_top=35
--- g.neovide_padding_left=28
--- g.neovide_padding_right=28
--- g.neovide_padding_bottom=10
-
+-- if vim.g.neovide then
+--     local alpha = function()
+--       return string.format("%x", math.floor((255 * vim.g.transparency) or 0.8))
+--     end
+--     g.neovide_transparency = 0.0
+--     g.transparency = 0.8
+--     g.neovide_background_color = "#262626" .. alpha()
+--     g.neovide_scale_factor = 1
+--     g.neovide_cursor_animation_length = 0
+--     g.neovide_hide_mouse_when_typing = false
+--     g.neovide_scroll_animation_length = 0.3
+--     g.neovide_remember_window_size = false
+--     g.neovide_remember_window_position = false
+--     g.neovide_fullscreen = false
+--     g.neovide_confirm_quit = true
+--
+--     -- g.neovide_padding_top=35
+--     -- g.neovide_padding_left=28
+--     -- g.neovide_padding_right=28
+--     -- g.neovide_padding_bottom=10
+-- end

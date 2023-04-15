@@ -174,7 +174,10 @@ vim.diagnostic.config({
 require('lspsaga').setup({
     border_style = 'single',
     code_action_icon = '',
-    saga_winblend = 0
+    saga_winblend = 0,
+    symbol_in_winbar = {
+        enable = false
+    }
 })
 
 vim.api.nvim_create_autocmd("CursorHold", {

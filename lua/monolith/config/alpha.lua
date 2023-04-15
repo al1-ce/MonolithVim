@@ -52,8 +52,9 @@ local date = os.date(" %A, %b %d")
 
 local heading = {
 	type = "text",
-	val = "ＴＯＨＡ ＨＥＡＶＹ ＩＮＤＵＳＴＲＩＥＳ     ⛬",
+	val = " ＴＯＨＡ ＨＥＡＶＹ ＩＮＤＵＳＴＲＩＥＳ     ∴ ",
 	-- val = "𝗧𝗢𝗛𝗔 𝗛𝗘𝗔𝗩𝗬 𝗜𝗡𝗗𝗨𝗦𝗧𝗥𝗜𝗘𝗦     ⛬",
+    -- also ⛬
 	opts = {
 		position = "center",
 		hl = "Conditional",

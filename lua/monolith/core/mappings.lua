@@ -31,6 +31,7 @@ local keymap = vim.keymap
 -- quick navigation
 keymap.set('n', '<Space>', '<C-d>', opts)
 keymap.set('n', '<C-Space>', '<C-u>', opts)
+keymap.set('n', '<S-Space>', '<C-u>', opts)
 
 keymap.set("", "q", "<nop>", opts)
 keymap.set("", "<C-z>", "<nop>", opts)
@@ -245,6 +246,7 @@ keymap.set("n", "s", "<Plug>(easymotion-overwin-f2)", opts)
 
 -- -------------------------------- other ----------------------------------- --
 keymap.set("n", "<C-`>", require('nvim-toggler').toggle)
+keymap.set("n", "<C-Grave>", require('nvim-toggler').toggle)
 
 -- -------------------------------- comments -------------------------------- --
 local commentApi = require("Comment.api")
