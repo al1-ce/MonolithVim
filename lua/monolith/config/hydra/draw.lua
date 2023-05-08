@@ -23,11 +23,11 @@ local configDraw = deepcopy(colors.persistAllow())
 configDraw["on_enter"] = function() vim.o.virtualedit = 'all' end
 
 local hintDraw = [[
-┌── Draw(S) ──┬─ Select region with <C-v> ─┐
-│      _↑_      │ _f_: Surround it with box    │
-│   _←_  S  _→_   │                            │
-│      _↓_      │ _q_: Quit                    │
-└─────────────┴────────────────────────────┘
+┌   Draw(S)   ┬  Select region with <C-v>  ┐
+       _↑_        _f_: Surround it with box     
+    _←_  S  _→_                                 
+       _↓_        _q_: Quit                     
+└             ┴                            ┘
 ]]
 
 function M.hydra() return Hydra({

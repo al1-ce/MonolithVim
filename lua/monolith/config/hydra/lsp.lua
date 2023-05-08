@@ -5,28 +5,28 @@ local cmd = require('hydra.keymap-util').cmd
 local M = {}
 
 local hintLsp = [[
-┌──────── Lsp ────────┐
-│ _a_: Code actions     │
-│ _D_: Diagnostic       │
-│ _f_: Finder           │
-│ _h_: Hover doc        │
-├────── Symbols ──────┤
-│ _p_: Peek definition  │
-│ _r_: Rename symbol    │
-│ _s_: Symbol list      │
-├─────── Go to ───────┤
-│ _d_: Definition       │
-│ _R_: References       │
-│ _I_: Implementations  │
-├─────── Files ───────┤
-│ _F_: Format           │
-│ _x_: Scratchpad       │
-├────── Servers ──────┤
-│ _i_: Info             │
-│ _T_: Stop in current  │
-├─────────────────────┤
-│ _q_: Quit             │
-└─────────────────────┘
+┌         Lsp         ┐
+  _a_: Code actions      
+  _D_: Diagnostic        
+  _f_: Finder            
+  _h_: Hover doc         
+        Symbols        
+  _p_: Peek definition   
+  _r_: Rename symbol     
+  _s_: Symbol list       
+         Go to         
+  _d_: Definition        
+  _R_: References        
+  _I_: Implementations   
+         Files         
+  _F_: Format            
+  _x_: Scratchpad        
+        Servers        
+  _i_: Info              
+  _T_: Stop in current   
+                       
+  _q_: Quit              
+└                     ┘
 ]] -- TODO: formatting
 
 function stopLspInBuffer()

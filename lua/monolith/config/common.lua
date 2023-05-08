@@ -75,6 +75,8 @@ require('nvim-toggler').setup({
         ['++'] = '--',
         ['""'] = "''",
         ['struct'] = 'class',
+        ['always'] = 'never',
+        ['float'] = 'double'
     },
     remove_default_keybinds = true,
 })

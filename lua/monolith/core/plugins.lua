@@ -72,6 +72,7 @@ require('packer').startup({ function(use)
     use 'crispgm/telescope-heading.nvim'
     use 'nvim-telescope/telescope-packer.nvim'
     use 'nvim-telescope/telescope-symbols.nvim'
+    use 'dharmx/telescope-media.nvim'
     use 'zane-/howdoi.nvim'
     use 'axieax/urlview.nvim'
     -- creates telescope pickers

@@ -5,40 +5,40 @@ local cmd = require('hydra.keymap-util').cmd
 local M = {}
 
 local hintText = [[
-┌─────────── Text ──────────┐
-│ _b_: Toggle bool            │
-├───────── Surround ────────┤
-│ _s_: Surround word          │
-│ _S_: Surround line          │
-│ _r_: Replace surround       │
-│ _R_: Remove surround        │
-│ _'_: Surround around        │
-│ _"_: Surround in            │
-├────────── Aligns ─────────┤
-│ _a_: Align around first     │
-│ _A_: Align around all       │
-├───────── Comments ────────┤
-│ _/_: Toggle comment lines   │
-│ _?_: Toggle comment block   │
-│ _l_: Add comment line       │
-│ _B_: Add comment box        │
-├───────── Terminal ────────┤
-│ _t_: Toggle terminal        │
-│ _f_: Float terminal (saga)  │
-│ _F_: Float terminal (tgtm)  │
-├─────────── Tabs ──────────┤
-│ _n_: New tab                │
-│ _w_: Close tab              │
-│ _o_: Close other tabs       │
-├───────── Telescope ───────┤
-│ _m_: Marks                  │
-├────────── Plugin ─────────┤
-│ _d_: Draw                   │
-│ _p_: Pick color             │
-│ _u_: Symbols                │
-├───────────────────────────┤
-│ _q_: Quit                   │
-└───────────────────────────┘
+┌            Text           ┐
+  _b_: Toggle bool             
+           Surround          
+  _s_: Surround word           
+  _S_: Surround line           
+  _r_: Replace surround        
+  _R_: Remove surround         
+  _'_: Surround around         
+  _"_: Surround in             
+            Aligns           
+  _a_: Align around first      
+  _A_: Align around all        
+           Comments          
+  _/_: Toggle comment lines    
+  _?_: Toggle comment block    
+  _l_: Add comment line        
+  _B_: Add comment box         
+           Terminal          
+  _t_: Toggle terminal         
+  _f_: Float terminal (saga)   
+  _F_: Float terminal (tgtm)   
+             Tabs            
+  _n_: New tab                 
+  _w_: Close tab               
+  _o_: Close other tabs        
+           Telescope         
+  _m_: Marks                   
+            Plugin           
+  _d_: Draw                    
+  _p_: Pick color              
+  _u_: Symbols                 
+                             
+  _q_: Quit                    
+└                           ┘
 ]]
 
 local callback = require('monolith.config.hydra.callback');

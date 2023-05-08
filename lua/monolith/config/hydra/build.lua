@@ -5,18 +5,18 @@ local builder = require('monolith.config.justbuild')
 local M = {}
 
 local hintBuild = [[
-┌──────── Build ────────┐
-│ _b_: Default build task │
-│ _r_: Default run task   │
-│ _B_: File build tasks   │
-│ _T_: All tasks          │
-│ _S_: Stop task process  │
-├──────── Debug ────────┤
-│ _d_: Open debugger      │
-│ _t_: Toggle breakpoint  │
-├───────────────────────┤
-│ _q_: Quit               │
-└───────────────────────┘
+┌         Build         ┐
+  _b_: Default build task  
+  _r_: Default run task    
+  _B_: File build tasks    
+  _T_: All tasks           
+  _S_: Stop task process   
+          Debug          
+  _d_: Open debugger       
+  _t_: Toggle breakpoint   
+                         
+  _q_: Quit                
+└                       ┘
 ]]
 
 

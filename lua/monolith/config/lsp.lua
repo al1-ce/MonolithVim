@@ -8,6 +8,17 @@ require("mason-lspconfig").setup({
 require("mason-null-ls").setup({})
 require('mason-nvim-dap').setup({ automatic_setup = true })
 
+local borders = {
+      {"┌", "FloatBorder"},
+      {" ", "FloatBorder"},
+      {"┐", "FloatBorder"},
+      {" ", "FloatBorder"},
+      {"┘", "FloatBorder"},
+      {" ", "FloatBorder"},
+      {"└", "FloatBorder"},
+      {" ", "FloatBorder"},
+}
+
 local has_words_before = function()
     unpack = unpack or table.unpack
     local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -47,7 +58,6 @@ cmp.setup({
                 fallback() -- The fallback function sends a already mapped key. In this case, it's probably `<Tab>`.
             end
         end, { "i", "s" }),
-
         ["<S-Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
                 cmp.select_prev_item()
@@ -71,10 +81,9 @@ cmp.setup({
     }),
     formatting = {
         format = lspkind.cmp_format({
-            mode = 'symbol_text', -- show only symbol annotations
-            maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+            mode = 'symbol_text',  -- show only symbol annotations
+            maxwidth = 50,         -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
             ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
-
             -- The function below will be called before any actual modifications from lspkind
             before = function(entry, vim_item)
                 return vim_item
@@ -96,7 +105,7 @@ cmp.setup({
 
 local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 cmp.event:on(
-    'confirm_done',
+    'confirm_done', 
     cmp_autopairs.on_confirm_done()
 )
 
@@ -108,10 +117,12 @@ require('nvim-autopairs').setup({
 require("lsp_signature").setup({
     bind = true, -- This is mandatory, otherwise border config won't get registered.
     handler_opts = {
-        border = "single"
+        border = borders
     },
     doc_lines = 0,
-    hint_enable = false
+    hint_enable = false,
+    timer_interval = 100,
+    floating_window = false,
 })
 
 -- https://github.com/j-hui/fidget.nvim/blob/main/doc/fidget.md
@@ -167,15 +178,25 @@ require('nvim-treesitter.configs').setup {
 vim.diagnostic.config({
     virtual_text = false,
     signs = true,
-    float = { border = "single" },
+    float = { border = borders },
     underline = true,
     update_in_insert = true,
 })
 
 require('lspsaga').setup({
-    border_style = 'single',
-    code_action_icon = '',
-    saga_winblend = 0,
+    ui = {
+        border = borders,
+        winblend = 0,
+        -- code_action = '',
+        code_action = '?',
+        actionfix = '!',
+        hover = '>',
+        -- icons in finder
+        kind = {}
+    },
+    hover = {
+        open_browser = '!qute'
+    },
     symbol_in_winbar = {
         enable = false
     }
@@ -187,7 +208,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
         local opts = {
             focusable = false,
             close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
-            border = 'single',
+            border = borders,
             source = 'always',
             prefix = ' ',
             scope = 'cursor',

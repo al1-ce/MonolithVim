@@ -6,20 +6,20 @@ local cmd = require('hydra.keymap-util').cmd
 local M = {}
 
 local hintPackages = [[
-┌────────── View ──────────┐
-│ _m_: Preview markdown glow │
-│ _M_: Preview markdown web  │
-│ _t_: View todo             │
-│ _h_: Headers               │
-│ _c_: Clipboard             │
-├────────── Link ──────────┤
-│ _V_: VimAwesome            │
-│ _N_: Neocraft              │
-│ _A_: Awesome Vim           │
-│ _L_: Vim plugin list       │
-├──────────────────────────┤
-│ _q_: Quit                  │
-└──────────────────────────┘
+┌           View           ┐
+  _m_: Preview markdown glow  
+  _M_: Preview markdown web   
+  _t_: View todo              
+  _h_: Headers                
+  _c_: Clipboard              
+            Link            
+  _V_: VimAwesome             
+  _N_: Neocraft               
+  _A_: Awesome Vim            
+  _L_: Vim plugin list        
+                            
+  _q_: Quit                   
+└                          ┘
 ]]
 
 function M.hydra() return Hydra({

@@ -5,27 +5,31 @@ local cmd = require('hydra.keymap-util').cmd
 local M = {}
 
 local hintFiles = [[
-┌───── Files ─────┐
-│ _f_: Find file    │
-│ _r_: Recent files │
-│ _p_: Projects     │
-│ _b_: Browser      │
-│ _s_: Swap alt     │
-│ _e_: Edit new     │
-├───── Regex ─────┤
-│ _F_: Find in file │
-│ _R_: Replace file │
-│ _g_: Live grep    │
-├───── Trees ─────┤
-│ _t_: File tree    │
-│ _T_: Tagbar       │
-│ _u_: Undo tree    │
-│ _S_: Sidebar      │
-│ _m_: Minimap      │
-├─────────────────┤
-│ _q_: Quit         │
-└─────────────────┘
+┌      Files      ┐
+  _f_: Find file     
+  _r_: Recent files  
+  _p_: Projects      
+  _b_: Browser       
+  _s_: Swap alt      
+  _e_: Edit new      
+       Regex       
+  _F_: Find in file  
+  _R_: Replace file  
+  _g_: Live grep     
+       Trees       
+  _t_: File tree     
+  _T_: Tagbar        
+  _u_: Undo tree     
+  _S_: Sidebar       
+  _m_: Minimap       
+                   
+  _q_: Quit          
+└                 ┘
 ]]
+
+-- local function mediaCall()
+--     require("telescope").extensions.media.media({cwd=vim.fn.getcwd()})
+-- end
 
 function M.hydra() return Hydra({
         name = 'Files',
@@ -34,6 +38,7 @@ function M.hydra() return Hydra({
         mode = '',
         heads = {
             { 'f', cmd 'Telescope find_files' },
+            -- { 'f', mediaCall },
             { 'r', cmd 'Telescope oldfiles' },
             { 'p', cmd 'Telescope projects' },
             { 'b', cmd 'Telescope file_browser' },

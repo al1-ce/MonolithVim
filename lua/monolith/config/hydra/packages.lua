@@ -26,17 +26,17 @@ local M = {}
 ]]
 
 local hintPackages = [[
-┌──────── Packages ────────┐
-│ _i_: Install               │
-│ _c_: Clean                 │
-│ _s_: Sync                  │
-│ _u_: Update                │
-│ _l_: List                  │
-├──────── Language ────────┤
-│ _m_: Mason lsp manager     │
-├──────────────────────────┤
-│ _q_: Quit                  │
-└──────────────────────────┘
+┌         Packages         ┐
+  _i_: Install                
+  _c_: Clean                  
+  _s_: Sync                   
+  _u_: Update                 
+  _l_: List                   
+          Language          
+  _m_: Mason lsp manager      
+                            
+  _q_: Quit                   
+└                          ┘
 ]]
 
 function M.hydra() return Hydra({

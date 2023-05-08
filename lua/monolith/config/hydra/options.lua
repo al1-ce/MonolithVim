@@ -5,17 +5,17 @@ local cmd = require('hydra.keymap-util').cmd
 local M = {}
 
 local hintOptions = [[
-┌───────── Options ──────────┐
-│ _v_ %{ve} Virtual edit         │
-│ _i_ %{list} Invisible characters │
-│ _s_ %{spell} Spell                │
-│ _w_ %{wrap} Wrap                 │
-│ _c_ %{cul} Cursor line          │
-│ _n_ %{nu} Line numbers         │
-│ _r_ %{rnu} Relative number      │
-├────────────────────────────┤
-│ _q_: Quit                    │
-└────────────────────────────┘
+┌          Options           ┐
+  _v_ %{ve} Virtual edit          
+  _i_ %{list} Invisible characters  
+  _s_ %{spell} Spell                 
+  _w_ %{wrap} Wrap                  
+  _c_ %{cul} Cursor line           
+  _n_ %{nu} Line numbers          
+  _r_ %{rnu} Relative number       
+                              
+  _q_: Quit                     
+└                            ┘
 ]]
 
 function M.hydra() return Hydra({

@@ -13,17 +13,17 @@ local fUpdateConf = function()
 end
 
 local hintConfig = [[
-┌─────── Config ───────┐
-│ _e_: Edit              │
-│ _r_: Reload            │
-├─────── Session ──────┤
-│ _s_: Save session      │
-│ _l_: Load session      │
-├───────── Dir ────────┤
-│ _d_: Change directory  │
-├──────────────────────┤
-│ _q_: Quit              │
-└──────────────────────┘
+┌        Config        ┐
+  _e_: Edit               
+  _r_: Reload             
+         Session        
+  _s_: Save session       
+  _l_: Load session       
+           Dir          
+  _d_: Change directory   
+                        
+  _q_: Quit               
+└                      ┘
 ]]
 
 function M.hydra() return Hydra({

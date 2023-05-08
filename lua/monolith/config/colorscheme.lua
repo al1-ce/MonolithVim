@@ -59,6 +59,31 @@ fun! s:DetectShebangPattern()
         set ft=d
         call s:AddCustomFunctionHighlight()
     endif
+    if getline(1) == '#!/bin/env node'
+        set ft=javascript
+        call s:AddCustomFunctionHighlight()
+    endif
+    if getline(1) == '#!/bin/rdmd'
+        set ft=d
+        call s:AddCustomFunctionHighlight()
+    endif
+    if getline(1) == '#!/bin/rund'
+        set ft=d
+        call s:AddCustomFunctionHighlight()
+    endif
+    if getline(1) == '#!/bin/env dub'
+        set ft=d
+        call s:AddCustomFunctionHighlight()
+    endif
+    if getline(1) == '#!/bin/env rdmd'
+        set ft=d
+        call s:AddCustomFunctionHighlight()
+    endif
+    if getline(1) == '#!/bin/env rund'
+        set ft=d
+        call s:AddCustomFunctionHighlight()
+    endif
+
 endfun
 
 autocmd BufNewFile,BufRead * call s:DetectShebangPattern()
@@ -68,6 +93,7 @@ vim.cmd([[
 if g:colors_name == 'gruvbox' 
     execute 'let style_normal="cterm=NONE gui=NONE ctermfg=15 ctermbg=0 guifg=' . g:terminal_color_{15} . ' guibg=' . g:terminal_color_{0} . '"'
     " execute 'let style_normal="cterm=NONE gui=NONE ctermfg=15 ctermbg=0 guifg=' . g:terminal_color_{15} . ' guibg=' . g:terminal_color_{0} . '"'
+    execute 'let style_text="cterm=NONE gui=NONE ctermfg=15 guifg=' . g:terminal_color_{15} . '"'
     execute 'let style_function="cterm=NONE gui=NONE ctermfg=12 guifg=' . g:terminal_color_{12} . '"'
     execute 'let style_keyword="cterm=NONE gui=NONE ctermfg=9 guifg=' . g:terminal_color_{9} . '"'
     execute 'let style_type="cterm=italic gui=italic ctermfg=9 guifg=' . g:terminal_color_{9} . '"'
@@ -157,6 +183,43 @@ if g:colors_name == 'gruvbox'
     execute 'hi def DapSignStopped ' . style_sign_error
     execute 'hi def DapSignBreakpointNumber ' . style_sign_breakpointfg
     execute 'hi def DapSignStoppedNumber ' . style_sign_errorfg
+
+    execute 'hi CmpItemAbbrDeprecated ' . style_comment
+    execute 'hi CmpItemKindSnippet ' . style_keyword 
+
+    execute 'hi CmpItemAbbrMatch ' . style_identifier
+    execute 'hi CmpItemAbbrMatchFuzzy ' . style_identifier
+
+    execute 'hi CmpItemKindText ' . style_text
+    execute 'hi CmpItemKindField ' . style_text
+    execute 'hi CmpItemKindVariable ' . style_text
+    execute 'hi CmpItemKindOperator ' . style_text
+    execute 'hi CmpItemKindTypeParameter ' . style_text
+
+    execute 'hi CmpItemKindValue ' . style_const
+    execute 'hi CmpItemKindEnumMember ' . style_const
+    execute 'hi CmpItemKindColor ' . style_const
+    execute 'hi CmpItemKindConstant ' . style_const
+    execute 'hi CmpItemKindEvent ' . style_const
+    
+    execute 'hi CmpItemKindFile ' . style_string
+    execute 'hi CmpItemKindReference ' . style_string
+    execute 'hi CmpItemKindFolder ' . style_string
+
+    execute 'hi CmpItemKindMethod ' . style_function
+    execute 'hi CmpItemKindFunction ' . style_function
+    execute 'hi CmpItemKindConstructor ' . style_function
+    execute 'hi CmpItemKindProperty ' . style_function
+
+    execute 'hi CmpItemKindKeyword ' . style_keyword 
+    execute 'hi CmpItemKindUnit ' . style_keyword
+    execute 'hi CmpItemKindEnum ' . style_keyword
+    
+    execute 'hi CmpItemKindClass ' . style_special
+    execute 'hi CmpItemKindStruct ' . style_special
+    execute 'hi CmpItemKindInterface ' . style_special
+    execute 'hi CmpItemKindModule ' . style_special
+
 
     sign define DiagnosticSignError text=E texthl=DiagnosticSignError linehl=DiagnosticSignError numhl=DiagnosticSignErrorNumber
     sign define DiagnosticSignWarn text=W texthl=DiagnosticSignWarn linehl=DiagnosticSignWarn numhl=DiagnosticSignWarnNumber

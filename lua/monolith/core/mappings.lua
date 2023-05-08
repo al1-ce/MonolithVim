@@ -30,12 +30,16 @@ local keymap = vim.keymap
 
 -- quick navigation
 keymap.set('n', '<Space>', '<C-d>', opts)
-keymap.set('n', '<C-Space>', '<C-u>', opts)
+-- keymap.set('n', '<C-Space>', '<C-u>', opts)
 keymap.set('n', '<S-Space>', '<C-u>', opts)
 
+keymap.set('n', '<A-u>', '<C-u>', opts)
+keymap.set("i", "<A-u>", "<Space>", opts)
 keymap.set("", "q", "<nop>", opts)
 keymap.set("", "<C-z>", "<nop>", opts)
 
+keymap.set('n', '<C-left>', 'b', opts)
+keymap.set('n', '<C-right>', 'e', opts)
 -- copy/paste
 -- keymap.set("", "<C-c>", "\"+y", opts)
 -- keymap.set("i", "<C-c>", "<nop>", opts)
@@ -246,7 +250,6 @@ keymap.set("n", "s", "<Plug>(easymotion-overwin-f2)", opts)
 
 -- -------------------------------- other ----------------------------------- --
 keymap.set("n", "<C-`>", require('nvim-toggler').toggle)
-keymap.set("n", "<C-Grave>", require('nvim-toggler').toggle)
 
 -- -------------------------------- comments -------------------------------- --
 local commentApi = require("Comment.api")
@@ -267,6 +270,12 @@ keymap.set("i", "<C-/>", commentApi.toggle.linewise.current, opts);
 keymap.set("n", "K", "<cmd>Lspsaga hover_doc<cr>", opts)
 keymap.set("n", "gK", "<cmd>Lspsaga peek_definition<cr>", opts)
 
+keymap.set("n", "<A-s>", "<cmd>Lspsaga hover_doc<cr>", opts)
+keymap.set("i", "<A-s>", "<cmd>Lspsaga hover_doc<cr>", opts)
+keymap.set("n", "<A-d>", "<cmd>Lspsaga peek_definition<cr>", opts)
+keymap.set("i", "<A-d>", "<cmd>Lspsaga peek_definition<cr>", opts)
+keymap.set('n', '<C-s>', vim.lsp.buf.signature_help, opts)
+keymap.set('i', '<C-s>', vim.lsp.buf.signature_help, opts)
 
 for _, key in ipairs({ 'n', 'N', '*', '#' }) do
     vim.keymap.set(
@@ -277,8 +286,8 @@ for _, key in ipairs({ 'n', 'N', '*', '#' }) do
     )
 end
 
-keymap.set('v', 'ga', '<Plug>(EasyAlign)')
-keymap.set('n', 'ga', '<Plug>(EasyAlign)')
+keymap.set('v', 'ga', '<Plug>(EasyAlign)', opts)
+keymap.set('n', 'ga', '<Plug>(EasyAlign)', opts)
 
 -- ----------------------------------- Helpers ------------------------------ --
 

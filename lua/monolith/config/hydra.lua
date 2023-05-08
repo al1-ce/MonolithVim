@@ -8,32 +8,32 @@ local callback = require('monolith.config.hydra.callback');
 local colors = require('monolith.config.hydra.colors');
 
 local hintLeader = [[
-┌────── Menu ──────┐
-│ _f_: Files         │
-│ _t_: Text/Term/Tab │
-├───── Devenv ─────┤
-│ _l_: Lsp           │
-│ _g_: Git           │
-│ _b_: Build         │
-├────── Misc ──────┤
-│ _d_: Dashboard     │
-│ _p_: Package       │
-│ _v_: View          │
-├──── Settings ────┤
-│ _c_: Config/Dir    │
-│ _o_: Options       │
-│ _h_: Help          │
-├───── Motion ─────┤
-│ _s_: Split         │
-│ _w_: Save file     │
-│ _W_: Force save    │
-│ _q_: Close file    │
-│ _Q_: Close all     │
-│ _P_: Select pasted │
-│ _/_: Clear search  │
-├──────────────────┤
-│ _x_: Quit          │
-└──────────────────┘
+┌       Menu       ┐
+  _f_: Files          
+  _t_: Text/Term/Tab  
+       Devenv       
+  _l_: Lsp            
+  _g_: Git            
+  _b_: Build          
+        Misc        
+  _d_: Dashboard      
+  _p_: Package        
+  _v_: View           
+      Settings      
+  _c_: Config/Dir     
+  _o_: Options        
+  _h_: Help           
+       Motion       
+  _s_: Split          
+  _w_: Save file      
+  _W_: Force save     
+  _q_: Close file     
+  _Q_: Close all      
+  _P_: Select pasted  
+  _/_: Clear search   
+                    
+  _x_: Quit           
+└                  ┘
 ]]
 
 Hydra({
@@ -74,30 +74,61 @@ Hydra({
 
 -- -------------------------------------------------------------------------- --
 
--- ┌───────────────────────────────────────────────┐
--- │	─	│	┌	┐	└	┘	├	┤	┬	┴	┼	│
--- │												│
--- │	═	║	╔	╗	╚	╝	╠	╣	╦	╩	╬	│
--- └───────────────────────────────────────────────┘
+-- ┌                                               ┐
+--  	 	 	┌	┐	└	┘	 	 	┬	┴	┼	 
+--  												 
+--  	═	║	╔	╗	╚	╝	╠	╣	╦	╩	╬	 
+-- └                                               ┘
 
--- ┌───────────────────────────────────────────────────────────────────┐
--- │	─	━	│	┃	┄	┅	┆	┇	┈	┉	┊	┋	┌	┍	┎	┏	│
--- │	┐	┑	┒	┓	└	┕	┖	┗	┘	┙	┚	┛	├	┝	┞	┟	│
--- │	┠	┡	┢	┣	┤	┥	┦	┧	┨	┩	┪	┫	┬	┭	┮	┯	│
--- │	┰	┱	┲	┳	┴	┵	┶	┷	┸	┹	┺	┻	┼	┽	┾	┿	│
--- │	╀	╁	╂	╃	╄	╅	╆	╇	╈	╉	╊	╋	╌	╍	╎	╏	│
--- │	═	║	╒	╓	╔	╕	╖	╗	╘	╙	╚	╛	╜	╝	╞	╟	│
--- │	╠	╡	╢	╣	╤	╥	╦	╧	╨	╩	╪	╫	╬	╭	╮	╯	│
--- │	╰	╱	╲	╳	╴	╵	╶	╷	╸	╹	╺	╻	╼	╽	╾	╿	│
--- └───────────────────────────────────────────────────────────────────┘
+-- ┌                                                                   ┐
+--  	 	━	 	┃	┄	┅	┆	┇	┈	┉	┊	┋	┌	┍	┎	┏	 
+--  	┐	┑	┒	┓	└	┕	┖	┗	┘	┙	┚	┛	 	┝	┞	┟	 
+--  	┠	┡	┢	┣	 	┥	┦	┧	┨	┩	┪	┫	┬	┭	┮	┯	 
+--  	┰	┱	┲	┳	┴	┵	┶	┷	┸	┹	┺	┻	┼	┽	┾	┿	 
+--  	╀	╁	╂	╃	╄	╅	╆	╇	╈	╉	╊	╋	╌	╍	╎	╏	 
+--  	═	║	╒	╓	╔	╕	╖	╗	╘	╙	╚	╛	╜	╝	╞	╟	 
+--  	╠	╡	╢	╣	╤	╥	╦	╧	╨	╩	╪	╫	╬	╭	╮	╯	 
+--  	╰	╱	╲	╳	╴	╵	╶	╷	╸	╹	╺	╻	╼	╽	╾	╿	 
+-- └                                                                   ┘
 
--- ┌────────────────────────┐
--- │	Upper half:		▀	 │
--- │	Lower half:		▄	 │
--- │						 │
--- │	Solid Block:	█	 │
--- │						 │
--- │	Light Block: 	░	 │
--- │	Medium Block: 	▒	 │
--- │	Dark Block: 	▓	 │
--- └────────────────────────┘
+-- ┌                        ┐
+--  	Upper half:		▀	  
+--  	Lower half:		▄	  
+--  						  
+--  	Solid Block:	█	  
+--  						  
+--  	Light Block: 	░	  
+--  	Medium Block: 	▒	  
+--  	Dark Block: 	▓	  
+-- └                        ┘
+
+-- replace command %s/│\|─\|┤\|├/ /g
+
+-- local hintLeader = [[
+-- ┌────── Menu ──────┐
+-- │ _f_: Files         │
+-- │ _t_: Text/Term/Tab │
+-- ├───── Devenv ─────┤
+-- │ _l_: Lsp           │
+-- │ _g_: Git           │
+-- │ _b_: Build         │
+-- ├────── Misc ──────┤
+-- │ _d_: Dashboard     │
+-- │ _p_: Package       │
+-- │ _v_: View          │
+-- ├──── Settings ────┤
+-- │ _c_: Config/Dir    │
+-- │ _o_: Options       │
+-- │ _h_: Help          │
+-- ├───── Motion ─────┤
+-- │ _s_: Split         │
+-- │ _w_: Save file     │
+-- │ _W_: Force save    │
+-- │ _q_: Close file    │
+-- │ _Q_: Close all     │
+-- │ _P_: Select pasted │
+-- │ _/_: Clear search  │
+-- ├──────────────────┤
+-- │ _x_: Quit          │
+-- └──────────────────┘
+-- ]]

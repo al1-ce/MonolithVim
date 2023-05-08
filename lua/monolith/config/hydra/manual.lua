@@ -5,25 +5,25 @@ local cmd = require('hydra.keymap-util').cmd
 local M = {}
 
 local hintHelp = [[
-┌────────── Help ─────────┐
-│ _c_: Execute command      │
-│ _h_: Vim help             │
-│ _H_: Howdoi               │
-│ _k_: Keymaps              │
-│ _o_: Vim options          │
-├──────── History ────────┤
-│ _;_: Commands history     │
-│ _?_: Search history       │
-├──────── Pickers ────────┤
-│ _p_: All pickers          │
-│ _u_: Url in current file  │
-│ _l_: Licenses             │
-├────────── Sudo ─────────┤
-│ _w_: Write with sudo      │
-│ _r_: Reopen with sudo     │
-├─────────────────────────┤
-│ _q_: Quit                 │
-└─────────────────────────┘
+┌           Help          ┐
+  _c_: Execute command       
+  _h_: Vim help              
+  _H_: Howdoi                
+  _k_: Keymaps               
+  _o_: Vim options           
+          History          
+  _;_: Commands history      
+  _?_: Search history        
+          Pickers          
+  _p_: All pickers           
+  _u_: Url in current file   
+  _l_: Licenses              
+            Sudo           
+  _w_: Write with sudo       
+  _r_: Reopen with sudo      
+                           
+  _q_: Quit                  
+└                         ┘
 ]]
 
 function M.hydra() return Hydra({

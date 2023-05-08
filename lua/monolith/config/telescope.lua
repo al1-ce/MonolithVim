@@ -35,12 +35,14 @@ require("telescope").setup({
             preview_cutoff = 120,
         },
         file_sorter = sorters.get_fuzzy_file,
-        file_ignore_patterns = { "node_modules" },
+        file_ignore_patterns = { "node_modules", "build", "dist", "yarn.lock", ".git" },
         generic_sorter = sorters.get_generic_fuzzy_sorter,
         path_display = { "truncate" },
         winblend = 0,
-        border = {},
-        borderchars = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+        border = true,
+        -- borderchars = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+        borderchars = { " ", " ", " ", " ", "┌", "┐", "┘", "└" },
+        -- borderchars = { " ", " ", " ", " ", " ", " ", " ", " " },
         color_devicons = true,
         set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
         file_previewer = previewers.vim_buffer_cat.new,
@@ -52,6 +54,45 @@ require("telescope").setup({
             n = { ["q"] = actions.close },
             i = { ["<esc>"] = actions.close },
         },
+        preview = {
+            mime_hook = function(filepath, bufnr, opts)
+                local is_image = function(filepath)
+                    local image_extensions = { 'png', 'jpg' } -- Supported image formats
+                    local split_path = vim.split(filepath:lower(), '.', { plain = true })
+                    local extension = split_path[#split_path]
+                    return vim.tbl_contains(image_extensions, extension)
+                end
+                if is_image(filepath) then
+                    local term = vim.api.nvim_open_term(bufnr, {})
+                    local function send_output(_, data, _)
+                        for _, d in ipairs(data) do
+                            vim.api.nvim_chan_send(term, d .. '\r\n')
+                        end
+                    end
+                    vim.fn.jobstart(
+                        {
+                            'pxv', '-s', 'fit', filepath -- Terminal image viewer command
+                        },
+                        { on_stdout = send_output, stdout_buffered = true, pty = true })
+                else
+                    require("telescope.previewers.utils").set_preview_message(bufnr, opts.winid,
+                    "Binary cannot be previewed")
+                end
+            end
+        },
+    },
+    extensions = {
+        media = {
+            backend = "chafa",
+            move = true,
+            cwd = vim.fn.getcwd(),
+            prompt_title = "Files",
+            preview = {
+                fill = {
+                    binary = "░",
+                }
+            }
+        }
     }
 })
 
@@ -67,6 +108,7 @@ require('telescope').load_extension('packer')
 require('telescope').load_extension('notify')
 -- require('telescope').load_extension('symbols')
 require('telescope').load_extension('howdoi')
+require('telescope').load_extension('media')
 
 require("todo").setup({
     keywords = {
@@ -113,5 +155,3 @@ require("project_nvim").setup({
 require("urlview").setup({
     default_picker = "telescope",
 })
-
-
