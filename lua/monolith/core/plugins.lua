@@ -127,11 +127,17 @@ require('packer').startup({ function(use)
     -- json chemas
     use 'b0o/schemastore.nvim'
     -- Show function signature
-    use 'ray-x/lsp_signature.nvim'
+    use 'ray-x/lsp_signature.nvim' 
     -- Show icons in snippets
     use 'onsails/lspkind.nvim'
     -- Nvim lua api
     use 'folke/neodev.nvim'
+
+    -- ------------------------------- Languages -------------------------------- --
+    -- Dart
+    use 'dart-lang/dart-vim-plugin'
+    -- use 'natebosch/vim-lsc'
+    -- use 'natebosch/vim-lsc-dart'
 
     -- ------------------------------- Formatting ------------------------------- --
     -- Toggle comments
@@ -208,7 +214,7 @@ require('packer').startup({ function(use)
     use 'AmeerTaweel/todo.nvim'
 
     -- Better quickfix
-    use 'https://gitlab.com/yorickpeterse/nvim-pqf.git'
+    use 'yorickpeterse/nvim-pqf'
     -- Goto quickfix files
     use 'yssl/QFEnter'
 
@@ -238,6 +244,9 @@ require('packer').startup({ function(use)
 
     -- Project-wide rename
     use 'windwp/nvim-spectre'
+
+    -- Move lines and characters
+    use 'fedepujol/move.nvim'
 
     -- Preview markdown
     use({

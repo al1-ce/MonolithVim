@@ -19,7 +19,7 @@ autocmd BufEnter *.d,
     \*.cs,*.java,*.class,*.kt,*.kts,*.ktm,
     \*.dart,*.js,*.ts,*.jspp,*.jpp,
     \*.py,*.lua,*.swift,*.go,
-    \*.rs,*.rlib,*.hx,*.r,*.rb
+    \*.rs,*.rlib,*.hx,*.r,*.rb,*.sdl
     \ call s:AddCustomFunctionHighlight()
 hi def link dCustomFunc Function
 
@@ -87,6 +87,11 @@ fun! s:DetectShebangPattern()
 endfun
 
 autocmd BufNewFile,BufRead * call s:DetectShebangPattern()
+
+au BufNewFile,BufRead,BufReadPost *.sdl set syntax=sdlang
+au BufNewFile,BufRead,BufReadPost *.jpp set syntax=jspp
+au BufNewFile,BufRead,BufReadPost *.js++ set syntax=jspp
+au BufNewFile,BufRead,BufReadPost *.jspp set syntax=jspp
 ]]
 
 vim.cmd([[

@@ -83,7 +83,7 @@ require("telescope").setup({
     },
     extensions = {
         media = {
-            backend = "chafa",
+            backend = "viu",
             move = true,
             cwd = vim.fn.getcwd(),
             prompt_title = "Files",

@@ -12,6 +12,7 @@ cm.setup {
 }
 
 ft({ 'd' }, ft.get('c'))
+ft({ 'sdl' }, ft.get('c'))
 
 require('nvim-comment-frame').setup({
 

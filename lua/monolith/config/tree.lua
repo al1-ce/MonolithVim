@@ -1,6 +1,18 @@
 local nvim_tree = require("nvim-tree")
 
+local function my_on_attach(bufnr)
+    local api = require('nvim-tree.api')
+    local function opts(desc)
+        return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+    end
+    
+    api.config.mappings.default_on_attach(bufnr)
+    vim.keymap.set('n', 'c',     api.fs.copy.filename,                  opts('Copy Name'))
+    vim.keymap.set('n', 'y',     api.fs.copy.node,                      opts('Copy'))
+end
+
 nvim_tree.setup {
+    on_attach = my_on_attach,
     auto_reload_on_write = true,
     disable_netrw = true,
     hijack_cursor = false,
@@ -49,6 +61,7 @@ nvim_tree.setup {
                 git = false
             }
         },
+        group_empty = true
     },
     hijack_directories = {
         enable = true,
@@ -56,7 +69,7 @@ nvim_tree.setup {
     },
     update_focused_file = {
         enable = true, -- false 
-        update_cwd = false,
+        update_cwd = true,
         update_root = true, -- wasnt there
         ignore_list = {},
     },

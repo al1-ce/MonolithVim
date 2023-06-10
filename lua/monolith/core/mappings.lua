@@ -40,42 +40,13 @@ keymap.set("", "<C-z>", "<nop>", opts)
 
 keymap.set('n', '<C-left>', 'b', opts)
 keymap.set('n', '<C-right>', 'e', opts)
--- copy/paste
--- keymap.set("", "<C-c>", "\"+y", opts)
--- keymap.set("i", "<C-c>", "<nop>", opts)
--- ditto
--- keymap.set("", "<C-v>", "\"+p", opts)
--- keymap.set("i", "<C-v>", "<Esc>\"+pi<right><right>", opts)
--- undo/redo
--- keymap.set("", "<C-z>", ":undo<cr>", opts)
--- keymap.set("i", "<C-z>", "<C-o>:undo<cr>", opts)
--- -- ditto
--- keymap.set("", "<C-S-z>", ":redo<cr>", opts)
--- keymap.set("i", "<C-S-z>", "<C-o>:redo<cr>", opts)
--- select all
--- keymap.set("", "<C-a>", "ggVG", opts)
--- keymap.set("i", "<C-a>", "<C-o>ggVG", opts)
--- save
--- keymap.set("", "<C-s>", ":w<cr>", opts)
--- keymap.set("i", "<C-s>", "<C-o>:w<cr>", opts)
--- search match
--- keymap.set("", "<C-f>", "/", opts)
--- keymap.set("", "<C-S-f>", ":CtrlSF ", opts)
 
--- keymap.set("", "<S-u>", "<C-r>", opts)
--- keymap.set("", "<C-r>", ":%s//R/g<left><left><left><left>")
-
--- see barbar
--- new tab
--- keymap.set("n", "<C-t>", ":$tabnew<cr>", opts)
--- close tab
--- keymap.set("n", "<C-w>", ":tabclose<cr>", opts)
 -- tab navigation
-keymap.set("n", "<A-.>", ":tabnext<cr>", opts)
-keymap.set("n", "<A-,>", ":tabprevious<cr>", opts)
+keymap.set("n", "<A-.>", "<cmd>tabnext<cr>", opts)
+keymap.set("n", "<A-,>", "<cmd>tabprevious<cr>", opts)
 
-keymap.set("n", "<A-S-.>", ":tabmove +1<cr>", opts)
-keymap.set("n", "<A-S-,>", ":tabmove -1<cr>", opts)
+keymap.set("n", "<A-S-.>", "<cmd>tabmove +1<cr>", opts)
+keymap.set("n", "<A-S-,>", "<cmd>tabmove -1<cr>", opts)
 
 -- moving between panes
 keymap.set("n", "<A-left>", "<C-w>h", opts)
@@ -136,17 +107,6 @@ keymap.set('v', "<End>", lineEnd, opts)
 -- backspace to black hole buffer
 keymap.set("n", "<BS>", '"_X', opts);
 
--- allow to go into visual block
--- keymap.set("n", "<A-v>", "<C-v>", opts);
-
--- -------------------------------- IDE Like -------------------------------- --
-
--- open file/folder
--- keymap.set("n", "<C-S-o>", "<cmd>Telescope opener<cr>", opts)
--- keymap.set("n", "<C-A-p>", "<cmd>FzfLua tabs<cr>", opts)
--- keymap.set("n", "<C-o>", ":e ", opts)
--- keymap.set("n", "<C-S-o>", ":e ", opts)
-
 -- nop
 keymap.set("n", "<C-i>", "i<Right>_<Esc>r", opts)
 keymap.set("n", "<Tab>", "<nop>", opts)
@@ -173,26 +133,42 @@ keymap.set("i", "<C-S-right>", "<C-o>v<C-right>", opts)
 -- erase word
 keymap.set("i", "<C-BS>", '<C-\\><C-o>"_db', opts)
 
+-- Old move line etc
+-- -- Black magic:
+-- -- normal, yank, up, paste above, insert
+-- keymap.set('i', '<A-up>', '<Esc>"mddk"mPi', opts)
+-- -- normal, yank, down, paste above, insert
+-- keymap.set('i', '<A-down>', '<Esc>"mddj"mPi', opts)
+--
+-- -- normal, yank, paste above, paste above, insert
+-- keymap.set('i', '<A-S-up>', '<Esc>"mdd"mP"mPi', opts)
+-- -- normal, yank, paste above, down, paste above, insert
+-- keymap.set('i', '<A-S-down>', '<Esc>"mdd"mPj"mPi', opts)
+--
+-- -- visline, cut, up, paste above, select range, visual
+-- keymap.set('v', '<A-up>', '<S-v>"mxk"mP`[V`]v', opts)
+-- -- visline, cut, paste at, select range, visual
+-- keymap.set('v', '<A-down>', '<S-v>"mx"mp`[V`]v', opts)
+--
+-- -- visline, cut, up, paste at, paste above, select, visual
+-- keymap.set('v', '<A-S-up>', '<S-v>"mxk"mp"mP`[V`]v', opts)
+-- -- visline, cut, paste above, select end, paste at, select, visual
+-- keymap.set('v', '<A-S-down>', '<S-v>"mx"mP`]"mp`[V`]v', opts)
+
 -- Black magic:
--- normal, yank, up, paste above, insert
-keymap.set('i', '<A-up>', '<Esc>"mddk"mPi', opts)
--- normal, yank, down, paste above, insert
-keymap.set('i', '<A-down>', '<Esc>"mddj"mPi', opts)
+keymap.set('i', '<A-up>', '<Esc><cmd>MoveLine(-1)<CR>i', opts)
+keymap.set('i', '<A-down>', '<Esc><cmd>MoveLine(1)<CR>i', opts)
 
--- normal, yank, paste above, paste above, insert
-keymap.set('i', '<A-S-up>', '<Esc>"mdd"mP"mPi', opts)
--- normal, yank, paste above, down, paste above, insert
-keymap.set('i', '<A-S-down>', '<Esc>"mdd"mPj"mPi', opts)
+keymap.set('i', '<A-S-up>', '<Esc>"myy`["mPi', opts)
+keymap.set('i', '<A-S-down>', '<Esc>"myy`]"mpi', opts)
 
--- visline, cut, up, paste above, select range, visual
-keymap.set('v', '<A-up>', '<S-v>"mxk"mP`[V`]v', opts)
--- visline, cut, paste at, select range, visual
-keymap.set('v', '<A-down>', '<S-v>"mx"mp`[V`]v', opts)
+keymap.set('v', '<A-up>', ":MoveBlock(-1)<CR>", opts)
+keymap.set('v', '<A-down>', ":MoveBlock(1)<CR>", opts)
+keymap.set('v', '<A-right>', ":MoveHBlock(1)<CR>", opts)
+keymap.set('v', '<A-left>', ":MoveHBlock(-1)<CR>", opts)
 
--- visline, cut, up, paste at, paste above, select, visual
-keymap.set('v', '<A-S-up>', '<S-v>"mxk"mp"mP`[V`]v', opts)
--- visline, cut, paste above, select end, paste at, select, visual
-keymap.set('v', '<A-S-down>', '<S-v>"mx"mP`]"mp`[V`]v', opts)
+keymap.set('v', '<A-S-up>', '<S-v>"my`["mP`[V`]v', opts)
+keymap.set('v', '<A-S-down>', '<S-v>"my`]"mp`[V`]v', opts)
 
 -- erase one tab
 keymap.set("i", "<S-Tab>", "<C-o><<", opts);
@@ -301,6 +277,5 @@ local function setKeymapFiletype(ft, name, mode, map, action)
     })
 end
 
-setKeymapFiletype('NvimTree', 'NvimTree_Help', 'n', '?', '<cmd>h nvim-tree-default-mappings<cr>')
-
+setKeymapFiletype('NvimTree', 'NvimTree_Help', 'n', '?', '<cmd>h nvim-tree-mappings-default<cr>')
 

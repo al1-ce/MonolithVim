@@ -27,9 +27,9 @@ local hintFiles = [[
 └                 ┘
 ]]
 
--- local function mediaCall()
---     require("telescope").extensions.media.media({cwd=vim.fn.getcwd()})
--- end
+local function mediaCall()
+    require("telescope").extensions.media.media({cwd=vim.fn.getcwd()})
+end
 
 function M.hydra() return Hydra({
         name = 'Files',

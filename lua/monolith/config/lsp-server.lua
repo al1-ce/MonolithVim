@@ -27,5 +27,7 @@ masonconf.setup_handlers({
                 },
             },
         }
-    end
+    end,
 })
+
+lspconf.dartls.setup({})

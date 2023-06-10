@@ -157,7 +157,8 @@ null_ls.setup({
                 '$FILENAME'
             },
             filetypes = { "d", 'dub', 'rdmd' },
-        })
+        }),
+        null_ls.builtins.formatting.stylelint
     },
     -- on_attach = on_attach_null_ls
 })
