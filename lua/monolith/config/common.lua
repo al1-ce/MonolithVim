@@ -82,6 +82,13 @@ require('nvim-toggler').setup({
         ['left'] = 'right',
         ['relative'] = 'absolute',
         ['white'] = 'black',
+        ['width'] = 'height',
+        ['vertical'] = 'horizontal',
+        ['show'] = 'hide',
+        ['outset'] = 'inset',
+        ['<'] = '>',
+        ['<='] = '>=',
+        ['&&'] = '||',
     },
     remove_default_keybinds = true,
 })

@@ -108,7 +108,7 @@ require('telescope').load_extension('packer')
 require('telescope').load_extension('notify')
 -- require('telescope').load_extension('symbols')
 require('telescope').load_extension('howdoi')
-require('telescope').load_extension('media')
+-- require('telescope').load_extension('media')
 
 require("todo").setup({
     keywords = {
