@@ -29,7 +29,7 @@ nvim_tree.setup {
     prefer_startup_root = true,
     view = {
         width = 25,
-        hide_root_folder = false,
+        -- hide_root_folder = false,
         side = "left",
         preserve_window_proportions = false,
         number = false,
@@ -47,10 +47,10 @@ nvim_tree.setup {
         },
         icons = {
             symlink_arrow = "→",
-            webdev_colors = false,
+            webdev_colors = true,
             show = {
-                file = false,
-                folder = false,
+                file = true,
+                folder = true,
                 folder_arrow = true,
                 git = false
             }
