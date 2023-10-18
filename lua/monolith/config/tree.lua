@@ -46,14 +46,23 @@ nvim_tree.setup {
             },
         },
         icons = {
+            -- symlink_arrow = "→",
+            -- webdev_colors = false,
+            -- show = {
+            --     file = false,
+            --     folder = false,
+            --     folder_arrow = true,
+            --     git = false
+            -- }
             symlink_arrow = "→",
-            webdev_colors = false,
+            webdev_colors = true,
             show = {
-                file = false,
-                folder = false,
+                file = true,
+                folder = true,
                 folder_arrow = true,
                 git = false
             }
+
         },
         group_empty = true
     },
