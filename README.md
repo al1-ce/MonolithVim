@@ -23,7 +23,7 @@
 #### Almost vanilla key mappings with '\\' as your power key for summoning the Hydra
 ![](readme/hydra.png)
 ## Features
-- File exporer with Nvim-tree
+- File explorer with Nvim-tree
 - Autocompletion with Cmp
 - Git integration with Gitsigns
 - Status line with Lualine
@@ -39,7 +39,7 @@
 
 And much more. For sources and other plugins with descriptions see [lua/monolith/core/plugins.lua](lua/monolith/core/plugins.lua) file.
 
-## Requirements
+## Requirements (not full list, see issue #17)
 - Nerd Fonts
 - Neovim 0.8
 - Terminal with truecolor support (preferably)
