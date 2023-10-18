@@ -145,22 +145,28 @@ syn match dSharpBang "\%^#!.*"     display
 " Attributes/annotations
 syn match dAnnotation	"@[_$a-zA-Z][_$a-zA-Z0-9_]*\>" contains=dAttribute
 
-" Version Identifiers
-syn match dVersion      "\<version\>"
-" syn match dVersion      "\<version\s*([_a-zA-Z][_a-zA-Z0-9]*\>"he=s+7
-syn match dVersion      "\<version\s*([_a-zA-Z][_a-zA-Z0-9]*\>"he=s+7 contains=dVersionIdentifier
+" " Version Identifiers
+" syn match dVersion      "\<version\>"
+" " syn match dVersion      "\<version\s*([_a-zA-Z][_a-zA-Z0-9]*\>"he=s+7
+" syn match dVersion      "\<version\s*([_a-zA-Z][_a-zA-Z0-9]*\>"he=s+7 contains=dVersionIdentifier
+"
+" " fixme: picks up statements and pragma as function
+" " Scope Identifiers
+" syn match dStatement    "\<scope\>"
+" syn match dStatement    "\<scope\s*([_a-zA-Z][_a-zA-Z0-9]*\>"he=s+5 contains=dScopeIdentifier
+"
+" " Traits Statement
+" syn match dStatement    "\<__traits\>"
+" syn match dStatement    "\<__traits\s*([_a-zA-Z][_a-zA-Z0-9]*\>"he=s+8 contains=dTraitsIdentifier
+"
+" " Pragma Statement
+" syn match dPragma       "\<pragma\>"
+" syn match dPragma       "\<pragma\s*([_a-zA-Z][_a-zA-Z0-9]*\>"he=s+6 contains=dPragmaIdentifier
 
-" Scope Identifiers
-syn match dStatement    "\<scope\>"
-syn match dStatement    "\<scope\s*([_a-zA-Z][_a-zA-Z0-9]*\>"he=s+5 contains=dScopeIdentifier
-
-" Traits Statement
-syn match dStatement    "\<__traits\>"
-syn match dStatement    "\<__traits\s*([_a-zA-Z][_a-zA-Z0-9]*\>"he=s+8 contains=dTraitsIdentifier
-
-" Pragma Statement
-syn match dPragma       "\<pragma\>"
-syn match dPragma       "\<pragma\s*([_a-zA-Z][_a-zA-Z0-9]*\>"he=s+6 contains=dPragmaIdentifier
+" HACK: match wasn't picking up keywords, so....
+syn keyword dStatement    scope version
+" syn keyword dStatement    __traits pragma
+" syn keyword dPragma    __traits pragma
 
 " Necessary to highlight C++ in extern modifiers.
 syn match dExternIdentifier "C\(++\)\?" contained
