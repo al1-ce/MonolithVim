@@ -194,7 +194,7 @@ require('packer').startup({ function(use)
     use 'tribela/vim-transparent'
 
     -- minimap
-    use { 'echasnovski/mini.map', branch = 'stable' }
+    use { 'echasnovski/mini.map', branch = 'main' }
     -- -------------------------------- PowerVim -------------------------------- --
     -- Color picker
     use 'ziontee113/color-picker.nvim'

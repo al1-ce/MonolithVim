@@ -1,6 +1,8 @@
 -- for D: https://github.com/SirSireesh/vim-dlang-phobos-highlighter/blob/master/after/syntax/d.vim
 -- ditto: https://github.com/neovim/neovim/blob/master/runtime/syntax/d.vim
 
+-- TODO: move to core
+
 local g = vim.g -- global variables
 g.gruvbox_contrast_dark = "medium"
 g.gruvbox_transparent_bg = 1

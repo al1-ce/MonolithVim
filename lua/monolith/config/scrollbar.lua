@@ -2,7 +2,7 @@ require('gitsigns').setup({
     signcolumn = true
 })
 
-require('hlslens').setup()
+-- require('hlslens').setup()
 
 require("scrollbar").setup({
     marks = {

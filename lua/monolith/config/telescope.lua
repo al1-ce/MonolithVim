@@ -92,6 +92,16 @@ require("telescope").setup({
                     binary = "░",
                 }
             }
+        },
+        howdoi = {
+            num_answers = 5,
+            -- pager_command = 'bat --tabs 4 --color always --paging always --theme gruvbox-dark',
+            pager_command = 'bat --tabs 4 --color always --paging always --theme gruvbox-dark',
+        }
+    },
+    pickers = {
+        colorscheme = {
+            enable_preview = true
         }
     }
 })
@@ -128,21 +138,6 @@ require("todo").setup({
     highlight = {
         keyword = 'fg',
         after = 'empty',
-    }
-})
-
-require('telescope').setup({
-    extensions = {
-        howdoi = {
-            num_answers = 5,
-            -- pager_command = 'bat --tabs 4 --color always --paging always --theme gruvbox-dark',
-            pager_command = 'bat --tabs 4 --color always --paging always --theme gruvbox-dark',
-        },
-    },
-    pickers = {
-        colorscheme = {
-            enable_preview = true
-        }
     }
 })
 

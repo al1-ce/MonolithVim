@@ -34,14 +34,14 @@ function M.hydra() return Hydra({
         heads = {
             { 'e', cmd 'edit $MYVIMRC <bar> tcd %:h' },
             { 'r', fUpdateConf },
+
             { 's',
-            
             function() require('sessions').save(vim.fn.stdpath("data") .. "/sessions/main", { autosave = false }) end },
             { 'l',
             function() require('sessions').load(vim.fn.stdpath("data") .. "/sessions/main", { autosave = false }) end },
-            
+
             { 'd', '<cmd>cd %:p:h<cr><cmd>pwd<cr>' },
-            
+
             { 'q', nil, { exit = true, nowait = true } },
             { '<Esc>', nil, { exit = true, nowait = true, desc = false } },
         }

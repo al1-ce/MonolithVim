@@ -15,5 +15,8 @@ MiniMap.setup({
         encode =  MiniMap.gen_encode_symbols.dot('4x2'), 
         scroll_line = '',
         scroll_view = ''
+    },
+    window = {
+        show_integration_count = false
     }
 })
