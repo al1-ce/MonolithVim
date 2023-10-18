@@ -9,7 +9,7 @@ local opt = vim.opt             -- global/buffer/windows-scoped options
 o.signcolumn = "no"                 -- removes gutter
 opt.updatetime = 300                -- speeds up autocompletion
 -- g.mapleader = "\\"                  -- sets \ as leader key
-g.mapleader = ","                   -- sets , as leader key
+g.mapleader = ";"                   -- sets , as leader key
 o.clipboard = "unnamedplus"         -- set clipboard to be system
 opt.cmdheight = 1                   -- cmd height
 
