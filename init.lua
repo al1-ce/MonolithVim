@@ -31,7 +31,7 @@ prequire('monolith.config.minimap')
 prequire('monolith.config.hydra')
 prequire('monolith.config.alpha')
 -- require('monolith.config.dashboard')
-prequire('monolith.config.colorscheme')
 
+prequire('monolith.core.colorscheme')
 prequire('monolith.core.mappings')
 prequire('monolith.core.autocmd')

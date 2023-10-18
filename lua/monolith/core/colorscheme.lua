@@ -1,8 +1,6 @@
 -- for D: https://github.com/SirSireesh/vim-dlang-phobos-highlighter/blob/master/after/syntax/d.vim
 -- ditto: https://github.com/neovim/neovim/blob/master/runtime/syntax/d.vim
 
--- TODO: move to core
-
 local g = vim.g -- global variables
 g.gruvbox_contrast_dark = "medium"
 g.gruvbox_transparent_bg = 1
@@ -12,17 +10,25 @@ vim.cmd.colorscheme('gruvbox')
 
 vim.cmd[[
 fun! s:AddCustomFunctionHighlight()
-    syn match   dCustomFunc     "\w\+\s*(\@="
+    " syn match   dCustomFunc     "\w\+\s*(\@="
+    syn match   dCustomFunc     "\zs\(\k\w*\)*\s*\ze("
+endfun
+fun! s:AddCustomDFunctionHighlight()
+    " syn match   dCustomFunc     "\w\+\s*(\@="
+    syn match   dCustomFunc     "\zs\(\k\w*\)*\s*\ze[\!(]"
 endfun
 
-autocmd BufEnter *.d,
-    \*.c,*.h,
+autocmd BufEnter *.c,*.h,
     \*.cpp,*.hpp,
     \*.cs,*.java,*.class,*.kt,*.kts,*.ktm,
     \*.dart,*.js,*.ts,*.jspp,*.jpp,
     \*.py,*.lua,*.swift,*.go,
     \*.rs,*.rlib,*.hx,*.r,*.rb,*.sdl
     \ call s:AddCustomFunctionHighlight()
+
+" Special because of template!call
+autocmd BufEnter *.d call s:AddCustomDFunctionHighlight()
+
 hi def link dCustomFunc Function
 
 hi! link LspSagaCodeActionBorder  LspSagaDiagnosticBorder
@@ -128,8 +134,8 @@ if g:colors_name == 'gruvbox'
     execute 'hi Identifier ' . style_identifier
     execute 'hi Structure ' . style_identifier
     execute 'hi Delimiter ' . style_identifier
-    execute 'hi Label ' . style_identifier
 
+    execute 'hi Label ' . style_keyword
     execute 'hi Conditional ' . style_keyword
     execute 'hi Debug ' . style_keyword
     execute 'hi Exception ' . style_keyword
