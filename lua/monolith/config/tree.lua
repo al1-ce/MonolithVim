@@ -29,7 +29,7 @@ nvim_tree.setup {
     prefer_startup_root = true,
     view = {
         width = 25,
-        hide_root_folder = false,
+        -- hide_root_folder = false,
         side = "left",
         preserve_window_proportions = false,
         number = false,
