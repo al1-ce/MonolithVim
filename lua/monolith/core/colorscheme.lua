@@ -15,7 +15,8 @@ fun! s:AddCustomFunctionHighlight()
 endfun
 fun! s:AddCustomDFunctionHighlight()
     " syn match   dCustomFunc     "\w\+\s*(\@="
-    syn match   dCustomFunc     "\zs\(\k\w*\)*\s*\ze[\!(]"
+    syn match   dCustomFunc     "\zs\(\k\w*\)*\s*\ze("
+    syn match   dCustomDFunc     "\zs\(\k\w*\)*\ze\!"
 endfun
 
 autocmd BufEnter *.c,*.h,
@@ -30,6 +31,7 @@ autocmd BufEnter *.c,*.h,
 autocmd BufEnter *.d call s:AddCustomDFunctionHighlight()
 
 hi def link dCustomFunc Function
+hi def link dCustomDFunc Function
 
 hi! link LspSagaCodeActionBorder  LspSagaDiagnosticBorder
 hi! link LspSagaLspFinderBorder  LspSagaDiagnosticBorder
@@ -146,8 +148,8 @@ if g:colors_name == 'gruvbox'
     execute 'hi Typedef ' . style_keyword
     execute 'hi Keyword ' . style_keyword
     execute 'hi Operator ' . style_keyword
+    execute 'hi Statement ' . style_keyword
 
-    execute 'hi Statement ' . style_type
     execute 'hi Type ' . style_type
 
     execute 'hi Constant ' . style_const

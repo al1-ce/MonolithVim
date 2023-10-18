@@ -55,22 +55,24 @@ syn keyword dStructure             template interface class struct union
 syn keyword dEnum                  enum
 syn keyword dOperator              new delete typeof typeid cast align is extern
 syn keyword dOperator              this super
-syn keyword dOpOverload          opNeg opCom opPostInc opPostDec opCast opAdd
-syn keyword dOpOverload          opSub opSub_r opMul opDiv opDiv_r opMod 
-syn keyword dOpOverload          opMod_r opAnd opOr opXor opShl opShl_r opShr
-syn keyword dOpOverload          opShr_r opUShr opUShr_r opCat
-syn keyword dOpOverload          opCat_r opEquals opCmp
-syn keyword dOpOverload          opAssign opAddAssign opSubAssign opMulAssign
-syn keyword dOpOverload          opDivAssign opModAssign opAndAssign 
-syn keyword dOpOverload          opOrAssign opXorAssign opShlAssign 
-syn keyword dOpOverload          opShrAssign opUShrAssign opCatAssign
-syn keyword dOpOverload          opIndex opIndexAssign opIndexOpAssign
-syn keyword dOpOverload          opCall opSlice opSliceAssign opSliceOpAssign 
-syn keyword dOpOverload          opPos opAdd_r opMul_r opAnd_r opOr_r opXor_r
-syn keyword dOpOverload          opIn opIn_r opPow opDispatch opStar opDot 
-syn keyword dOpOverload          opApply opApplyReverse opDollar
-syn keyword dOpOverload          opUnary opIndexUnary opSliceUnary
-syn keyword dOpOverload          opBinary opBinaryRight
+if exists("d_hl_operator_overload")
+    syn keyword dOpOverload          opNeg opCom opPostInc opPostDec opCast opAdd
+    syn keyword dOpOverload          opSub opSub_r opMul opDiv opDiv_r opMod 
+    syn keyword dOpOverload          opMod_r opAnd opOr opXor opShl opShl_r opShr
+    syn keyword dOpOverload          opShr_r opUShr opUShr_r opCat
+    syn keyword dOpOverload          opCat_r opEquals opCmp
+    syn keyword dOpOverload          opAssign opAddAssign opSubAssign opMulAssign
+    syn keyword dOpOverload          opDivAssign opModAssign opAndAssign 
+    syn keyword dOpOverload          opOrAssign opXorAssign opShlAssign 
+    syn keyword dOpOverload          opShrAssign opUShrAssign opCatAssign
+    syn keyword dOpOverload          opIndex opIndexAssign opIndexOpAssign
+    syn keyword dOpOverload          opCall opSlice opSliceAssign opSliceOpAssign 
+    syn keyword dOpOverload          opPos opAdd_r opMul_r opAnd_r opOr_r opXor_r
+    syn keyword dOpOverload          opIn opIn_r opPow opDispatch opStar opDot 
+    syn keyword dOpOverload          opApply opApplyReverse opDollar
+    syn keyword dOpOverload          opUnary opIndexUnary opSliceUnary
+    syn keyword dOpOverload          opBinary opBinaryRight
+endif
 
 syn keyword dType                  byte ubyte short ushort int uint long ulong cent ucent
 syn keyword dType                  void bool Object
@@ -79,15 +81,17 @@ syn keyword dType                  ushort int uint long ulong float
 syn keyword dType                  char wchar dchar string wstring dstring
 syn keyword dType                  ireal ifloat idouble creal cfloat cdouble
 syn keyword dType                  size_t ptrdiff_t sizediff_t equals_t hash_t
-syn keyword dType                Object Throwable AssociativeArray Error Exception
-syn keyword dType                Interface OffsetTypeInfo TypeInfo TypeInfo_Typedef
-syn keyword dType                TypeInfo_Enum TypeInfo_Pointer TypeInfo_Array
-syn keyword dType                TypeInfo_StaticArray TypeInfo_AssociativeArray
-syn keyword dType                TypeInfo_Function TypeInfo_Delegate TypeInfo_Class
-syn keyword dType                ClassInfo TypeInfo_Interface TypeInfo_Struct
-syn keyword dType                TypeInfo_Tuple TypeInfo_Const TypeInfo_Invariant
-syn keyword dType                TypeInfo_Shared TypeInfo_Inout MemberInfo
-syn keyword dType                MemberInfo_field MemberInfo_function ModuleInfo
+if exists("d_hl_object_types")
+    syn keyword dType                Object Throwable AssociativeArray Error Exception
+    syn keyword dType                Interface OffsetTypeInfo TypeInfo TypeInfo_Typedef
+    syn keyword dType                TypeInfo_Enum TypeInfo_Pointer TypeInfo_Array
+    syn keyword dType                TypeInfo_StaticArray TypeInfo_AssociativeArray
+    syn keyword dType                TypeInfo_Function TypeInfo_Delegate TypeInfo_Class
+    syn keyword dType                ClassInfo TypeInfo_Interface TypeInfo_Struct
+    syn keyword dType                TypeInfo_Tuple TypeInfo_Const TypeInfo_Invariant
+    syn keyword dType                TypeInfo_Shared TypeInfo_Inout MemberInfo
+    syn keyword dType                MemberInfo_field MemberInfo_function ModuleInfo
+endif
 syn keyword dDebug                 deprecated unittest invariant
 syn keyword dExceptions            throw try catch finally
 syn keyword dScopeDecl             public protected private export package 
@@ -143,6 +147,7 @@ syn match dAnnotation	"@[_$a-zA-Z][_$a-zA-Z0-9_]*\>" contains=dAttribute
 
 " Version Identifiers
 syn match dVersion      "\<version\>"
+" syn match dVersion      "\<version\s*([_a-zA-Z][_a-zA-Z0-9]*\>"he=s+7
 syn match dVersion      "\<version\s*([_a-zA-Z][_a-zA-Z0-9]*\>"he=s+7 contains=dVersionIdentifier
 
 " Scope Identifiers
@@ -199,9 +204,11 @@ syn match dCommentStar	contained "^\s*\*[^/]"me=e-1
 syn match dCommentStar	contained "^\s*\*$"
 syn match dCommentPlus	contained "^\s*+[^/]"me=e-1
 syn match dCommentPlus	contained "^\s*+$"
-syn region dBlockCommentString	contained start=+"+ end=+"+ end=+\*/+me=s-1,he=s-1 contains=dCommentStar,dUnicode,dEscSequence,@Spell
-syn region dNestedCommentString	contained start=+"+ end=+"+ end="+"me=s-1,he=s-1 contains=dCommentPlus,dUnicode,dEscSequence,@Spell
-syn region dLineCommentString		contained start=+"+ end=+$\|"+ contains=dUnicode,dEscSequence,@Spell
+if exists("d_comment_strings")
+    syn region dBlockCommentString	contained start=+"+ end=+"+ end=+\*/+me=s-1,he=s-1 contains=dCommentStar,dUnicode,dEscSequence,@Spell
+    syn region dNestedCommentString	contained start=+"+ end=+"+ end="+"me=s-1,he=s-1 contains=dCommentPlus,dUnicode,dEscSequence,@Spell
+    syn region dLineCommentString		contained start=+"+ end=+$\|"+ contains=dUnicode,dEscSequence,@Spell
+endif
 
 syn region dBlockComment	start="/\*"  end="\*/" contains=dBlockCommentString,dTodo,dCommentStartError,@Spell fold
 syn region dNestedComment	start="/+"  end="+/" contains=dNestedComment,dNestedCommentString,dTodo,@Spell fold
@@ -285,7 +292,8 @@ syn cluster dTokens add=dTokenString
 syn case ignore
 
 " HACK: to pick up 0..$
-syn match dDec		display "\.\$"
+" syn match dDec		display "\.\.\$"
+syn match dDec		display "\%(\.\.\)\@<=\s*\$"
 syn match dDec		display "\<\d[0-9_]*\(u\=l\=\|l\=u\=\)\>"
 
 " Hex number
@@ -301,9 +309,9 @@ syn match dBinary	display "\<0b[01_]\+\(u\=l\=\|l\=u\=\)\>"
 "floating point without the dot
 syn match dFloat	display "\<\d[0-9_]*\(fi\=\|l\=i\)\>"
 "floating point number, with dot, optional exponent
-syn match dFloat	display "\<\d[0-9_]*\.[0-9_]*\(e[-+]\=[0-9_]\+\)\=[fl]\=i\="
+syn match dFloat	display "\<\d[0-9_]*\.[0-9_]\+\(e[-+]\=[0-9_]\+\)\=[fl]\=i\="
 "floating point number, starting with a dot, optional exponent
-syn match dFloat	display "\(\.[0-9_]\+\)\(e[-+]\=[0-9_]\+\)\=[fl]\=i\=\>"
+syn match dFloat	display "\(\.\@<!\.[0-9_]\+\)\(e[-+]\=[0-9_]\+\)\=[fl]\=i\=\>"
 "floating point number, without dot, with exponent
 "syn match dFloat	display "\<\d\+e[-+]\=\d\+[fl]\=\>"
 syn match dFloat	display "\<\d[0-9_]*e[-+]\=[0-9_]\+[fl]\=\>"
