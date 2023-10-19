@@ -37,3 +37,23 @@ require('nvim-comment-frame').setup({
         },
     }
 })
+
+local opts = { noremap = true, silent = true }
+
+local keymap = vim.keymap
+
+local commentApi = require("Comment.api")
+local commentEsc = vim.api.nvim_replace_termcodes(
+    '<ESC>', true, false, true
+)
+keymap.set("v", "<C-/>", function()
+    vim.api.nvim_feedkeys(commentEsc, 'nx', false)
+    commentApi.toggle.linewise(vim.fn.visualmode())
+end);
+keymap.set("v", "<C-S-/>", function()
+    vim.api.nvim_feedkeys(commentEsc, 'nx', false)
+    commentApi.toggle.blockwise(vim.fn.visualmode())
+end);
+keymap.set("n", "<C-/>", commentApi.toggle.linewise.current, opts);
+keymap.set("i", "<C-/>", commentApi.toggle.linewise.current, opts);
+

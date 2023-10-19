@@ -10,6 +10,7 @@ local hintGit = [[
   _b_: Branches  
   _c_: Commits   
   _S_: Stash     
+  _d_: Diff      
                
   _q_: Quit      
 └             ┘
@@ -25,6 +26,7 @@ function M.hydra() return Hydra({
             { 'b', cmd 'Telescope git_branches' },
             { 'c', cmd 'Telescope git_commits' },
             { 'S', cmd 'Telescope git_stash' },
+            { 'd', cmd 'DiffviewOpen' },
             { 'q', nil, { exit = true, nowait = true } },
             { '<Esc>', nil, { exit = true, nowait = true, desc = false } },
         }

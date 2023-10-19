@@ -91,9 +91,14 @@ local footer = {
 	}
 }
 
-local plugins_gen = io.popen('fd -d 2 . $HOME"/.local/share/nvim/site/pack/packer" | head -n -2 | wc -l | tr -d "\n" ')
-local plugins = plugins_gen:read("*a")
-plugins_gen:close()
+-- local plugins_gen = io.popen('fd -d 2 . $HOME"/.local/share/nvim/site/pack/packer" | head -n -2 | wc -l | tr -d "\n" ')
+-- local plugins = plugins_gen:read("*a")
+-- plugins_gen:close()
+local plugins = 0
+
+if package.loaded["lazy"] then
+    plugins = #(require("lazy").plugins())
+end
 
 
 local footer_2 = {

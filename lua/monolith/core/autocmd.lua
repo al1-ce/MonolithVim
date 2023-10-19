@@ -1,14 +1,10 @@
 local cmd = vim.cmd;
 local exec = vim.api.nvim_exec  -- execute Vimscript
 
+-- TODO: rewrite in LUA
+
 cmd([[
 " Autobind
-
-augroup packer_user_config
-  autocmd!
-  autocmd BufWritePost plugins.lua source <afile> | PackerCompile
-augroup end
-
 " Disable highlight on entering insert
 " autocmd InsertEnter * set nohlsearch
 

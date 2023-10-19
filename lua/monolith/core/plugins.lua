@@ -1,287 +1,253 @@
 -- Plugin loading
 
-local packer_group = vim.api.nvim_create_augroup("Packer", { clear = true })
-vim.api.nvim_create_autocmd(
-    "BufWritePost",
-    { command = "source <afile> | PackerCompile", group = packer_group, pattern = "plugins.lua" }
-)
-
-local fn = vim.fn
-local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-if fn.empty(fn.glob(install_path)) > 0 then
-    packer_bootstrap = fn.system({
-        "git",
-        "clone",
-        "--depth",
-        "1",
-        "https://github.com/wbthomason/packer.nvim",
-        install_path,
-    })
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
 end
-vim.api.nvim_command("packadd packer.nvim")
+vim.opt.rtp:prepend(lazypath)
 
-require('packer').startup({ function(use)
+require('lazy').setup({
     -- ---------------------------- Package managers ---------------------------- --
-    -- Main package manager
-    use 'wbthomason/packer.nvim'
     -- LSP package manager
-    use 'williamboman/mason.nvim'
+    'williamboman/mason.nvim',
 
     -- -------------------------------- Libraries ------------------------------- --
     -- Async code
-    use 'lewis6991/impatient.nvim'
+    'lewis6991/impatient.nvim',
     -- Async rulez
-    use 'tpope/vim-dispatch'
+    'tpope/vim-dispatch',
     -- Simple :AsyncRun command
-    use 'skywind3000/asyncrun.vim'
+    'skywind3000/asyncrun.vim',
     -- > All the lua functions I don't want to write twice.
-    use 'nvim-lua/plenary.nvim'
+    'nvim-lua/plenary.nvim',
     -- web icons
-    use 'kyazdani42/nvim-web-devicons'
-    -- easily parse the command inputted by users
-    use 'winston0410/cmd-parser.nvim'
+    'kyazdani42/nvim-web-devicons',
+    -- easily parse the command inputted by rs
+    'winston0410/cmd-parser.nvim',
     -- ui components
-    use 'MunifTanjim/nui.nvim'
+    'MunifTanjim/nui.nvim',
     -- py
-    use 'roxma/vim-hug-neovim-rpc'
+    'roxma/vim-hug-neovim-rpc',
     -- yarp
-    use 'roxma/nvim-yarp'
+    'roxma/nvim-yarp',
     -- cp
-    use 'nixprime/cpsm'
+    'nixprime/cpsm',
 
     -- --------------------------------- Themes --------------------------------- --
-    use 'morhetz/gruvbox'
-    use 'luisiacc/gruvbox-baby'
-    use 'almo7aya/neogruvbox.nvim'
-    use 'savq/melange'
-    use 'catppuccin/nvim'
-    use 'folke/tokyonight.nvim'
-    use 'elvessousa/sobrio'
-    use 'yonlu/omni.vim'
-    
+    'morhetz/gruvbox',
+    'luisiacc/gruvbox-baby',
+    'almo7aya/neogruvbox.nvim',
+    'savq/melange',
+    'catppuccin/nvim',
+    'folke/tokyonight.nvim',
+    'elvessousa/sobrio',
+    'yonlu/omni.vim',
+
     -- --------------------------------- Syntax --------------------------------- --
-    use 'fladson/vim-kitty'
-    use 'tikhomirov/vim-glsl'
+    'fladson/vim-kitty',
+    'tikhomirov/vim-glsl',
 
     -- ------------------------------ File managers ----------------------------- --
-    use 'nvim-telescope/telescope.nvim'
+    'nvim-telescope/telescope.nvim',
     -- extensions:
-    use 'nvim-telescope/telescope-file-browser.nvim'
-    use 'nvim-telescope/telescope-vimspector.nvim'
-    use 'chip/telescope-software-licenses.nvim'
-    use 'crispgm/telescope-heading.nvim'
-    use 'nvim-telescope/telescope-packer.nvim'
-    use 'nvim-telescope/telescope-symbols.nvim'
-    -- use 'dharmx/telescope-media.nvim'
-    use 'zane-/howdoi.nvim'
-    use 'axieax/urlview.nvim'
+    'nvim-telescope/telescope-file-browser.nvim',
+    'nvim-telescope/telescope-vimspector.nvim',
+    'chip/telescope-software-licenses.nvim',
+    'crispgm/telescope-heading.nvim',
+    'nvim-telescope/telescope-symbols.nvim',
+    -- 'dharmx/telescope-media.nvim'
+    'zane-/howdoi.nvim',
+    'axieax/urlview.nvim',
     -- creates telescope pickers
-    use 'axkirillov/easypick.nvim'
+    'axkirillov/easypick.nvim',
     -- project manager
-    use "ahmedkhalf/project.nvim"
+    "ahmedkhalf/project.nvim",
+    "stevearc/oil.nvim",
 
     -- -------------------------------- Trees ----------------------------------- --
     -- file tree
-    use 'nvim-tree/nvim-tree.lua'
+    'nvim-tree/nvim-tree.lua',
     -- undo tree
-    use 'mbbill/undotree'
+    'mbbill/undotree',
     -- sidebar
-    use 'sidebar-nvim/sidebar.nvim'
+    'sidebar-nvim/sidebar.nvim',
     -- sidebar dap breakpoints
-    use 'sidebar-nvim/sections-dap'
+    'sidebar-nvim/sections-dap',
+    -- TodoTree
+    'AmeerTaweel/todo.nvim',
+    -- Better quickfix
+    'yorickpeterse/nvim-pqf',
+    -- Goto quickfix files
+    'yssl/QFEnter',
+    -- Project-wide rename
+    'windwp/nvim-spectre',
 
     -- ----------------------------------- LSP ---------------------------------- --
     -- Configs for the Nvim LSP client (:help lsp)
-    use 'neovim/nvim-lspconfig'
-    -- mason-lspconfig bridges mason.nvim with the lspconfig plugin
-    use 'williamboman/mason-lspconfig.nvim'
-    -- lsp but formatting
-    use 'jose-elias-alvarez/null-ls.nvim'
-    -- mason integration
-    use 'jayp0521/mason-null-ls.nvim'
+    'neovim/nvim-lspconfig',
+    -- lsp but formatting -- TODO: replace
+    'jose-elias-alvarez/null-ls.nvim',
     -- many cool features like hover diagnostic    
-    use 'glepnir/lspsaga.nvim'
-    -- nvim-dap is a Debug Adapter Protocol client implementation
-    use 'mfussenegger/nvim-dap'
-    -- dap ui
-    use 'rcarriga/nvim-dap-ui'
-    -- dap auto-setup
-    use 'jayp0521/mason-nvim-dap.nvim'
-    -- parser
-    use 'nvim-treesitter/nvim-treesitter'
-    -- linter
-    use 'mfussenegger/nvim-lint'
-    -- A completion engine plugin for neovim written in Lua
-    use 'hrsh7th/cmp-nvim-lsp'
-    use 'hrsh7th/cmp-path'
-    use 'hrsh7th/cmp-buffer'
-    use 'hrsh7th/cmp-cmdline'
-    use 'hrsh7th/nvim-cmp'
-    -- Popup snippets
-    use 'hrsh7th/cmp-vsnip'
-    use 'hrsh7th/vim-vsnip'
-    -- Auto-create colorscheme for missing format colors
-    use 'folke/lsp-colors.nvim'
-    -- Auto-close brackets
-    use 'windwp/nvim-autopairs'
-    -- json chemas
-    use 'b0o/schemastore.nvim'
-    -- Show function signature
-    use 'ray-x/lsp_signature.nvim' 
-    -- Show icons in snippets
-    use 'onsails/lspkind.nvim'
+    'nvimdev/lspsaga.nvim',
     -- Nvim lua api
-    use 'folke/neodev.nvim'
+    'folke/neodev.nvim',
+    -- Show function signature
+    'ray-x/lsp_signature.nvim',
+    -- Show icons in snippets
+    'onsails/lspkind.nvim',
+    -- parser
+    'nvim-treesitter/nvim-treesitter',
+    -- mason integration
+    'williamboman/mason-lspconfig.nvim',
+    'jayp0521/mason-null-ls.nvim',
+    'jayp0521/mason-nvim-dap.nvim',
+    -- ----------------------------------- DAP ---------------------------------- --
+    -- nvim-dap is a Debug Adapter Protocol client implementation
+    'mfussenegger/nvim-dap',
+    'rcarriga/nvim-dap-ui',
+    -- ---------------------------------- Lint --------------------------------- --
+    -- linter
+    'mfussenegger/nvim-lint',
+    -- ------------------------------ Autocomplete ----------------------------- --
+    -- A completion engine plugin for neovim written in Lua
+    'hrsh7th/cmp-nvim-lsp',
+    'hrsh7th/cmp-path',
+    'hrsh7th/cmp-buffer',
+    'hrsh7th/cmp-cmdline',
+    'hrsh7th/nvim-cmp',
+    -- Popup snippets
+    'hrsh7th/cmp-vsnip',
+    'hrsh7th/vim-vsnip',
+    -- Auto-create colorscheme for missing format colors
+    'folke/lsp-colors.nvim',
+    -- json chemas
+    'b0o/schemastore.nvim',
+    -- Auto-close brackets
+    'windwp/nvim-autopairs',
 
     -- ------------------------------- Languages -------------------------------- --
     -- Dart
-    use 'dart-lang/dart-vim-plugin'
-    -- use 'natebosch/vim-lsc'
-    -- use 'natebosch/vim-lsc-dart'
+    'dart-lang/dart-vim-plugin',
+    -- 'natebosch/vim-lsc'
+    -- 'natebosch/vim-lsc-dart'
 
     -- ------------------------------- Formatting ------------------------------- --
     -- Toggle comments
-    use 'numToStr/Comment.nvim'
+    'numToStr/Comment.nvim',
     -- Formatter runner
-    use 'lukas-reineke/lsp-format.nvim'
+    'lukas-reineke/lsp-format.nvim',
     -- Comment frame
-    use 's1n7ax/nvim-comment-frame'
+    's1n7ax/nvim-comment-frame',
     -- Alisgn text
-    use 'junegunn/vim-easy-align'
+    'junegunn/vim-easy-align',
+
+    -- -------------------------------- Powerline ------------------------------- --
+    -- powerline
+    'nvim-lualine/lualine.nvim',
+    -- Command suggestions
+    'gelguy/wilder.nvim',
+    -- Illuminate matching words
+    'RRethy/vim-illuminate',
+
+    -- --------------------------------- Popups --------------------------------- --
+    -- notification engine
+    'rcarriga/nvim-notify',
+    -- [WIP] An implementation of the Popup API from vim in Neovim
+    'nvim-lua/popup.nvim',
+
+    -- --------------------------------- Search --------------------------------- --
+    -- [0/10] /in -- Display number of search matches
+    'google/vim-searchindex',
+    -- range hightlight (:10,15)
+    'winston0410/range-highlight.nvim',
+    -- Jump with keys
+    'easymotion/vim-easymotion',
+
+    -- ---------------------------------- Tabs ---------------------------------- --
+    -- tab management
+    'nanozuki/tabby.nvim',
 
     -- ----------------------------------- GUI ---------------------------------- --
-    -- powerline
-    use 'nvim-lualine/lualine.nvim'
-    -- Command suggestions
-    use 'gelguy/wilder.nvim'
-
-    -- notification engine
-    use 'rcarriga/nvim-notify'
-    -- [WIP] An implementation of the Popup API from vim in Neovim
-    use 'nvim-lua/popup.nvim'
-
-    -- [0/10] /in -- Display number of search matches
-    use 'google/vim-searchindex'
-    -- range hightlight (:10,15)
-    use 'winston0410/range-highlight.nvim'
-    -- Colored background on #xxxxxx colors
-    use 'NvChad/nvim-colorizer.lua'
-
-    -- tab management
-    use 'nanozuki/tabby.nvim'
     -- scrollbar
-    use 'petertriho/nvim-scrollbar'
-    -- git signts
-    use 'lewis6991/gitsigns.nvim'
-    -- better search
-    use 'kevinhwang91/nvim-hlslens'
-
-    -- lsp progressbar
-    use {'j-hui/fidget.nvim', tag = 'legacy' }
-
-    -- Move splits
-    use 'sindrets/winshift.nvim'
-    -- Resize splits
-    use 'mrjones2014/smart-splits.nvim'
-
-    -- Toggle terminal
-    use { "akinsho/toggleterm.nvim", tag = '*' }
-
-    -- dashboard
-    use 'goolord/alpha-nvim'
-
-    -- remove background
-    use 'tribela/vim-transparent'
-
+    'petertriho/nvim-scrollbar',
     -- minimap
-    use { 'echasnovski/mini.map', branch = 'main' }
-    -- -------------------------------- PowerVim -------------------------------- --
-    -- Color picker
-    use 'ziontee113/color-picker.nvim'
-
-    -- cool smart surrounding
-    use 'tpope/vim-surround'
-    -- visit links
-    use 'xiyaowong/link-visitor.nvim'
-
-    -- Draw boxes
-    use 'jbyuki/venn.nvim'
-
+    { 'echasnovski/mini.map', version = '*' },
+    -- remove background
+    'tribela/vim-transparent',
+    -- lsp progressbar
+    {'j-hui/fidget.nvim', tag = 'legacy' },
     -- Emacs menus
-    use 'anuvyklack/hydra.nvim'
+    'anuvyklack/hydra.nvim',
 
-    -- TodoTree
-    use 'AmeerTaweel/todo.nvim'
 
-    -- Better quickfix
-    use 'yorickpeterse/nvim-pqf'
-    -- Goto quickfix files
-    use 'yssl/QFEnter'
+    -- ----------------------------------- GIT ---------------------------------- --
+    -- git signts (required by something i think)
+    'lewis6991/gitsigns.nvim',
+    -- git diff
+    "sindrets/diffview.nvim",
 
-    -- Preview markdown
-    use 'ellisonleao/glow.nvim'
-    -- Hacker scratchpad
-    use 'metakirby5/codi.vim'
+    -- --------------------------------- Splits --------------------------------- --
+    -- Move splits
+    'sindrets/winshift.nvim',
+    -- Resize splits
+    'mrjones2014/smart-splits.nvim',
 
-    -- Jump with keys
-    use 'easymotion/vim-easymotion'
+    -- -------------------------------- Terminal -------------------------------- --
+    -- Toggle terminal
+    { "akinsho/toggleterm.nvim", version = '*' },
 
+    -- ------------------------------- Utilities -------------------------------- --
+    -- Color picker
+    'ziontee113/color-picker.nvim',
+    -- Colored background on #xxxxxx colors
+    'NvChad/nvim-colorizer.lua',
+    -- cool smart surrounding
+    'tpope/vim-surround',
+    -- visit links
+    'xiyaowong/link-visitor.nvim',
     -- Toggle tags
-    use 'nguyenvukhang/nvim-toggler'
-
-    -- Session manager
-    use 'natecraddock/sessions.nvim'
-    -- Better session manager
-    use 'EricDriussi/remember-me.nvim'
-
-    -- remember last edited line
-    use 'ethanholz/nvim-lastplace'
-
-    -- mkdir -r
-    use 'jghauser/mkdir.nvim'
-    -- clipboard
-    use 'AckslD/nvim-neoclip.lua' 
-
-    -- Project-wide rename
-    use 'windwp/nvim-spectre'
-
+    'nguyenvukhang/nvim-toggler',
     -- Move lines and characters
-    use 'fedepujol/move.nvim'
+    'fedepujol/move.nvim',
 
+    -- ------------------------------- Vim autos -------------------------------- --
+    -- Session manager
+    'natecraddock/sessions.nvim',
+    -- Better session manager
+    'EricDriussi/remember-me.nvim',
+    -- remember last edited line
+    'ethanholz/nvim-lastplace',
+    -- mkdir -r
+    'jghauser/mkdir.nvim',
+    -- clipboard
+    'AckslD/nvim-neoclip.lua',
+
+    -- -------------------------------- Viewers --------------------------------- --
     -- Preview markdown
-    use({
+    {
         "iamcco/markdown-preview.nvim",
-        run = function() vim.fn["mkdp#util#install"]() end,
-    })
-
-    -- Sudo edit/save
-    use 'lambdalisue/suda.vim'
-
-    if packer_bootstrap then
-        require("packer").sync()
-    end
-end,
-    config = {
-        display = {
-            open_fn = require("packer.util").float,
-        },
-        profile = {
-            enable = true,
-            threshold = 1, -- the amount in ms that a plugins load time must be over for it to be included in the profile
-        },
+        cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+        ft = { "markdown" },
+        build = function() vim.fn["mkdp#util#install"]() end,
     },
+    -- Preview markdown
+    {"ellisonleao/glow.nvim", config = true, cmd = "Glow"},
+
+    -- ---------------------------------- Misc ---------------------------------- --
+    -- dashboard
+    'goolord/alpha-nvim',
+    -- Sudo edit/save
+    'lambdalisue/suda.vim',
+    -- Draw boxes
+    'jbyuki/venn.nvim',
+    -- Hacker scratchpad
+    'metakirby5/codi.vim',
 })
 
---[[
-    CocList:
-        coc-prettier
-        coc-pairs
-        coc-json
-        coc-dlang
-]]
-
---[[
-    TO CONSIDER:
-    https://github.com/pwntester/octo.nvim
-    https://github.com/ray-x/sad.nvim
-]]

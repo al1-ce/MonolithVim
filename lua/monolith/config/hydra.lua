@@ -50,13 +50,13 @@ Hydra({
         { 'g', callback.hydraCallback('git') },
         { 'b', callback.hydraCallback('build') },
 
-        { 'd', cmd 'Alpha' }, 
+        { 'd', cmd 'Alpha' },
         { 'p', callback.hydraCallback('packages') },
         { 'v', callback.hydraCallback('view') },
 
         { 'c', callback.hydraCallback('config') },
         { 'o', callback.hydraCallback('options') },
-        { 'h', callback.hydraCallback('manual') }, 
+        { 'h', callback.hydraCallback('manual') },
 
         { 's', callback.hydraCallback('window') },
         { 'w', cmd 'update' },

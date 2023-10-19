@@ -31,7 +31,7 @@ local hintPackages = [[
   _c_: Clean                  
   _s_: Sync                   
   _u_: Update                 
-  _l_: List                   
+  _g_: GUI                    
           Language          
   _m_: Mason lsp manager      
                             
@@ -45,11 +45,11 @@ function M.hydra() return Hydra({
     config = colors.passAllow(),
     mode = '',
     heads = {
-        { 'i', cmd 'PackerInstall' },
-        { 'c', cmd 'PackerClean' },
-        { 's', cmd 'PackerSync' },
-        { 'u', cmd 'PackerUpdate' },
-        { 'l', cmd 'Telescope packer' },
+        { 'i', cmd 'Lazy install' },
+        { 'c', cmd 'Lazy clean' },
+        { 's', cmd 'Lazy sync' },
+        { 'u', cmd 'Lazy update' },
+        { 'g', cmd 'Lazy' },
 
         { 'm', cmd 'Mason' },
 

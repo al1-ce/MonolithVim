@@ -101,11 +101,12 @@ local footers = {
 local function genfooter()
     local date = os.date("  %d/%m/%Y ")
     local time = os.date("  %H:%M:%S ")
-
-    local plugins_gen = io.popen('fd -d 2 . $HOME"/.local/share/nvim/site/pack/packer" | head -n -2 | wc -l | tr -d "\n" ')
-    local plugins = plugins_gen:read("*a")
-    plugins_gen:close()
     
+    -- OUTDATED
+    -- local plugins_gen = io.popen('fd -d 2 . $HOME"/.local/share/nvim/site/pack/packer" | head -n -2 | wc -l | tr -d "\n" ')
+    -- local plugins = plugins_gen:read("*a")
+    -- plugins_gen:close()
+    local plugins = 0
   
     local v = vim.version()
     local version = "  v" .. v.major .. "." .. v.minor .. "." .. v.patch

@@ -8,266 +8,238 @@ g.gruvbox_baby_transparent_mode = 1
 
 vim.cmd.colorscheme('gruvbox')
 
-vim.cmd[[
-fun! s:AddCustomFunctionHighlight()
-    " syn match   dCustomFunc     "\w\+\s*(\@="
-    syn match   dCustomFunc     "\zs\(\k\w*\)*\s*\ze("
-endfun
-fun! s:AddCustomDFunctionHighlight()
-    " syn match   dCustomFunc     "\w\+\s*(\@="
-    syn match   dCustomFunc     "\zs\(\k\w*\)*\s*\ze("
-    syn match   dCustomDFunc     "\zs\(\k\w*\)*\ze\!"
-endfun
+-------------------- Functions --------------------------------------
 
-autocmd BufEnter *.c,*.h,
-    \*.cpp,*.hpp,
-    \*.cs,*.java,*.class,*.kt,*.kts,*.ktm,
-    \*.dart,*.js,*.ts,*.jspp,*.jpp,
-    \*.py,*.lua,*.swift,*.go,
-    \*.rs,*.rlib,*.hx,*.r,*.rb,*.sdl
-    \ call s:AddCustomFunctionHighlight()
+local autocmd = vim.api.nvim_create_autocmd
 
-" Special because of template!call
-autocmd BufEnter *.d call s:AddCustomDFunctionHighlight()
+-- https://neovim.io/doc/user/api.html#nvim_set_hl()
+-- Parameters:
+--     {name} Highlight group name, e.g. "ErrorMsg"
+--     {val} Highlight definition map, accepts the following keys:
+-- fg (or foreground): color name or "#RRGGBB", see note.
+-- bg (or background): color name or "#RRGGBB", see note.
+-- sp (or special): color name or "#RRGGBB"
+-- blend: integer between 0 and 100
+-- bold: boolean
+-- standout: boolean
+-- underline: boolean
+-- undercurl: boolean
+-- underdouble: boolean
+-- underdotted: boolean
+-- underdashed: boolean
+-- strikethrough: boolean
+-- italic: boolean
+-- reverse: boolean
+-- nocombine: boolean
+-- link: name of another highlight group to link to, see :hi-link.
+-- default: Don't override existing definition :hi-default
+-- ctermfg: Sets foreground of cterm color ctermfg
+-- ctermbg: Sets background of cterm color ctermbg
+-- cterm: cterm attribute map, like highlight-args.
+-- force: if true force update the highlight group when it exists.
+local function hi(name, val)
+    vim.api.nvim_set_hl(0, name, val)
+end
 
-hi def link dCustomFunc Function
-hi def link dCustomDFunc Function
+-- see hi
+local function hiAll(names, val)
+    for i = 1, #names do
+        hi(names[i], val)
+    end
+end
 
-hi! link LspSagaCodeActionBorder  LspSagaDiagnosticBorder
-hi! link LspSagaLspFinderBorder  LspSagaDiagnosticBorder
-hi! link FinderSpinnerBorder  LspSagaDiagnosticBorder
-hi! link DefinitionBorder  LspSagaDiagnosticBorder
-hi! link LspSagaHoverBorder  LspSagaDiagnosticBorder
-hi! link LspSagaRenameBorder  LspSagaDiagnosticBorder
-hi! link LspSagaSignatureHelpBorder  LspSagaDiagnosticBorder
-hi! link LSOutlinePreviewBorder  LspSagaDiagnosticBorder
-hi! link LspsagaGroupName  LspSagaDiagnosticBorder
-hi! link LspSagaDiagnosticError  LspSagaDiagnosticBorder
+local function setft(ftype)
+    vim.bo.filetype = ftype
+end
 
-fun! s:DetectShebangPattern()
-    if getline(1) == '#!/usr/bin/env node'
-        set ft=javascript
-        call s:AddCustomFunctionHighlight()
-    endif
-    if getline(1) == '#!/usr/bin/rdmd'
-        set ft=d
-        call s:AddCustomFunctionHighlight()
-    endif
-    if getline(1) == '#!/usr/bin/rund'
-        set ft=d
-        call s:AddCustomFunctionHighlight()
-    endif
-    if getline(1) == '#!/usr/bin/env dub'
-        set ft=d
-        call s:AddCustomFunctionHighlight()
-    endif
-    if getline(1) == '#!/usr/bin/env rdmd'
-        set ft=d
-        call s:AddCustomFunctionHighlight()
-    endif
-    if getline(1) == '#!/usr/bin/env rund'
-        set ft=d
-        call s:AddCustomFunctionHighlight()
-    endif
-    if getline(1) == '#!/bin/env node'
-        set ft=javascript
-        call s:AddCustomFunctionHighlight()
-    endif
-    if getline(1) == '#!/bin/rdmd'
-        set ft=d
-        call s:AddCustomFunctionHighlight()
-    endif
-    if getline(1) == '#!/bin/rund'
-        set ft=d
-        call s:AddCustomFunctionHighlight()
-    endif
-    if getline(1) == '#!/bin/env dub'
-        set ft=d
-        call s:AddCustomFunctionHighlight()
-    endif
-    if getline(1) == '#!/bin/env rdmd'
-        set ft=d
-        call s:AddCustomFunctionHighlight()
-    endif
-    if getline(1) == '#!/bin/env rund'
-        set ft=d
-        call s:AddCustomFunctionHighlight()
-    endif
+local shebangList = {
+    ["node"] = "javascript",
+    ["rdmd"] = "d",
+    ["rund"] = "d",
+    ["dub"] = "d"
+}
 
-endfun
+local function setCustomHighlight(lang)
+    vim.cmd([[syn match   dCustomFunc     "\zs\(\k\w*\)*\s*\ze("]])
 
-autocmd BufNewFile,BufRead * call s:DetectShebangPattern()
+    if lang == "d" then
+        vim.cmd([[syn match   dCustomDFunc     "\zs\(\k\w*\)*\ze\!"]])
+    end
+end
 
-au BufNewFile,BufRead,BufReadPost *.sdl set syntax=sdlang
-au BufNewFile,BufRead,BufReadPost *.jpp set syntax=jspp
-au BufNewFile,BufRead,BufReadPost *.js++ set syntax=jspp
-au BufNewFile,BufRead,BufReadPost *.jspp set syntax=jspp
-]]
+local function detectShebangPattern()
+    for k, v in pairs(shebangList) do
+        local sb = vim.api.nvim_buf_get_lines(0, 0, -1, false)[1]
+        if sb == "#!/bin/" .. k or
+           sb == "#!/usr/bin/" .. k or
+           sb == "#!/bin/env " .. k or
+           sb == "#!/usr/bin/env " .. k then
+            setft(v)
+            setCustomHighlight(v)
+        end
+    end
+end
 
-vim.cmd([[
-if g:colors_name == 'gruvbox' 
-    execute 'let style_normal="cterm=NONE gui=NONE ctermfg=15 ctermbg=0 guifg=' . g:terminal_color_{15} . ' guibg=' . g:terminal_color_{0} . '"'
-    " execute 'let style_normal="cterm=NONE gui=NONE ctermfg=15 ctermbg=0 guifg=' . g:terminal_color_{15} . ' guibg=' . g:terminal_color_{0} . '"'
-    execute 'let style_text="cterm=NONE gui=NONE ctermfg=15 guifg=' . g:terminal_color_{15} . '"'
-    execute 'let style_function="cterm=NONE gui=NONE ctermfg=12 guifg=' . g:terminal_color_{12} . '"'
-    execute 'let style_keyword="cterm=NONE gui=NONE ctermfg=9 guifg=' . g:terminal_color_{9} . '"'
-    execute 'let style_type="cterm=italic gui=italic ctermfg=9 guifg=' . g:terminal_color_{9} . '"'
-    execute 'let style_const="cterm=NONE gui=NONE ctermfg=13 guifg=' . g:terminal_color_{13} . '"'
-    execute 'let style_string="cterm=NONE gui=NONE ctermfg=10 guifg=' . g:terminal_color_{10} . '"'
-    execute 'let style_macro="cterm=NONE gui=NONE ctermfg=14 guifg=' . g:terminal_color_{14} . '"'
-    execute 'let style_identifier="cterm=NONE gui=NONE ctermfg=15 guifg=#d5c4a1"'
-    execute 'let style_special="cterm=NONE gui=NONE ctermfg=11 guifg=#fe8019"'
-    execute 'let style_tag="cterm=NONE gui=NONE ctermfg=7 guifg=#7c6f63"'
-    execute 'let style_comment="cterm=italic gui=italic ctermfg=7 guifg=#7c6f63"'
+local function concat(arrays)
+    local nt = {}
+    for _,a in ipairs(arrays) do
+        for _,v in ipairs(a) do
+            table.insert(nt, v)
+        end
+    end
+    return nt
+end
 
-    execute 'let style_sign_warning="cterm=NONE gui=NONE ctermbg=11 guibg=#352C28"'
-    execute 'let style_sign_error="cterm=NONE gui=NONE ctermbg=1 guibg=#302828"'
-    execute 'let style_sign_warningfg="cterm=NONE gui=NONE ctermfg=11 ctermbg=3 guibg=#352C28 guifg=#fe8019"'
-    execute 'let style_sign_errorfg="cterm=NONE gui=NONE ctermfg=9 ctermbg=1 guibg=#302828 guifg=#fb4934"'
-    execute 'let style_sign_breakpoint="cterm=NONE gui=NONE ctermbg=4 guibg=#282830"'
-    execute 'let style_sign_breakpointfg="cterm=NONE gui=NONE ctermfg=12 ctermbg=4 guibg=#283030 guifg=#83a598"'
+-------------------- Autocmd --------------------------------------
+do -- start autocmd block
+    -- Languages
+    local c = {"*.c", "*.h"}
+    local cpp = {"*.cpp", "*.hpp"}
+    local cs = {"*.cs"}
+    local d = {"*.d"}
+    local dart = {"*.dart"}
+    local haxe = {"*.jx"}
+    local go = {"*.go"}
+    local java = {"*.java", "*.class"}
+    local js = {"*.js"}
+    local jspp = {"*.jspp", "*.jsp"}
+    local kotlin = {"*.kt","*.kts","*.ktm"}
+    local lua = {"*.lua"}
+    local py = {"*.py"}
+    local rust = {"*.rs"}
+    local sdl = {"*.sdl"}
+    local swift = {"*.swift"}
+    local ts = {"*.ts"}
 
-    execute 'hi Normal ' . style_normal
-    execute 'hi NormalFloat ' . style_normal
-    execute 'hi FloatBorder ' . style_normal
+    -- Templates
+    -- D templates, template!val and template!(val)
+    autocmd({"BufEnter"}, { pattern = concat({d}), callback = function() setCustomHighlight("d") end })
+    -- C++ templates, template<val>, no need for custom
+    autocmd({"BufEnter"}, { pattern = concat({cpp, cs, dart, haxe, java, jspp, kotlin, rust, swift, ts}), callback = function() setCustomHighlight("") end })
+    -- go templates, template[val], no need for custom
+    autocmd({"BufEnter"}, { pattern = concat({go}), callback = function() setCustomHighlight("go") end })
+    -- No templates
+    autocmd({"BufEnter"}, { pattern = concat({c, js, lua, py, sdl}), callback = function() setCustomHighlight("") end })
 
-    execute 'hi Function ' . style_function
+    -- Shebang
+    autocmd({"BufNewFile", "BufRead"}, { pattern = {"*"}, callback = detectShebangPattern })
 
-    execute 'hi Identifier ' . style_identifier
-    execute 'hi Structure ' . style_identifier
-    execute 'hi Delimiter ' . style_identifier
+    -- Set filetypes
+    autocmd({"BufNewFile", "BufRead", "BufReadPost"}, {pattern = {"*.sdl"}, callback = function() setft("sdlang") end})
+    autocmd({"BufNewFile", "BufRead", "BufReadPost"}, {pattern = {"*.jpp", "*.jspp"}, callback = function() setft("sdlang") end})
+end -- end autocmd block
 
-    execute 'hi Label ' . style_keyword
-    execute 'hi Conditional ' . style_keyword
-    execute 'hi Debug ' . style_keyword
-    execute 'hi Exception ' . style_keyword
-    execute 'hi Include ' . style_keyword
-    execute 'hi Repeat ' . style_keyword
-    execute 'hi StorageClass ' . style_keyword
-    execute 'hi Structure ' . style_keyword
-    execute 'hi Typedef ' . style_keyword
-    execute 'hi Keyword ' . style_keyword
-    execute 'hi Operator ' . style_keyword
-    execute 'hi Statement ' . style_keyword
+-------------------- Highlight --------------------------------------
 
-    execute 'hi Type ' . style_type
+-- Custom function highlight
+hiAll({"dCustomFunc", "dCustomDFunc"}, {link = "Function"})
 
-    execute 'hi Constant ' . style_const
-    execute 'hi Boolean ' . style_const
-    execute 'hi Number ' . style_const
-    execute 'hi Float ' . style_const
+-- Borders
+hiAll({
+    "LspSagaCodeActionBorder",
+    "LspSagaLspFinderBorder",
+    "FinderSpinnerBorder",
+    "DefinitionBorder",
+    "LspSagaHoverBorder",
+    "LspSagaRenameBorder",
+    "LspSagaSignatureHelpBorder",
+    "LSOutlinePreviewBorder",
+    "LspSagaGroupName",
+    "LspSagaDiagnosticError",
+}, {link = "LspSagaDiagnosticBorder"})
 
-    execute 'hi String ' . style_string
-    execute 'hi Character ' . style_string
+-- vim.illuminate
 
-    execute 'hi Special ' . style_special
-    execute 'hi SpecialChar ' . style_special
+local illuminated_col = {bg = "#3c3836", ctermbg = 8}
+local illuminated_nil = {}
 
-    execute 'hi PreProc ' . style_macro
-    execute 'hi Define ' . style_macro
-    execute 'hi Macro ' . style_macro
-    execute 'hi Precondit ' . style_macro
+hiAll({"IlluminatedWordText"}, illuminated_nil)
+hiAll({"IlluminatedWordRead", "IlluminatedWordWrite"}, illuminated_col)
 
-    execute 'hi Todo ' . style_tag
-    execute 'hi Tag ' . style_tag
+-- hydra
 
-    execute 'hi Comment ' . style_comment
+hi("HydraRed",      {fg = g.terminal_color_1, ctermfg = 1})
+hi("HydraBlue",     {fg = g.terminal_color_12, ctermfg = 12})
+hi("HydraAmaranth", {fg = g.terminal_color_5, ctermfg = 5})
+hi("HydraTeal",     {fg = g.terminal_color_14, ctermfg = 14})
+hi("HydraPink",     {fg = g.terminal_color_13, ctermfg = 13})
 
-    " Common
-    hi Search guifg=none guibg=none gui=reverse
+-- custom gruv colors
 
-    " PQF
-    execute 'hi Error ' . style_keyword
-    execute 'hi DiagnosticError ' . style_keyword
+if g.colors_name == 'gruvbox' then
+    local style_normal      = {fg = g.terminal_color_15, ctermfg = 15}
+    local style_function    = {fg = g.terminal_color_12, ctermfg = 12}
+    local style_keyword     = {fg = g.terminal_color_9, ctermfg = 9}
+    local style_type        = {fg = g.terminal_color_9, ctermfg = 9, italic = true}
+    local style_const       = {fg = g.terminal_color_13, ctermfg = 13}
+    local style_string      = {fg = g.terminal_color_10, ctermfg = 10}
+    local style_macro       = {fg = g.terminal_color_14, ctermfg = 14}
+    local style_identifier  = {fg = "#d5c4a1", ctermfg = 15}
+    local style_special     = {fg = "#fe8019", ctermfg = 11}
+    local style_tag         = {fg = "#7c6f63", ctermfg = 7}
+    local style_comment     = {fg = "#7c6f63", ctermfg = 7, italic = true}
 
-    execute 'hi Directory ' . style_function
-    execute 'hi DiagnosticInfo ' . style_function
+    local style_sign_warning    = {bg = "#352C28", ctermbg = 11}
+    local style_sign_error      = {bg = "#302828", ctermbg = 1}
+    local style_sign_warning_fg = {fg = "#fe8019", bg = "#352C28", ctermfg = 11, ctermbg = 3}
+    local style_sign_error_fg   = {fg = "#fb4932", bg = "#302828", ctermfg = 9, ctermbg = 1}
+    local style_breakpoint      = {bg = "#282830", ctermbg = 4}
+    local style_breakpoint_fg   = {fg = "#83a598", bg = "#283030", ctermfg = 12, ctermbg = 4}
 
-    execute 'hi DiagnosticWarn ' . style_special
+    -- common syntax
 
-    execute 'hi DiagnosticHint ' . style_macro
+    hiAll({"Normal", "NormalFloat", "FloatBorder"}, style_normal)
+    hiAll({"Function"}, style_function)
+    hiAll({"Identifier", "Delimiter"}, style_identifier)
+    hiAll({"Label", "Conditional", "Debug", "Exception", "Include", "Repeat"}, style_keyword)
+    hiAll({"StorageClass", "Structure", "Typedef", "Keyword", "Operator", "Statement"}, style_keyword)
+    hiAll({"Type"}, style_type)
+    hiAll({"Constant", "Boolean", "Number", "Float"}, style_const)
+    hiAll({"String", "Character"}, style_string)
+    hiAll({"Special", "SpecialChar"}, style_special)
+    hiAll({"PreProc", "Define", "Macro", "Precondit"}, style_macro)
+    hiAll({"Todo", "Tag"}, style_tag)
+    hiAll({"Comment"}, style_comment)
 
-    execute 'hi LspSagaDiagnosticBorder ' . style_normal
+    hiAll({"Search"}, {reverse = true})
 
-    execute 'hi DiagnosticSignError ' . style_sign_error
-    execute 'hi DiagnosticSignWarn ' . style_sign_warning
-    execute 'hi def DiagnosticSignErrorNumber ' . style_sign_errorfg
-    execute 'hi def DiagnosticSignWarnNumber ' . style_sign_warningfg
+    -- PQF && DAP
 
-    execute 'hi def DapSignBreakpoint ' . style_sign_breakpoint
-    execute 'hi def DapSignStopped ' . style_sign_error
-    execute 'hi def DapSignBreakpointNumber ' . style_sign_breakpointfg
-    execute 'hi def DapSignStoppedNumber ' . style_sign_errorfg
+    hiAll({"LspSagaDiagnosticBorder"}, style_normal)
 
-    execute 'hi CmpItemAbbrDeprecated ' . style_comment
-    execute 'hi CmpItemKindSnippet ' . style_keyword 
+    hiAll({"Error", "DiagnosticError"}, style_keyword)
+    hiAll({"Directory", "DiagnosticInfo"}, style_function)
+    hiAll({"DiagnosticWarn"}, style_special)
+    hiAll({"DiagnosticHint"}, style_macro)
 
-    execute 'hi CmpItemAbbrMatch ' . style_identifier
-    execute 'hi CmpItemAbbrMatchFuzzy ' . style_identifier
+    hiAll({"DiagnosticSignError", "DapSignStopped"}, style_sign_error)
+    hiAll({"DiagnosticSignWarn"}, style_sign_warning)
+    hiAll({"DiagnosticSignErrorNumber", "DapSignStoppedNumber"}, style_sign_error_fg)
+    hiAll({"DiagnosticSignWarnNumber"}, style_sign_warning_fg)
 
-    execute 'hi CmpItemKindText ' . style_text
-    execute 'hi CmpItemKindField ' . style_text
-    execute 'hi CmpItemKindVariable ' . style_text
-    execute 'hi CmpItemKindOperator ' . style_text
-    execute 'hi CmpItemKindTypeParameter ' . style_text
+    hiAll({"DapSignBreakpoint"}, style_breakpoint)
+    hiAll({"DapSignBreakpointNumber"}, style_breakpoint_fg)
 
-    execute 'hi CmpItemKindValue ' . style_const
-    execute 'hi CmpItemKindEnumMember ' . style_const
-    execute 'hi CmpItemKindColor ' . style_const
-    execute 'hi CmpItemKindConstant ' . style_const
-    execute 'hi CmpItemKindEvent ' . style_const
-    
-    execute 'hi CmpItemKindFile ' . style_string
-    execute 'hi CmpItemKindReference ' . style_string
-    execute 'hi CmpItemKindFolder ' . style_string
+    -- CMP
 
-    execute 'hi CmpItemKindMethod ' . style_function
-    execute 'hi CmpItemKindFunction ' . style_function
-    execute 'hi CmpItemKindConstructor ' . style_function
-    execute 'hi CmpItemKindProperty ' . style_function
+    hiAll({"CmpItemKindText", "CmpItemKindField", "CmpItemKindValue", "CmpItemKindOperator", "CmpItemKindTypeParameter"}, style_normal)
+    hiAll({"CmpItemKindSnippet", "CmpItemKindKeyword", "CmpItemKindUnit", "CmpItemKindEnum"}, style_keyword)
+    hiAll({"CmpItemAbbrDeprecated"}, style_comment)
+    hiAll({"CmpItemAbbrMatch", "CmpItemAbbrMatchFuzzy"}, style_identifier)
+    hiAll({"CmpItemKindValue", "CmpItemKindEnumMember", "CmpItemKindColor", "CmpItemKindConstant", "CmpItemKindEvent"}, style_const)
+    hiAll({"CmpItemKindFile", "CmpItemKindReference", "CmpItemKindFolder"}, style_string)
+    hiAll({"CmpItemKindMethod", "CmpItemKindFunction", "CmpItemKindConstructor", "CmpItemKindProperty"}, style_function)
+    hiAll({"CmpItemKindClass", "CmpItemKindStruct", "CmpItemKindInterface", "CmpItemKindModule"}, style_special)
 
-    execute 'hi CmpItemKindKeyword ' . style_keyword 
-    execute 'hi CmpItemKindUnit ' . style_keyword
-    execute 'hi CmpItemKindEnum ' . style_keyword
-    
-    execute 'hi CmpItemKindClass ' . style_special
-    execute 'hi CmpItemKindStruct ' . style_special
-    execute 'hi CmpItemKindInterface ' . style_special
-    execute 'hi CmpItemKindModule ' . style_special
+    vim.cmd([[
+        sign define DiagnosticSignError text=E texthl=DiagnosticSignError linehl=DiagnosticSignError numhl=DiagnosticSignErrorNumber
+        sign define DiagnosticSignWarn text=W texthl=DiagnosticSignWarn linehl=DiagnosticSignWarn numhl=DiagnosticSignWarnNumber
+        sign define DiagnosticSignInfo text=I texthl=DiagnosticSignInfo linehl= numhl=DiagnosticSignInfo
+        sign define DiagnosticSignHint text=H texthl=DiagnosticSignHint linehl= numhl=DiagnosticSignHint
+
+        sign define DapBreakpoint text=B texthl=DapSignBreakpoint linehl=DapSignBreakpoint numhl=DapSignBreakpointNumber
+        sign define DapStopped text=S texthl=DapSignStopped linehl=DapSignStopped numhl=DapSignStoppedNumber
+    ]])
+end
 
 
-    sign define DiagnosticSignError text=E texthl=DiagnosticSignError linehl=DiagnosticSignError numhl=DiagnosticSignErrorNumber
-    sign define DiagnosticSignWarn text=W texthl=DiagnosticSignWarn linehl=DiagnosticSignWarn numhl=DiagnosticSignWarnNumber
-    sign define DiagnosticSignInfo text=I texthl=DiagnosticSignInfo linehl= numhl=DiagnosticSignInfo
-    sign define DiagnosticSignHint text=H texthl=DiagnosticSignHint linehl= numhl=DiagnosticSignHint
-
-    sign define DapBreakpoint text=B texthl=DapSignBreakpoint linehl=DapSignBreakpoint numhl=DapSignBreakpointNumber
-    sign define DapStopped text=S texthl=DapSignStopped linehl=DapSignStopped numhl=DapSignStoppedNumber
-endif
-]])
-
--- vim.cmd([[hi FloatBorder guibg=NONE]]) -- if you don't want weird border background colors around the popup.
-
--- local function changeColorScheme()
---     local style_normal = { fg = g.terminal_color_15, ctermfg=15, bg = nil, ctermbg=nil, gui=nil, cterm=nil }
---     local style_function = { fg = nil, ctermfg=12, bg = nil, ctermbg=nil, gui=nil, cterm=nil }
---     local style_identifier = { fg = nil, ctermfg=12, bg = nil, ctermbg=nil, gui=nil, cterm=nil }
---     local style_keyword = { fg = nil, ctermfg=12, bg = nil, ctermbg=nil, gui=nil, cterm=nil }
---     local style_type = { fg = nil, ctermfg=12, bg = nil, ctermbg=nil, gui=nil, cterm=nil }
---     local style_const = { fg = nil, ctermfg=12, bg = nil, ctermbg=nil, gui=nil, cterm=nil }
---     local style_string = { fg = nil, ctermfg=12, bg = nil, ctermbg=nil, gui=nil, cterm=nil }
---     local style_macro = { fg = nil, ctermfg=12, bg = nil, ctermbg=nil, gui=nil, cterm=nil }
---     local style_special = { fg = nil, ctermfg=12, bg = nil, ctermbg=nil, gui=nil, cterm=nil }
---     local style_tag = { fg = nil, ctermfg=12, bg = nil, ctermbg=nil, gui=nil, cterm=nil }
---     local style_comment = { fg = nil, ctermfg=12, bg = nil, ctermbg=nil, gui=nil, cterm=nil }
---     if (g.colors_name == "gruvbox") then
---         local style_special = { fg = nil, ctermfg=12, bg = nil, ctermbg=nil, gui=nil, cterm=nil }
---         local style_tag = { fg = nil, ctermfg=12, bg = nil, ctermbg=nil, gui=nil, cterm=nil }
---         local style_comment = { fg = nil, ctermfg=12, bg = nil, ctermbg=nil, gui=nil, cterm=nil }
---     end
---     vim.api.nvim_set_hl(0, 'Function', style_function)
--- end
-
--- vim.api.nvim_create_autocmd({ "ColorScheme"}, { callback = changeColorScheme})
-
--- vim.cmd.colorscheme('gruvbox')

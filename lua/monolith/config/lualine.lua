@@ -23,7 +23,6 @@ require('lualine').setup {
                 -- "undotree",
                 -- "SidebarNvim",
                 -- "TelescopePrompt",
-                -- "packer",
                 -- "toggleterm"
             },
             winbar = {},

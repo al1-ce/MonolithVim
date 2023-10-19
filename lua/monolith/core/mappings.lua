@@ -35,6 +35,14 @@ keymap.set('n', '<S-Space>', '<C-u>', opts)
 
 keymap.set('n', '<A-u>', '<C-u>', opts)
 keymap.set("i", "<A-u>", "<Space>", opts)
+
+keymap.set('n', '<PageDown>', '<C-d>', opts)
+keymap.set("n", "<PageUp>", "<C-u>", opts)
+keymap.set('v', '<PageDown>', '<C-d>', opts)
+keymap.set("v", "<PageUp>", "<C-u>", opts)
+keymap.set('i', '<PageDown>', '<Esc><C-d>i', opts)
+keymap.set("i", "<PageUp>", "<Esc><C-u>i", opts)
+
 keymap.set("", "q", "<nop>", opts)
 keymap.set("", "<C-z>", "<nop>", opts)
 
@@ -53,16 +61,6 @@ keymap.set("n", "<A-left>", "<C-w>h", opts)
 keymap.set("n", "<A-down>", "<C-w>j", opts)
 keymap.set("n", "<A-up>", "<C-w>k", opts)
 keymap.set("n", "<A-right>", "<C-w>l", opts)
--- resizing panes
-keymap.set("n", "<A-C-left>", function() require('smart-splits').resize_left(2) end, opts)
-keymap.set("n", "<A-C-down>", function() require('smart-splits').resize_down(2) end, opts)
-keymap.set("n", "<A-C-up>", function() require('smart-splits').resize_up(2) end, opts)
-keymap.set("n", "<A-C-right>", function() require('smart-splits').resize_right(2) end, opts)
--- moving panes
-keymap.set("n", "<A-S-left>", "<cmd>WinShift left<cr>", opts)
-keymap.set("n", "<A-S-down>", "<cmd>WinShift down<cr>", opts)
-keymap.set("n", "<A-S-up>", "<cmd>WinShift up<cr>", opts)
-keymap.set("n", "<A-S-right>", "<cmd>WinShift right<cr>", opts)
 
 -- ctrl del
 keymap.set("", "<C-Del>", '"_dw', opts);
@@ -75,7 +73,7 @@ keymap.set('i', '<S-ScrollWheelDown>', '<C-o>3zl', opts)
 
 keymap.set('i', '<Esc>', '<Esc>l', opts);
 
-function lineHome()
+local function lineHome()
     local x = vim.fn.col('.')
     vim.fn.execute('normal ^')
     if x == vim.fn.col('.') then
@@ -83,7 +81,7 @@ function lineHome()
     end
 end
 
-function lineEnd()
+local function lineEnd()
     local x = vim.fn.col('.')
     vim.fn.execute('normal g_')
     -- vim.fn.execute('normal! \\<Right>')
@@ -107,10 +105,6 @@ keymap.set('v', "<End>", lineEnd, opts)
 -- backspace to black hole buffer
 keymap.set("n", "<BS>", '"_X', opts);
 
--- nop
-keymap.set("n", "<C-i>", "i<Right>_<Esc>r", opts)
-keymap.set("n", "<Tab>", "<nop>", opts)
-
 keymap.set("n", "<Tab>", ">>", opts)
 keymap.set("n", "<S-Tab>", "<<", opts)
 
@@ -133,39 +127,9 @@ keymap.set("i", "<C-S-right>", "<C-o>v<C-right>", opts)
 -- erase word
 keymap.set("i", "<C-BS>", '<C-\\><C-o>"_db', opts)
 
--- Old move line etc
--- -- Black magic:
--- -- normal, yank, up, paste above, insert
--- keymap.set('i', '<A-up>', '<Esc>"mddk"mPi', opts)
--- -- normal, yank, down, paste above, insert
--- keymap.set('i', '<A-down>', '<Esc>"mddj"mPi', opts)
---
--- -- normal, yank, paste above, paste above, insert
--- keymap.set('i', '<A-S-up>', '<Esc>"mdd"mP"mPi', opts)
--- -- normal, yank, paste above, down, paste above, insert
--- keymap.set('i', '<A-S-down>', '<Esc>"mdd"mPj"mPi', opts)
---
--- -- visline, cut, up, paste above, select range, visual
--- keymap.set('v', '<A-up>', '<S-v>"mxk"mP`[V`]v', opts)
--- -- visline, cut, paste at, select range, visual
--- keymap.set('v', '<A-down>', '<S-v>"mx"mp`[V`]v', opts)
---
--- -- visline, cut, up, paste at, paste above, select, visual
--- keymap.set('v', '<A-S-up>', '<S-v>"mxk"mp"mP`[V`]v', opts)
--- -- visline, cut, paste above, select end, paste at, select, visual
--- keymap.set('v', '<A-S-down>', '<S-v>"mx"mP`]"mp`[V`]v', opts)
-
 -- Black magic:
-keymap.set('i', '<A-up>', '<Esc><cmd>MoveLine(-1)<CR>i', opts)
-keymap.set('i', '<A-down>', '<Esc><cmd>MoveLine(1)<CR>i', opts)
-
 keymap.set('i', '<A-S-up>', '<Esc>"myy`["mPi', opts)
 keymap.set('i', '<A-S-down>', '<Esc>"myy`]"mpi', opts)
-
-keymap.set('v', '<A-up>', ":MoveBlock(-1)<CR>", opts)
-keymap.set('v', '<A-down>', ":MoveBlock(1)<CR>", opts)
-keymap.set('v', '<A-right>', ":MoveHBlock(1)<CR>", opts)
-keymap.set('v', '<A-left>', ":MoveHBlock(-1)<CR>", opts)
 
 keymap.set('v', '<A-S-up>', '<S-v>"my`["mP`[V`]v', opts)
 keymap.set('v', '<A-S-down>', '<S-v>"my`]"mp`[V`]v', opts)
@@ -193,11 +157,6 @@ keymap.set("v", "<S-down>", "<down>", opts)
 keymap.set("v", "<S-left>", "<left>", opts)
 keymap.set("v", "<S-right>", "<right>", opts)
 
--- keymap.set("v", "<up>", "<Esc><up>", opts)
--- keymap.set("v", "<down>", "<Esc><down>", opts)
--- keymap.set("v", "<left>", "<Esc><left>", opts)
--- keymap.set("v", "<right>", "<Esc><right>", opts)
-
 -- backspace
 keymap.set("v", "<BS>", '"_X', opts);
 
@@ -215,67 +174,4 @@ keymap.set("t", "<Esc>", [[<c-\><c-n>]], opts)
 -- map delete to black hole yank
 keymap.set("", "<Del>", '"_x', opts)
 keymap.set("i", "<Del>", '<C-o>"_x', opts)
-
--- -------------------------------------------------------------------------- --
---                                   PLugins                                  --
--- -------------------------------------------------------------------------- --
-
--- ------------------------- search with word start ------------------------- --
-keymap.set("n", "S", "<Plug>(easymotion-overwin-f)", opts)
-keymap.set("n", "s", "<Plug>(easymotion-overwin-f2)", opts)
-
--- -------------------------------- other ----------------------------------- --
-keymap.set("n", "<C-`>", require('nvim-toggler').toggle)
-
--- -------------------------------- comments -------------------------------- --
-local commentApi = require("Comment.api")
-local commentEsc = vim.api.nvim_replace_termcodes(
-    '<ESC>', true, false, true
-)
-keymap.set("v", "<C-/>", function()
-    vim.api.nvim_feedkeys(commentEsc, 'nx', false)
-    commentApi.toggle.linewise(vim.fn.visualmode())
-end);
-keymap.set("v", "<C-S-/>", function()
-    vim.api.nvim_feedkeys(commentEsc, 'nx', false)
-    commentApi.toggle.blockwise(vim.fn.visualmode())
-end);
-keymap.set("n", "<C-/>", commentApi.toggle.linewise.current, opts);
-keymap.set("i", "<C-/>", commentApi.toggle.linewise.current, opts);
-
-keymap.set("n", "K", "<cmd>Lspsaga hover_doc<cr>", opts)
-keymap.set("n", "gK", "<cmd>Lspsaga peek_definition<cr>", opts)
-
-keymap.set("n", "<A-s>", "<cmd>Lspsaga hover_doc<cr>", opts)
-keymap.set("i", "<A-s>", "<cmd>Lspsaga hover_doc<cr>", opts)
-keymap.set("n", "<A-d>", "<cmd>Lspsaga peek_definition<cr>", opts)
-keymap.set("i", "<A-d>", "<cmd>Lspsaga peek_definition<cr>", opts)
-keymap.set('n', '<C-s>', vim.lsp.buf.signature_help, opts)
-keymap.set('i', '<C-s>', vim.lsp.buf.signature_help, opts)
-
-for _, key in ipairs({ 'n', 'N', '*', '#' }) do
-    vim.keymap.set(
-        'n',
-        key,
-        key ..
-        '<Cmd>lua MiniMap.refresh({}, {lines = false, scrollbar = false})<CR>'
-    )
-end
-
-keymap.set('v', 'ga', '<Plug>(EasyAlign)', opts)
-keymap.set('n', 'ga', '<Plug>(EasyAlign)', opts)
-
--- ----------------------------------- Helpers ------------------------------ --
-
-local function setKeymapFiletype(ft, name, mode, map, action)
-    vim.api.nvim_create_autocmd('FileType', {
-        pattern = ft,
-        group = vim.api.nvim_create_augroup(name, {clear = true}),
-        callback = function()
-            keymap.set(mode, map, action, {silent = true, buffer = true})
-        end
-    })
-end
-
-setKeymapFiletype('NvimTree', 'NvimTree_Help', 'n', '?', '<cmd>h nvim-tree-mappings-default<cr>')
 

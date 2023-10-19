@@ -115,7 +115,7 @@ nvim_tree.setup {
                 enable = true,
                 chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
                 exclude = {
-                    filetype = { "notify", "packer", "qf", "diff", "fugitive", "fugitiveblame" },
+                    filetype = { "notify", "qf", "diff", "fugitive", "fugitiveblame" },
                     buftype = { "nofile", "terminal", "help" },
                 },
             },
@@ -150,5 +150,20 @@ vim.cmd([[
 
     let g:undotree_SplitWidth = 25
 ]])
+
+local keymap = vim.keymap
+
+local function setKeymapFiletype(ft, name, mode, map, action)
+    vim.api.nvim_create_autocmd('FileType', {
+        pattern = ft,
+        group = vim.api.nvim_create_augroup(name, {clear = true}),
+        callback = function()
+            keymap.set(mode, map, action, {silent = true, buffer = true})
+        end
+    })
+end
+
+setKeymapFiletype('NvimTree', 'NvimTree_Help', 'n', '?', '<cmd>h nvim-tree-mappings-default<cr>')
+
 
 -- vim.cmd([[ let g:neo_tree_remove_legacy_commands = 1 ]])
