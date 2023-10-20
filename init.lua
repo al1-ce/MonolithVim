@@ -11,7 +11,7 @@ load('monolith.core.plugins')
 -- speeds up plugin load time
 load('impatient')
 
-load('monolith.config.loader')
+load('monolith.plugins.loader')
 
 load('monolith.core.mappings')
 

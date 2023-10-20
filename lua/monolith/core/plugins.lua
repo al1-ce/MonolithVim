@@ -14,10 +14,6 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
-    -- ---------------------------- Package managers ---------------------------- --
-    -- LSP package manager
-    'williamboman/mason.nvim',
-
     -- -------------------------------- Libraries ------------------------------- --
     -- Async code
     'lewis6991/impatient.nvim',
@@ -63,8 +59,6 @@ require('lazy').setup({
     'crispgm/telescope-heading.nvim',
     'nvim-telescope/telescope-symbols.nvim',
     -- 'dharmx/telescope-media.nvim'
-    'zane-/howdoi.nvim',
-    'axieax/urlview.nvim',
     -- creates telescope pickers
     'axkirillov/easypick.nvim',
     -- project manager
@@ -107,12 +101,16 @@ require('lazy').setup({
     'onsails/lspkind.nvim',
     -- parser
     'nvim-treesitter/nvim-treesitter',
+    -- LSP package manager
+    'williamboman/mason.nvim',
     -- mason integration
     'williamboman/mason-lspconfig.nvim',
     'jayp0521/mason-null-ls.nvim',
     'jayp0521/mason-nvim-dap.nvim',
     -- LSP Servers
     "hinell/lsp-timeout.nvim",
+    -- Auto-create colorscheme for missing format colors
+    'folke/lsp-colors.nvim',
     -- ----------------------------------- DAP ---------------------------------- --
     -- nvim-dap is a Debug Adapter Protocol client implementation
     'mfussenegger/nvim-dap',
@@ -130,8 +128,6 @@ require('lazy').setup({
     -- Popup snippets
     'hrsh7th/cmp-vsnip',
     'hrsh7th/vim-vsnip',
-    -- Auto-create colorscheme for missing format colors
-    'folke/lsp-colors.nvim',
     -- json chemas
     'b0o/schemastore.nvim',
     -- Auto-close brackets
@@ -157,6 +153,12 @@ require('lazy').setup({
     's1n7ax/nvim-comment-frame',
     -- Alisgn text
     'junegunn/vim-easy-align',
+    -- Colour picker and colour background
+    "uga-rosa/ccc.nvim",
+    -- Toggle tags
+    'nguyenvukhang/nvim-toggler',
+    -- Draw boxes
+    'jbyuki/venn.nvim',
 
     -- -------------------------------- Powerline ------------------------------- --
     -- powerline
@@ -165,12 +167,6 @@ require('lazy').setup({
     { 'gelguy/wilder.nvim', build = ":UpdateRemotePlugins" },
     -- Illuminate matching words
     'RRethy/vim-illuminate',
-
-    -- --------------------------------- Popups --------------------------------- --
-    -- notification engine
-    'rcarriga/nvim-notify',
-    -- [WIP] An implementation of the Popup API from vim in Neovim
-    'nvim-lua/popup.nvim',
 
     -- --------------------------------- Search --------------------------------- --
     -- [0/10] /in -- Display number of search matches
@@ -205,6 +201,10 @@ require('lazy').setup({
     "folke/twilight.nvim",
     -- Help in split
     "roobert/hoversplit.nvim",
+    -- notification engine
+    'rcarriga/nvim-notify',
+    -- [WIP] An implementation of the Popup API from vim in Neovim
+    'nvim-lua/popup.nvim',
     -- ----------------------------------- GIT ---------------------------------- --
     -- git signts (required by something i think)
     'lewis6991/gitsigns.nvim',
@@ -224,18 +224,22 @@ require('lazy').setup({
     { "akinsho/toggleterm.nvim", version = '*' },
 
     -- ------------------------------- Utilities -------------------------------- --
-    -- Colour picker and colour background
-    "uga-rosa/ccc.nvim",
     -- cool smart surrounding
     'tpope/vim-surround',
     -- visit links
     'xiyaowong/link-visitor.nvim',
-    -- Toggle tags
-    'nguyenvukhang/nvim-toggler',
     -- Move lines and characters
     'fedepujol/move.nvim',
-
-    -- ------------------------------- Vim autos -------------------------------- --
+    -- dashboard
+    'goolord/alpha-nvim',
+    -- Sudo edit/save
+    'lambdalisue/suda.vim',
+    -- Hacker scratchpad
+    'metakirby5/codi.vim',
+    -- Game
+    "eandrju/cellular-automaton.nvim",
+    'zane-/howdoi.nvim',
+    'axieax/urlview.nvim',
     -- Session manager
     'natecraddock/sessions.nvim',
     -- Better session manager
@@ -257,21 +261,5 @@ require('lazy').setup({
     },
     -- Preview markdown
     {"ellisonleao/glow.nvim", config = true, cmd = "Glow"},
-
-    -- ---------------------------------- Misc ---------------------------------- --
-    -- dashboard
-    'goolord/alpha-nvim',
-    -- Sudo edit/save
-    'lambdalisue/suda.vim',
-    -- Draw boxes
-    'jbyuki/venn.nvim',
-    -- Hacker scratchpad
-    'metakirby5/codi.vim',
-    -- --------------------------------- Buffer --------------------------------- --
-    -- ingores .gitignore buffers
-    -- 'sQVe/bufignore.nvim',
-
-    -- ---------------------------------- Game ---------------------------------- --
-    "eandrju/cellular-automaton.nvim",
 })
 
