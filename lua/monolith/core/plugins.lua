@@ -69,7 +69,10 @@ require('lazy').setup({
     'axkirillov/easypick.nvim',
     -- project manager
     "ahmedkhalf/project.nvim",
+    -- file manager as buffer
     "stevearc/oil.nvim",
+    -- ranger
+    "kevinhwang91/rnvimr",
 
     -- -------------------------------- Trees ----------------------------------- --
     -- file tree
@@ -92,8 +95,8 @@ require('lazy').setup({
     -- ----------------------------------- LSP ---------------------------------- --
     -- Configs for the Nvim LSP client (:help lsp)
     'neovim/nvim-lspconfig',
-    -- lsp but formatting -- TODO: replace
-    'jose-elias-alvarez/null-ls.nvim',
+    -- lsp but formatting
+    'nvimtools/none-ls.nvim',
     -- many cool features like hover diagnostic    
     'nvimdev/lspsaga.nvim',
     -- Nvim lua api
@@ -108,6 +111,8 @@ require('lazy').setup({
     'williamboman/mason-lspconfig.nvim',
     'jayp0521/mason-null-ls.nvim',
     'jayp0521/mason-nvim-dap.nvim',
+    -- LSP Servers
+    "hinell/lsp-timeout.nvim",
     -- ----------------------------------- DAP ---------------------------------- --
     -- nvim-dap is a Debug Adapter Protocol client implementation
     'mfussenegger/nvim-dap',
@@ -130,7 +135,12 @@ require('lazy').setup({
     -- json chemas
     'b0o/schemastore.nvim',
     -- Auto-close brackets
-    'windwp/nvim-autopairs',
+    -- 'windwp/nvim-autopairs',
+    {
+        "altermo/ultimate-autopair.nvim",
+        event = {"InsertEnter", "CmdlineEnter"},
+        branch = "v0.6", -- TODO: check later
+    },
 
     -- ------------------------------- Languages -------------------------------- --
     -- Dart
@@ -152,7 +162,7 @@ require('lazy').setup({
     -- powerline
     'nvim-lualine/lualine.nvim',
     -- Command suggestions
-    'gelguy/wilder.nvim',
+    { 'gelguy/wilder.nvim', build = ":UpdateRemotePlugins" },
     -- Illuminate matching words
     'RRethy/vim-illuminate',
 
@@ -166,9 +176,11 @@ require('lazy').setup({
     -- [0/10] /in -- Display number of search matches
     'google/vim-searchindex',
     -- range hightlight (:10,15)
-    'winston0410/range-highlight.nvim',
+    -- 'winston0410/range-highlight.nvim',
     -- Jump with keys
     'easymotion/vim-easymotion',
+    -- Remove search highlight automatically
+    "nvimdev/hlsearch.nvim",
 
     -- ---------------------------------- Tabs ---------------------------------- --
     -- tab management
@@ -185,13 +197,21 @@ require('lazy').setup({
     {'j-hui/fidget.nvim', tag = 'legacy' },
     -- Emacs menus
     'anuvyklack/hydra.nvim',
-
-
+    -- GUI lib
+    "MunifTanjim/nui.nvim",
+    -- Reworks many things
+    { "folke/noice.nvim", event = "VeryLazy" },
+    "folke/zen-mode.nvim",
+    "folke/twilight.nvim",
+    -- Help in split
+    "roobert/hoversplit.nvim",
     -- ----------------------------------- GIT ---------------------------------- --
     -- git signts (required by something i think)
     'lewis6991/gitsigns.nvim',
     -- git diff
     "sindrets/diffview.nvim",
+    -- Git wrapper
+    "tpope/vim-fugitive",
 
     -- --------------------------------- Splits --------------------------------- --
     -- Move splits
@@ -204,10 +224,8 @@ require('lazy').setup({
     { "akinsho/toggleterm.nvim", version = '*' },
 
     -- ------------------------------- Utilities -------------------------------- --
-    -- Color picker
-    'ziontee113/color-picker.nvim',
-    -- Colored background on #xxxxxx colors
-    'NvChad/nvim-colorizer.lua',
+    -- Colour picker and colour background
+    "uga-rosa/ccc.nvim",
     -- cool smart surrounding
     'tpope/vim-surround',
     -- visit links
@@ -249,5 +267,11 @@ require('lazy').setup({
     'jbyuki/venn.nvim',
     -- Hacker scratchpad
     'metakirby5/codi.vim',
+    -- --------------------------------- Buffer --------------------------------- --
+    -- ingores .gitignore buffers
+    -- 'sQVe/bufignore.nvim',
+
+    -- ---------------------------------- Game ---------------------------------- --
+    "eandrju/cellular-automaton.nvim",
 })
 

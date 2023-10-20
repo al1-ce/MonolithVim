@@ -44,7 +44,7 @@ function M.hydra() return Hydra({
             { 'b', cmd 'Telescope file_browser' },
             { 's', '<C-^>' },
             { 'e', cmd 'enew' },
-            
+
             { 'F', cmd 'Telescope current_buffer_fuzzy_find' },
             { 'R', require('spectre').open },
             { 'g', cmd 'Telescope live_grep' },
@@ -54,7 +54,7 @@ function M.hydra() return Hydra({
             { 'u', cmd 'UndotreeToggle' },
             { 'S', cmd 'SidebarNvimToggle' },
             { 'm', require('mini.map').toggle },
-            
+
             { 'q', nil, { exit = true, nowait = true } },
             { '<Esc>', nil, { exit = true, nowait = true, desc = false } },
         }

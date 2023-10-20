@@ -7,8 +7,9 @@ local function load(m)
     return ok
 end
 
+-- TODO: move to respective folders and load like load('lsp') with pcall "monolith.config." .. m .. "loader" ? 
+
 load('alpha')
-load('colorpicker')
 load('comment')
 load('common')
 load('dap')
@@ -16,6 +17,7 @@ load('easypick')
 load('hydra')
 load('lsp')
 load('lualine')
+load('noice')
 load('minimap')
 load('scrollbar')
 load('sidebar')
