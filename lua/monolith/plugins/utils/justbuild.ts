@@ -1,7 +1,11 @@
 // TypeScript source for justbuild.lua
 // to compile this file into lua source
 // use 'tstl -p ~/.config/nvim/tsconfig.json'
-// command
+// or '~/.config/nvim/tstl.sh'
+// This part is written in TypeScript because of complexity
+// and me not wanting to struggle with this in lua
+
+// TODO: add job quit func
 
 declare function require(modname: string): any;
 declare function print(val: any): void;

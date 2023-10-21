@@ -43,3 +43,6 @@ Typescript_To_Lua:
 
 C_Default FILEPATH:
     gcc $1
+
+Count_Lines_Of_Code:
+    cloc .
