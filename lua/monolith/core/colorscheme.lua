@@ -10,7 +10,8 @@ vim.cmd.colorscheme('gruvbox')
 
 -------------------- Functions --------------------------------------
 
-local autocmd = vim.api.nvim_create_autocmd
+local augroup = vim.api.nvim_create_augroup   -- Create/get autocommand group
+local autocmd = vim.api.nvim_create_autocmd   -- Create autocommand
 
 -- https://neovim.io/doc/user/api.html#nvim_set_hl()
 -- Parameters:
@@ -123,6 +124,18 @@ do -- start autocmd block
 
     -- Shebang
     autocmd({"BufNewFile", "BufRead"}, { pattern = {"*"}, callback = detectShebangPattern })
+    autocmd({"BufNewFile", "BufRead"}, { pattern = {"*.vs", "*.fs"}, callback = function() setft("glsl") end })
+
+    augroup('YankHighlight', { clear = true })
+    autocmd('TextYankPost', {
+        group = 'YankHighlight',
+        callback = function()
+            vim.highlight.on_yank({ higroup = 'IncSearch', timeout = '1000' })
+        end
+    })
+
+    autocmd({"WinEnter", "BufEnter"}, { pattern = "*", command = "setlocal cursorline" })
+    autocmd({"WinLeave", "BufLeave"}, { pattern = "*", command = "setlocal nocursorline" })
 
     -- Set filetypes
     autocmd({"BufNewFile", "BufRead", "BufReadPost"}, {pattern = {"*.sdl"}, callback = function() setft("sdlang") end})
@@ -130,6 +143,7 @@ do -- start autocmd block
 end -- end autocmd block
 
 -------------------- Highlight --------------------------------------
+hi("QuickFixLine", {bg = "#3c3836", ctermfg = 8})
 
 -- Custom function highlight
 hiAll({"dCustomFunc", "dCustomDFunc"}, {link = "Function"})
@@ -155,6 +169,16 @@ local illuminated_nil = {}
 
 hiAll({"IlluminatedWordText"}, illuminated_nil)
 hiAll({"IlluminatedWordRead", "IlluminatedWordWrite"}, illuminated_col)
+
+hi("SpectreHeader", {link = "Comment"})
+hi("SpectreBody", {link = "Normal"})
+hi("SpectreFile", {link = "Macro"})
+hi("SpectreDir", {link = "Comment"})
+hi("SpectreSearch", {link = "DiffChange"})
+-- hi("SpectreSearch", {ctermfg = 1, fg = g.terminal_color_1, italic = true})
+hi("SpectreBorder", {link = "Comment"})
+hi("SpectreReplace", {link = "DiffDelete"})
+-- hi("SpectreReplace", {ctermfg = 10, fg = g.terminal_color_10})
 
 -- hydra
 

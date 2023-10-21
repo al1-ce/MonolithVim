@@ -7,9 +7,7 @@ local function load(m)
     return ok
 end
 
-load("pqf")
 load("sidebar")
-load("spectre")
 load("todo")
 load("tree")
 load("undotree")

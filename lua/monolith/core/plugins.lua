@@ -79,12 +79,8 @@ require('lazy').setup({
     'sidebar-nvim/sections-dap',
     -- TodoTree
     'AmeerTaweel/todo.nvim',
-    -- Better quickfix
-    'yorickpeterse/nvim-pqf',
     -- Goto quickfix files
     'yssl/QFEnter',
-    -- Project-wide rename
-    'windwp/nvim-spectre',
 
     -- ----------------------------------- LSP ---------------------------------- --
     -- Configs for the Nvim LSP client (:help lsp)
@@ -159,6 +155,11 @@ require('lazy').setup({
     'nguyenvukhang/nvim-toggler',
     -- Draw boxes
     'jbyuki/venn.nvim',
+    -- Project-wide rename
+    'windwp/nvim-spectre',
+    -- Better quickfix
+    'yorickpeterse/nvim-pqf',
+
 
     -- -------------------------------- Powerline ------------------------------- --
     -- powerline

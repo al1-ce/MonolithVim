@@ -7,11 +7,9 @@ local function load(m)
     return ok
 end
 
--- TODO: move to respective folders and load like load('lsp') with pcall "monolith.plugins." .. m .. "loader" ? 
-
 load('libs')
 
-load('autocomplete')
+load('cmp')
 load('codestats')
 load('dap')
 load('files')

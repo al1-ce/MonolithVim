@@ -1,7 +1,7 @@
 local Hydra = require('hydra')
 local colors = require('monolith.plugins.hydra.colors')
 local cmd = require('hydra.keymap-util').cmd
-local builder = require('monolith.plugins.justbuild')
+local builder = require('monolith.plugins.utils.justbuild')
 local M = {}
 
 local hintBuild = [[

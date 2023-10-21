@@ -5,6 +5,12 @@
 
 declare function require(modname: string): any;
 declare function print(val: any): void;
+declare function tostring(val: number): string;
+declare function tonumber(val: string): number;
+
+declare namespace string {
+    function format(this: void, fmt: string, val: any): string;
+}
 
 declare namespace vim {
     namespace fn {
@@ -14,12 +20,17 @@ declare namespace vim {
         function filereadable(this: void, file: string): number;
         function expand(this: void, str: string): string;
         function fnamemodify(this: void, str: string, flags: string): string;
+        function setqflist(this: void, val: any, mode: string): any;
     }
     function inspect(this: void, val: any): any;
     namespace bo {
         var filetype: string;
     }
     function cmd(this: void, expr: string): any;
+    namespace diagnostic {
+        function setqflist(this: void, opts: any): any;
+    }
+    function schedule(this: void, callback: Function): any;
 }
 
 /** @noSelf */
@@ -49,6 +60,12 @@ declare namespace telescope {
     }
 }
 
+interface PlenaryJob {
+    new(job: any): PlenaryJob;
+    sync(this: void): any;
+    start(this: void): any;
+}
+
 declare namespace io {
     function open(this: void, name: string, mode: string): any;
     function close(this: void, file: any): any;
@@ -58,6 +75,11 @@ declare namespace os {
     function date(format: string): string;
     function getenv(varname: string): string;
     function execute(command: string): string;
+    function clock(): number;
+}
+
+declare namespace table {
+    function insert(tbl: any, val: any): any;
 }
 
 let pickers = require("telescope.pickers") as typeof telescope.pickers;
@@ -66,6 +88,7 @@ let conf = require("telescope.config").values as typeof telescope.config.values;
 let actions = require("telescope.actions") as typeof telescope.actions;
 let action_state = require("telescope.actions.state") as typeof telescope.actions.state;
 let themes = require("telescope.themes") as typeof telescope.themes;
+let async = require("plenary.job") as PlenaryJob
 
 let notify = require("notify");
 
@@ -232,11 +255,60 @@ function build_runner(build_name: string): void {
     // popup(command);
     let success: string = `aplay ${getConfigDir()}/res/build_success.wav -q`; 
     let error: string = `aplay ${getConfigDir()}/res/build_error.wav -q`; 
-    let lcom: string = `:AsyncRun /bin/bash -c '( ${command} ) && ( ${success} ) || ( ${error} )'`;
-    // vim.cmd(":copen");
-    // popup(lcom);
-    // print(vim.inspect(lcom));
-    vim.cmd(lcom);
+    
+    // USING AsyncRun
+    // let lcom: string = `:AsyncRun /bin/bash -c '( ${command} ) && ( ${success} ) || ( ${error} )'`;
+    // vim.cmd(lcom);
+    
+    // SECTION: ASYNC RUNNER
+    // Own implementation depending on Plenary
+    // I'm doing it because I prefer having control over those things
+    // and AsyncRun was giving me some wierd errors at some places
+    // and I can make it even prettier
+    vim.schedule(function() {
+        vim.cmd("copen");
+        vim.fn.setqflist([{text: "Starting build job: " + command}, {text: ""}], "r");
+    });
+
+    let stime = os.clock();
+
+    // @ts-ignore
+    async.new({
+        command: "bash",
+        args: ["-c", `( ${command} )`],
+        cwd: vim.fn.getcwd(),
+        on_exit: function(j: any, ret: number) {
+            let etime = os.clock() - stime;
+            vim.schedule(function() {
+                vim.fn.setqflist([
+                    {text: ""},
+                    {text: `Finished in ${string.format("%.2f", etime)} seconds`}
+                ], "a")            
+                if (ret == 0) {
+                    // @ts-ignore
+                    async.new({
+                        command: "aplay",
+                        args: [`${getConfigDir()}/res/build_success.wav`, "-q"]
+                    }).start();
+                } else {
+                    // @ts-ignore
+                    async.new({
+                        command: "aplay",
+                        args: [`${getConfigDir()}/res/build_error.wav`, "-q"]
+                    }).start();
+                }
+            });
+
+        },
+        on_stdout: function(err: string, data: string) {
+            vim.schedule(function() { vim.fn.setqflist([{text: data}], "a"); });
+        },
+        on_stderr: function(err: string, data: string) {
+            vim.schedule(function() { vim.cmd(`caddexpr "${data}"`); });
+        },
+    }).start();
+    // END SECTION: ASYNC RUNNER
+
     // popup("Done");
 }
 

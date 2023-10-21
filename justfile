@@ -41,3 +41,5 @@ Python_Run FILEPATH:
 Typescript_To_Lua:
     tstl -p tsconfig.json
 
+C_Default FILEPATH:
+    gcc $1

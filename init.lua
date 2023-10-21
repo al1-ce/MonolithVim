@@ -16,4 +16,3 @@ load('monolith.plugins.loader')
 load('monolith.core.mappings')
 
 load('monolith.core.colorscheme')
-load('monolith.core.autocmd')

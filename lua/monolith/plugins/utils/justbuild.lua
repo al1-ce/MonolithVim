@@ -98,11 +98,7 @@ local function __TS__ArraySplice(self, ...)
     elseif actualArgumentCount == 1 then
         actualDeleteCount = len - start
     else
-        local ____deleteCount_0 = deleteCount
-        if ____deleteCount_0 == nil then
-            ____deleteCount_0 = 0
-        end
-        actualDeleteCount = ____deleteCount_0
+        actualDeleteCount = deleteCount or 0
         if actualDeleteCount < 0 then
             actualDeleteCount = 0
         end
@@ -205,7 +201,6 @@ local function __TS__StringStartsWith(self, searchString, position)
     end
     return string.sub(self, position + 1, #searchString + position) == searchString
 end
-
 -- End of Lua Library inline imports
 local ____exports = {}
 local pickers = require("telescope.pickers")
@@ -214,6 +209,7 @@ local conf = require("telescope.config").values
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
 local themes = require("telescope.themes")
+local async = require("plenary.job")
 local notify = require("notify")
 local function popup(message, errlvl, title)
     if errlvl == nil then
@@ -445,8 +441,55 @@ local function build_runner(build_name)
     local command = (((justloc .. " -d . ") .. build_name) .. " ") .. table.concat(args, " ")
     local success = ("aplay " .. getConfigDir()) .. "/res/build_success.wav -q"
     local ____error = ("aplay " .. getConfigDir()) .. "/res/build_error.wav -q"
-    local lcom = (((((":AsyncRun /bin/bash -c '( " .. command) .. " ) && ( ") .. success) .. " ) || ( ") .. ____error) .. " )'"
-    vim.cmd(lcom)
+    vim.schedule(function()
+        vim.cmd("copen")
+        vim.fn.setqflist({{text = "Starting build job: " .. command}, {text = ""}}, "r")
+    end)
+    local stime = os.clock()
+    async:new({
+        command = "bash",
+        args = {"-c", ("( " .. command) .. " )"},
+        cwd = vim.fn.getcwd(),
+        on_exit = function(j, ret)
+            local etime = os.clock() - stime
+            vim.schedule(function()
+                vim.fn.setqflist(
+                    {
+                        {text = ""},
+                        {text = ("Finished in " .. string.format("%.2f", etime)) .. " seconds"}
+                    },
+                    "a"
+                )
+                if ret == 0 then
+                    async:new({
+                        command = "aplay",
+                        args = {
+                            getConfigDir() .. "/res/build_success.wav",
+                            "-q"
+                        }
+                    }):start()
+                else
+                    async:new({
+                        command = "aplay",
+                        args = {
+                            getConfigDir() .. "/res/build_error.wav",
+                            "-q"
+                        }
+                    }):start()
+                end
+            end)
+        end,
+        on_stdout = function(err, data)
+            vim.schedule(function()
+                vim.fn.setqflist({{text = data}}, "a")
+            end)
+        end,
+        on_stderr = function(err, data)
+            vim.schedule(function()
+                vim.cmd(("caddexpr \"" .. data) .. "\"")
+            end)
+        end
+    }):start()
 end
 function ____exports.build_select(opts)
     if opts == nil then
