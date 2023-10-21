@@ -387,7 +387,10 @@ local function get_build_args(build_name)
     local justloc = just
     local pjustfile = vim.fn.getcwd() .. "/justfile"
     if vim.fn.filereadable(pjustfile) == 1 then
-        local bd = vim.fn.system(("just -f " .. pjustfile) .. " --summary")
+        local bd = __TS__StringSplit(
+            vim.fn.system(("just -f " .. pjustfile) .. " --summary"),
+            "\n"
+        )[1]
         if __TS__ArrayIncludes(
             __TS__StringSplit(bd, " "),
             build_name
@@ -434,7 +437,6 @@ local function build_runner(build_name)
             vim.fn.system(("just -f " .. pjustfile) .. " --summary"),
             "\n"
         )[1]
-        print(("|" .. bd) .. "|")
         if __TS__ArrayIncludes(
             __TS__StringSplit(bd, " "),
             build_name

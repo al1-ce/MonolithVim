@@ -207,7 +207,7 @@ function get_build_args(build_name: string): string[] {
     let justloc = just;
     let pjustfile: string = `${vim.fn.getcwd()}/justfile`;
     if (vim.fn.filereadable(pjustfile) == 1) { 
-        let bd: string = vim.fn.system(`just -f ${pjustfile} --summary`);
+        let bd: string = vim.fn.system(`just -f ${pjustfile} --summary`).split("\n")[0];
         if (bd.split(" ").includes(build_name)) {
             justloc = `just -f ${pjustfile}`; 
         }
