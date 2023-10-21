@@ -10,7 +10,6 @@ local hintBuild = [[
   _r_: Default run task    
   _B_: File build tasks    
   _T_: All tasks           
-  _S_: Stop task process   
           Debug          
   _d_: Open debugger       
   _t_: Toggle breakpoint   
@@ -18,7 +17,7 @@ local hintBuild = [[
   _q_: Quit                
 └                       ┘
 ]]
-
+--   _S_: Stop task process   
 
 function M.hydra() return Hydra({
         name = 'Build',
@@ -30,7 +29,7 @@ function M.hydra() return Hydra({
             { 'r', builder.run_default_run_task },
             { 'B', builder.run_build_select_lang },
             { 'T', builder.run_build_select },
-            { 'S', cmd 'AsyncStop!' },
+            -- { 'S', cmd 'AsyncStop!' },
 
             ---@diagnostic disable-next-line: missing-parameter
             { 'd', function() require("dapui").toggle() end },

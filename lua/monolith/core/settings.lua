@@ -63,6 +63,8 @@ o.mousemodel = "extend"     -- sets right mouse click to extend selection
 
 o.guifont = "Cascadia Mono PL:h11"
 
+g.ruby_host_prog = '~/.local/share/gem/ruby/3.0.0/bin/neovim-ruby-host'
+
 -- ----------------------------- neovide configs ---------------------------- --
 -- if vim.g.neovide then
 --     local alpha = function()

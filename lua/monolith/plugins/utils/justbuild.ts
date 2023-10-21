@@ -246,10 +246,13 @@ function build_runner(build_name: string): void {
     let justloc = just;
     let pjustfile: string = `${vim.fn.getcwd()}/justfile`;
     if (vim.fn.filereadable(pjustfile) == 1) { 
-        let bd: string = vim.fn.system(`just -f ${pjustfile} --summary`);
+        let bd: string = vim.fn.system(`just -f ${pjustfile} --summary`).split("\n")[0];
+        // print("|" + bd + "|");
         if (bd.split(" ").includes(build_name)) {
             justloc = `just -f ${pjustfile}`; 
         }
+        // print(pjustfile);
+        // print(justloc);
     }
     let command: string = `${justloc} -d . ${build_name} ${args.join(" ")}`;
     // popup(command);
@@ -304,7 +307,10 @@ function build_runner(build_name: string): void {
             vim.schedule(function() { vim.fn.setqflist([{text: data}], "a"); });
         },
         on_stderr: function(err: string, data: string) {
-            vim.schedule(function() { vim.cmd(`caddexpr "${data}"`); });
+            vim.schedule(function() {
+                // vim.cmd("copen");
+                vim.cmd(`caddexpr "${data}"`); 
+            });
         },
     }).start();
     // END SECTION: ASYNC RUNNER
@@ -389,14 +395,14 @@ export function run_build_select_lang(): void {
 
 export function run_default_task(): void {
     let current_language: string = vim.bo.filetype;
-    let cmp1: string = current_language.toLowerCase();
+    let clang: string = current_language.toLowerCase();
     let tasks: string[][] = get_build_names();
     for (let i = 0; i < tasks.length; ++i) {
         let opts: string[] = tasks[i][1].split("_");
         // popup(tasks[i][0]);
         if (opts.length == 2) {
-            // popup(`${opts[0].toLowerCase()} == ${cmp1.toLowerCase()} : ${opts[1].toLowerCase()}`)
-            if (opts[0].toLowerCase() == cmp1.toLowerCase() &&
+            // popup(`${opts[0].toLowerCase()} == ${clang.toLowerCase()} : ${opts[1].toLowerCase()}`)
+            if (opts[0].toLowerCase() == clang.toLowerCase() &&
                 opts[1].toLowerCase() == "default") {
                 // popup(`Executing default task for '${current_language}'.`, "info", "Build");
                 build_runner(tasks[i][1]);
@@ -409,21 +415,35 @@ export function run_default_task(): void {
             } 
         }
     }
-    popup(`Could not find default task for '${current_language}'. \nPlease select task from list.`, "warn", "Build");
-    run_build_select();
+    let hasLangTask = false;
+    for (let i = 0; i < tasks.length; ++i) {
+        let opts: string[] = tasks[i][1].split("_");
+        if (opts.length > 0) {
+            if (opts[0].toLowerCase() == clang.toLowerCase()) {
+                hasLangTask = true;
+            }
+        }
+    }
+    if (hasLangTask) {
+        popup(`Could not find default task for '${current_language}'. \nPlease select task from list.`, "warn", "Build");
+        run_build_select_lang();
+    } else {
+        popup(`Could not find any tasks for '${current_language}'. \nPlease select task from list.`, "warn", "Build");
+        run_build_select();
+    }
 }
 
 export function run_default_run_task(): void {
     // popup("Running");
     let current_language: string = vim.bo.filetype;
-    let cmp1: string = current_language.toLowerCase();
+    let clang: string = current_language.toLowerCase();
     let tasks: string[][] = get_build_names();
     for (let i = 0; i < tasks.length; ++i) {
         let opts: string[] = tasks[i][1].split("_");
         // popup(tasks[i][0]);
         if (opts.length == 3) {
-            // popup(`${opts[0].toLowerCase()} == ${cmp1.toLowerCase()} : ${opts[1].toLowerCase()}`)
-            if (opts[0].toLowerCase() == cmp1.toLowerCase() &&
+            // popup(`${opts[0].toLowerCase()} == ${clang.toLowerCase()} : ${opts[1].toLowerCase()}`)
+            if (opts[0].toLowerCase() == clang.toLowerCase() &&
                 opts[1].toLowerCase() == "default" &&
                 opts[2].toLowerCase() == "run") {
                 // popup(`Executing default task for '${current_language}'.`, "info", "Build");
@@ -438,8 +458,37 @@ export function run_default_run_task(): void {
             } 
         }
     }
-    popup(`Could not find default run task for '${current_language}'. \nPlease select task from list.`, "warn", "Build");
-    run_build_select();
+    // popup(`Could not find default run task for '${current_language}'. \nPlease select task from list.`, "warn", "Build");
+    // run_build_select();
+    let hasLangRunTask = false;
+    let hasLangTask = false;
+    for (let i = 0; i < tasks.length; ++i) {
+        let opts: string[] = tasks[i][1].split("_");
+        if (opts.length == 3) {
+            if (opts[0].toLowerCase() == clang.toLowerCase() &&
+                opts[2].toLowerCase() == "run") {
+                hasLangRunTask = true;
+            }
+        }
+        if (opts.length > 0) {
+            if (opts[0].toLowerCase() == clang.toLowerCase()) {
+                hasLangTask = true;
+            }
+        }
+
+    }
+    if (hasLangRunTask) {
+        popup(`Could not find default run task for '${current_language}'. \nPlease select task from list.`, "warn", "Build");
+        run_build_select_lang();
+    } else 
+    if (hasLangTask) {
+        popup(`Could not find any run tasks for '${current_language}'. \nPlease select task from list.`, "warn", "Build");
+        run_build_select_lang();
+    } else {
+        popup(`Could not find any tasks for '${current_language}'. \nPlease select task from list.`, "warn", "Build");
+        run_build_select();
+    }
+
 }
 
 // run_build_select();

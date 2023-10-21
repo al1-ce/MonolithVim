@@ -430,7 +430,11 @@ local function build_runner(build_name)
     local justloc = just
     local pjustfile = vim.fn.getcwd() .. "/justfile"
     if vim.fn.filereadable(pjustfile) == 1 then
-        local bd = vim.fn.system(("just -f " .. pjustfile) .. " --summary")
+        local bd = __TS__StringSplit(
+            vim.fn.system(("just -f " .. pjustfile) .. " --summary"),
+            "\n"
+        )[1]
+        print(("|" .. bd) .. "|")
         if __TS__ArrayIncludes(
             __TS__StringSplit(bd, " "),
             build_name
@@ -605,14 +609,14 @@ function ____exports.run_build_select_lang()
 end
 function ____exports.run_default_task()
     local current_language = vim.bo.filetype
-    local cmp1 = string.lower(current_language)
+    local clang = string.lower(current_language)
     local tasks = get_build_names()
     do
         local i = 0
         while i < #tasks do
             local opts = __TS__StringSplit(tasks[i + 1][2], "_")
             if #opts == 2 then
-                if string.lower(opts[1]) == string.lower(cmp1) and string.lower(opts[2]) == "default" then
+                if string.lower(opts[1]) == string.lower(clang) and string.lower(opts[2]) == "default" then
                     build_runner(tasks[i + 1][2])
                     return
                 elseif string.lower(opts[1]) == "any" and string.lower(opts[2]) == "default" then
@@ -623,19 +627,37 @@ function ____exports.run_default_task()
             i = i + 1
         end
     end
-    popup(("Could not find default task for '" .. current_language) .. "'. \nPlease select task from list.", "warn", "Build")
-    ____exports.run_build_select()
+    local hasLangTask = false
+    do
+        local i = 0
+        while i < #tasks do
+            local opts = __TS__StringSplit(tasks[i + 1][2], "_")
+            if #opts > 0 then
+                if string.lower(opts[1]) == string.lower(clang) then
+                    hasLangTask = true
+                end
+            end
+            i = i + 1
+        end
+    end
+    if hasLangTask then
+        popup(("Could not find default task for '" .. current_language) .. "'. \nPlease select task from list.", "warn", "Build")
+        ____exports.run_build_select_lang()
+    else
+        popup(("Could not find any tasks for '" .. current_language) .. "'. \nPlease select task from list.", "warn", "Build")
+        ____exports.run_build_select()
+    end
 end
 function ____exports.run_default_run_task()
     local current_language = vim.bo.filetype
-    local cmp1 = string.lower(current_language)
+    local clang = string.lower(current_language)
     local tasks = get_build_names()
     do
         local i = 0
         while i < #tasks do
             local opts = __TS__StringSplit(tasks[i + 1][2], "_")
             if #opts == 3 then
-                if string.lower(opts[1]) == string.lower(cmp1) and string.lower(opts[2]) == "default" and string.lower(opts[3]) == "run" then
+                if string.lower(opts[1]) == string.lower(clang) and string.lower(opts[2]) == "default" and string.lower(opts[3]) == "run" then
                     build_runner(tasks[i + 1][2])
                     return
                 elseif string.lower(opts[1]) == "any" and string.lower(opts[2]) == "default" and string.lower(opts[3]) == "run" then
@@ -646,8 +668,35 @@ function ____exports.run_default_run_task()
             i = i + 1
         end
     end
-    popup(("Could not find default run task for '" .. current_language) .. "'. \nPlease select task from list.", "warn", "Build")
-    ____exports.run_build_select()
+    local hasLangRunTask = false
+    local hasLangTask = false
+    do
+        local i = 0
+        while i < #tasks do
+            local opts = __TS__StringSplit(tasks[i + 1][2], "_")
+            if #opts == 3 then
+                if string.lower(opts[1]) == string.lower(clang) and string.lower(opts[3]) == "run" then
+                    hasLangRunTask = true
+                end
+            end
+            if #opts > 0 then
+                if string.lower(opts[1]) == string.lower(clang) then
+                    hasLangTask = true
+                end
+            end
+            i = i + 1
+        end
+    end
+    if hasLangRunTask then
+        popup(("Could not find default run task for '" .. current_language) .. "'. \nPlease select task from list.", "warn", "Build")
+        ____exports.run_build_select_lang()
+    elseif hasLangTask then
+        popup(("Could not find any run tasks for '" .. current_language) .. "'. \nPlease select task from list.", "warn", "Build")
+        ____exports.run_build_select_lang()
+    else
+        popup(("Could not find any tasks for '" .. current_language) .. "'. \nPlease select task from list.", "warn", "Build")
+        ____exports.run_build_select()
+    end
 end
 return ____exports
  end,
