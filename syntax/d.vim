@@ -334,7 +334,6 @@ syn cluster dTokens add=dDec,dHex,dOctal,dOctalError,dBinary,dFloat,dHexFloat
 syn case match
 
 " Pragma (preprocessor) support
-" TODO: Highlight following Integer and optional Filespec.
 syn region  dPragma start="#\s*\(line\>\)" skip="\\$" end="$"
 
 " Block

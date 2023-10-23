@@ -4,10 +4,13 @@ local cmd = require('hydra.keymap-util').cmd
 local builder = require('monolith.plugins.utils.justbuild')
 local M = {}
 
+-- TODO: add _R_ for all run tasks and _t_ and _T_? for tests
+
 local hintBuild = [[
 ┌         Build         ┐
   _b_: Default build task  
   _r_: Default run task    
+  _u_: Default test task   
   _B_: File build tasks    
   _T_: All tasks           
           Debug          
@@ -27,6 +30,7 @@ function M.hydra() return Hydra({
         heads = {
             { 'b', builder.run_default_task },
             { 'r', builder.run_default_run_task },
+            { 'u', builder.run_default_test_task }, -- u for unittest
             { 'B', builder.run_build_select_lang },
             { 'T', builder.run_build_select },
             -- { 'S', cmd 'AsyncStop!' },

@@ -8,6 +8,7 @@ local function load(m)
 end
 
 load("align")
+load("better-whitespace")
 load("ccc")
 load("comment")
 load("illuminate")

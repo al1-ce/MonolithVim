@@ -4,7 +4,7 @@
         "target": "esnext",
         "lib": ["esnext"],
         "moduleResolution": "node",
-        "types": ["typescript-to-lua/language-extensions", "lua-types/jit"],
+        "types": [],
         "strict": true,
         "noImplicitAny": true,
         "noImplicitOverride": true,
@@ -15,7 +15,7 @@
         ]
     },
     "tstl": {
-        "luaTarget": "JIT",
+        "luaTarget": "5.1",
         "noHeader": true,
         "noImplicitSelf": true,
         "noImplicitGlobalVariables": true,

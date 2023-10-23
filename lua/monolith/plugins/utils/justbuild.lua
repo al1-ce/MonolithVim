@@ -310,7 +310,7 @@ local function get_build_names(lang)
     return tbl
 end
 ---
--- @summary Checks if argument is defined as keyword (i.e "FILEPATH", "FILEEXT") and 
+-- @summary Checks if argument is defined as keyword (i.e "FILEPATH", "FILEEXT") and
 -- returns corresponding string. If argument is not keyword function returns single space
 -- @param arg Argument to check
 local function check_keyword_arg(arg)
@@ -507,10 +507,10 @@ function ____exports.build_select(opts)
             prompt_title = "Build tasks",
             border = {},
             borderchars = {
-                "─",
-                "│",
-                "─",
-                "│",
+                " ",
+                " ",
+                " ",
+                " ",
                 "┌",
                 "┐",
                 "┘",
@@ -546,10 +546,10 @@ function ____exports.build_select_lang(opts)
             prompt_title = vim.bo.filetype .. " build tasks",
             border = {},
             borderchars = {
-                "─",
-                "│",
-                "─",
-                "│",
+                " ",
+                " ",
+                " ",
+                " ",
                 "┌",
                 "┐",
                 "┘",
@@ -576,28 +576,28 @@ function ____exports.build_select_lang(opts)
     picker:find()
 end
 local borderConf = {borderchars = {prompt = {
-    "─",
-    "│",
     " ",
-    "│",
+    " ",
+    " ",
+    " ",
     "┌",
     "┐",
-    "│",
-    "│"
+    " ",
+    " "
 }, results = {
-    "─",
-    "│",
-    "─",
-    "│",
+    " ",
+    " ",
+    " ",
+    " ",
     "├",
     "┤",
     "┘",
     "└"
 }, preview = {
-    "─",
-    "│",
-    "─",
-    "│",
+    " ",
+    " ",
+    " ",
+    " ",
     "┌",
     "┐",
     "┘",
@@ -694,6 +694,56 @@ function ____exports.run_default_run_task()
         ____exports.run_build_select_lang()
     elseif hasLangTask then
         popup(("Could not find any run tasks for '" .. current_language) .. "'. \nPlease select task from list.", "warn", "Build")
+        ____exports.run_build_select_lang()
+    else
+        popup(("Could not find any tasks for '" .. current_language) .. "'. \nPlease select task from list.", "warn", "Build")
+        ____exports.run_build_select()
+    end
+end
+function ____exports.run_default_test_task()
+    local current_language = vim.bo.filetype
+    local clang = string.lower(current_language)
+    local tasks = get_build_names()
+    do
+        local i = 0
+        while i < #tasks do
+            local opts = __TS__StringSplit(tasks[i + 1][2], "_")
+            if #opts == 3 then
+                if string.lower(opts[1]) == string.lower(clang) and string.lower(opts[2]) == "default" and string.lower(opts[3]) == "test" then
+                    build_runner(tasks[i + 1][2])
+                    return
+                elseif string.lower(opts[1]) == "any" and string.lower(opts[2]) == "default" and string.lower(opts[3]) == "test" then
+                    build_runner(tasks[i + 1][2])
+                    return
+                end
+            end
+            i = i + 1
+        end
+    end
+    local hasLangTestTask = false
+    local hasLangTask = false
+    do
+        local i = 0
+        while i < #tasks do
+            local opts = __TS__StringSplit(tasks[i + 1][2], "_")
+            if #opts == 3 then
+                if string.lower(opts[1]) == string.lower(clang) and string.lower(opts[3]) == "test" then
+                    hasLangTestTask = true
+                end
+            end
+            if #opts > 0 then
+                if string.lower(opts[1]) == string.lower(clang) then
+                    hasLangTask = true
+                end
+            end
+            i = i + 1
+        end
+    end
+    if hasLangTestTask then
+        popup(("Could not find default test task for '" .. current_language) .. "'. \nPlease select task from list.", "warn", "Build")
+        ____exports.run_build_select_lang()
+    elseif hasLangTask then
+        popup(("Could not find any test tasks for '" .. current_language) .. "'. \nPlease select task from list.", "warn", "Build")
         ____exports.run_build_select_lang()
     else
         popup(("Could not find any tasks for '" .. current_language) .. "'. \nPlease select task from list.", "warn", "Build")

@@ -56,7 +56,7 @@ local opts = { noremap = true, silent = true }
 local keymap = vim.keymap
 
 keymap.set("n", "K", "<cmd>Lspsaga hover_doc<cr>", opts)
-keymap.set("n", "gK", "<cmd>Lspsaga peek_definition<cr>", opts)
+keymap.set("n", "gD", "<cmd>Lspsaga peek_definition<cr>", opts)
 
 keymap.set("n", "<A-s>", "<cmd>Lspsaga hover_doc<cr>", opts)
 keymap.set("i", "<A-s>", "<cmd>Lspsaga hover_doc<cr>", opts)
@@ -65,6 +65,12 @@ keymap.set("i", "<A-d>", "<cmd>Lspsaga peek_definition<cr>", opts)
 keymap.set('n', '<C-s>', vim.lsp.buf.signature_help, opts)
 keymap.set('i', '<C-s>', vim.lsp.buf.signature_help, opts)
 
+keymap.set("n", "<leader>ca", "<cmd>Lspsaga code_action<cr>", opts)
+keymap.set("n", "<leader>d", "<cmd>Lspsaga show_line_diagnostics<cr>", opts)
+
+keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+keymap.set("n", "gr", vim.lsp.buf.references, opts)
 
 
 

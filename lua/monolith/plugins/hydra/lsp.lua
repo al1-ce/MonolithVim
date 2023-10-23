@@ -4,6 +4,7 @@ local cmd = require('hydra.keymap-util').cmd
 
 local M = {}
 
+
 local hintLsp = [[
 ┌         Lsp         ┐
   _a_: Code actions      
@@ -14,6 +15,7 @@ local hintLsp = [[
   _p_: Peek definition   
   _r_: Rename symbol     
   _s_: Symbol list       
+  _S_: Symbol qflist     
          Go to         
   _d_: Definition        
   _R_: References        
@@ -27,7 +29,7 @@ local hintLsp = [[
                        
   _q_: Quit              
 └                     ┘
-]] -- TODO: formatting
+]]
 
 function stopLspInBuffer()
     local clients = vim.lsp.get_active_clients({bufnr = 0})
@@ -44,16 +46,17 @@ function M.hydra() return Hydra({
         heads = {
             { 'a', cmd 'Lspsaga code_action' },
             { 'D', cmd 'Lspsaga show_line_diagnostics' },
-            { 'f', cmd 'Lspsaga lsp_finder' },
+            { 'f', cmd 'FzfLua lsp_finder' },
             { 'h', cmd 'Lspsaga hover_doc' },
 
             { 'p', cmd 'Lspsaga peek_definition' },
             { 'r', cmd 'Lspsaga rename' },
-            { 's', cmd 'Telescope lsp_document_symbols' },
+            { 's', cmd 'FzfLua lsp_document_symbols' },
+            { 'S', cmd 'lua vim.lsp.buf.document_symbol()' },
 
-            { 'd', cmd 'Telescope lsp_definitions' },
-            { 'R', cmd 'Telescope lsp_references' },
-            { 'I', cmd 'Telescope lsp_implementations' },
+            { 'd', cmd 'FzfLua lsp_definitions' },
+            { 'R', cmd 'FzfLua lsp_references' },
+            { 'I', cmd 'FzfLua lsp_implementations' },
 
             { 'F', vim.lsp.buf.format },
             { 'x', cmd 'Codi javascript' },

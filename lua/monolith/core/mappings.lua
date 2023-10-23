@@ -108,6 +108,14 @@ keymap.set("n", "<BS>", '"_X', opts);
 keymap.set("n", "<Tab>", ">>", opts)
 keymap.set("n", "<S-Tab>", "<<", opts)
 
+keymap.set("n", "<leader>ss", "<CMD>split<CR>", opts)
+keymap.set("n", "<leader>sv", "<CMD>vsplit<CR>", opts)
+
+keymap.set("n", "<leader>fs", "<C-^>", opts)
+
+keymap.set("n", "<leader>q", "<CMD>x<CR>", opts)
+keymap.set("n", "<leader>w", "<CMD>update<CR>", opts)
+
 -- -------------------------------------------------------------------------- --
 --                                 Insert Mode                                --
 -- -------------------------------------------------------------------------- --

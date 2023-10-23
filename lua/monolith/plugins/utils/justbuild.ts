@@ -113,9 +113,9 @@ function get_build_names(lang: string = ""): string[][] {
     // table.remove(tbl, 1);
     arr.shift();
     arr.pop();
-    
+
     let pjustfile: string = `${vim.fn.getcwd()}/justfile`;
-    if (vim.fn.filereadable(pjustfile) == 1 && pjustfile != `${getConfigDir()}/justfile`) { 
+    if (vim.fn.filereadable(pjustfile) == 1 && pjustfile != `${getConfigDir()}/justfile`) {
         let overrideList: string = vim.fn.system(`just -f ${pjustfile} --list`);
         let oarr: string[] = overrideList.split("\n");
         oarr.shift();
@@ -162,21 +162,21 @@ function get_build_names(lang: string = ""): string[][] {
             let rn = Math.max(0, wd - out.length);
             out += `${" ".repeat(rn)} ${comment == null ? "" : comment}`;
             tbl.push([out, name]);
-        } 
+        }
         // popup(`${name}: ${options.length}`, "info", "Info");
     }
     return tbl;
 }
 
 /**
-@summary Checks if argument is defined as keyword (i.e "FILEPATH", "FILEEXT") and 
-returns corresponding string. If argument is not keyword function returns single space 
+@summary Checks if argument is defined as keyword (i.e "FILEPATH", "FILEEXT") and
+returns corresponding string. If argument is not keyword function returns single space
 @param arg Argument to check
 */
 function check_keyword_arg(arg: string): string {
     switch (arg) {
         // Full file path
-        case "FILEPATH": return vim.fn.expand("%:p"); 
+        case "FILEPATH": return vim.fn.expand("%:p");
         // Full file name
         case "FILENAME": return vim.fn.expand("%:t");
         // File path without filename
@@ -200,20 +200,20 @@ function check_keyword_arg(arg: string): string {
         // User name
         case "USERNAME": return os.getenv("USER");
         // PC name
-        case "PCNAME": return vim.fn.system("uname -a").split(" ")[1]; 
+        case "PCNAME": return vim.fn.system("uname -a").split(" ")[1];
         // OS
         case "OS": return vim.fn.system("uname").split("\n")[0];
         default: return " ";
-    } 
+    }
 }
 
 function get_build_args(build_name: string): string[] {
     let justloc = just;
     let pjustfile: string = `${vim.fn.getcwd()}/justfile`;
-    if (vim.fn.filereadable(pjustfile) == 1) { 
+    if (vim.fn.filereadable(pjustfile) == 1) {
         let bd: string = vim.fn.system(`just -f ${pjustfile} --summary`).split("\n")[0];
         if (bd.split(" ").includes(build_name)) {
-            justloc = `just -f ${pjustfile}`; 
+            justloc = `just -f ${pjustfile}`;
         }
     }
     let outshow = vim.fn.system(`${justloc} -s ${build_name}`);
@@ -249,24 +249,24 @@ function build_runner(build_name: string): void {
     let args: string[] = get_build_args(build_name);
     let justloc = just;
     let pjustfile: string = `${vim.fn.getcwd()}/justfile`;
-    if (vim.fn.filereadable(pjustfile) == 1) { 
+    if (vim.fn.filereadable(pjustfile) == 1) {
         let bd: string = vim.fn.system(`just -f ${pjustfile} --summary`).split("\n")[0];
         // print("|" + bd + "|");
         if (bd.split(" ").includes(build_name)) {
-            justloc = `just -f ${pjustfile}`; 
+            justloc = `just -f ${pjustfile}`;
         }
         // print(pjustfile);
         // print(justloc);
     }
     let command: string = `${justloc} -d . ${build_name} ${args.join(" ")}`;
     // popup(command);
-    let success: string = `aplay ${getConfigDir()}/res/build_success.wav -q`; 
-    let error: string = `aplay ${getConfigDir()}/res/build_error.wav -q`; 
-    
+    let success: string = `aplay ${getConfigDir()}/res/build_success.wav -q`;
+    let error: string = `aplay ${getConfigDir()}/res/build_error.wav -q`;
+
     // USING AsyncRun
     // let lcom: string = `:AsyncRun /bin/bash -c '( ${command} ) && ( ${success} ) || ( ${error} )'`;
     // vim.cmd(lcom);
-    
+
     // SECTION: ASYNC RUNNER
     // Own implementation depending on Plenary
     // I'm doing it because I prefer having control over those things
@@ -290,7 +290,7 @@ function build_runner(build_name: string): void {
                 vim.fn.setqflist([
                     {text: ""},
                     {text: `Finished in ${string.format("%.2f", etime)} seconds`}
-                ], "a")            
+                ], "a")
                 if (ret == 0) {
                     // @ts-ignore
                     async.new({
@@ -313,7 +313,7 @@ function build_runner(build_name: string): void {
         on_stderr: function(err: string, data: string) {
             vim.schedule(function() {
                 // vim.cmd("copen");
-                vim.cmd(`caddexpr "${data}"`); 
+                vim.cmd(`caddexpr "${data}"`);
             });
         },
     }).start();
@@ -327,7 +327,8 @@ export function build_select(opts: any): void {
     let picker = pickers.new(opts, {
         prompt_title: "Build tasks",
         border: {},
-        borderchars: [ "─", "│", "─", "│", "┌", "┐", "┘", "└" ], 
+        // borderchars: [ "─", "│", "─", "│", "┌", "┐", "┘", "└" ],
+        borderchars: [ " ", " ", " ", " ", "┌", "┐", "┘", "└" ],
         finder: finders.new_table({
             results: get_build_names(),
             entry_maker: (entry: any[]) => {
@@ -357,7 +358,8 @@ export function build_select_lang(opts: any): void {
     let picker = pickers.new(opts, {
         prompt_title: `${vim.bo.filetype} build tasks`,
         border: {},
-        borderchars: [ "─", "│", "─", "│", "┌", "┐", "┘", "└" ], 
+        // borderchars: [ "─", "│", "─", "│", "┌", "┐", "┘", "└" ],
+        borderchars: [ " ", " ", " ", " ", "┌", "┐", "┘", "└" ],
         finder: finders.new_table({
             results: get_build_names(vim.bo.filetype),
             entry_maker: (entry: any[]) => {
@@ -384,9 +386,12 @@ export function build_select_lang(opts: any): void {
 }
 
 let borderConf = { borderchars: {
-     prompt: [ "─", "│", " ", "│", "┌", "┐", "│", "│" ],
-    results: [ "─", "│", "─", "│", "├", "┤", "┘", "└" ],
-    preview: [ "─", "│", "─", "│", "┌", "┐", "┘", "└" ]
+     prompt: [ " ", " ", " ", " ", "┌", "┐", " ", " " ],
+    results: [ " ", " ", " ", " ", "├", "┤", "┘", "└" ],
+    preview: [ " ", " ", " ", " ", "┌", "┐", "┘", "└" ]
+    //  prompt: [ "─", "│", " ", "│", "┌", "┐", "│", "│" ],
+    // results: [ "─", "│", "─", "│", "├", "┤", "┘", "└" ],
+    // preview: [ "─", "│", "─", "│", "┌", "┐", "┘", "└" ]
 }}
 
 export function run_build_select(): void {
@@ -416,7 +421,7 @@ export function run_default_task(): void {
                 // popup(`Executing default task for '${current_language}'.`, "info", "Build");
                 build_runner(tasks[i][1]);
                 return;
-            } 
+            }
         }
     }
     let hasLangTask = false;
@@ -459,7 +464,7 @@ export function run_default_run_task(): void {
                 // popup(`Executing default task for '${current_language}'.`, "info", "Build");
                 build_runner(tasks[i][1]);
                 return;
-            } 
+            }
         }
     }
     // popup(`Could not find default run task for '${current_language}'. \nPlease select task from list.`, "warn", "Build");
@@ -484,9 +489,67 @@ export function run_default_run_task(): void {
     if (hasLangRunTask) {
         popup(`Could not find default run task for '${current_language}'. \nPlease select task from list.`, "warn", "Build");
         run_build_select_lang();
-    } else 
+    } else
     if (hasLangTask) {
         popup(`Could not find any run tasks for '${current_language}'. \nPlease select task from list.`, "warn", "Build");
+        run_build_select_lang();
+    } else {
+        popup(`Could not find any tasks for '${current_language}'. \nPlease select task from list.`, "warn", "Build");
+        run_build_select();
+    }
+
+}
+
+export function run_default_test_task(): void {
+    // popup("Running");
+    let current_language: string = vim.bo.filetype;
+    let clang: string = current_language.toLowerCase();
+    let tasks: string[][] = get_build_names();
+    for (let i = 0; i < tasks.length; ++i) {
+        let opts: string[] = tasks[i][1].split("_");
+        // popup(tasks[i][0]);
+        if (opts.length == 3) {
+            // popup(`${opts[0].toLowerCase()} == ${clang.toLowerCase()} : ${opts[1].toLowerCase()}`)
+            if (opts[0].toLowerCase() == clang.toLowerCase() &&
+                opts[1].toLowerCase() == "default" &&
+                opts[2].toLowerCase() == "test") {
+                // popup(`Executing default task for '${current_language}'.`, "info", "Build");
+                build_runner(tasks[i][1]);
+                return;
+            } else if (opts[0].toLowerCase() == "any" &&
+                opts[1].toLowerCase() == "default" &&
+                opts[2].toLowerCase() == "test") {
+                // popup(`Executing default task for '${current_language}'.`, "info", "Build");
+                build_runner(tasks[i][1]);
+                return;
+            }
+        }
+    }
+    // popup(`Could not find default run task for '${current_language}'. \nPlease select task from list.`, "warn", "Build");
+    // run_build_select();
+    let hasLangTestTask = false;
+    let hasLangTask = false;
+    for (let i = 0; i < tasks.length; ++i) {
+        let opts: string[] = tasks[i][1].split("_");
+        if (opts.length == 3) {
+            if (opts[0].toLowerCase() == clang.toLowerCase() &&
+                opts[2].toLowerCase() == "test") {
+                hasLangTestTask = true;
+            }
+        }
+        if (opts.length > 0) {
+            if (opts[0].toLowerCase() == clang.toLowerCase()) {
+                hasLangTask = true;
+            }
+        }
+
+    }
+    if (hasLangTestTask) {
+        popup(`Could not find default test task for '${current_language}'. \nPlease select task from list.`, "warn", "Build");
+        run_build_select_lang();
+    } else
+    if (hasLangTask) {
+        popup(`Could not find any test tasks for '${current_language}'. \nPlease select task from list.`, "warn", "Build");
         run_build_select_lang();
     } else {
         popup(`Could not find any tasks for '${current_language}'. \nPlease select task from list.`, "warn", "Build");

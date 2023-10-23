@@ -5,7 +5,7 @@ local cmd = require('hydra.keymap-util').cmd
 local M = {}
 
 local hintWindow = [[
-┌        Window        ┐
+┌        Split         ┐
   _s_: Horizontal split   
   _v_: Vertical split     
   _=_: Equalize           
@@ -16,7 +16,7 @@ local hintWindow = [[
 ]]
 
 function M.hydra() return Hydra({
-    name = 'Windows',
+    name = 'Splits',
     hint = hintWindow,
     config = colors.passAllow(),
     mode = '',

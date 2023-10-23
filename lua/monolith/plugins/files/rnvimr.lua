@@ -33,7 +33,7 @@ local opts = { noremap = true, silent = true }
 
 local keymap = vim.keymap
 
-keymap.set("n", "<leader>f", "<CMD>RnvimrToggle<CR>", opts)
+-- vim.keymap.set("n", "<leader>r", "<CMD>RnvimrToggle<CR>", { noremap = true, silent = true })
 
 local function setKeymapFiletype(ft, name, mode, map, action)
     vim.api.nvim_create_autocmd('FileType', {

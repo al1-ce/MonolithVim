@@ -14,9 +14,6 @@ local hintText = [[
   _R_: Remove surround         
   _'_: Surround around         
   _"_: Surround in             
-            Aligns           
-  _a_: Align around first      
-  _A_: Align around all        
            Comments          
   _/_: Toggle comment lines    
   _?_: Toggle comment block    
@@ -77,9 +74,6 @@ function M.hydra() return Hydra({
         -- { '/', commentApi.toggle.linewise.current },
         { 'b', require('nvim-toggler').toggle },
 
-        { 'a', '<Plug>(EasyAlign)ip=' },
-        { 'A', '<Plug>(EasyAlign)ip*=' },
-
         { 's', '<Plug>Ysurroundiw' },
         { 'S', '<Plug>Yssurround' },
         { 'r', '<Plug>Csurround' },
@@ -100,7 +94,7 @@ function M.hydra() return Hydra({
         { 'w', cmd 'tabclose' },
         { 'o', cmd 'tabonly' },
 
-        { 'm', cmd 'Telescope marks' },
+        { 'm', cmd 'FzfLua marks' },
 
         { 'd', callback.hydraCallback('draw'); },
         { 'p', cmd 'PickColor' },

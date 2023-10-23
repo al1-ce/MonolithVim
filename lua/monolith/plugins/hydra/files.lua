@@ -9,7 +9,6 @@ local hintFiles = [[
   _f_: Find file     
   _r_: Recent files  
   _p_: Projects      
-  _b_: Browser       
   _s_: Swap alt      
   _e_: Edit new      
        Regex       
@@ -17,7 +16,6 @@ local hintFiles = [[
   _R_: Replace file  
   _g_: Live grep     
        Trees       
-  _t_: File tree     
   _T_: Tagbar        
   _u_: Undo tree     
   _S_: Sidebar       
@@ -27,8 +25,44 @@ local hintFiles = [[
 └                 ┘
 ]]
 
+--  _t_: File tree     
+
+local fzf = require("fzf-lua")
+
 local function mediaCall()
     require("telescope").extensions.media.media({cwd=vim.fn.getcwd()})
+end
+
+local function reverse(tab)
+    for i = 1, #tab/2, 1 do
+        tab[i], tab[#tab-i+1] = tab[#tab-i+1], tab[i]
+    end
+    return tab
+end
+
+local function deleteProject(paths)
+    for _,fpath in ipairs(paths) do
+        local choice = vim.fn.confirm("Delete '" .. fpath .. "' from project list?", "&Yes\n&No", 2)
+
+        if choice == 1 then
+            require("project_nvim.utils.history").delete_project({value = fpath})
+        end
+    end
+end
+
+local function fzfProjects()
+    require("fzf-lua").fzf_exec(
+        reverse(require("project_nvim").get_recent_projects()),
+        {
+            prompt = " ",
+            -- fzf_opts = {['--layout'] = 'reverse'},
+            actions = {
+                ['default'] = function(selected, opts) fzf.files({cwd = selected[1]}) end,
+                ["ctrl-d"] = deleteProject,
+                ["ctrl-w"] = function(selected, opts) vim.api.nvim_set_current_dir(selected[1]) end,
+            }
+        }
+    )
 end
 
 function M.hydra() return Hydra({
@@ -37,19 +71,19 @@ function M.hydra() return Hydra({
         config = colors.passAllow(),
         mode = '',
         heads = {
-            { 'f', cmd 'Telescope find_files' },
+            { 'f', cmd 'FzfLua files' },
             -- { 'f', mediaCall },
-            { 'r', cmd 'Telescope oldfiles' },
-            { 'p', cmd 'Telescope projects' },
-            { 'b', cmd 'Telescope file_browser' },
+            { 'r', cmd 'FzfLua oldfiles' },
+            -- { 'p', cmd 'Telescope projects' },
+            { 'p', fzfProjects },
             { 's', '<C-^>' },
             { 'e', cmd 'enew' },
 
-            { 'F', cmd 'Telescope current_buffer_fuzzy_find' },
+            { 'F', cmd 'FzfLua blines' },
             { 'R', require('spectre').open },
-            { 'g', cmd 'Telescope live_grep' },
+            { 'g', cmd 'FzfLua grep_project' },
 
-            { 't', ':NvimTreeToggle<cr><C-w>l' },
+            -- { 't', ':NvimTreeToggle<cr><C-w>l' },
             { 'T', cmd 'Lspsaga outline' },
             { 'u', cmd 'UndotreeToggle' },
             { 'S', cmd 'SidebarNvimToggle' },

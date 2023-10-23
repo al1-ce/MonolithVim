@@ -2,11 +2,6 @@
 -- ditto: https://github.com/neovim/neovim/blob/master/runtime/syntax/d.vim
 
 local g = vim.g -- global variables
-g.gruvbox_contrast_dark = "medium"
-g.gruvbox_transparent_bg = 1
-g.gruvbox_baby_transparent_mode = 1
-
-vim.cmd.colorscheme('gruvbox')
 
 -------------------- Functions --------------------------------------
 
@@ -38,14 +33,14 @@ local autocmd = vim.api.nvim_create_autocmd   -- Create autocommand
 -- ctermbg: Sets background of cterm color ctermbg
 -- cterm: cterm attribute map, like highlight-args.
 -- force: if true force update the highlight group when it exists.
-local function hi(name, val)
+local function highlight(name, val)
     vim.api.nvim_set_hl(0, name, val)
 end
 
 -- see hi
-local function hiAll(names, val)
+local function highlightAll(names, val)
     for i = 1, #names do
-        hi(names[i], val)
+        highlight(names[i], val)
     end
 end
 
@@ -143,13 +138,13 @@ do -- start autocmd block
 end -- end autocmd block
 
 -------------------- Highlight --------------------------------------
-hi("QuickFixLine", {bg = "#3c3836", ctermfg = 8})
+highlight("QuickFixLine", {bg = "#3c3836", ctermfg = 8})
 
 -- Custom function highlight
-hiAll({"dCustomFunc", "dCustomDFunc"}, {link = "Function"})
+highlightAll({"dCustomFunc", "dCustomDFunc"}, {link = "Function"})
 
 -- Borders
-hiAll({
+highlightAll({
     "LspSagaCodeActionBorder",
     "LspSagaLspFinderBorder",
     "FinderSpinnerBorder",
@@ -160,6 +155,7 @@ hiAll({
     "LSOutlinePreviewBorder",
     "LspSagaGroupName",
     "LspSagaDiagnosticError",
+    "FzfLuaBorder"
 }, {link = "LspSagaDiagnosticBorder"})
 
 -- vim.illuminate
@@ -167,26 +163,28 @@ hiAll({
 local illuminated_col = {bg = "#3c3836", ctermbg = 8}
 local illuminated_nil = {}
 
-hiAll({"IlluminatedWordText"}, illuminated_nil)
-hiAll({"IlluminatedWordRead", "IlluminatedWordWrite"}, illuminated_col)
+highlightAll({"IlluminatedWordText"}, illuminated_nil)
+highlightAll({"IlluminatedWordRead", "IlluminatedWordWrite"}, illuminated_col)
 
-hi("SpectreHeader", {link = "Comment"})
-hi("SpectreBody", {link = "Normal"})
-hi("SpectreFile", {link = "Macro"})
-hi("SpectreDir", {link = "Comment"})
-hi("SpectreSearch", {link = "DiffChange"})
--- hi("SpectreSearch", {ctermfg = 1, fg = g.terminal_color_1, italic = true})
-hi("SpectreBorder", {link = "Comment"})
-hi("SpectreReplace", {link = "DiffDelete"})
--- hi("SpectreReplace", {ctermfg = 10, fg = g.terminal_color_10})
+highlight("SpectreHeader", {link = "Comment"})
+highlight("SpectreBody", {link = "Normal"})
+highlight("SpectreFile", {link = "Macro"})
+highlight("SpectreDir", {link = "Comment"})
+highlight("SpectreSearch", {link = "DiffChange"})
+-- highlight("SpectreSearch", {ctermfg = 1, fg = g.terminal_color_1, italic = true})
+highlight("SpectreBorder", {link = "Comment"})
+highlight("SpectreReplace", {link = "DiffDelete"})
+-- highlight("SpectreReplace", {ctermfg = 10, fg = g.terminal_color_10})
+
+highlight("ExtraWhitespace", {bg = "#502828", ctermbg = 1})
 
 -- hydra
 
-hi("HydraRed",      {fg = g.terminal_color_1, ctermfg = 1})
-hi("HydraBlue",     {fg = g.terminal_color_12, ctermfg = 12})
-hi("HydraAmaranth", {fg = g.terminal_color_5, ctermfg = 5})
-hi("HydraTeal",     {fg = g.terminal_color_14, ctermfg = 14})
-hi("HydraPink",     {fg = g.terminal_color_13, ctermfg = 13})
+highlight("HydraRed",      {fg = g.terminal_color_1, ctermfg = 1})
+highlight("HydraBlue",     {fg = g.terminal_color_12, ctermfg = 12})
+highlight("HydraAmaranth", {fg = g.terminal_color_5, ctermfg = 5})
+highlight("HydraTeal",     {fg = g.terminal_color_14, ctermfg = 14})
+highlight("HydraPink",     {fg = g.terminal_color_13, ctermfg = 13})
 
 -- custom gruv colors
 
@@ -206,54 +204,54 @@ if g.colors_name == 'gruvbox' then
     local style_sign_warning    = {bg = "#352C28", ctermbg = 11}
     local style_sign_error      = {bg = "#302828", ctermbg = 1}
     local style_sign_warning_fg = {fg = "#fe8019", bg = "#352C28", ctermfg = 11, ctermbg = 3}
-    local style_sign_error_fg   = {fg = "#fb4932", bg = "#302828", ctermfg = 9, ctermbg = 1}
+    local style_sign_error_fg   = {fg = "#fb4934", bg = "#302828", ctermfg = 9, ctermbg = 1}
     local style_breakpoint      = {bg = "#282830", ctermbg = 4}
     local style_breakpoint_fg   = {fg = "#83a598", bg = "#283030", ctermfg = 12, ctermbg = 4}
 
     -- common syntax
 
-    hiAll({"Normal", "NormalFloat", "FloatBorder"}, style_normal)
-    hiAll({"Function"}, style_function)
-    hiAll({"Identifier", "Delimiter"}, style_identifier)
-    hiAll({"Label", "Conditional", "Debug", "Exception", "Include", "Repeat"}, style_keyword)
-    hiAll({"StorageClass", "Structure", "Typedef", "Keyword", "Operator", "Statement"}, style_keyword)
-    hiAll({"Type"}, style_type)
-    hiAll({"Constant", "Boolean", "Number", "Float"}, style_const)
-    hiAll({"String", "Character"}, style_string)
-    hiAll({"Special", "SpecialChar"}, style_special)
-    hiAll({"PreProc", "Define", "Macro", "Precondit"}, style_macro)
-    hiAll({"Todo", "Tag"}, style_tag)
-    hiAll({"Comment"}, style_comment)
+    highlightAll({"Normal", "NormalFloat", "FloatBorder"}, style_normal)
+    highlightAll({"Function"}, style_function)
+    highlightAll({"Identifier", "Delimiter"}, style_identifier)
+    highlightAll({"Label", "Conditional", "Debug", "Exception", "Include", "Repeat"}, style_keyword)
+    highlightAll({"StorageClass", "Structure", "Typedef", "Keyword", "Operator", "Statement"}, style_keyword)
+    highlightAll({"Type"}, style_type)
+    highlightAll({"Constant", "Boolean", "Number", "Float"}, style_const)
+    highlightAll({"String", "Character"}, style_string)
+    highlightAll({"Special", "SpecialChar"}, style_special)
+    highlightAll({"PreProc", "Define", "Macro", "Precondit"}, style_macro)
+    highlightAll({"Todo", "Tag"}, style_tag)
+    highlightAll({"Comment"}, style_comment)
 
-    hiAll({"Search"}, {reverse = true})
+    highlightAll({"Search"}, {reverse = true})
 
     -- PQF && DAP
 
-    hiAll({"LspSagaDiagnosticBorder"}, style_normal)
+    highlightAll({"LspSagaDiagnosticBorder"}, style_normal)
 
-    hiAll({"Error", "DiagnosticError"}, style_keyword)
-    hiAll({"Directory", "DiagnosticInfo"}, style_function)
-    hiAll({"DiagnosticWarn"}, style_special)
-    hiAll({"DiagnosticHint"}, style_macro)
+    highlightAll({"Error", "DiagnosticError"}, style_keyword)
+    highlightAll({"Directory", "DiagnosticInfo"}, style_function)
+    highlightAll({"DiagnosticWarn"}, style_special)
+    highlightAll({"DiagnosticHint"}, style_macro)
 
-    hiAll({"DiagnosticSignError", "DapSignStopped"}, style_sign_error)
-    hiAll({"DiagnosticSignWarn"}, style_sign_warning)
-    hiAll({"DiagnosticSignErrorNumber", "DapSignStoppedNumber"}, style_sign_error_fg)
-    hiAll({"DiagnosticSignWarnNumber"}, style_sign_warning_fg)
+    highlightAll({"DiagnosticSignError", "DapSignStopped"}, style_sign_error)
+    highlightAll({"DiagnosticSignWarn"}, style_sign_warning)
+    highlightAll({"DiagnosticSignErrorNumber", "DapSignStoppedNumber"}, style_sign_error_fg)
+    highlightAll({"DiagnosticSignWarnNumber"}, style_sign_warning_fg)
 
-    hiAll({"DapSignBreakpoint"}, style_breakpoint)
-    hiAll({"DapSignBreakpointNumber"}, style_breakpoint_fg)
+    highlightAll({"DapSignBreakpoint"}, style_breakpoint)
+    highlightAll({"DapSignBreakpointNumber"}, style_breakpoint_fg)
 
     -- CMP
 
-    hiAll({"CmpItemKindText", "CmpItemKindField", "CmpItemKindValue", "CmpItemKindOperator", "CmpItemKindTypeParameter"}, style_normal)
-    hiAll({"CmpItemKindSnippet", "CmpItemKindKeyword", "CmpItemKindUnit", "CmpItemKindEnum"}, style_keyword)
-    hiAll({"CmpItemAbbrDeprecated"}, style_comment)
-    hiAll({"CmpItemAbbrMatch", "CmpItemAbbrMatchFuzzy"}, style_identifier)
-    hiAll({"CmpItemKindValue", "CmpItemKindEnumMember", "CmpItemKindColor", "CmpItemKindConstant", "CmpItemKindEvent"}, style_const)
-    hiAll({"CmpItemKindFile", "CmpItemKindReference", "CmpItemKindFolder"}, style_string)
-    hiAll({"CmpItemKindMethod", "CmpItemKindFunction", "CmpItemKindConstructor", "CmpItemKindProperty"}, style_function)
-    hiAll({"CmpItemKindClass", "CmpItemKindStruct", "CmpItemKindInterface", "CmpItemKindModule"}, style_special)
+    highlightAll({"CmpItemKindText", "CmpItemKindField", "CmpItemKindValue", "CmpItemKindOperator", "CmpItemKindTypeParameter"}, style_normal)
+    highlightAll({"CmpItemKindSnippet", "CmpItemKindKeyword", "CmpItemKindUnit", "CmpItemKindEnum"}, style_keyword)
+    highlightAll({"CmpItemAbbrDeprecated"}, style_comment)
+    highlightAll({"CmpItemAbbrMatch", "CmpItemAbbrMatchFuzzy"}, style_identifier)
+    highlightAll({"CmpItemKindValue", "CmpItemKindEnumMember", "CmpItemKindColor", "CmpItemKindConstant", "CmpItemKindEvent"}, style_const)
+    highlightAll({"CmpItemKindFile", "CmpItemKindReference", "CmpItemKindFolder"}, style_string)
+    highlightAll({"CmpItemKindMethod", "CmpItemKindFunction", "CmpItemKindConstructor", "CmpItemKindProperty"}, style_function)
+    highlightAll({"CmpItemKindClass", "CmpItemKindStruct", "CmpItemKindInterface", "CmpItemKindModule"}, style_special)
 
     vim.cmd([[
         sign define DiagnosticSignError text=E texthl=DiagnosticSignError linehl=DiagnosticSignError numhl=DiagnosticSignErrorNumber

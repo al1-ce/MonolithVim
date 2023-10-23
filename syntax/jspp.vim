@@ -41,7 +41,6 @@ syn keyword	csAccessModifier	internal private protected public external
 syn keyword	csModifier	operator nextgroup=csCheckedModifier skipwhite skipempty
 syn keyword	csCheckedModifier	checked contained
 
-" TODO: in new out
 syn keyword	csModifier	abstract const event override readonly sealed static virtual volatile property final
 syn match	csModifier	"\<\%(extern\|fixed\|unsafe\)\>"
 syn match	csModifier	"\<partial\ze\_s\+\%(class\|struct\|interface\|record\|void\)\>"

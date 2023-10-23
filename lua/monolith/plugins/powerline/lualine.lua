@@ -37,18 +37,24 @@ require('lualine').setup {
         }
     },
     sections = {
-        lualine_a = { 'mode' },
-        lualine_b = { 'branch', 'diff', 'diagnostics' },
-        lualine_c = { current_signature },
-        lualine_x = { 'encoding', 'fileformat', 'filetype' },
-        lualine_y = { 'progress' },
-        lualine_z = { 'location' }
+        lualine_a = { {'fancy_mode', width=3} },
+        lualine_b = {'branch', 'fancy_diff', 'diagnostics' },
+        lualine_c = { current_signature, },
+        lualine_x = {
+            {
+                require("noice").api.status.command.get,
+                cond = require("noice").api.status.command.has
+            },
+            'filetype'
+        },
+        lualine_y = { 'location' },
+        lualine_z = { 'progress'  }
     },
     inactive_sections = {
         lualine_a = {},
         lualine_b = {},
         lualine_c = { 'filename' },
-        lualine_x = { 'location' },
+        lualine_x = { 'encoding', 'location', 'fileformat',  },
         lualine_y = {},
         lualine_z = {}
     },

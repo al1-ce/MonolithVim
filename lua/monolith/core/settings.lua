@@ -1,7 +1,7 @@
 -- nvim settings
 
-local cmd = vim.cmd             -- execute Vim commands
-local exec = vim.api.nvim_exec  -- execute Vimscript
+local cmd = vim.cmd             -- cmdute Vim commands
+-- local cmd = vim.api.nvim_exec  -- execute Vimscript
 local g = vim.g                 -- global variables
 local o = vim.o                 -- global-like
 local opt = vim.opt             -- global/buffer/windows-scoped options
@@ -50,7 +50,7 @@ opt.smartindent = true    -- autoindent new lines
 cmd [[au BufEnter * set fo-=c fo-=r fo-=o]]
 
 -- autocorrects qq to Qq
-exec([[cabbrev qq Qq]], false)
+cmd([[cabbrev qq Qq]])
 -- custom qall command
 vim.api.nvim_create_user_command('Qq', 
 function(opts)
@@ -64,6 +64,14 @@ o.mousemodel = "extend"     -- sets right mouse click to extend selection
 o.guifont = "Cascadia Mono PL:h11"
 
 g.ruby_host_prog = '~/.local/share/gem/ruby/3.0.0/bin/neovim-ruby-host'
+
+cmd([[set guicursor=n-v-sm:block,i-c-ci-ve:ver25,r-cr-o:hor20]])
+
+vim.g.gruvbox_contrast_dark = "medium"
+vim.g.gruvbox_transparent_bg = 1
+vim.g.gruvbox_baby_transparent_mode = 1
+
+vim.cmd.colorscheme('gruvbox')
 
 -- ----------------------------- neovide configs ---------------------------- --
 -- if vim.g.neovide then

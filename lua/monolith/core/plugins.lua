@@ -37,7 +37,7 @@ require('lazy').setup({
     'nixprime/cpsm',
 
     -- --------------------------------- Themes --------------------------------- --
-    'morhetz/gruvbox',
+    -- 'morhetz/gruvbox', -- provided in files
     'luisiacc/gruvbox-baby',
     'almo7aya/neogruvbox.nvim',
     'savq/melange',
@@ -51,6 +51,7 @@ require('lazy').setup({
     'tikhomirov/vim-glsl',
 
     -- ------------------------------ File managers ----------------------------- --
+    -- FZF has priority over Telescope because Telescope often skips things
     'nvim-telescope/telescope.nvim',
     -- extensions:
     'nvim-telescope/telescope-file-browser.nvim',
@@ -67,10 +68,14 @@ require('lazy').setup({
     "stevearc/oil.nvim",
     -- ranger
     "kevinhwang91/rnvimr",
+    -- FZF
+    -- "junegunn/fzf",
+    -- "junegunn/fzf.vim",
+    "ibhagwan/fzf-lua",
 
     -- -------------------------------- Trees ----------------------------------- --
-    -- file tree
-    'nvim-tree/nvim-tree.lua',
+    -- file tree, disabled because it makes bad habit
+    -- 'nvim-tree/nvim-tree.lua',
     -- undo tree
     'mbbill/undotree',
     -- sidebar
@@ -78,7 +83,7 @@ require('lazy').setup({
     -- sidebar dap breakpoints
     'sidebar-nvim/sections-dap',
     -- TodoTree
-    'AmeerTaweel/todo.nvim',
+    'folke/todo-comments.nvim',
     -- Goto quickfix files
     'yssl/QFEnter',
 
@@ -87,7 +92,7 @@ require('lazy').setup({
     'neovim/nvim-lspconfig',
     -- lsp but formatting
     'nvimtools/none-ls.nvim',
-    -- many cool features like hover diagnostic    
+    -- many cool features like hover diagnostic
     'nvimdev/lspsaga.nvim',
     -- Nvim lua api
     'folke/neodev.nvim',
@@ -154,7 +159,7 @@ require('lazy').setup({
     -- Comment frame
     's1n7ax/nvim-comment-frame',
     -- Alisgn text
-    'junegunn/vim-easy-align',
+    'tommcdo/vim-lion',
     -- Colour picker and colour background
     "uga-rosa/ccc.nvim",
     -- Toggle tags
@@ -165,11 +170,14 @@ require('lazy').setup({
     'windwp/nvim-spectre',
     -- Better quickfix
     'yorickpeterse/nvim-pqf',
+    -- Highlights trailing whitespaces
+    "ntpeters/vim-better-whitespace",
 
 
     -- -------------------------------- Powerline ------------------------------- --
     -- powerline
     'nvim-lualine/lualine.nvim',
+    'meuter/lualine-so-fancy.nvim',
     -- Command suggestions
     { 'gelguy/wilder.nvim', build = ":UpdateRemotePlugins" },
     -- Illuminate matching words
