@@ -35,6 +35,8 @@ require('lazy').setup({
     'roxma/nvim-yarp',
     -- cp
     'nixprime/cpsm',
+    -- async
+    "kevinhwang91/promise-async",
 
     -- --------------------------------- Themes --------------------------------- --
     -- 'morhetz/gruvbox', -- provided in files
@@ -108,8 +110,8 @@ require('lazy').setup({
     'williamboman/mason-lspconfig.nvim',
     'jayp0521/mason-null-ls.nvim',
     'jayp0521/mason-nvim-dap.nvim',
-    -- LSP Servers
-    "hinell/lsp-timeout.nvim",
+    -- Closes old LSP servers (some servers don't reopen so no thanks)
+    -- "hinell/lsp-timeout.nvim",
     -- Auto-create colorscheme for missing format colors
     'folke/lsp-colors.nvim',
     -- ----------------------------------- DAP ---------------------------------- --
@@ -172,7 +174,8 @@ require('lazy').setup({
     'yorickpeterse/nvim-pqf',
     -- Highlights trailing whitespaces
     "ntpeters/vim-better-whitespace",
-
+    -- Pretty folding
+    "kevinhwang91/nvim-ufo",
 
     -- -------------------------------- Powerline ------------------------------- --
     -- powerline

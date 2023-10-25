@@ -225,6 +225,10 @@ if g.colors_name == 'gruvbox' then
 
     highlightAll({"Search"}, {reverse = true})
 
+    -- https://github.com/kevinhwang91/nvim-ufo#highlight-groups
+    local style_fold_line = {bg = "#353535", ctermbg = 8}
+    highlight("UfoFoldedBg", style_fold_line)
+
     -- PQF && DAP
 
     highlightAll({"LspSagaDiagnosticBorder"}, style_normal)

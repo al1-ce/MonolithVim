@@ -8,19 +8,17 @@ local M = {}
 
 local hintBuild = [[
 ┌         Build         ┐
-  _b_: Default build task  
-  _r_: Default run task    
-  _u_: Default test task   
-  _B_: File build tasks    
-  _T_: All tasks           
-          Debug          
-  _d_: Open debugger       
-  _t_: Toggle breakpoint   
+  _d_: Default task        
+  _b_: Build task          
+  _r_: Run task            
+  _t_: Test task           
+  _B_: All tasks           
+  _C_: Create build file   
                          
   _q_: Quit                
 └                       ┘
 ]]
---   _S_: Stop task process   
+--   _S_: Stop task process
 
 function M.hydra() return Hydra({
         name = 'Build',
@@ -28,16 +26,13 @@ function M.hydra() return Hydra({
         config = colors.passAllow(),
         mode = '',
         heads = {
-            { 'b', builder.run_default_task },
-            { 'r', builder.run_default_run_task },
-            { 'u', builder.run_default_test_task }, -- u for unittest
-            { 'B', builder.run_build_select_lang },
-            { 'T', builder.run_build_select },
+            { 'd', builder.run_task_default },
+            { 'b', builder.run_task_build },
+            { 'r', builder.run_task_run },
+            { 't', builder.run_task_test },
+            { 'B', builder.run_task_select },
+            { 'C', builder.add_build_template },
             -- { 'S', cmd 'AsyncStop!' },
-
-            ---@diagnostic disable-next-line: missing-parameter
-            { 'd', function() require("dapui").toggle() end },
-            { 't', cmd 'DapToggleBreakpoint' },
 
             { 'q', nil, { exit = true, nowait = true } },
             { '<Esc>', nil, { exit = true, nowait = true, desc = false } },

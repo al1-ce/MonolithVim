@@ -97,7 +97,7 @@ function M.hydra() return Hydra({
         { 'm', cmd 'FzfLua marks' },
 
         { 'd', callback.hydraCallback('draw'); },
-        { 'p', cmd 'PickColor' },
+        { 'p', cmd 'CccPick' },
         { 'u', cmd 'Telescope symbols' }, -- emoji
 
         { 'q', nil, { exit = true, nowait = true } },

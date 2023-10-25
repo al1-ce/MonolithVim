@@ -58,6 +58,13 @@ do
     end
 end
 
+local function __TS__StringStartsWith(self, searchString, position)
+    if position == nil or position < 0 then
+        position = 0
+    end
+    return string.sub(self, position + 1, #searchString + position) == searchString
+end
+
 local function __TS__ArrayFilter(self, callbackfn, thisArg)
     local result = {}
     local len = 0
@@ -175,31 +182,14 @@ local function __TS__ArrayConcat(self, ...)
     return result
 end
 
-local function __TS__ArrayIncludes(self, searchElement, fromIndex)
-    if fromIndex == nil then
-        fromIndex = 0
+local function __TS__StringIncludes(self, searchString, position)
+    if not position then
+        position = 1
+    else
+        position = position + 1
     end
-    local len = #self
-    local k = fromIndex
-    if fromIndex < 0 then
-        k = len + fromIndex
-    end
-    if k < 0 then
-        k = 0
-    end
-    for i = k + 1, len do
-        if self[i] == searchElement then
-            return true
-        end
-    end
-    return false
-end
-
-local function __TS__StringStartsWith(self, searchString, position)
-    if position == nil or position < 0 then
-        position = 0
-    end
-    return string.sub(self, position + 1, #searchString + position) == searchString
+    local index = string.find(self, searchString, position, true)
+    return index ~= nil
 end
 -- End of Lua Library inline imports
 local ____exports = {}
@@ -226,19 +216,19 @@ local function getConfigDir()
         ":p:h"
     )
 end
-local just = ("just -f " .. getConfigDir()) .. "/justfile"
 local function get_build_names(lang)
     if lang == nil then
         lang = ""
     end
-    local outlist = vim.fn.system(just .. " --list")
-    local arr = __TS__StringSplit(outlist, "\n")
-    table.remove(arr, 1)
-    table.remove(arr)
+    local arr = {}
     local pjustfile = vim.fn.getcwd() .. "/justfile"
-    if vim.fn.filereadable(pjustfile) == 1 and pjustfile ~= getConfigDir() .. "/justfile" then
+    if vim.fn.filereadable(pjustfile) == 1 then
         local overrideList = vim.fn.system(("just -f " .. pjustfile) .. " --list")
         local oarr = __TS__StringSplit(overrideList, "\n")
+        if __TS__StringStartsWith(oarr[1], "error") then
+            popup(overrideList, "error", "Build")
+            return {}
+        end
         table.remove(oarr, 1)
         table.remove(oarr)
         local rem = false
@@ -270,6 +260,9 @@ local function get_build_names(lang)
             end
         end
         arr = __TS__ArrayConcat(arr, oarr)
+    else
+        popup("Justfile not found in project directory", "error", "Build")
+        return {}
     end
     local tbl = {}
     do
@@ -315,64 +308,64 @@ end
 -- @param arg Argument to check
 local function check_keyword_arg(arg)
     repeat
-        local ____switch18 = arg
-        local ____cond18 = ____switch18 == "FILEPATH"
-        if ____cond18 then
+        local ____switch20 = arg
+        local ____cond20 = ____switch20 == "FILEPATH"
+        if ____cond20 then
             return vim.fn.expand("%:p")
         end
-        ____cond18 = ____cond18 or ____switch18 == "FILENAME"
-        if ____cond18 then
+        ____cond20 = ____cond20 or ____switch20 == "FILENAME"
+        if ____cond20 then
             return vim.fn.expand("%:t")
         end
-        ____cond18 = ____cond18 or ____switch18 == "FILEDIR"
-        if ____cond18 then
+        ____cond20 = ____cond20 or ____switch20 == "FILEDIR"
+        if ____cond20 then
             return vim.fn.expand("%:p:h")
         end
-        ____cond18 = ____cond18 or ____switch18 == "FILEEXT"
-        if ____cond18 then
+        ____cond20 = ____cond20 or ____switch20 == "FILEEXT"
+        if ____cond20 then
             return vim.fn.expand("%:e")
         end
-        ____cond18 = ____cond18 or ____switch18 == "FILENOEXT"
-        if ____cond18 then
+        ____cond20 = ____cond20 or ____switch20 == "FILENOEXT"
+        if ____cond20 then
             return vim.fn.expand("%:t:r")
         end
-        ____cond18 = ____cond18 or ____switch18 == "CWD"
-        if ____cond18 then
+        ____cond20 = ____cond20 or ____switch20 == "CWD"
+        if ____cond20 then
             return vim.fn.getcwd()
         end
-        ____cond18 = ____cond18 or ____switch18 == "RELPATH"
-        if ____cond18 then
+        ____cond20 = ____cond20 or ____switch20 == "RELPATH"
+        if ____cond20 then
             return vim.fn.expand("%")
         end
-        ____cond18 = ____cond18 or ____switch18 == "RELDIR"
-        if ____cond18 then
+        ____cond20 = ____cond20 or ____switch20 == "RELDIR"
+        if ____cond20 then
             return vim.fn.expand("%:h")
         end
-        ____cond18 = ____cond18 or ____switch18 == "TIME"
-        if ____cond18 then
+        ____cond20 = ____cond20 or ____switch20 == "TIME"
+        if ____cond20 then
             return os.date("%H:%M:%S")
         end
-        ____cond18 = ____cond18 or ____switch18 == "DATE"
-        if ____cond18 then
+        ____cond20 = ____cond20 or ____switch20 == "DATE"
+        if ____cond20 then
             return os.date("%d/%m/%Y")
         end
-        ____cond18 = ____cond18 or ____switch18 == "USDATE"
-        if ____cond18 then
+        ____cond20 = ____cond20 or ____switch20 == "USDATE"
+        if ____cond20 then
             return os.date("%m/%d/%Y")
         end
-        ____cond18 = ____cond18 or ____switch18 == "USERNAME"
-        if ____cond18 then
+        ____cond20 = ____cond20 or ____switch20 == "USERNAME"
+        if ____cond20 then
             return os.getenv("USER")
         end
-        ____cond18 = ____cond18 or ____switch18 == "PCNAME"
-        if ____cond18 then
+        ____cond20 = ____cond20 or ____switch20 == "PCNAME"
+        if ____cond20 then
             return __TS__StringSplit(
                 vim.fn.system("uname -a"),
                 " "
             )[2]
         end
-        ____cond18 = ____cond18 or ____switch18 == "OS"
-        if ____cond18 then
+        ____cond20 = ____cond20 or ____switch20 == "OS"
+        if ____cond20 then
             return __TS__StringSplit(
                 vim.fn.system("uname"),
                 "\n"
@@ -384,22 +377,17 @@ local function check_keyword_arg(arg)
     until true
 end
 local function get_build_args(build_name)
-    local justloc = just
+    local justloc = ""
     local pjustfile = vim.fn.getcwd() .. "/justfile"
     if vim.fn.filereadable(pjustfile) == 1 then
-        local bd = __TS__StringSplit(
-            vim.fn.system(("just -f " .. pjustfile) .. " --summary"),
-            "\n"
-        )[1]
-        if __TS__ArrayIncludes(
-            __TS__StringSplit(bd, " "),
-            build_name
-        ) then
-            justloc = "just -f " .. pjustfile
-        end
+        justloc = "just -f " .. pjustfile
+    end
+    if justloc == "" then
+        popup("Justfile not found in project directory", "error", "Build")
+        return {}
     end
     local outshow = vim.fn.system((justloc .. " -s ") .. build_name)
-    if __TS__StringStartsWith(outshow, "#") then
+    if __TS__StringStartsWith(outshow, "#") or __TS__StringStartsWith(outshow, "alias") then
         outshow = __TS__StringSplit(outshow, "\n")[2]
     end
     local outinfo = __TS__StringSplit(outshow, ":")[1]
@@ -415,8 +403,14 @@ local function get_build_args(build_name)
             local arg = args[i + 1]
             local keywd = check_keyword_arg(arg)
             if keywd == " " then
-                local a = vim.fn.input(arg .. ": ", "")
-                argsout[#argsout + 1] = ("\"" .. a) .. "\""
+                local a = ""
+                if __TS__StringIncludes(arg, "=") then
+                    local argw = __TS__StringSplit(arg, "=")
+                    a = vim.fn.input(argw[1] .. ": ", argw[2])
+                else
+                    a = vim.fn.input(arg .. ": ", "")
+                end
+                argsout[#argsout + 1] = a
             else
                 if keywd == "" then
                     keywd = " "
@@ -430,23 +424,16 @@ local function get_build_args(build_name)
 end
 local function build_runner(build_name)
     local args = get_build_args(build_name)
-    local justloc = just
+    local justloc = ""
     local pjustfile = vim.fn.getcwd() .. "/justfile"
     if vim.fn.filereadable(pjustfile) == 1 then
-        local bd = __TS__StringSplit(
-            vim.fn.system(("just -f " .. pjustfile) .. " --summary"),
-            "\n"
-        )[1]
-        if __TS__ArrayIncludes(
-            __TS__StringSplit(bd, " "),
-            build_name
-        ) then
-            justloc = "just -f " .. pjustfile
-        end
+        justloc = "just -f " .. pjustfile
+    end
+    if justloc == "" then
+        popup("Justfile not found in project directory", "error", "Build")
+        return
     end
     local command = (((justloc .. " -d . ") .. build_name) .. " ") .. table.concat(args, " ")
-    local success = ("aplay " .. getConfigDir()) .. "/res/build_success.wav -q"
-    local ____error = ("aplay " .. getConfigDir()) .. "/res/build_error.wav -q"
     vim.schedule(function()
         vim.cmd("copen")
         vim.fn.setqflist({{text = "Starting build job: " .. command}, {text = ""}}, "r")
@@ -466,6 +453,7 @@ local function build_runner(build_name)
                     },
                     "a"
                 )
+                vim.cmd("cbottom")
                 if ret == 0 then
                     async:new({
                         command = "aplay",
@@ -488,11 +476,13 @@ local function build_runner(build_name)
         on_stdout = function(err, data)
             vim.schedule(function()
                 vim.fn.setqflist({{text = data}}, "a")
+                vim.cmd("cbottom")
             end)
         end,
         on_stderr = function(err, data)
             vim.schedule(function()
-                vim.cmd(("caddexpr \"" .. data) .. "\"")
+                vim.cmd(("caddexpr '" .. data) .. "'")
+                vim.cmd("cbottom")
             end)
         end
     }):start()
@@ -500,6 +490,10 @@ end
 function ____exports.build_select(opts)
     if opts == nil then
         opts = {}
+    end
+    local tasks = get_build_names()
+    if #tasks == 0 then
+        return
     end
     local picker = pickers.new(
         opts,
@@ -517,7 +511,7 @@ function ____exports.build_select(opts)
                 "└"
             },
             finder = finders.new_table({
-                results = get_build_names(),
+                results = tasks,
                 entry_maker = function(entry)
                     return {value = entry, display = entry[1], ordinal = entry[1]}
                 end
@@ -536,46 +530,7 @@ function ____exports.build_select(opts)
     )
     picker:find()
 end
-function ____exports.build_select_lang(opts)
-    if opts == nil then
-        opts = {}
-    end
-    local picker = pickers.new(
-        opts,
-        {
-            prompt_title = vim.bo.filetype .. " build tasks",
-            border = {},
-            borderchars = {
-                " ",
-                " ",
-                " ",
-                " ",
-                "┌",
-                "┐",
-                "┘",
-                "└"
-            },
-            finder = finders.new_table({
-                results = get_build_names(vim.bo.filetype),
-                entry_maker = function(entry)
-                    return {value = entry, display = entry[1], ordinal = entry[1]}
-                end
-            }),
-            sorter = conf.generic_sorter(opts),
-            attach_mappings = function(buf, map)
-                actions.select_default:replace(function()
-                    actions.close(buf)
-                    local selection = action_state.get_selected_entry()
-                    local build_name = selection.value[2]
-                    build_runner(build_name)
-                end)
-                return true
-            end
-        }
-    )
-    picker:find()
-end
-local borderConf = {borderchars = {prompt = {
+local telescopeConfig = {borderchars = {prompt = {
     " ",
     " ",
     " ",
@@ -603,25 +558,20 @@ local borderConf = {borderchars = {prompt = {
     "┘",
     "└"
 }}}
-function ____exports.run_build_select()
-    ____exports.build_select(themes.get_dropdown(borderConf))
+function ____exports.run_task_select()
+    ____exports.build_select(themes.get_dropdown(telescopeConfig))
 end
-function ____exports.run_build_select_lang()
-    ____exports.build_select_lang(themes.get_dropdown(borderConf))
-end
-function ____exports.run_default_task()
-    local current_language = vim.bo.filetype
-    local clang = string.lower(current_language)
+function ____exports.run_task_default()
     local tasks = get_build_names()
+    if #tasks == 0 then
+        return
+    end
     do
         local i = 0
         while i < #tasks do
             local opts = __TS__StringSplit(tasks[i + 1][2], "_")
-            if #opts == 2 then
-                if string.lower(opts[1]) == string.lower(clang) and string.lower(opts[2]) == "default" then
-                    build_runner(tasks[i + 1][2])
-                    return
-                elseif string.lower(opts[1]) == "any" and string.lower(opts[2]) == "default" then
+            if #opts == 1 then
+                if string.lower(opts[1]) == "default" then
                     build_runner(tasks[i + 1][2])
                     return
                 end
@@ -629,40 +579,20 @@ function ____exports.run_default_task()
             i = i + 1
         end
     end
-    local hasLangTask = false
-    do
-        local i = 0
-        while i < #tasks do
-            local opts = __TS__StringSplit(tasks[i + 1][2], "_")
-            if #opts > 0 then
-                if string.lower(opts[1]) == string.lower(clang) then
-                    hasLangTask = true
-                end
-            end
-            i = i + 1
-        end
-    end
-    if hasLangTask then
-        popup(("Could not find default task for '" .. current_language) .. "'. \nPlease select task from list.", "warn", "Build")
-        ____exports.run_build_select_lang()
-    else
-        popup(("Could not find any tasks for '" .. current_language) .. "'. \nPlease select task from list.", "warn", "Build")
-        ____exports.run_build_select()
-    end
+    popup("Could not find default task. \nPlease select task from list.", "warn", "Build")
+    ____exports.run_task_select()
 end
-function ____exports.run_default_run_task()
-    local current_language = vim.bo.filetype
-    local clang = string.lower(current_language)
+function ____exports.run_task_build()
     local tasks = get_build_names()
+    if #tasks == 0 then
+        return
+    end
     do
         local i = 0
         while i < #tasks do
             local opts = __TS__StringSplit(tasks[i + 1][2], "_")
-            if #opts == 3 then
-                if string.lower(opts[1]) == string.lower(clang) and string.lower(opts[2]) == "default" and string.lower(opts[3]) == "run" then
-                    build_runner(tasks[i + 1][2])
-                    return
-                elseif string.lower(opts[1]) == "any" and string.lower(opts[2]) == "default" and string.lower(opts[3]) == "run" then
+            if #opts == 1 then
+                if string.lower(opts[1]) == "build" then
                     build_runner(tasks[i + 1][2])
                     return
                 end
@@ -670,49 +600,20 @@ function ____exports.run_default_run_task()
             i = i + 1
         end
     end
-    local hasLangRunTask = false
-    local hasLangTask = false
-    do
-        local i = 0
-        while i < #tasks do
-            local opts = __TS__StringSplit(tasks[i + 1][2], "_")
-            if #opts == 3 then
-                if string.lower(opts[1]) == string.lower(clang) and string.lower(opts[3]) == "run" then
-                    hasLangRunTask = true
-                end
-            end
-            if #opts > 0 then
-                if string.lower(opts[1]) == string.lower(clang) then
-                    hasLangTask = true
-                end
-            end
-            i = i + 1
-        end
-    end
-    if hasLangRunTask then
-        popup(("Could not find default run task for '" .. current_language) .. "'. \nPlease select task from list.", "warn", "Build")
-        ____exports.run_build_select_lang()
-    elseif hasLangTask then
-        popup(("Could not find any run tasks for '" .. current_language) .. "'. \nPlease select task from list.", "warn", "Build")
-        ____exports.run_build_select_lang()
-    else
-        popup(("Could not find any tasks for '" .. current_language) .. "'. \nPlease select task from list.", "warn", "Build")
-        ____exports.run_build_select()
-    end
+    popup("Could not find build task. \nPlease select task from list.", "warn", "Build")
+    ____exports.run_task_select()
 end
-function ____exports.run_default_test_task()
-    local current_language = vim.bo.filetype
-    local clang = string.lower(current_language)
+function ____exports.run_task_run()
     local tasks = get_build_names()
+    if #tasks == 0 then
+        return
+    end
     do
         local i = 0
         while i < #tasks do
             local opts = __TS__StringSplit(tasks[i + 1][2], "_")
-            if #opts == 3 then
-                if string.lower(opts[1]) == string.lower(clang) and string.lower(opts[2]) == "default" and string.lower(opts[3]) == "test" then
-                    build_runner(tasks[i + 1][2])
-                    return
-                elseif string.lower(opts[1]) == "any" and string.lower(opts[2]) == "default" and string.lower(opts[3]) == "test" then
+            if #opts == 1 then
+                if string.lower(opts[1]) == "run" then
                     build_runner(tasks[i + 1][2])
                     return
                 end
@@ -720,35 +621,42 @@ function ____exports.run_default_test_task()
             i = i + 1
         end
     end
-    local hasLangTestTask = false
-    local hasLangTask = false
+    popup("Could not find run task. \nPlease select task from list.", "warn", "Build")
+    ____exports.run_task_select()
+end
+function ____exports.run_task_test()
+    local tasks = get_build_names()
+    if #tasks == 0 then
+        return
+    end
     do
         local i = 0
         while i < #tasks do
             local opts = __TS__StringSplit(tasks[i + 1][2], "_")
-            if #opts == 3 then
-                if string.lower(opts[1]) == string.lower(clang) and string.lower(opts[3]) == "test" then
-                    hasLangTestTask = true
-                end
-            end
-            if #opts > 0 then
-                if string.lower(opts[1]) == string.lower(clang) then
-                    hasLangTask = true
+            if #opts == 1 then
+                if string.lower(opts[1]) == "test" then
+                    build_runner(tasks[i + 1][2])
+                    return
                 end
             end
             i = i + 1
         end
     end
-    if hasLangTestTask then
-        popup(("Could not find default test task for '" .. current_language) .. "'. \nPlease select task from list.", "warn", "Build")
-        ____exports.run_build_select_lang()
-    elseif hasLangTask then
-        popup(("Could not find any test tasks for '" .. current_language) .. "'. \nPlease select task from list.", "warn", "Build")
-        ____exports.run_build_select_lang()
-    else
-        popup(("Could not find any tasks for '" .. current_language) .. "'. \nPlease select task from list.", "warn", "Build")
-        ____exports.run_build_select()
+    popup("Could not find test task. \nPlease select task from list.", "warn", "Build")
+    ____exports.run_task_select()
+end
+function ____exports.add_build_template()
+    local pjustfile = vim.fn.getcwd() .. "/justfile"
+    if vim.fn.filereadable(pjustfile) == 1 then
+        local opt = vim.fn.confirm("Justfile already exists in this project, create anyway?", "&Yes\n&No", 2)
+        if opt ~= 1 then
+            return
+        end
     end
+    local f = io.open(pjustfile, "w")
+    f:write("# just reference: https://just.systems/man/en/\n# cheatsheet: https://cheatography.com/linux-china/cheat-sheets/justfile/\n# monolith flavor: ~/.config/nvim/readme/build.md\n\n# Allows positional arguments\nset positional-arguments\n\n# This is a default recipe\n# Tf \"default\" recipe is not there then\n# first recipe will be considered default\n#\n# Prints all available recipes\n# default:\n#     @just --list\n#\n# Here's a quick cheatsheet/overview of just and monoltih flavor\n# Monolith \\bb, \\br, \\bt behavor (\\bB will show all)\n# build - will be default build task \"\\bb\"\n# run - will be default run task \"\\br\"\n# test - will be default test task \"\\bt\"\n#\n# Just:\n# Set a variable (variable case is arbitrary)\n# SINGLE := \"--single\"\n#\n# Join paths:\n# myPaths := \"path/to\" / \"file\" + \".txt\"\n#\n# Or conditions\n# foo := if \"2\" == \"2\" { \"Good!\" } else { \"1984\" }\n#\n# Run set configurations\n# all: build_d build_d_custom _echo\n#\n# Alias to a recipe (just noecho)\n# alias noecho := _echo\n#\n# Example configuration (dub build not going to be printed):\n# build_d:\n#     @dub build\n#\n# Or use this to silence all command prints (output will still print):\n# @build_d_custom:\n#     dub build\n#     dub run\n#\n# Continue even on fail  by adding \"-\" ([linux] makes recipe be seen only in linux)\n# [linux]\n# test:\n#    -cat notexists.txt\n#    echo \"Still executes\"\n#\n# Configuration using variable from above\n# buildFile FILENAME:\n#     dub build {{SINGLE}} $1\n#\n# Set env\n# @test_d:\n#     #!/bin/bash\n#     ./test.sh\n#\n# Private task\n# _echo:\n#     echo \"From echo\"\n#\n# A command's arguments can be passed to dependency\n# build target:\n#     @echo \"Building {{target}}…\"\n#\n# push target: (build target)\n#     @echo 'Pushing {{target}}…'\n#\n# Use `` to eval command, () to join paths\n# in them and arg=default to set default value\n# test target test=`echo \"default\"`:\n#     @echo 'Testing {{target}} {{test}}'\n#\n# Use + (1 ore more) or * (0 or more) to make argument variadic. Must be last\n# ntest +FILES=\"justfile1 justfile2\":\n#     echo \"{{FILES}}\"\n#\n# Dependencies always run before recipe, unless they're after &&\n# This example will run \"a\" before \"b\" and \"c\" and \"d\" after \"b\"\n# b: a && c d:\n#     echo \"b\"\n#\n# Each recipe line is executed by a new shell,\n# so if you change the working directory on one line,\n# it won't have an effect on later lines.\n# A safe way to work around this is to use shebang (\"#!/bin/bash\")\n# foo:\n#     pwd    # This `pwd` will print the same directory…\n#     cd bar\n#     pwd    # …as this `pwd`!\n")
+    f:close()
+    popup("Template justfile created", "info", "Build")
 end
 return ____exports
  end,

@@ -26,6 +26,8 @@
 -- g.fzf_vim.preview_window = {"right,60%"}
 
 local fzf = require("fzf-lua")
+local utils = require("fzf-lua").utils
+local actions = require("fzf-lua").actions
 
 fzf.setup({
     "telescope",
@@ -65,6 +67,26 @@ fzf.setup({
         ["header"]  = { "fg", "Comment" },
         ["gutter"]  = { "bg", "Normal" },
     },
+    -- keymap = {
+    --     builtin = {},
+    --     fzf = {},
+    -- },
+    -- actions    = {
+    --     files = {
+    --         ["default"] = actions.file_edit_or_qf,
+    --         ["ctrl-x"]  = actions.file_split,
+    --         ["ctrl-v"]  = actions.file_vsplit,
+    --         ["ctrl-t"]  = actions.file_tabedit,
+    --         ["alt-q"]   = actions.file_sel_to_qf,
+    --         ["alt-l"]   = actions.file_sel_to_ll,
+    --     },
+    --     buffers = {
+    --         ["default"] = actions.buf_edit,
+    --         ["ctrl-x"]  = actions.buf_split,
+    --         ["ctrl-v"]  = actions.buf_vsplit,
+    --         ["ctrl-t"]  = actions.buf_tabedit,
+    --     }
+    -- },
     files = {
         prompt = " ",
         cwd_prompt = false

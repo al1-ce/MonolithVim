@@ -15,13 +15,22 @@ end
 
 local codestats = os.getenv("HOME") .. "/.config/codestats.lua"
 
+local notify = require("notify");
+
+local codestatsopts = {
+    title="code::stats",
+    timeout = 500,
+}
+
 if (file_exists(codestats)) then
     require('monolith.plugins.codestats.init').setup({
         token = read_file(codestats):sub(1, -2)
     })
-    -- require("notify")(read_file(codestats), "warn", {title="Title"}) 
+    -- require("notify")(read_file(codestats), "warn", {title="Title"})
+    notify("Successfully connected", "info", codestatsopts)
 else
-    -- require("notify")("not", "warn", {title="Title"}) 
+    notify("Missing API key", "info", codestatsopts)
+    -- require("notify")("not", "warn", {title="Title"})
     -- require('monolith.plugins.codestats.init').setup()
 end
 

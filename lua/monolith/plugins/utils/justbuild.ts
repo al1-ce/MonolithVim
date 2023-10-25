@@ -7,6 +7,10 @@
 
 // TODO: add job quit func
 
+//------------------------------------------------------------------//
+//                            INTERFACES                            //
+//------------------------------------------------------------------//
+
 declare function require(modname: string): any;
 declare function print(val: any): void;
 declare function tostring(val: number): string;
@@ -25,6 +29,7 @@ declare namespace vim {
         function expand(this: void, str: string): string;
         function fnamemodify(this: void, str: string, flags: string): string;
         function setqflist(this: void, val: any, mode: string): any;
+        function confirm(this: void, prompt: string, choice: string, cdefault: number): any;
     }
     function inspect(this: void, val: any): any;
     namespace bo {
@@ -73,6 +78,7 @@ interface PlenaryJob {
 declare namespace io {
     function open(this: void, name: string, mode: string): any;
     function close(this: void, file: any): any;
+    function write(this: void, content: string): any;
 }
 
 declare namespace os {
@@ -86,6 +92,10 @@ declare namespace table {
     function insert(tbl: any, val: any): any;
 }
 
+//------------------------------------------------------------------//
+//                             IMPORTS                              //
+//------------------------------------------------------------------//
+
 let pickers = require("telescope.pickers") as typeof telescope.pickers;
 let finders = require("telescope.finders") as typeof telescope.finders;
 let conf = require("telescope.config").values as typeof telescope.config.values;
@@ -96,6 +106,10 @@ let async = require("plenary.job") as PlenaryJob
 
 let notify = require("notify");
 
+//------------------------------------------------------------------//
+//                            FUNCTIONS                             //
+//------------------------------------------------------------------//
+
 function popup(message: string, errlvl: string = "info", title: string = "Info"): void {
     notify(message, errlvl, { title: title });
 }
@@ -104,20 +118,18 @@ function getConfigDir(): string {
     return vim.fn.fnamemodify(vim.fn.expand("$MYVIMRC"), ":p:h");
 }
 
-let just = `just -f ${getConfigDir()}/justfile`;
-
 function get_build_names(lang: string = ""): string[][] {
-    let outlist: string = vim.fn.system(`${just} --list`);
-    // notify(outlist);
-    let arr: string[] = outlist.split('\n');
+    let arr: string[] = [];
     // table.remove(tbl, 1);
-    arr.shift();
-    arr.pop();
 
     let pjustfile: string = `${vim.fn.getcwd()}/justfile`;
-    if (vim.fn.filereadable(pjustfile) == 1 && pjustfile != `${getConfigDir()}/justfile`) {
+    if (vim.fn.filereadable(pjustfile) == 1) {
         let overrideList: string = vim.fn.system(`just -f ${pjustfile} --list`);
         let oarr: string[] = overrideList.split("\n");
+        if (oarr[0].startsWith("error")) {
+            popup(overrideList, "error", "Build");
+            return [];
+        }
         oarr.shift();
         oarr.pop();
         let rem: boolean = false;
@@ -134,6 +146,9 @@ function get_build_names(lang: string = ""): string[][] {
             rem = false;
         }
         arr = arr.concat(oarr);
+    } else {
+        popup("Justfile not found in project directory", "error", "Build");
+        return [];
     }
     //////////////////// add vim.fn.cwd()
     // table.remove(tbl, #tbl);
@@ -208,16 +223,17 @@ function check_keyword_arg(arg: string): string {
 }
 
 function get_build_args(build_name: string): string[] {
-    let justloc = just;
+    let justloc = "";
     let pjustfile: string = `${vim.fn.getcwd()}/justfile`;
-    if (vim.fn.filereadable(pjustfile) == 1) {
-        let bd: string = vim.fn.system(`just -f ${pjustfile} --summary`).split("\n")[0];
-        if (bd.split(" ").includes(build_name)) {
-            justloc = `just -f ${pjustfile}`;
-        }
+    if (vim.fn.filereadable(pjustfile) == 1) { justloc = `just -f ${pjustfile}`; }
+
+    if (justloc == ""){
+        popup("Justfile not found in project directory", "error", "Build");
+        return [];
     }
+
     let outshow = vim.fn.system(`${justloc} -s ${build_name}`);
-    if (outshow.startsWith("#")) {
+    if (outshow.startsWith("#") || outshow.startsWith("alias")) {
         outshow = outshow.split("\n")[1];
     }
     let outinfo = outshow.split(":")[0];
@@ -231,11 +247,17 @@ function get_build_args(build_name: string): string[] {
         let arg = args[i];
         let keywd = check_keyword_arg(arg);
         if (keywd == " ") {
-            let a: string = vim.fn.input(`${arg}: `, "");
+            let a: string = "";
+            if (arg.includes("=")) {
+                let argw: string[] = arg.split("=");
+                a = vim.fn.input(`${argw[0]}: `, argw[1]);
+            } else {
+                a = vim.fn.input(`${arg}: `, "");
+            }
             // table.inser;t(argsout, a);
             // print(vim.inspect(a));
             // argsout.push(`"${a}"`);
-            argsout.push(`"${a}"`);
+            argsout.push(`${a}`);
         } else {
             if (keywd == "") keywd = " ";
             argsout.push(`"${keywd}"`);
@@ -245,23 +267,22 @@ function get_build_args(build_name: string): string[] {
     return argsout;
 }
 
+// doesnt include aliases
 function build_runner(build_name: string): void {
     let args: string[] = get_build_args(build_name);
-    let justloc = just;
+    let justloc = "";
     let pjustfile: string = `${vim.fn.getcwd()}/justfile`;
-    if (vim.fn.filereadable(pjustfile) == 1) {
-        let bd: string = vim.fn.system(`just -f ${pjustfile} --summary`).split("\n")[0];
-        // print("|" + bd + "|");
-        if (bd.split(" ").includes(build_name)) {
-            justloc = `just -f ${pjustfile}`;
-        }
-        // print(pjustfile);
-        // print(justloc);
+    if (vim.fn.filereadable(pjustfile) == 1) { justloc = `just -f ${pjustfile}`; }
+
+    if (justloc == ""){
+        popup("Justfile not found in project directory", "error", "Build");
+        return;
     }
+
     let command: string = `${justloc} -d . ${build_name} ${args.join(" ")}`;
     // popup(command);
-    let success: string = `aplay ${getConfigDir()}/res/build_success.wav -q`;
-    let error: string = `aplay ${getConfigDir()}/res/build_error.wav -q`;
+    // let success: string = `aplay ${getConfigDir()}/res/build_success.wav -q`;
+    // let error: string = `aplay ${getConfigDir()}/res/build_error.wav -q`;
 
     // USING AsyncRun
     // let lcom: string = `:AsyncRun /bin/bash -c '( ${command} ) && ( ${success} ) || ( ${error} )'`;
@@ -290,7 +311,8 @@ function build_runner(build_name: string): void {
                 vim.fn.setqflist([
                     {text: ""},
                     {text: `Finished in ${string.format("%.2f", etime)} seconds`}
-                ], "a")
+                ], "a");
+                vim.cmd("cbottom");
                 if (ret == 0) {
                     // @ts-ignore
                     async.new({
@@ -308,12 +330,17 @@ function build_runner(build_name: string): void {
 
         },
         on_stdout: function(err: string, data: string) {
-            vim.schedule(function() { vim.fn.setqflist([{text: data}], "a"); });
+            vim.schedule(function() {
+                vim.fn.setqflist([{text: data}], "a");
+                vim.cmd("cbottom");
+            });
         },
         on_stderr: function(err: string, data: string) {
             vim.schedule(function() {
                 // vim.cmd("copen");
-                vim.cmd(`caddexpr "${data}"`);
+                vim.cmd(`caddexpr '${data}'`);
+                // vim.fn.setqflist([{text: data}], "a");
+                vim.cmd("cbottom");
             });
         },
     }).start();
@@ -324,13 +351,16 @@ function build_runner(build_name: string): void {
 
 export function build_select(opts: any): void {
     if (opts == null) opts = [];
+    let tasks: string[][] = get_build_names();
+    if (tasks.length == 0) return;
+    // TODO: replace with fzf
     let picker = pickers.new(opts, {
         prompt_title: "Build tasks",
         border: {},
         // borderchars: [ "─", "│", "─", "│", "┌", "┐", "┘", "└" ],
         borderchars: [ " ", " ", " ", " ", "┌", "┐", "┘", "└" ],
         finder: finders.new_table({
-            results: get_build_names(),
+            results: tasks,
             entry_maker: (entry: any[]) => {
                 return {
                     value: entry,
@@ -344,38 +374,6 @@ export function build_select(opts: any): void {
             actions.select_default.replace(() => {
                 actions.close(buf);
                 let selection = action_state.get_selected_entry();
-                // print(vim.inspect(selection));
-                let build_name = selection.value[2];
-                build_runner(build_name);
-            });
-            return true;
-        }
-    });
-    picker.find();
-}
-export function build_select_lang(opts: any): void {
-    if (opts == null) opts = [];
-    let picker = pickers.new(opts, {
-        prompt_title: `${vim.bo.filetype} build tasks`,
-        border: {},
-        // borderchars: [ "─", "│", "─", "│", "┌", "┐", "┘", "└" ],
-        borderchars: [ " ", " ", " ", " ", "┌", "┐", "┘", "└" ],
-        finder: finders.new_table({
-            results: get_build_names(vim.bo.filetype),
-            entry_maker: (entry: any[]) => {
-                return {
-                    value: entry,
-                    display: entry[0],
-                    ordinal: entry[0]
-                }
-            }
-        }),
-        sorter: conf.generic_sorter(opts),
-        attach_mappings: (buf: any, map: any) => {
-            actions.select_default.replace(() => {
-                actions.close(buf);
-                let selection = action_state.get_selected_entry();
-                // print(vim.inspect(selection));
                 let build_name = selection.value[2];
                 build_runner(build_name);
             });
@@ -385,7 +383,7 @@ export function build_select_lang(opts: any): void {
     picker.find();
 }
 
-let borderConf = { borderchars: {
+let telescopeConfig = { borderchars: {
      prompt: [ " ", " ", " ", " ", "┌", "┐", " ", " " ],
     results: [ " ", " ", " ", " ", "├", "┤", "┘", "└" ],
     preview: [ " ", " ", " ", " ", "┌", "┐", "┘", "└" ]
@@ -394,170 +392,181 @@ let borderConf = { borderchars: {
     // preview: [ "─", "│", "─", "│", "┌", "┐", "┘", "└" ]
 }}
 
-export function run_build_select(): void {
-    build_select(themes.get_dropdown(borderConf));
+export function run_task_select(): void {
+    build_select(themes.get_dropdown(telescopeConfig));
 }
 
-export function run_build_select_lang(): void {
-    build_select_lang(themes.get_dropdown(borderConf));
-}
-
-export function run_default_task(): void {
-    let current_language: string = vim.bo.filetype;
-    let clang: string = current_language.toLowerCase();
+export function run_task_default(): void {
     let tasks: string[][] = get_build_names();
+    if (tasks.length == 0) return;
     for (let i = 0; i < tasks.length; ++i) {
         let opts: string[] = tasks[i][1].split("_");
-        // popup(tasks[i][0]);
-        if (opts.length == 2) {
-            // popup(`${opts[0].toLowerCase()} == ${clang.toLowerCase()} : ${opts[1].toLowerCase()}`)
-            if (opts[0].toLowerCase() == clang.toLowerCase() &&
-                opts[1].toLowerCase() == "default") {
-                // popup(`Executing default task for '${current_language}'.`, "info", "Build");
-                build_runner(tasks[i][1]);
-                return;
-            } else if (opts[0].toLowerCase() == "any" &&
-                opts[1].toLowerCase() == "default") {
-                // popup(`Executing default task for '${current_language}'.`, "info", "Build");
+        if (opts.length == 1) {
+            if (opts[0].toLowerCase() == "default") {
                 build_runner(tasks[i][1]);
                 return;
             }
         }
     }
-    let hasLangTask = false;
-    for (let i = 0; i < tasks.length; ++i) {
-        let opts: string[] = tasks[i][1].split("_");
-        if (opts.length > 0) {
-            if (opts[0].toLowerCase() == clang.toLowerCase()) {
-                hasLangTask = true;
-            }
-        }
-    }
-    if (hasLangTask) {
-        popup(`Could not find default task for '${current_language}'. \nPlease select task from list.`, "warn", "Build");
-        run_build_select_lang();
-    } else {
-        popup(`Could not find any tasks for '${current_language}'. \nPlease select task from list.`, "warn", "Build");
-        run_build_select();
-    }
+    popup(`Could not find default task. \nPlease select task from list.`, "warn", "Build");
+    run_task_select();
 }
 
-export function run_default_run_task(): void {
-    // popup("Running");
-    let current_language: string = vim.bo.filetype;
-    let clang: string = current_language.toLowerCase();
+export function run_task_build(): void {
     let tasks: string[][] = get_build_names();
+    if (tasks.length == 0) return;
     for (let i = 0; i < tasks.length; ++i) {
         let opts: string[] = tasks[i][1].split("_");
-        // popup(tasks[i][0]);
-        if (opts.length == 3) {
-            // popup(`${opts[0].toLowerCase()} == ${clang.toLowerCase()} : ${opts[1].toLowerCase()}`)
-            if (opts[0].toLowerCase() == clang.toLowerCase() &&
-                opts[1].toLowerCase() == "default" &&
-                opts[2].toLowerCase() == "run") {
-                // popup(`Executing default task for '${current_language}'.`, "info", "Build");
-                build_runner(tasks[i][1]);
-                return;
-            } else if (opts[0].toLowerCase() == "any" &&
-                opts[1].toLowerCase() == "default" &&
-                opts[2].toLowerCase() == "run") {
-                // popup(`Executing default task for '${current_language}'.`, "info", "Build");
+        if (opts.length == 1) {
+            if (opts[0].toLowerCase() == "build") {
                 build_runner(tasks[i][1]);
                 return;
             }
         }
     }
-    // popup(`Could not find default run task for '${current_language}'. \nPlease select task from list.`, "warn", "Build");
-    // run_build_select();
-    let hasLangRunTask = false;
-    let hasLangTask = false;
-    for (let i = 0; i < tasks.length; ++i) {
-        let opts: string[] = tasks[i][1].split("_");
-        if (opts.length == 3) {
-            if (opts[0].toLowerCase() == clang.toLowerCase() &&
-                opts[2].toLowerCase() == "run") {
-                hasLangRunTask = true;
-            }
-        }
-        if (opts.length > 0) {
-            if (opts[0].toLowerCase() == clang.toLowerCase()) {
-                hasLangTask = true;
-            }
-        }
-
-    }
-    if (hasLangRunTask) {
-        popup(`Could not find default run task for '${current_language}'. \nPlease select task from list.`, "warn", "Build");
-        run_build_select_lang();
-    } else
-    if (hasLangTask) {
-        popup(`Could not find any run tasks for '${current_language}'. \nPlease select task from list.`, "warn", "Build");
-        run_build_select_lang();
-    } else {
-        popup(`Could not find any tasks for '${current_language}'. \nPlease select task from list.`, "warn", "Build");
-        run_build_select();
-    }
-
+    popup(`Could not find build task. \nPlease select task from list.`, "warn", "Build");
+    run_task_select();
 }
 
-export function run_default_test_task(): void {
-    // popup("Running");
-    let current_language: string = vim.bo.filetype;
-    let clang: string = current_language.toLowerCase();
+export function run_task_run(): void {
     let tasks: string[][] = get_build_names();
+    if (tasks.length == 0) return;
     for (let i = 0; i < tasks.length; ++i) {
         let opts: string[] = tasks[i][1].split("_");
-        // popup(tasks[i][0]);
-        if (opts.length == 3) {
-            // popup(`${opts[0].toLowerCase()} == ${clang.toLowerCase()} : ${opts[1].toLowerCase()}`)
-            if (opts[0].toLowerCase() == clang.toLowerCase() &&
-                opts[1].toLowerCase() == "default" &&
-                opts[2].toLowerCase() == "test") {
-                // popup(`Executing default task for '${current_language}'.`, "info", "Build");
+        if (opts.length == 1) {
+            if (opts[0].toLowerCase() == "run") {
                 build_runner(tasks[i][1]);
                 return;
-            } else if (opts[0].toLowerCase() == "any" &&
-                opts[1].toLowerCase() == "default" &&
-                opts[2].toLowerCase() == "test") {
-                // popup(`Executing default task for '${current_language}'.`, "info", "Build");
-                build_runner(tasks[i][1]);
-                return;
-            }
-        }
+            }        }
     }
-    // popup(`Could not find default run task for '${current_language}'. \nPlease select task from list.`, "warn", "Build");
-    // run_build_select();
-    let hasLangTestTask = false;
-    let hasLangTask = false;
-    for (let i = 0; i < tasks.length; ++i) {
-        let opts: string[] = tasks[i][1].split("_");
-        if (opts.length == 3) {
-            if (opts[0].toLowerCase() == clang.toLowerCase() &&
-                opts[2].toLowerCase() == "test") {
-                hasLangTestTask = true;
-            }
-        }
-        if (opts.length > 0) {
-            if (opts[0].toLowerCase() == clang.toLowerCase()) {
-                hasLangTask = true;
-            }
-        }
-
-    }
-    if (hasLangTestTask) {
-        popup(`Could not find default test task for '${current_language}'. \nPlease select task from list.`, "warn", "Build");
-        run_build_select_lang();
-    } else
-    if (hasLangTask) {
-        popup(`Could not find any test tasks for '${current_language}'. \nPlease select task from list.`, "warn", "Build");
-        run_build_select_lang();
-    } else {
-        popup(`Could not find any tasks for '${current_language}'. \nPlease select task from list.`, "warn", "Build");
-        run_build_select();
-    }
-
+    popup(`Could not find run task. \nPlease select task from list.`, "warn", "Build");
+    run_task_select();
 }
 
-// run_build_select();
+export function run_task_test(): void {
+    let tasks: string[][] = get_build_names();
+    if (tasks.length == 0) return;
+    for (let i = 0; i < tasks.length; ++i) {
+        let opts: string[] = tasks[i][1].split("_");
+        if (opts.length == 1) {
+            if (opts[0].toLowerCase() == "test") {
+                build_runner(tasks[i][1]);
+                return;
+            }
+        }
+    }
+    popup(`Could not find test task. \nPlease select task from list.`, "warn", "Build");
+    run_task_select();
+}
+
+export function add_build_template(): void {
+    let pjustfile: string = `${vim.fn.getcwd()}/justfile`;
+    if (vim.fn.filereadable(pjustfile) == 1) {
+        let opt = vim.fn.confirm("Justfile already exists in this project, create anyway?", "&Yes\n&No", 2);
+        if (opt != 1) return;
+    }
+
+    let f = io.open(pjustfile, "w");
+    f.write(
+`# just reference: https://just.systems/man/en/
+# cheatsheet: https://cheatography.com/linux-china/cheat-sheets/justfile/
+# monolith flavor: ~/.config/nvim/readme/build.md
+
+# Allows positional arguments
+set positional-arguments
+
+# This is a default recipe
+# Tf "default" recipe is not there then
+# first recipe will be considered default
+#
+# Prints all available recipes
+# default:
+#     @just --list
+#
+# Here's a quick cheatsheet/overview of just and monoltih flavor
+# Monolith \\bb, \\br, \\bt behavor (\\bB will show all)
+# build - will be default build task "\\bb"
+# run - will be default run task "\\br"
+# test - will be default test task "\\bt"
+#
+# Just:
+# Set a variable (variable case is arbitrary)
+# SINGLE := "--single"
+#
+# Join paths:
+# myPaths := "path/to" / "file" + ".txt"
+#
+# Or conditions
+# foo := if "2" == "2" { "Good!" } else { "1984" }
+#
+# Run set configurations
+# all: build_d build_d_custom _echo
+#
+# Alias to a recipe (just noecho)
+# alias noecho := _echo
+#
+# Example configuration (dub build not going to be printed):
+# build_d:
+#     @dub build
+#
+# Or use this to silence all command prints (output will still print):
+# @build_d_custom:
+#     dub build
+#     dub run
+#
+# Continue even on fail  by adding "-" ([linux] makes recipe be seen only in linux)
+# [linux]
+# test:
+#    -cat notexists.txt
+#    echo "Still executes"
+#
+# Configuration using variable from above
+# buildFile FILENAME:
+#     dub build {{SINGLE}} $1
+#
+# Set env
+# @test_d:
+#     #!/bin/bash
+#     ./test.sh
+#
+# Private task
+# _echo:
+#     echo "From echo"
+#
+# A command's arguments can be passed to dependency
+# build target:
+#     @echo "Building {{target}}…"
+#
+# push target: (build target)
+#     @echo 'Pushing {{target}}…'
+#
+# Use \`\` to eval command, () to join paths
+# in them and arg=default to set default value
+# test target test=\`echo "default"\`:
+#     @echo 'Testing {{target}} {{test}}'
+#
+# Use + (1 ore more) or * (0 or more) to make argument variadic. Must be last
+# ntest +FILES="justfile1 justfile2":
+#     echo "{{FILES}}"
+#
+# Dependencies always run before recipe, unless they're after &&
+# This example will run "a" before "b" and "c" and "d" after "b"
+# b: a && c d:
+#     echo "b"
+#
+# Each recipe line is executed by a new shell,
+# so if you change the working directory on one line,
+# it won't have an effect on later lines.
+# A safe way to work around this is to use shebang ("#!/bin/bash")
+# foo:
+#     pwd    # This \`pwd\` will print the same directory…
+#     cd bar
+#     pwd    # …as this \`pwd\`!
+`);
+    f.close();
+
+    popup("Template justfile created", "info", "Build");
+}
+// run_task_select();
 // run_default_task();
 

@@ -1,27 +1,36 @@
 require('nvim-toggler').setup({
     inverses = {
+        -- BOOLEANS
         ['TRUE'] = 'FALSE',
         ['True'] = 'False',
         ['1'] = '0',
+        -- VISIBILITY
         ['public'] = 'private',
-        ['[ ]'] = '[x]',
+        -- OPERATIONS
         ['++'] = '--',
         ['+'] = '-',
+        ['<'] = '>',
+        ['<='] = '>=',
+        ['&&'] = '||',
+        -- MISC
+        ['[ ]'] = '[x]',
         ['""'] = "''",
+        -- TYPES
         ['struct'] = 'class',
-        ['always'] = 'never',
         ['float'] = 'double',
+        -- COLORS
+        ['white'] = 'black',
+        -- CSS
+        ['always'] = 'never',
         ['top'] = 'bottom',
         ['left'] = 'right',
         ['relative'] = 'absolute',
-        ['white'] = 'black',
         ['width'] = 'height',
         ['vertical'] = 'horizontal',
         ['show'] = 'hide',
         ['outset'] = 'inset',
-        ['<'] = '>',
-        ['<='] = '>=',
-        ['&&'] = '||',
+        ['row'] = 'column',
+        ['start'] = 'end',
     },
     remove_default_keybinds = true,
 })
