@@ -30,6 +30,10 @@ declare namespace vim {
         function fnamemodify(this: void, str: string, flags: string): string;
         function setqflist(this: void, val: any, mode: string): any;
         function confirm(this: void, prompt: string, choice: string, cdefault: number): any;
+        function shellescape(this: void, str: string): any;
+        function fnameescape(this: void, str: string): any;
+        function escape(this: void, str: string, chars: string): any;
+        // function eval(this: void, expr: string): any;
     }
     function inspect(this: void, val: any): any;
     namespace bo {
@@ -233,9 +237,11 @@ function get_build_args(build_name: string): string[] {
     }
 
     let outshow = vim.fn.system(`${justloc} -s ${build_name}`);
-    if (outshow.startsWith("#") || outshow.startsWith("alias")) {
-        outshow = outshow.split("\n")[1];
-    }
+
+    // Alias always goes first, Comment always goes second
+    if (outshow.startsWith("alias")) { outshow = outshow.substring(outshow.indexOf("\n") + 1); }
+    if (outshow.startsWith("#")) { outshow = outshow.substring(outshow.indexOf("\n") + 1); }
+
     let outinfo = outshow.split(":")[0];
     // print(vim.inspect(outinfo));
     let args = outinfo.split(" ");
@@ -331,15 +337,18 @@ function build_runner(build_name: string): void {
         },
         on_stdout: function(err: string, data: string) {
             vim.schedule(function() {
-                vim.fn.setqflist([{text: data}], "a");
+                // TURNS OUT some languages like DART output
+                // what should be in stderr to stdout
+                // so we're just going to caddexpr everything
+                if (data == "") data = " "; // punctuation space
+                vim.cmd(`caddexpr '${data.replaceAll("'", "''")}'`);
                 vim.cmd("cbottom");
             });
         },
         on_stderr: function(err: string, data: string) {
             vim.schedule(function() {
-                // vim.cmd("copen");
-                vim.cmd(`caddexpr '${data}'`);
-                // vim.fn.setqflist([{text: data}], "a");
+                if (data == "") data = " "; // punctuation space
+                vim.cmd(`caddexpr '${data.replaceAll("'", "''")}'`);
                 vim.cmd("cbottom");
             });
         },
@@ -393,12 +402,21 @@ let telescopeConfig = { borderchars: {
 }}
 
 export function run_task_select(): void {
+    let tasks: string[][] = get_build_names();
+    if (tasks.length == 0) {
+        popup(`There are no tasks defined in justfile`, "warn", "Build");
+        return;
+    }
+
     build_select(themes.get_dropdown(telescopeConfig));
 }
 
 export function run_task_default(): void {
     let tasks: string[][] = get_build_names();
-    if (tasks.length == 0) return;
+    if (tasks.length == 0) {
+        popup(`There are no tasks defined in justfile`, "warn", "Build");
+        return;
+    }
     for (let i = 0; i < tasks.length; ++i) {
         let opts: string[] = tasks[i][1].split("_");
         if (opts.length == 1) {
@@ -414,7 +432,10 @@ export function run_task_default(): void {
 
 export function run_task_build(): void {
     let tasks: string[][] = get_build_names();
-    if (tasks.length == 0) return;
+    if (tasks.length == 0) {
+        popup(`There are no tasks defined in justfile`, "warn", "Build");
+        return;
+    }
     for (let i = 0; i < tasks.length; ++i) {
         let opts: string[] = tasks[i][1].split("_");
         if (opts.length == 1) {
@@ -430,14 +451,18 @@ export function run_task_build(): void {
 
 export function run_task_run(): void {
     let tasks: string[][] = get_build_names();
-    if (tasks.length == 0) return;
+    if (tasks.length == 0) {
+        popup(`There are no tasks defined in justfile`, "warn", "Build");
+        return;
+    }
     for (let i = 0; i < tasks.length; ++i) {
         let opts: string[] = tasks[i][1].split("_");
         if (opts.length == 1) {
             if (opts[0].toLowerCase() == "run") {
                 build_runner(tasks[i][1]);
                 return;
-            }        }
+            }
+        }
     }
     popup(`Could not find run task. \nPlease select task from list.`, "warn", "Build");
     run_task_select();
@@ -445,7 +470,10 @@ export function run_task_run(): void {
 
 export function run_task_test(): void {
     let tasks: string[][] = get_build_names();
-    if (tasks.length == 0) return;
+    if (tasks.length == 0) {
+        popup(`There are no tasks defined in justfile`, "warn", "Build");
+        return;
+    }
     for (let i = 0; i < tasks.length; ++i) {
         let opts: string[] = tasks[i][1].split("_");
         if (opts.length == 1) {

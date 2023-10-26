@@ -182,6 +182,24 @@ local function __TS__ArrayConcat(self, ...)
     return result
 end
 
+local function __TS__StringSubstring(self, start, ____end)
+    if ____end ~= ____end then
+        ____end = 0
+    end
+    if ____end ~= nil and start > ____end then
+        start, ____end = ____end, start
+    end
+    if start >= 0 then
+        start = start + 1
+    else
+        start = 1
+    end
+    if ____end ~= nil and ____end < 0 then
+        ____end = 0
+    end
+    return string.sub(self, start, ____end)
+end
+
 local function __TS__StringIncludes(self, searchString, position)
     if not position then
         position = 1
@@ -190,6 +208,49 @@ local function __TS__StringIncludes(self, searchString, position)
     end
     local index = string.find(self, searchString, position, true)
     return index ~= nil
+end
+
+local __TS__StringReplaceAll
+do
+    local sub = string.sub
+    local find = string.find
+    function __TS__StringReplaceAll(source, searchValue, replaceValue)
+        if type(replaceValue) == "string" then
+            local concat = table.concat(
+                __TS__StringSplit(source, searchValue),
+                replaceValue
+            )
+            if #searchValue == 0 then
+                return (replaceValue .. concat) .. replaceValue
+            end
+            return concat
+        end
+        local parts = {}
+        local partsIndex = 1
+        if #searchValue == 0 then
+            parts[1] = replaceValue(nil, "", 0, source)
+            partsIndex = 2
+            for i = 1, #source do
+                parts[partsIndex] = sub(source, i, i)
+                parts[partsIndex + 1] = replaceValue(nil, "", i, source)
+                partsIndex = partsIndex + 2
+            end
+        else
+            local currentPos = 1
+            while true do
+                local startPos, endPos = find(source, searchValue, currentPos, true)
+                if not startPos then
+                    break
+                end
+                parts[partsIndex] = sub(source, currentPos, startPos - 1)
+                parts[partsIndex + 1] = replaceValue(nil, searchValue, startPos - 1, source)
+                partsIndex = partsIndex + 2
+                currentPos = endPos + 1
+            end
+            parts[partsIndex] = sub(source, currentPos)
+        end
+        return table.concat(parts)
+    end
 end
 -- End of Lua Library inline imports
 local ____exports = {}
@@ -387,8 +448,17 @@ local function get_build_args(build_name)
         return {}
     end
     local outshow = vim.fn.system((justloc .. " -s ") .. build_name)
-    if __TS__StringStartsWith(outshow, "#") or __TS__StringStartsWith(outshow, "alias") then
-        outshow = __TS__StringSplit(outshow, "\n")[2]
+    if __TS__StringStartsWith(outshow, "alias") then
+        outshow = __TS__StringSubstring(
+            outshow,
+            (string.find(outshow, "\n", nil, true) or 0) - 1 + 1
+        )
+    end
+    if __TS__StringStartsWith(outshow, "#") then
+        outshow = __TS__StringSubstring(
+            outshow,
+            (string.find(outshow, "\n", nil, true) or 0) - 1 + 1
+        )
     end
     local outinfo = __TS__StringSplit(outshow, ":")[1]
     local args = __TS__StringSplit(outinfo, " ")
@@ -475,13 +545,19 @@ local function build_runner(build_name)
         end,
         on_stdout = function(err, data)
             vim.schedule(function()
-                vim.fn.setqflist({{text = data}}, "a")
+                if data == "" then
+                    data = " "
+                end
+                vim.cmd(("caddexpr '" .. __TS__StringReplaceAll(data, "'", "''")) .. "'")
                 vim.cmd("cbottom")
             end)
         end,
         on_stderr = function(err, data)
             vim.schedule(function()
-                vim.cmd(("caddexpr '" .. data) .. "'")
+                if data == "" then
+                    data = " "
+                end
+                vim.cmd(("caddexpr '" .. __TS__StringReplaceAll(data, "'", "''")) .. "'")
                 vim.cmd("cbottom")
             end)
         end
@@ -559,11 +635,17 @@ local telescopeConfig = {borderchars = {prompt = {
     "└"
 }}}
 function ____exports.run_task_select()
+    local tasks = get_build_names()
+    if #tasks == 0 then
+        popup("There are no tasks defined in justfile", "warn", "Build")
+        return
+    end
     ____exports.build_select(themes.get_dropdown(telescopeConfig))
 end
 function ____exports.run_task_default()
     local tasks = get_build_names()
     if #tasks == 0 then
+        popup("There are no tasks defined in justfile", "warn", "Build")
         return
     end
     do
@@ -585,6 +667,7 @@ end
 function ____exports.run_task_build()
     local tasks = get_build_names()
     if #tasks == 0 then
+        popup("There are no tasks defined in justfile", "warn", "Build")
         return
     end
     do
@@ -606,6 +689,7 @@ end
 function ____exports.run_task_run()
     local tasks = get_build_names()
     if #tasks == 0 then
+        popup("There are no tasks defined in justfile", "warn", "Build")
         return
     end
     do
@@ -627,6 +711,7 @@ end
 function ____exports.run_task_test()
     local tasks = get_build_names()
     if #tasks == 0 then
+        popup("There are no tasks defined in justfile", "warn", "Build")
         return
     end
     do
