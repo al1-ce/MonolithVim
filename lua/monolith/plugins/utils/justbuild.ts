@@ -496,96 +496,70 @@ export function add_build_template(): void {
 
     let f = io.open(pjustfile, "w");
     f.write(
-`# just reference: https://just.systems/man/en/
-# cheatsheet: https://cheatography.com/linux-china/cheat-sheets/justfile/
+`# #!/usr/bin/env -S just --justfile
+# just reference: https://just.systems/man/en/
 # monolith flavor: ~/.config/nvim/readme/build.md
+#
+# set positional-arguments
 
-# Allows positional arguments
-set positional-arguments
 
-# This is a default recipe
-# Tf "default" recipe is not there then
-# first recipe will be considered default
-#
-# Prints all available recipes
-# default:
-#     @just --list
-#
-# Here's a quick cheatsheet/overview of just and monoltih flavor
-# Monolith \\bb, \\br, \\bt behavor (\\bB will show all)
-# build - will be default build task "\\bb"
-# run - will be default run task "\\br"
-# test - will be default test task "\\bt"
-#
-# Just:
+
+# Cheatsheet:
 # Set a variable (variable case is arbitrary)
 # SINGLE := "--single"
 #
-# Join paths:
-# myPaths := "path/to" / "file" + ".txt"
+# Export variable
+# export MYHOME := "/new/home"
 #
-# Or conditions
+# Join paths:
+# PATHS := "path/to" / "file" + ".txt"
+#
+# Conditions
 # foo := if "2" == "2" { "Good!" } else { "1984" }
 #
-# Run set configurations
-# all: build_d build_d_custom _echo
+# String literals
+# escaped_string := "\\"\\\\" # will eval to "\\
+# raw_string := '\\"\\\\' # will eval to \\"\\\\
+# exec_string := \`ls\` # will be set to result of inner command
+#
+# Hide configuration from just --list, prepend _ or add [private]
+# [private]
+# _test: build_d
 #
 # Alias to a recipe (just noecho)
 # alias noecho := _echo
 #
-# Example configuration (dub build not going to be printed):
-# build_d:
+# Silence commands or recipes by prepending @ (i.e hide "dub build"):
+# @build_d_custom:
 #     @dub build
 #
-# Or use this to silence all command prints (output will still print):
-# @build_d_custom:
-#     dub build
-#     dub run
-#
-# Continue even on fail  by adding "-" ([linux] makes recipe be seen only in linux)
-# [linux]
+# Continue even on fail  by adding "-"
 # test:
 #    -cat notexists.txt
 #    echo "Still executes"
 #
-# Configuration using variable from above
+# Configuration using variable from above (and positional argument $1)
 # buildFile FILENAME:
 #     dub build {{SINGLE}} $1
 #
-# Set env
+# Set env ([linux] makes recipe be usable only in linux)
+# [linux]
 # @test_d:
 #     #!/bin/bash
-#     ./test.sh
 #
-# Private task
-# _echo:
-#     echo "From echo"
-#
-# A command's arguments can be passed to dependency
-# build target:
-#     @echo "Building {{target}}…"
-#
-# push target: (build target)
-#     @echo 'Pushing {{target}}…'
-#
-# Use \`\` to eval command, () to join paths
-# in them and arg=default to set default value
-# test target test=\`echo "default"\`:
-#     @echo 'Testing {{target}} {{test}}'
+# A command's arguments can be passed to dependency (also default arguments)
+# push target="debug": (build target)
 #
 # Use + (1 ore more) or * (0 or more) to make argument variadic. Must be last
 # ntest +FILES="justfile1 justfile2":
-#     echo "{{FILES}}"
 #
-# Dependencies always run before recipe, unless they're after &&
-# This example will run "a" before "b" and "c" and "d" after "b"
-# b: a && c d:
-#     echo "b"
+# Run set configurations (recipe requirements)
+# all: build_d build_d_custom _echo
 #
-# Each recipe line is executed by a new shell,
-# so if you change the working directory on one line,
-# it won't have an effect on later lines.
-# A safe way to work around this is to use shebang ("#!/bin/bash")
+# This example will run in order "a", "b", "c", "d"
+# b: a && c d
+#
+# Each recipe line is executed by a new shell (use shebang to prevent)
 # foo:
 #     pwd    # This \`pwd\` will print the same directory…
 #     cd bar
