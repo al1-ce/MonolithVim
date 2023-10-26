@@ -1,6 +1,7 @@
 local Hydra = require('hydra')
 local colors = require('monolith.plugins.hydra.colors')
 local cmd = require('hydra.keymap-util').cmd
+local callback = require('monolith.plugins.hydra.callback');
 
 local M = {}
 
@@ -22,6 +23,8 @@ local hintHelp = [[
             Sudo           
   _w_: Write with sudo       
   _r_: Reopen with sudo      
+            Misc           
+  _s_: Special filenames     
                            
   _q_: Quit                  
 └                         ┘
@@ -50,6 +53,8 @@ function M.hydra() return Hydra({
             
             { 'w', cmd 'SudaWrite' },
             { 'r', cmd 'SudaRead' },
+
+            { 's', callback.hydraCallback('special-files') },
             
             { 'q', nil, { exit = true, nowait = true } },
             { '<Esc>', nil, { exit = true, nowait = true, desc = false } },

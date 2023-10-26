@@ -268,6 +268,8 @@ require('lazy').setup({
     'jghauser/mkdir.nvim',
     -- clipboard
     'AckslD/nvim-neoclip.lua',
+    -- .todo.md files
+    'aserebryakov/vim-todo-lists',
 
     -- -------------------------------- Viewers --------------------------------- --
     -- Preview markdown

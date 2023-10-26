@@ -229,6 +229,10 @@ if g.colors_name == 'gruvbox' then
     local style_fold_line = {bg = "#353535", ctermbg = 8}
     highlight("UfoFoldedBg", style_fold_line)
 
+    highlight("vimTodoListsDone", style_comment)
+    highlight("vimTodoListsNormal", style_normal)
+    highlight("vimTodoListsImportant", style_macro)
+
     -- PQF && DAP
 
     highlightAll({"LspSagaDiagnosticBorder"}, style_normal)
