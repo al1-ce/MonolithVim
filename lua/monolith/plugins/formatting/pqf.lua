@@ -26,6 +26,7 @@ vim.opt.errorformat:append("%f-mixin-%*[0-9](%l): %m")
 -- Normal compile errors
 vim.opt.errorformat:append("%f(%l\\,%c): %t%*[^:]: %m")
 vim.opt.errorformat:append("%f(%l): %t%*[^:]: %m")
+vim.opt.errorformat:append("%E%f:%l %m")
 -- C (gcc)
 vim.opt.errorformat:append("%f:%l:%c: %t%*[^:]: %m")
 -- TS
@@ -42,4 +43,5 @@ vim.opt.errorformat:append("%E%f:%l:%c:")
 
 -- Most general error there could be
 vim.opt.errorformat:append("%t%*[^:]: %m")
+-- sily.logger log format
 

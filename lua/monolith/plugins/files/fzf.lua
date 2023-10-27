@@ -26,8 +26,40 @@
 -- g.fzf_vim.preview_window = {"right,60%"}
 
 local fzf = require("fzf-lua")
-local utils = require("fzf-lua").utils
-local actions = require("fzf-lua").actions
+-- local utils = require("fzf-lua").utils
+-- local actions = require("fzf-lua").actions
+
+-- List of what I usually wouldn't need to see in fzf
+local file_ignores = {
+    -- images
+    "png", "jpg", "jpeg", "gif", "bmp", "ico", "webp",
+    "gpl", "kra", "tiff", "psd", "pdf", "dwg",
+    -- fonts
+    "ttf", "woff", "otf",
+    -- audio
+    "ogg", "mp3", "wav", "aiff", "flac", "oga", "mogg", "raw", "wma",
+    -- video
+    "mp4", "mkv", "webm", "avi", "amv", "mpg", "mpeg", "mpv",
+    "m4v", "svi", "wmv",
+    -- binaries, libs and packages assets
+    "bin", "exe", "o", "so", "dll", "a", "dylib",
+    "rgssad", "pak", "pdb", "bank", "ovl", "dat",
+    "mdi", "ad", "dig", "pat", "lev", "mq", "mob",
+    "pk3", "wad", "bak", "dbs",
+    -- archives
+    "zip", "rar", "tar", "gz",
+    -- misc
+    "rgs", "dat", "ani", "cur", "CurtainsStyle", "CopyComplete", "lst",
+}
+
+local function get_ignore_patterns()
+    local tbl = {}
+    for _,v in ipairs(file_ignores) do
+        table.insert(tbl, "%." .. v .. "$")
+        -- table.insert(tbl, "%." .. string.upper(v) .. "$")
+    end
+    return tbl
+end
 
 fzf.setup({
     "telescope",
@@ -87,6 +119,7 @@ fzf.setup({
     --         ["ctrl-t"]  = actions.buf_tabedit,
     --     }
     -- },
+    file_ignore_patterns = get_ignore_patterns(),
     files = {
         prompt = " ",
         cwd_prompt = false

@@ -44,6 +44,10 @@ declare namespace vim {
         function setqflist(this: void, opts: any): any;
     }
     function schedule(this: void, callback: Function): any;
+    function schedule_wrap(this: void, callback: Function): any;
+    namespace loop {
+        function new_timer(this: void): VimTimer;
+    }
 }
 
 /** @noSelf */
@@ -83,7 +87,17 @@ interface PlenaryJob {
     shutdown(): any;
 }
 
+interface VimTimerConstructor {
+    new(): VimTimer;
+}
+
+interface VimTimer {
+    start(msecs: number, repeat: number, callback: any): any;
+    close(): any;
+}
+
 declare var PlenaryJob: PlenaryJobConstructor;
+declare var VimTimer: VimTimerConstructor;
 
 declare namespace io {
     function open(this: void, name: string, mode: string): any;
@@ -96,6 +110,7 @@ declare namespace os {
     function getenv(varname: string): string;
     function execute(command: string): string;
     function clock(): number;
+    function time(): any;
 }
 
 declare namespace table {
@@ -315,9 +330,15 @@ function build_runner(build_name: string): void {
     vim.schedule(function() {
         vim.cmd("copen");
         vim.fn.setqflist([{text: "Starting build job: " + command}, {text: ""}], "r");
+        vim.cmd("wincmd p");
     });
 
     let stime = os.clock();
+
+    function sleep(t: number): void {
+        let sec = os.clock() + t;
+        while (os.clock() < sec) {}
+    }
 
     let onStdoutFunc = function(err: string, data: string) {
         vim.schedule(function() {
@@ -343,6 +364,23 @@ function build_runner(build_name: string): void {
             vim.cmd("cbottom");
         });
     }
+    let onStderrFunc = function(err: string, data: string) {
+        let timer = vim.loop.new_timer();
+        // Either fully after or fully before. I prefer after
+        // vim.schedule(function() {
+        timer.start(10, 0, vim.schedule_wrap(function() {
+            if (asyncWorker == null) return;
+            if (data == "") data = " "; // punctuation space
+            data = data.replace("warning", "Warning");
+            data = data.replace("info", "Info");
+            data = data.replace("error", "Error");
+            data = data.replace("note", "Note");
+
+            vim.cmd(`caddexpr '${data.replaceAll("'", "''")}'`);
+            vim.cmd("cbottom");
+        // });
+        }));
+    }
 
     // We want to be able to stop the job if something goes wrong
     // @ts-ignore
@@ -352,7 +390,9 @@ function build_runner(build_name: string): void {
         cwd: vim.fn.getcwd(),
         on_exit: function(j: any, ret: number) {
             let etime = os.clock() - stime;
-            vim.schedule(function() {
+            let timer = vim.loop.new_timer();
+            // vim.schedule(function() {
+            timer.start(20, 0, vim.schedule_wrap(function() {
                 let status: string = "";
                 if (asyncWorker == null) {
                     status = "Cancelled";
@@ -383,10 +423,11 @@ function build_runner(build_name: string): void {
                     }).start();
                 }
                 asyncWorker = null;
-            });
+            // });
+            }));
         },
         on_stdout: onStdoutFunc,
-        on_stderr: onStdoutFunc,
+        on_stderr: onStderrFunc,
     });
 
     asyncWorker?.start();

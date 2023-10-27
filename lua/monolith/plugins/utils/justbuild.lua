@@ -527,8 +527,14 @@ local function build_runner(build_name)
     vim.schedule(function()
         vim.cmd("copen")
         vim.fn.setqflist({{text = "Starting build job: " .. command}, {text = ""}}, "r")
+        vim.cmd("wincmd p")
     end)
     local stime = os.clock()
+    local function sleep(t)
+        local sec = os.clock() + t
+        while os.clock() < sec do
+        end
+    end
     local function onStdoutFunc(err, data)
         vim.schedule(function()
             if asyncWorker == nil then
@@ -545,53 +551,79 @@ local function build_runner(build_name)
             vim.cmd("cbottom")
         end)
     end
+    local function onStderrFunc(err, data)
+        local timer = vim.loop.new_timer()
+        timer:start(
+            10,
+            0,
+            vim.schedule_wrap(function()
+                if asyncWorker == nil then
+                    return
+                end
+                if data == "" then
+                    data = " "
+                end
+                data = __TS__StringReplace(data, "warning", "Warning")
+                data = __TS__StringReplace(data, "info", "Info")
+                data = __TS__StringReplace(data, "error", "Error")
+                data = __TS__StringReplace(data, "note", "Note")
+                vim.cmd(("caddexpr '" .. __TS__StringReplaceAll(data, "'", "''")) .. "'")
+                vim.cmd("cbottom")
+            end)
+        )
+    end
     asyncWorker = async:new({
         command = "bash",
         args = {"-c", ("( " .. command) .. " )"},
         cwd = vim.fn.getcwd(),
         on_exit = function(j, ret)
             local etime = os.clock() - stime
-            vim.schedule(function()
-                local status = ""
-                if asyncWorker == nil then
-                    status = "Cancelled"
-                else
-                    if ret == 0 then
-                        status = "Finished"
+            local timer = vim.loop.new_timer()
+            timer:start(
+                20,
+                0,
+                vim.schedule_wrap(function()
+                    local status = ""
+                    if asyncWorker == nil then
+                        status = "Cancelled"
                     else
-                        status = "Failed"
+                        if ret == 0 then
+                            status = "Finished"
+                        else
+                            status = "Failed"
+                        end
                     end
-                end
-                vim.fn.setqflist(
-                    {
-                        {text = ""},
-                        {text = ((status .. " in ") .. string.format("%.2f", etime)) .. " seconds"}
-                    },
-                    "a"
-                )
-                vim.cmd("cbottom")
-                if ret == 0 then
-                    async:new({
-                        command = "aplay",
-                        args = {
-                            getConfigDir() .. "/res/build_success.wav",
-                            "-q"
-                        }
-                    }):start()
-                else
-                    async:new({
-                        command = "aplay",
-                        args = {
-                            getConfigDir() .. "/res/build_error.wav",
-                            "-q"
-                        }
-                    }):start()
-                end
-                asyncWorker = nil
-            end)
+                    vim.fn.setqflist(
+                        {
+                            {text = ""},
+                            {text = ((status .. " in ") .. string.format("%.2f", etime)) .. " seconds"}
+                        },
+                        "a"
+                    )
+                    vim.cmd("cbottom")
+                    if ret == 0 then
+                        async:new({
+                            command = "aplay",
+                            args = {
+                                getConfigDir() .. "/res/build_success.wav",
+                                "-q"
+                            }
+                        }):start()
+                    else
+                        async:new({
+                            command = "aplay",
+                            args = {
+                                getConfigDir() .. "/res/build_error.wav",
+                                "-q"
+                            }
+                        }):start()
+                    end
+                    asyncWorker = nil
+                end)
+            )
         end,
         on_stdout = onStdoutFunc,
-        on_stderr = onStdoutFunc
+        on_stderr = onStderrFunc
     })
     if asyncWorker ~= nil then
         asyncWorker:start()
