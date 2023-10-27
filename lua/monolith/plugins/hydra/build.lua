@@ -14,6 +14,7 @@ local hintBuild = [[
   _t_: Test task           
   _B_: All tasks           
   _C_: Create build file   
+  _S_: Stop current job    
                          
   _q_: Quit                
 └                       ┘
@@ -32,7 +33,7 @@ function M.hydra() return Hydra({
             { 't', builder.run_task_test },
             { 'B', builder.run_task_select },
             { 'C', builder.add_build_template },
-            -- { 'S', cmd 'AsyncStop!' },
+            { 'S', builder.stop_current_task },
 
             { 'q', nil, { exit = true, nowait = true } },
             { '<Esc>', nil, { exit = true, nowait = true, desc = false } },

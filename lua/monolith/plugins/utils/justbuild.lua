@@ -210,6 +210,21 @@ local function __TS__StringIncludes(self, searchString, position)
     return index ~= nil
 end
 
+local __TS__StringReplace
+do
+    local sub = string.sub
+    function __TS__StringReplace(source, searchValue, replaceValue)
+        local startPos, endPos = string.find(source, searchValue, nil, true)
+        if not startPos then
+            return source
+        end
+        local before = sub(source, 1, startPos - 1)
+        local replacement = type(replaceValue) == "string" and replaceValue or replaceValue(nil, searchValue, startPos - 1, source)
+        local after = sub(source, endPos + 1)
+        return (before .. replacement) .. after
+    end
+end
+
 local __TS__StringReplaceAll
 do
     local sub = string.sub
@@ -262,6 +277,7 @@ local action_state = require("telescope.actions.state")
 local themes = require("telescope.themes")
 local async = require("plenary.job")
 local notify = require("notify")
+local asyncWorker
 local function popup(message, errlvl, title)
     if errlvl == nil then
         errlvl = "info"
@@ -493,6 +509,10 @@ local function get_build_args(build_name)
     return argsout
 end
 local function build_runner(build_name)
+    if asyncWorker ~= nil then
+        popup("Build job is already running", "error", "Build")
+        return
+    end
     local args = get_build_args(build_name)
     local justloc = ""
     local pjustfile = vim.fn.getcwd() .. "/justfile"
@@ -509,17 +529,43 @@ local function build_runner(build_name)
         vim.fn.setqflist({{text = "Starting build job: " .. command}, {text = ""}}, "r")
     end)
     local stime = os.clock()
-    async:new({
+    local function onStdoutFunc(err, data)
+        vim.schedule(function()
+            if asyncWorker == nil then
+                return
+            end
+            if data == "" then
+                data = " "
+            end
+            data = __TS__StringReplace(data, "warning", "Warning")
+            data = __TS__StringReplace(data, "info", "Info")
+            data = __TS__StringReplace(data, "error", "Error")
+            data = __TS__StringReplace(data, "note", "Note")
+            vim.cmd(("caddexpr '" .. __TS__StringReplaceAll(data, "'", "''")) .. "'")
+            vim.cmd("cbottom")
+        end)
+    end
+    asyncWorker = async:new({
         command = "bash",
         args = {"-c", ("( " .. command) .. " )"},
         cwd = vim.fn.getcwd(),
         on_exit = function(j, ret)
             local etime = os.clock() - stime
             vim.schedule(function()
+                local status = ""
+                if asyncWorker == nil then
+                    status = "Cancelled"
+                else
+                    if ret == 0 then
+                        status = "Finished"
+                    else
+                        status = "Failed"
+                    end
+                end
                 vim.fn.setqflist(
                     {
                         {text = ""},
-                        {text = ("Finished in " .. string.format("%.2f", etime)) .. " seconds"}
+                        {text = ((status .. " in ") .. string.format("%.2f", etime)) .. " seconds"}
                     },
                     "a"
                 )
@@ -541,27 +587,15 @@ local function build_runner(build_name)
                         }
                     }):start()
                 end
+                asyncWorker = nil
             end)
         end,
-        on_stdout = function(err, data)
-            vim.schedule(function()
-                if data == "" then
-                    data = " "
-                end
-                vim.cmd(("caddexpr '" .. __TS__StringReplaceAll(data, "'", "''")) .. "'")
-                vim.cmd("cbottom")
-            end)
-        end,
-        on_stderr = function(err, data)
-            vim.schedule(function()
-                if data == "" then
-                    data = " "
-                end
-                vim.cmd(("caddexpr '" .. __TS__StringReplaceAll(data, "'", "''")) .. "'")
-                vim.cmd("cbottom")
-            end)
-        end
-    }):start()
+        on_stdout = onStdoutFunc,
+        on_stderr = onStdoutFunc
+    })
+    if asyncWorker ~= nil then
+        asyncWorker:start()
+    end
 end
 function ____exports.build_select(opts)
     if opts == nil then
@@ -729,6 +763,12 @@ function ____exports.run_task_test()
     end
     popup("Could not find test task. \nPlease select task from list.", "warn", "Build")
     ____exports.run_task_select()
+end
+function ____exports.stop_current_task()
+    if asyncWorker ~= nil then
+        asyncWorker:shutdown()
+    end
+    asyncWorker = nil
 end
 function ____exports.add_build_template()
     local pjustfile = vim.fn.getcwd() .. "/justfile"

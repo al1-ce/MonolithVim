@@ -7,6 +7,7 @@ require('pqf').setup({
     },
     show_multiple_lines = true,
     max_filename_length = 0,
+    hide_placeholder_path = true
 })
 
 -------------------- Quickfix --------------------------------------
@@ -33,7 +34,7 @@ vim.opt.errorformat:append("%f(%l\\,%c) %trror TS%n: %m")
 -- DART
 -- I give up
 -- vim.opt.errorformat:append("%E%f:%l:%c:,%C%trror: %m\\.,%Z%m")
-vim.opt.errorformat:append("%f:%l:%c:")
+vim.opt.errorformat:append("%E%f:%l:%c:")
 -- vim.opt.errorformat:append("%E%f:%l:%c:")
 -- vim.opt.errorformat:append("%+CError:\\ %m")
 -- vim.opt.errorformat:append("%+C%m")

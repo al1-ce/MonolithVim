@@ -73,11 +73,17 @@ declare namespace telescope {
     }
 }
 
-interface PlenaryJob {
+interface PlenaryJobConstructor {
     new(job: any): PlenaryJob;
-    sync(this: void): any;
-    start(this: void): any;
 }
+
+interface PlenaryJob {
+    sync(): any;
+    start(): any;
+    shutdown(): any;
+}
+
+declare var PlenaryJob: PlenaryJobConstructor;
 
 declare namespace io {
     function open(this: void, name: string, mode: string): any;
@@ -109,6 +115,8 @@ let themes = require("telescope.themes") as typeof telescope.themes;
 let async = require("plenary.job") as PlenaryJob
 
 let notify = require("notify");
+
+let asyncWorker: PlenaryJob | null;
 
 //------------------------------------------------------------------//
 //                            FUNCTIONS                             //
@@ -275,6 +283,11 @@ function get_build_args(build_name: string): string[] {
 
 // doesnt include aliases
 function build_runner(build_name: string): void {
+    if (asyncWorker != null) {
+        popup("Build job is already running", "error", "Build");
+        return;
+    }
+
     let args: string[] = get_build_args(build_name);
     let justloc = "";
     let pjustfile: string = `${vim.fn.getcwd()}/justfile`;
@@ -306,18 +319,55 @@ function build_runner(build_name: string): void {
 
     let stime = os.clock();
 
+    let onStdoutFunc = function(err: string, data: string) {
+        vim.schedule(function() {
+            if (asyncWorker == null) return;
+            // TURNS OUT some languages like DART output
+            // what should be in stderr to stdout
+            // so we're just going to caddexpr everything
+            if (data == "") data = " "; // punctuation space
+
+            // Replacing all lowercase types with capital ones because
+            // errorformat expects %t as capital letter
+            // A bit uncivilised but what can I do there tbh...
+            // It's not like anybody wants to write error parser for
+            // every type of compiler or something, so, replacing first
+            // thing that there is is a fine compromise
+            // If you don't like this just comment those
+            data = data.replace("warning", "Warning");
+            data = data.replace("info", "Info");
+            data = data.replace("error", "Error");
+            data = data.replace("note", "Note");
+
+            vim.cmd(`caddexpr '${data.replaceAll("'", "''")}'`);
+            vim.cmd("cbottom");
+        });
+    }
+
+    // We want to be able to stop the job if something goes wrong
     // @ts-ignore
-    async.new({
+    asyncWorker = async.new({
         command: "bash",
         args: ["-c", `( ${command} )`],
         cwd: vim.fn.getcwd(),
         on_exit: function(j: any, ret: number) {
             let etime = os.clock() - stime;
             vim.schedule(function() {
+                let status: string = "";
+                if (asyncWorker == null) {
+                    status = "Cancelled";
+                } else {
+                    if (ret == 0) {
+                        status = "Finished";
+                    } else {
+                        status = "Failed"
+                    }
+                }
                 vim.fn.setqflist([
                     {text: ""},
-                    {text: `Finished in ${string.format("%.2f", etime)} seconds`}
+                    {text: `${status} in ${string.format("%.2f", etime)} seconds`}
                 ], "a");
+
                 vim.cmd("cbottom");
                 if (ret == 0) {
                     // @ts-ignore
@@ -332,27 +382,14 @@ function build_runner(build_name: string): void {
                         args: [`${getConfigDir()}/res/build_error.wav`, "-q"]
                     }).start();
                 }
+                asyncWorker = null;
             });
+        },
+        on_stdout: onStdoutFunc,
+        on_stderr: onStdoutFunc,
+    });
 
-        },
-        on_stdout: function(err: string, data: string) {
-            vim.schedule(function() {
-                // TURNS OUT some languages like DART output
-                // what should be in stderr to stdout
-                // so we're just going to caddexpr everything
-                if (data == "") data = " "; // punctuation space
-                vim.cmd(`caddexpr '${data.replaceAll("'", "''")}'`);
-                vim.cmd("cbottom");
-            });
-        },
-        on_stderr: function(err: string, data: string) {
-            vim.schedule(function() {
-                if (data == "") data = " "; // punctuation space
-                vim.cmd(`caddexpr '${data.replaceAll("'", "''")}'`);
-                vim.cmd("cbottom");
-            });
-        },
-    }).start();
+    asyncWorker?.start();
     // END SECTION: ASYNC RUNNER
 
     // popup("Done");
@@ -485,6 +522,11 @@ export function run_task_test(): void {
     }
     popup(`Could not find test task. \nPlease select task from list.`, "warn", "Build");
     run_task_select();
+}
+
+export function stop_current_task(): void {
+    asyncWorker?.shutdown();
+    asyncWorker = null;
 }
 
 export function add_build_template(): void {
