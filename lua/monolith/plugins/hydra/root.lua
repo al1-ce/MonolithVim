@@ -15,8 +15,9 @@ local hintLeader = [[
   _l_: Lsp            
   _g_: Git            
   _b_: Build          
+  _d_: Debug          
         Misc        
-  _d_: Dashboard      
+  _D_: Dashboard      
   _p_: Package        
   _v_: View           
       Settings      
@@ -49,8 +50,9 @@ Hydra({
         { 'l', callback.hydraCallback('lsp') },
         { 'g', callback.hydraCallback('git') },
         { 'b', callback.hydraCallback('build') },
+        { 'd', callback.hydraCallback('debug') },
 
-        { 'd', cmd 'Alpha' },
+        { 'D', cmd 'Alpha' },
         { 'p', callback.hydraCallback('packages') },
         { 'v', callback.hydraCallback('view') },
 

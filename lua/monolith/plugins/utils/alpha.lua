@@ -67,8 +67,8 @@ local hydraHelp = "<cmd>lua require('hydra').activate(require('monolith.plugins.
 local buttons = {
 	type = "group",
 	val = {
-        dashboard.button( "∖ff", "  > ＦＩＮＤ ＦＩＬＥ" , "<cmd>Telescope find_files<cr>"),
-        dashboard.button( "∖fr", "  > ＲＥＣＥＮＴ ＦＩＬＥＳ", "<cmd>Telescope oldfiles<cr>"),
+        dashboard.button( "∖ff", "  > ＦＩＮＤ ＦＩＬＥ" , "<cmd>FzfLua files<cr>"),
+        dashboard.button( "∖fr", "  > ＲＥＣＥＮＴ ＦＩＬＥＳ", "<cmd>FzfLua oldfiles<cr>"),
         dashboard.button( "∖fp", "  > ＲＥＣＥＮＴ ＰＲＯＪＥＣＴＳ"   , "<cmd>Telescope projects<cr>"),
         dashboard.button( "∖fb", "  > ＦＩＬＥ ＢＲＯＷＳＥＲ" , "<cmd>Telescope file_browser<cr>"),
         dashboard.button( "∖ce", "  > ＯＰＥＮ ＣＯＮＦＩＧ", "<cmd>edit $MYVIMRC | tcd %:p:h<cr>"),

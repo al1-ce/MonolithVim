@@ -547,7 +547,9 @@ local function build_runner(build_name)
             data = __TS__StringReplace(data, "info", "Info")
             data = __TS__StringReplace(data, "error", "Error")
             data = __TS__StringReplace(data, "note", "Note")
-            vim.cmd(("caddexpr '" .. __TS__StringReplaceAll(data, "'", "''")) .. "'")
+            data = __TS__StringReplaceAll(data, "'", "''")
+            data = __TS__StringReplaceAll(data, "\0", "")
+            vim.cmd(("caddexpr '" .. data) .. "'")
             vim.cmd("cbottom")
         end)
     end
@@ -567,7 +569,9 @@ local function build_runner(build_name)
                 data = __TS__StringReplace(data, "info", "Info")
                 data = __TS__StringReplace(data, "error", "Error")
                 data = __TS__StringReplace(data, "note", "Note")
-                vim.cmd(("caddexpr '" .. __TS__StringReplaceAll(data, "'", "''")) .. "'")
+                data = __TS__StringReplaceAll(data, "'", "''")
+                data = __TS__StringReplaceAll(data, "\0", "")
+                vim.cmd(("caddexpr '" .. data) .. "'")
                 vim.cmd("cbottom")
             end)
         )
@@ -580,7 +584,7 @@ local function build_runner(build_name)
             local etime = os.clock() - stime
             local timer = vim.loop.new_timer()
             timer:start(
-                20,
+                50,
                 0,
                 vim.schedule_wrap(function()
                     local status = ""

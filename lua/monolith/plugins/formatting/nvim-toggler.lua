@@ -31,6 +31,7 @@ require('nvim-toggler').setup({
         ['outset'] = 'inset',
         ['row'] = 'column',
         ['start'] = 'end',
+        ['after'] = 'before',
     },
     remove_default_keybinds = true,
 })

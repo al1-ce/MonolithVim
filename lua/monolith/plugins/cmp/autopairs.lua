@@ -11,6 +11,6 @@
 --     ignored_next_char = "[%w%.]" -- will ignore alphanumeric and `.` symbol
 -- })
 
-require("ultimate-autopair").setup({})
+require("ultimate-autopair").setup()
 
 

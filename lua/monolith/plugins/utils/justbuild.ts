@@ -359,8 +359,11 @@ function build_runner(build_name: string): void {
             data = data.replace("info", "Info");
             data = data.replace("error", "Error");
             data = data.replace("note", "Note");
+            data = data.replaceAll("'", "''");
+            data = data.replaceAll("\0", "");
+            // popup(data);
 
-            vim.cmd(`caddexpr '${data.replaceAll("'", "''")}'`);
+            vim.cmd(`caddexpr '${data}'`);
             vim.cmd("cbottom");
         });
     }
@@ -375,8 +378,11 @@ function build_runner(build_name: string): void {
             data = data.replace("info", "Info");
             data = data.replace("error", "Error");
             data = data.replace("note", "Note");
+            data = data.replaceAll("'", "''");
+            data = data.replaceAll("\0", "");
 
-            vim.cmd(`caddexpr '${data.replaceAll("'", "''")}'`);
+            // popup(data);
+            vim.cmd(`caddexpr '${data}'`);
             vim.cmd("cbottom");
         // });
         }));
@@ -392,7 +398,7 @@ function build_runner(build_name: string): void {
             let etime = os.clock() - stime;
             let timer = vim.loop.new_timer();
             // vim.schedule(function() {
-            timer.start(20, 0, vim.schedule_wrap(function() {
+            timer.start(50, 0, vim.schedule_wrap(function() {
                 let status: string = "";
                 if (asyncWorker == null) {
                     status = "Cancelled";

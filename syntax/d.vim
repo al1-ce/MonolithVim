@@ -167,6 +167,7 @@ syn match dAnnotation	"@[_$a-zA-Z][_$a-zA-Z0-9_]*\>" contains=dAttribute
 syn keyword dStatement    scope version
 " syn keyword dStatement    __traits pragma
 " syn keyword dPragma    __traits pragma
+syn match dConstant "\<\u[A-Z_]\+\>"
 
 " Necessary to highlight C++ in extern modifiers.
 syn match dExternIdentifier "C\(++\)\?" contained
@@ -401,6 +402,7 @@ hi def link dPragma              PreProc
 hi def link dPragmaIdentifier    Identifier
 hi def link dExtern              dExternal
 hi def link dExternIdentifier    Identifier
+hi def link dMacro               Macro
 
 " Marks contents of the asm statement body as special
 

@@ -3,11 +3,10 @@ require('pqf').setup({
         error = '',
         warning = '',
         info = '',
-        hint = ''
+        hint = '' -- note
     },
     show_multiple_lines = true,
     max_filename_length = 0,
-    hide_placeholder_path = true
 })
 
 -------------------- Quickfix --------------------------------------
