@@ -10,6 +10,6 @@ end
 load("easypick")
 load("oil")
 load("project")
-load("rnvimr")
+-- load("rnvimr")
 load("telescope")
 load("fzf")

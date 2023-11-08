@@ -134,6 +134,7 @@ do -- start autocmd block
 
     -- Set filetypes
     autocmd({"BufNewFile", "BufRead", "BufReadPost"}, {pattern = {"*.sdl"}, callback = function() setft("sdlang") end})
+    autocmd({"BufNewFile", "BufRead", "BufReadPost"}, {pattern = {"*.bf"}, callback = function() setft("brainfuck") end})
     autocmd({"BufNewFile", "BufRead", "BufReadPost"}, {pattern = {"*.jpp", "*.jspp"}, callback = function() setft("sdlang") end})
 end -- end autocmd block
 

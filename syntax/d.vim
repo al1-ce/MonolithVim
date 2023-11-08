@@ -167,7 +167,7 @@ syn match dAnnotation	"@[_$a-zA-Z][_$a-zA-Z0-9_]*\>" contains=dAttribute
 syn keyword dStatement    scope version
 " syn keyword dStatement    __traits pragma
 " syn keyword dPragma    __traits pragma
-syn match dConstant "\<\u[A-Z_]\+\>"
+syn match dConstant "\<\u[A-Z0-9_]\+\>"
 
 " Necessary to highlight C++ in extern modifiers.
 syn match dExternIdentifier "C\(++\)\?" contained

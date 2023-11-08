@@ -12,7 +12,7 @@ dapui.setup({
                 "scopes",
                 -- "repl"
             },
-            size = 23,
+            size = 25,
             position = "left"
         }
     },

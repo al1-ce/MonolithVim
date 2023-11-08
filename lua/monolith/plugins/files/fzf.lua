@@ -158,3 +158,5 @@ fzf.setup({
 
 vim.keymap.set("n", "<leader>ff", "<CMD>FzfLua files<cr>", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>fr", "<CMD>FzfLua oldfiles<cr>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>fg", "<CMD>FzfLua grep_project<cr>", { noremap = true, silent = true })
+

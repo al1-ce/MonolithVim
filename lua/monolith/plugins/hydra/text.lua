@@ -19,6 +19,7 @@ local hintText = [[
   _?_: Toggle comment block    
   _l_: Add comment line        
   _B_: Add comment box         
+  _A_: Make ascii art          
            Terminal          
   _t_: Toggle terminal         
   _f_: Float terminal (saga)   
@@ -85,6 +86,7 @@ function M.hydra() return Hydra({
         { '?', commentBlocks },
         { 'l', require('nvim-comment-frame').add_comment },
         { 'B', require('nvim-comment-frame').add_multiline_comment },
+        { 'A', cmd 'Commentalist' },
 
         { 't', cmd 'ToggleTerm direction="horizontal"' },
         { 'f', cmd 'Lspsaga term_toggle' },

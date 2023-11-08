@@ -1,5 +1,6 @@
-local lspconf = require('lspconfig')
+local lspconfig = require('lspconfig')
 
-lspconf.lua_ls.setup({})
+lspconfig.lua_ls.setup({})
+lspconfig.glsl_analyzer.setup({})
 
-lspconf.dartls.setup({})
+lspconfig.dartls.setup({})

@@ -69,7 +69,7 @@ require('lazy').setup({
     -- file manager as buffer
     "stevearc/oil.nvim",
     -- ranger
-    "kevinhwang91/rnvimr",
+    -- "kevinhwang91/rnvimr",
     -- FZF
     -- "junegunn/fzf",
     -- "junegunn/fzf.vim",
@@ -178,6 +178,10 @@ require('lazy').setup({
     "ntpeters/vim-better-whitespace",
     -- Pretty folding
     "kevinhwang91/nvim-ufo",
+    -- Text to ascii tree
+    "xorid/asciitree.nvim",
+    -- Text to ascii art (comments)
+    "olidacombe/commentalist.nvim",
 
     -- -------------------------------- Powerline ------------------------------- --
     -- powerline

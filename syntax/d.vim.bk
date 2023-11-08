@@ -1,0 +1,31 @@
+" Vim syntax file for the D programming language.
+"
+" Language:     D
+" Maintainer:   al1-ce
+" Last Change:  2013
+" Version:      0.3
+"
+" This is a minor thing that I'd like to have
+" when I'm working with extern(C) code
+" Everything else is lifted by treesitter
+"
+" Also there's available full D syntax in same
+" directory as this file but with .bak in end
+"
+
+if exists("b:current_syntax")
+  finish
+endif
+
+" Support cpoptions
+let s:cpo_save = &cpo
+set cpo&vim
+
+" Set the current syntax to be known as d
+let b:current_syntax = "d"
+
+syn match dConstant "\<\u[A-Z0-9_]\+\>"
+hi def link dConstant            Constant
+
+let &cpo = s:cpo_save
+unlet s:cpo_save
