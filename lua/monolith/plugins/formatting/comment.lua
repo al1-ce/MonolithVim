@@ -15,6 +15,7 @@ ft({ 'd' }, ft.get('c'))
 ft({ 'sdl' }, ft.get('c'))
 ft({ 'sdlang' }, ft.get('c'))
 
+--[[
 require('nvim-comment-frame').setup({
 
     -- if true, <leader>cf keymap will be disabled
@@ -38,6 +39,7 @@ require('nvim-comment-frame').setup({
         },
     }
 })
+]]--
 
 local opts = { noremap = true, silent = true }
 

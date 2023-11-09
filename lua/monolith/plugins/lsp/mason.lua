@@ -16,7 +16,7 @@ require("mason-lspconfig").setup({
     },
     automatic_installation = true
 })
-require("mason-null-ls").setup({})
+-- require("mason-null-ls").setup({})
 ---@diagnostic disable-next-line: missing-fields
 require('mason-nvim-dap').setup({ automatic_setup = true })
 
@@ -37,15 +37,15 @@ masonconf.setup_handlers({
             end,
         })
     end,
-    ['jsonls'] = function ()
-        lspconf.jsonls.setup {
-            settings = {
-                json = {
-                    schemas = require('schemastore').json.schemas(),
-                    validate = { enable = true },
-                },
-            },
-        }
-    end,
+    -- ['jsonls'] = function ()
+    --     lspconf.jsonls.setup {
+    --         settings = {
+    --             json = {
+    --                 schemas = require('schemastore').json.schemas(),
+    --                 validate = { enable = true },
+    --             },
+    --         },
+    --     }
+    -- end,
 })
 

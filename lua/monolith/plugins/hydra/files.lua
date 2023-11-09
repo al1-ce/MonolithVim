@@ -18,8 +18,6 @@ local hintFiles = [[
        Trees       
   _T_: Tagbar        
   _u_: Undo tree     
-  _S_: Sidebar       
-  _m_: Minimap       
                    
   _q_: Quit          
 └                 ┘
@@ -86,8 +84,6 @@ function M.hydra() return Hydra({
             -- { 't', ':NvimTreeToggle<cr><C-w>l' },
             { 'T', cmd 'Lspsaga outline' },
             { 'u', cmd 'UndotreeToggle' },
-            { 'S', cmd 'SidebarNvimToggle' },
-            { 'm', require('mini.map').toggle },
 
             { 'q', nil, { exit = true, nowait = true } },
             { '<Esc>', nil, { exit = true, nowait = true, desc = false } },

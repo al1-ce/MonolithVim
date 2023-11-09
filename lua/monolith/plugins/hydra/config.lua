@@ -35,10 +35,8 @@ function M.hydra() return Hydra({
             { 'e', cmd 'edit $MYVIMRC <bar> tcd %:h' },
             { 'r', fUpdateConf },
 
-            { 's',
-            function() require('sessions').save(vim.fn.stdpath("data") .. "/sessions/main", { autosave = false }) end },
-            { 'l',
-            function() require('sessions').load(vim.fn.stdpath("data") .. "/sessions/main", { autosave = false }) end },
+            { 's', cmd 'SessionsSave' },
+            { 'l', cmd 'SessionsLoad' },
 
             { 'd', '<cmd>cd %:p:h<cr><cmd>pwd<cr>' },
 

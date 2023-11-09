@@ -22,7 +22,6 @@ local hintLsp = [[
   _I_: Implementations   
          Files         
   _F_: Format            
-  _x_: Scratchpad        
         Servers        
   _i_: Info              
   _T_: Stop in current   
@@ -59,7 +58,6 @@ function M.hydra() return Hydra({
             { 'I', cmd 'FzfLua lsp_implementations' },
 
             { 'F', vim.lsp.buf.format },
-            { 'x', cmd 'Codi javascript' },
 
             { 'i', cmd 'LspInfo'},
             { 'T', stopLspInBuffer },

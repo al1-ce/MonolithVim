@@ -9,8 +9,6 @@ local hintPackages = [[
   _m_: Preview markdown glow
   _M_: Preview markdown web
   _t_: View todo
-  _h_: Headers
-  _c_: Clipboard
             Link
   _V_: VimAwesome
   _N_: Neocraft
@@ -32,8 +30,6 @@ function M.hydra()
             { 'M',     cmd 'MarkdownPreview' },
             -- { 't',     cmd 'TODOTelescope' },
             { 't',     cmd 'TodoLocList' },
-            { 'h',     cmd 'Telescope heading' },
-            { 'c',     cmd 'Telescope neoclip' },
 
             { 'V',     cmd 'silent! !xdg-open https://vimawesome.com' },
             { 'N',     cmd 'silent! !xdg-open https://neovimcraft.com' },

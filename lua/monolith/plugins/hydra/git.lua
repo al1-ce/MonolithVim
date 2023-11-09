@@ -10,7 +10,7 @@ local hintGit = [[
   _b_: Branches  
   _c_: Commits   
   _S_: Stash     
-  _d_: Diff      
+  _g_: GUI       
                
   _q_: Quit      
 └             ┘
@@ -26,7 +26,7 @@ function M.hydra() return Hydra({
             { 'b', cmd 'FzfLua git_branches' },
             { 'c', cmd 'FzfLua git_commits' },
             { 'S', cmd 'FzfLua git_stash' },
-            { 'd', cmd 'DiffviewOpen' },
+            { 'g', cmd 'Git' },
             { 'q', nil, { exit = true, nowait = true } },
             { '<Esc>', nil, { exit = true, nowait = true, desc = false } },
         }

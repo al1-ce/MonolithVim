@@ -7,4 +7,4 @@ local function load(m)
     return ok
 end
 
-load("toggleterm")
+-- load("toggleterm")

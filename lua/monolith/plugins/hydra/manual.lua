@@ -9,9 +9,7 @@ local hintHelp = [[
 ┌           Help          ┐
   _c_: Execute command       
   _h_: Vim help              
-  _H_: Howdoi                
   _k_: Keymaps               
-  _o_: Vim options           
           History          
   _;_: Commands history      
   _?_: Search history        
@@ -19,7 +17,6 @@ local hintHelp = [[
   _p_: Telescope pickers     
   _f_: Fzf pickers           
   _u_: Url in current file   
-  _l_: Licenses              
             Sudo           
   _w_: Write with sudo       
   _r_: Reopen with sudo      
@@ -38,9 +35,7 @@ function M.hydra() return Hydra({
         heads = {
             { 'c', cmd 'FzfLua commands' },
             { 'h', cmd 'FzfLua help_tags', { desc = 'vim help' } },
-            { 'H', cmd 'Telescope howdoi' },
             { 'k', cmd 'FzfLua keymaps' },
-            { 'o', cmd 'Telescope vim_options' },
 
             { ';', cmd 'FzfLua command_history' },
             { '?', cmd 'FzfLua search_history' },
@@ -49,7 +44,6 @@ function M.hydra() return Hydra({
             { 'f', cmd 'FzfLua' },
             { 'u', cmd 'UrlView' },
             
-            { 'l', cmd 'Telescope software-licenses find' },
             
             { 'w', cmd 'SudaWrite' },
             { 'r', cmd 'SudaRead' },

@@ -106,16 +106,16 @@ require("telescope").setup({
     }
 })
 
-require('telescope').load_extension('projects')
-require('telescope').load_extension('file_browser')
+-- require('telescope').load_extension('projects')
+-- require('telescope').load_extension('file_browser')
 -- require('telescope').load_extension('yabs')
 -- require('telescope').load_extension('coc')
-require('telescope').load_extension('neoclip')
-require("telescope").load_extension("vimspector")
+-- require('telescope').load_extension('neoclip')
+-- require("telescope").load_extension("vimspector")
 -- require("telescope").load_extension("software-licenses")
-require('telescope').load_extension('heading')
+-- require('telescope').load_extension('heading')
 require('telescope').load_extension('notify')
 -- require('telescope').load_extension('symbols')
-require('telescope').load_extension('howdoi')
+-- require('telescope').load_extension('howdoi')
 -- require('telescope').load_extension('media')
 

@@ -7,7 +7,7 @@ local function load(m)
     return ok
 end
 
-load("sidebar")
+-- load("sidebar")
 load("todo")
 -- load("tree")
 load("undotree")

@@ -7,7 +7,7 @@ local function load(m)
     return ok
 end
 
-load("easypick")
+-- load("easypick")
 load("oil")
 load("project")
 -- load("rnvimr")
