@@ -1,7 +1,10 @@
 require('glow').setup({
-    style = "dark",
+    style = "~/.config/glow/gruvbox.json",
     border = 'solid',
-    width_ratio = 0.7,
-    height_ratio = 0.7,
+    width = 160,
+    height = 100,
+    width_ratio = 0.8,
+    height_ratio = 0.8,
+    pager = false,
 })
 

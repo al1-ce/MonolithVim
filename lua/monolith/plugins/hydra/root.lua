@@ -66,7 +66,7 @@ Hydra({
         { 'q', cmd 'x' },
         { 'Q', cmd 'qa!' },
         { 'P', "printf('`[%s`]', getregtype()[0])", { expr = true } },
-        { '/', ':nohl<cr>:lua MiniMap.refresh()<cr>' },
+        { '/', ':nohl<cr>' },
 
         { 'x', nil, { exit = true, nowait = true } },
         { '<Esc>', nil, { exit = true, nowait = true, desc = false } },

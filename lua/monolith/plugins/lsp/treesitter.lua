@@ -1,7 +1,7 @@
 ---@diagnostic disable-next-line: missing-fields
 require('nvim-treesitter.configs').setup {
     -- A list of parser names, or 'all'
-    ensure_installed = { 'c', 'lua' },
+    ensure_installed = { 'c', 'lua', 'org' },
     sync_install = false,
     auto_install = true,
     highlight = {

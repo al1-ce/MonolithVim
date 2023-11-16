@@ -33,7 +33,7 @@ local fzf = require("fzf-lua")
 local file_ignores = {
     -- images
     "png", "jpg", "jpeg", "gif", "bmp", "ico", "webp",
-    "gpl", "kra", "tiff", "psd", "pdf", "dwg",
+    "gpl", "kra", "tiff", "psd", "pdf", "dwg", "svg",
     -- fonts
     "ttf", "woff", "otf",
     -- audio
