@@ -1,5 +1,5 @@
 require('glow').setup({
-    style = "~/.config/glow/gruvbox.json",
+    style = "~/.config/nvim/res/gruvbox.json",
     border = 'solid',
     width = 160,
     height = 100,

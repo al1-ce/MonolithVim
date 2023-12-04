@@ -121,7 +121,8 @@ require('lazy').setup({
     -- Project-wide rename
     'windwp/nvim-spectre',
     -- Better quickfix
-    { 'yorickpeterse/nvim-pqf', commit = "b2f1882" },
+    -- { 'yorickpeterse/nvim-pqf', commit = "b2f1882" },
+    'yorickpeterse/nvim-pqf',
     -- Highlights trailing whitespaces
     "ntpeters/vim-better-whitespace",
     -- Pretty folding
