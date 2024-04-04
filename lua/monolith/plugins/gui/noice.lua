@@ -10,6 +10,7 @@ require("noice").setup({
             -- icon_hl_group: optional hl_group for the icon
             -- title: set to anything or empty string to hide
             cmdline = { pattern = "^:", icon = "", lang = "vim" },
+            cmdall = { pattern = "^:'<,'>", icon = "＠", lang = "vim" },
             search_down = { kind = "search", pattern = "^/", icon = " ", lang = "regex" },
             search_up = { kind = "search", pattern = "^%?", icon = " ", lang = "regex" },
             filter = { pattern = "^:%s*!", icon = "$", lang = "bash" },

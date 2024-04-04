@@ -17,8 +17,8 @@ require('lazy').setup({
     -- -------------------------------- Libraries ------------------------------- --
     -- Async code
     'lewis6991/impatient.nvim',
-    -- Job stuff
     'nvim-lua/plenary.nvim',
+    'nvim-neotest/nvim-nio',
     -- web icons
     'kyazdani42/nvim-web-devicons',
     -- ui components

@@ -116,6 +116,22 @@ keymap.set("n", "<leader>fs", "<C-^>", opts)
 keymap.set("n", "<leader>q", "<CMD>x<CR>", opts)
 keymap.set("n", "<leader>w", "<CMD>update<CR>", opts)
 
+local function open_link_vis()
+    vim.fn.feedkeys('"vy')
+    local s = vim.fn.getreg("v")
+    local key = vim.api.nvim_replace_termcodes("<esc>", true, false, true)
+    vim.fn.feedkeys(key)
+    vim.fn.execute("!open " .. '"' .. s .. '"')
+end
+
+local function open_link_norm()
+    vim.fn.feedkeys("viW")
+    open_link_vis()
+end
+
+keymap.set("n", "gx", open_link_norm, opts)
+keymap.set("v", "gx", open_link_vis, opts)
+
 -- -------------------------------------------------------------------------- --
 --                                 Insert Mode                                --
 -- -------------------------------------------------------------------------- --

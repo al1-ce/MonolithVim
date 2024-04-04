@@ -2,6 +2,8 @@ local opts = { noremap = true, silent = true }
 
 local keymap = vim.keymap
 
+require("move").setup({})
+
 keymap.set('i', '<A-up>', '<Esc><cmd>MoveLine(-1)<CR>i', opts)
 keymap.set('i', '<A-down>', '<Esc><cmd>MoveLine(1)<CR>i', opts)
 

@@ -9,7 +9,6 @@ end
 
 load("colors")
 load("config")
-load("just")
 load("mason")
 load("neodev")
 load("null")
