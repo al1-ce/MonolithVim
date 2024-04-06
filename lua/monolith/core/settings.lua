@@ -1,17 +1,16 @@
 -- nvim settings
 
 local cmd = vim.cmd             -- cmdute Vim commands
--- local cmd = vim.api.nvim_exec  -- execute Vimscript
 local g = vim.g                 -- global variables
 local o = vim.o                 -- global-like
 local opt = vim.opt             -- global/buffer/windows-scoped options
 
-o.signcolumn = "no"                 -- removes gutter
-opt.updatetime = 300                -- speeds up autocompletion
--- g.mapleader = "\\"                  -- sets \ as leader key
-g.mapleader = ";"                   -- sets , as leader key
-o.clipboard = "unnamedplus"         -- set clipboard to be system
-opt.cmdheight = 1                   -- cmd height
+o.signcolumn = "no"         -- removes gutter
+opt.updatetime = 300        -- speeds up autocompletion
+opt.autoread = true         -- default value, autoreload file
+g.mapleader = ";"           -- sets , as leader key
+o.clipboard = "unnamedplus" -- set clipboard to be system
+opt.cmdheight = 1           -- cmd height
 
 o.virtualedit = "onemore"
 

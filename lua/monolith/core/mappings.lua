@@ -66,6 +66,10 @@ keymap.set("n", "<A-right>", "<C-w>l", opts)
 keymap.set("", "<C-Del>", '"_dw', opts);
 keymap.set("i", "<C-Del>", '<C-o>"_dw', opts);
 
+-- map delete to black hole yank
+keymap.set("", "<Del>", '"_x', opts)
+keymap.set("i", "<Del>", '<C-o>"_x', opts)
+
 keymap.set('', '<S-ScrollWheelUp>', '3zh', opts)
 keymap.set('', '<S-ScrollWheelDown>', '3zl', opts)
 keymap.set('i', '<S-ScrollWheelUp>', '<C-o>3zh', opts)
@@ -107,6 +111,8 @@ keymap.set("n", "<BS>", '"_X', opts);
 
 keymap.set("n", "<Tab>", ">>", opts)
 keymap.set("n", "<S-Tab>", "<<", opts)
+-- fix jump motion (thanks noremap)
+keymap.set("n", "<C-i>", "<C-i>", opts)
 
 keymap.set("n", "<leader>ss", "<CMD>split<CR>", opts)
 keymap.set("n", "<leader>sv", "<CMD>vsplit<CR>", opts)
@@ -117,15 +123,17 @@ keymap.set("n", "<leader>q", "<CMD>x<CR>", opts)
 keymap.set("n", "<leader>w", "<CMD>update<CR>", opts)
 
 local function open_link_vis()
-    vim.fn.feedkeys('"vy')
-    local s = vim.fn.getreg("v")
     local key = vim.api.nvim_replace_termcodes("<esc>", true, false, true)
-    vim.fn.feedkeys(key)
+    vim.fn.feedkeys('"vy', "x")
+    vim.fn.feedkeys(key, "x")
+    local s = vim.fn.getreg("v")
     vim.fn.execute("!open " .. '"' .. s .. '"')
+    -- require("notify")(getVisualSelection())
 end
 
 local function open_link_norm()
-    vim.fn.feedkeys("viW")
+    -- "x" makes it fast
+    vim.fn.feedkeys("viW", "x")
     open_link_vis()
 end
 
@@ -189,13 +197,18 @@ keymap.set("v", "<Tab>", ">`<V`>", opts)
 keymap.set("v", "<S-Tab>", "<`<V`>", opts)
 
 -- -------------------------------------------------------------------------- --
---                                Termianl Mode                               --
+--                                Terminal Mode                               --
 -- -------------------------------------------------------------------------- --
 
 -- Use Esc to quit builtin terminal
 keymap.set("t", "<Esc>", [[<c-\><c-n>]], opts)
 
--- map delete to black hole yank
-keymap.set("", "<Del>", '"_x', opts)
-keymap.set("i", "<Del>", '<C-o>"_x', opts)
+-- -------------------------------------------------------------------------- --
+--                              Language Specific                             --
+-- -------------------------------------------------------------------------- --
 
+-- TODO: figure out how to do it with vim.api.nvim_create_augroup
+vim.cmd([[au BufEnter,BufNew *.c nnoremap <silent> ;h :e %<.h<CR>]])
+vim.cmd([[au BufEnter,BufNew *.h nnoremap <silent> ;h :e %<.c<CR>]])
+vim.cmd([[au BufEnter,BufNew *.hpp nnoremap <silent> ;h :e %<.cpp<CR>]])
+vim.cmd([[au BufEnter,BufNew *.cpp nnoremap <silent> ;h :e %<.hpp<CR>]])

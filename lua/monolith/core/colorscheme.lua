@@ -113,13 +113,12 @@ do -- start autocmd block
     -- C++ templates, template<val>, no need for custom
     autocmd({"BufEnter"}, { pattern = concat({cpp, cs, dart, haxe, java, jspp, kotlin, rust, swift, ts}), callback = function() setCustomHighlight("") end })
     -- go templates, template[val], no need for custom
-    autocmd({"BufEnter"}, { pattern = concat({go}), callback = function() setCustomHighlight("go") end })
+    autocmd({"BufEnter"}, { pattern = concat({go}), callback = function() setCustomHighlight("") end })
     -- No templates
     autocmd({"BufEnter"}, { pattern = concat({c, js, lua, py, sdl}), callback = function() setCustomHighlight("") end })
 
     -- Shebang
     autocmd({"BufNewFile", "BufRead"}, { pattern = {"*"}, callback = detectShebangPattern })
-    autocmd({"BufNewFile", "BufRead"}, { pattern = {"*.vs", "*.fs"}, callback = function() setft("glsl") end })
 
     augroup('YankHighlight', { clear = true })
     autocmd('TextYankPost', {
@@ -136,6 +135,7 @@ do -- start autocmd block
     autocmd({"BufNewFile", "BufRead", "BufReadPost"}, {pattern = {"*.sdl"}, callback = function() setft("sdlang") end})
     autocmd({"BufNewFile", "BufRead", "BufReadPost"}, {pattern = {"*.bf"}, callback = function() setft("brainfuck") end})
     autocmd({"BufNewFile", "BufRead", "BufReadPost"}, {pattern = {"*.jpp", "*.jspp"}, callback = function() setft("sdlang") end})
+    autocmd({"BufNewFile", "BufRead"}, { pattern = {"*.vs", "*.fs"}, callback = function() setft("glsl") end })
 end -- end autocmd block
 
 -------------------- Highlight --------------------------------------

@@ -29,21 +29,31 @@ require('lazy').setup({
     -- --------------------------------- Syntax --------------------------------- --
     -- 'fladson/vim-kitty',
     'tikhomirov/vim-glsl',
+    -- Dart
+    'dart-lang/dart-vim-plugin',
+    -- 'natebosch/vim-lsc'
+    -- 'natebosch/vim-lsc-dart'
+    {
+    "NoahTheDuke/vim-just",
+        event = { "BufReadPre", "BufNewFile" },
+        ft = { "\\cjustfile", "*.just", ".justfile", "justfile" },
+    },
+    "IndianBoy42/tree-sitter-just",
 
     -- ------------------------------ File managers ----------------------------- --
     -- FZF has priority over Telescope because Telescope often skips things
     'nvim-telescope/telescope.nvim',
-    -- project manager
+    -- project manager [ \fp ]
     "ahmedkhalf/project.nvim",
-    -- file manager as buffer
+    -- file manager as buffer [ - ]
     "stevearc/oil.nvim",
-    -- FZF
+    -- FZF [ ;ff ;fr ;fp ;fg \ff ... ]
     "ibhagwan/fzf-lua",
 
     -- -------------------------------- Trees ----------------------------------- --
-    -- undo tree
+    -- undo tree [ \fu ]
     'mbbill/undotree',
-    -- TodoTree
+    -- TodoTree [ \vt ]
     'folke/todo-comments.nvim',
     -- Goto quickfix files
     'yssl/QFEnter',
@@ -63,7 +73,7 @@ require('lazy').setup({
     'onsails/lspkind.nvim',
     -- parser
     'nvim-treesitter/nvim-treesitter',
-    -- LSP package manager
+    -- LSP package manager [ \pm ]
     'williamboman/mason.nvim',
     -- mason integration
     'williamboman/mason-lspconfig.nvim',
@@ -71,13 +81,16 @@ require('lazy').setup({
     'jay-babu/mason-nvim-dap.nvim',
     -- Auto-create colorscheme for missing format colors
     'folke/lsp-colors.nvim',
+
     -- ----------------------------------- DAP ---------------------------------- --
-    -- nvim-dap is a Debug Adapter Protocol client implementation
+    -- DAP [ \dd ]
     'mfussenegger/nvim-dap',
     'rcarriga/nvim-dap-ui',
+
     -- ---------------------------------- Lint --------------------------------- --
     -- linter
     'mfussenegger/nvim-lint',
+
     -- ------------------------------ Autocomplete ----------------------------- --
     -- A completion engine plugin for neovim written in Lua
     'hrsh7th/nvim-cmp', -- autocompletion engine
@@ -95,58 +108,46 @@ require('lazy').setup({
         branch = "v0.6", -- TODO: check later
     },
 
-    -- ------------------------------- Languages -------------------------------- --
-    -- Dart
-    'dart-lang/dart-vim-plugin',
-    -- 'natebosch/vim-lsc'
-    -- 'natebosch/vim-lsc-dart'
-    {
-    "NoahTheDuke/vim-just",
-        event = { "BufReadPre", "BufNewFile" },
-        ft = { "\\cjustfile", "*.just", ".justfile", "justfile" },
-    },
-    "IndianBoy42/tree-sitter-just",
-
     -- ------------------------------- Formatting ------------------------------- --
-    -- Toggle comments
+    -- Toggle comments [ C-/ ]
     'numToStr/Comment.nvim',
-    -- Alisgn text
-    'tommcdo/vim-lion', -- glip=
+    -- Alisgn text [ glip= ]
+    'tommcdo/vim-lion',
     -- Colour picker and colour background
     "uga-rosa/ccc.nvim",
-    -- Toggle tags
+    -- Toggle tags [ \tp ]
     'nguyenvukhang/nvim-toggler',
-    -- Draw boxes
+    -- Draw boxes [ \td ]
     'jbyuki/venn.nvim',
-    -- Project-wide rename
+    -- Project-wide rename [ \fR ]
     'windwp/nvim-spectre',
     -- Better quickfix
     -- { 'yorickpeterse/nvim-pqf', commit = "b2f1882" },
     'yorickpeterse/nvim-pqf',
     -- Highlights trailing whitespaces
     "ntpeters/vim-better-whitespace",
-    -- Pretty folding
+    -- Pretty folding [ zc zC za zA zR zM ]
     "kevinhwang91/nvim-ufo",
-    -- Text to ascii art (comments)
+    -- Text to ascii art (comments) [ \ta ]
     "olidacombe/commentalist.nvim", -- instead of comment frame
 
     -- -------------------------------- Powerline ------------------------------- --
     -- powerline
     'nvim-lualine/lualine.nvim',
     'meuter/lualine-so-fancy.nvim',
-    -- Command suggestions
-    { 'gelguy/wilder.nvim', build = ":UpdateRemotePlugins" }, -- for :
+    -- Command suggestions [ : ]
+    { 'gelguy/wilder.nvim', build = ":UpdateRemotePlugins" },
     -- Illuminate matching words
     'RRethy/vim-illuminate',
 
     -- --------------------------------- Search --------------------------------- --
-    -- Jump with keys
+    -- Jump with keys [ s ]
     'easymotion/vim-easymotion',
     -- Remove search highlight automatically
     "nvimdev/hlsearch.nvim",
 
     -- ---------------------------------- Tabs ---------------------------------- --
-    -- tab management
+    -- tab management (tabline)
     'nanozuki/tabby.nvim',
 
     -- ----------------------------------- GUI ---------------------------------- --
@@ -156,9 +157,9 @@ require('lazy').setup({
     'tribela/vim-transparent',
     -- lsp progressbar
     {'j-hui/fidget.nvim', tag = 'legacy' },
-    -- Emacs menus
+    -- Emacs menus [ \ ]
     'anuvyklack/hydra.nvim',
-    -- Reworks many things
+    -- Reworks many things, makes notifications [ ;; ]
     { "folke/noice.nvim", event = "VeryLazy" },
     -- notification engine
     'rcarriga/nvim-notify',
@@ -166,55 +167,47 @@ require('lazy').setup({
     'nvim-lua/popup.nvim',
     -- shows images
     -- { '3rd/image.nvim' },
-    -- override input handling
+    -- override input handling (makes input pop up sometimes...)
     'stevearc/dressing.nvim',
     -- ----------------------------------- GIT ---------------------------------- --
     -- git signts ( required by scrollbar )
     'lewis6991/gitsigns.nvim',
-    -- git diff
-    -- "sindrets/diffview.nvim",
-    -- Git wrapper
+    -- Git wrapper [ :Git ]
     "tpope/vim-fugitive",
 
     -- --------------------------------- Splits --------------------------------- --
-    -- Move splits
+    -- Move splits [ A-S-Right ... ]
     'sindrets/winshift.nvim',
-    -- Resize splits
+    -- Resize splits [ A-C-Right ... ]
     'mrjones2014/smart-splits.nvim',
 
     -- ------------------------------- Utilities -------------------------------- --
-    -- cool smart surrounding
+    -- cool smart surrounding [ \tr \tR ]
     'tpope/vim-surround',
-    -- Move lines and characters
+    -- Move lines and characters [ A-Up A-Down ]
     'fedepujol/move.nvim',
-    -- dashboard
+    -- dashboard [ \D ]
     'goolord/alpha-nvim',
-    -- Sudo edit/save
+    -- Sudo edit/save [ \hw \hr ]
     'lambdalisue/suda.vim',
-    -- Session manager
+    -- Session manager [ :SessionsLoad :SessionsSave ]
     'natecraddock/sessions.nvim',
-    -- Better session manager
-    -- 'EricDriussi/remember-me.nvim',
     -- remember last edited line
     'ethanholz/nvim-lastplace',
     -- .todo.md files
     'aserebryakov/vim-todo-lists',
-    -- Execute code lines -- :SnipRun
-    -- { 'michaelb/sniprun', build = "sh ./install.sh" },
 
     -- -------------------------------- Viewers --------------------------------- --
-    -- Preview markdown
+    -- Preview markdown [ \vM ]
+    -- TODO: consider deleting
     {
         "iamcco/markdown-preview.nvim",
         cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
         ft = { "markdown" },
         build = function() vim.fn["mkdp#util#install"]() end,
     },
-    -- Preview markdown
+    -- Preview markdown [ \vm ]
     {"ellisonleao/glow.nvim", config = true, cmd = "Glow"},
-    -- emacs orgmode
-    -- { "nvim-orgmode/orgmode", event = "VeryLazy" },
-    -- 'akinsho/org-bullets.nvim',
 
     -- 'dstein64/vim-startuptime'
 })
