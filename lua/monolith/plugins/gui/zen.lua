@@ -1,3 +1,11 @@
+
+local function zen_width_calc()
+    -- 120
+    local w = vim.o.columns;
+    if w < 120 then return 120 end
+    return 0.5
+end
+
 require("zen-mode").setup({
     window = {
         backdrop = 1, -- shade the backdrop of the Zen window. Set to 1 to keep the same as Normal
@@ -5,13 +13,13 @@ require("zen-mode").setup({
         -- * an absolute number of cells when > 1
         -- * a percentage of the width / height of the editor when <= 1
         -- * a function that returns the width or the height
-        width = 120, -- width of the Zen window
+        width = 140, -- width of the Zen window
         height = 1, -- height of the Zen window
         -- by default, no options are changed for the Zen window
         -- uncomment any of the options below, or add other vim.wo options you want to apply
         options = {
-            -- signcolumn = "no", -- disable signcolumn
-            -- number = false, -- disable number column
+            signcolumn = "no", -- disable signcolumn
+            number = false, -- disable number column
             -- relativenumber = false, -- disable relative numbers
             -- cursorline = false, -- disable cursorline
             -- cursorcolumn = false, -- disable cursor column
@@ -30,7 +38,7 @@ require("zen-mode").setup({
             -- statusline will be shown only if 'laststatus' == 3
             laststatus = 0,         -- turn off the statusline in zen mode
         },
-        twilight = { enabled = true }, -- enable to start Twilight when zen mode opens
+        twilight = { enabled = false }, -- enable to start Twilight when zen mode opens
         gitsigns = { enabled = false }, -- disables git signs
         tmux = { enabled = false }, -- disables the tmux statusline
         -- this will change the font size on kitty when in zen mode
@@ -63,3 +71,10 @@ require("zen-mode").setup({
     on_close = function()
     end,
 })
+
+local opts = { noremap = true, silent = true }
+
+local keymap = vim.keymap
+
+keymap.set("n", "<leader>gg", "<cmd>ZenMode<cr>", opts)
+

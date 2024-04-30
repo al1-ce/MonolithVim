@@ -167,7 +167,7 @@ syn match dAnnotation	"@[_$a-zA-Z][_$a-zA-Z0-9_]*\>" contains=dAttribute
 syn keyword dStatement    scope version
 " syn keyword dStatement    __traits pragma
 " syn keyword dPragma    __traits pragma
-syn match dConstant "\<\u[A-Z0-9_]\+\>"
+syn match dMacro "\<\u[A-Z0-9_]\+\>"
 
 " Necessary to highlight C++ in extern modifiers.
 syn match dExternIdentifier "C\(++\)\?" contained
@@ -184,7 +184,7 @@ syn region dImport start="\<module\_s" end=";" contains=dExternal,@dComment
 
 " dTokens is used by the token string highlighting
 syn cluster dTokens contains=dExternal,dConditional,dBranch,dRepeat,dBoolean
-syn cluster dTokens add=dConstant,dTypedef,dStructure,dOperator,dOpOverload
+syn cluster dTokens add=dMacro,dConstant,dTypedef,dStructure,dOperator,dOpOverload
 syn cluster dTokens add=dType,dDebug,dExceptions,dScopeDecl,dStatement
 syn cluster dTokens add=dStorageClass,dPragma,dAssert,dAnnotation,dEnum
 syn cluster dTokens add=dParenString,dBrackString,dAngleString,dCurlyString
@@ -377,6 +377,7 @@ hi def link dSpecialCharError    Error
 hi def link dOctalError          Error
 hi def link dOperator            Operator
 hi def link dOpOverload          Identifier
+hi def link dMacro               Constant
 hi def link dConstant            Constant
 hi def link dTypedef             Typedef
 hi def link dEnum                Structure

@@ -11,5 +11,6 @@ end
 load("oil")
 load("project")
 -- load("rnvimr")
+-- load("leaderf")
 load("telescope")
 load("fzf")

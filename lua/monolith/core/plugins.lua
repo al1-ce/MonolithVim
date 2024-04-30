@@ -49,6 +49,8 @@ require('lazy').setup({
     "stevearc/oil.nvim",
     -- FZF [ ;ff ;fr ;fp ;fg \ff ... ]
     "ibhagwan/fzf-lua",
+    -- FZF alternative
+    -- "Yggdroot/LeaderF",
 
     -- -------------------------------- Trees ----------------------------------- --
     -- undo tree [ \fu ]
@@ -107,6 +109,8 @@ require('lazy').setup({
         event = {"InsertEnter", "CmdlineEnter"},
         branch = "v0.6", -- TODO: check later
     },
+    -- auto-close html tags
+    'windwp/nvim-ts-autotag',
 
     -- ------------------------------- Formatting ------------------------------- --
     -- Toggle comments [ C-/ ]
@@ -160,6 +164,7 @@ require('lazy').setup({
     -- Emacs menus [ \ ]
     'anuvyklack/hydra.nvim',
     -- Reworks many things, makes notifications [ ;; ]
+    -- TODO: remove?
     { "folke/noice.nvim", event = "VeryLazy" },
     -- notification engine
     'rcarriga/nvim-notify',
@@ -169,6 +174,11 @@ require('lazy').setup({
     -- { '3rd/image.nvim' },
     -- override input handling (makes input pop up sometimes...)
     'stevearc/dressing.nvim',
+    -- true zen
+    'folke/zen-mode.nvim',
+    -- jet another buffer switcher
+    'matbme/JABS.nvim',
+
     -- ----------------------------------- GIT ---------------------------------- --
     -- git signts ( required by scrollbar )
     'lewis6991/gitsigns.nvim',
@@ -210,5 +220,20 @@ require('lazy').setup({
     {"ellisonleao/glow.nvim", config = true, cmd = "Glow"},
 
     -- 'dstein64/vim-startuptime'
+
+    -- tips on start
+    {
+      "TobinPalmer/Tip.nvim",
+      event = "VimEnter",
+      init = function()
+        -- Default config
+        require("tip").setup({
+          seconds = 2,
+          title = "Tip!",
+          url = "https://vtip.43z.one", -- Or https://vimiscool.tech/neotip
+        })
+      end,
+    },
+
 })
 

@@ -4,17 +4,15 @@ local cmd = require('hydra.keymap-util').cmd
 local builder = require('monolith.plugins.utils.justbuild')
 local M = {}
 
--- TODO: add _R_ for all run tasks and _t_ and _T_? for tests
-
 local hintBuild = [[
 ┌         Build         ┐
   _d_: Default task        
   _b_: Build task          
   _r_: Run task            
   _t_: Test task           
-  _B_: All tasks           
-  _C_: Create build file   
-  _S_: Stop current job    
+  _a_: All tasks           
+  _c_: Create build file   
+  _s_: Stop current job    
                          
   _q_: Quit                
 └                       ┘
@@ -31,9 +29,9 @@ function M.hydra() return Hydra({
             { 'b', builder.run_task_build },
             { 'r', builder.run_task_run },
             { 't', builder.run_task_test },
-            { 'B', builder.run_task_select },
-            { 'C', builder.add_build_template },
-            { 'S', builder.stop_current_task },
+            { 'a', builder.run_task_select },
+            { 'c', builder.add_build_template }, -- HAS CONFIRM FUNC
+            { 's', builder.stop_current_task },
 
             { 'q', nil, { exit = true, nowait = true } },
             { '<Esc>', nil, { exit = true, nowait = true, desc = false } },

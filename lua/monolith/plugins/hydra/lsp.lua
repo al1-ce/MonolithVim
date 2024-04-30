@@ -44,7 +44,7 @@ function M.hydra() return Hydra({
         mode = '',
         heads = {
             { 'a', cmd 'Lspsaga code_action' },
-            { 'D', cmd 'Lspsaga show_line_diagnostics' },
+            { 'D', cmd 'Lspsaga show_workspace_diagnostics' },
             { 'f', cmd 'FzfLua lsp_finder' },
             { 'h', cmd 'Lspsaga hover_doc' },
 

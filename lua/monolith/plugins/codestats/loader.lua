@@ -27,7 +27,7 @@ if (file_exists(codestats)) then
         token = read_file(codestats):sub(1, -2)
     })
     -- require("notify")(read_file(codestats), "warn", {title="Title"})
-    notify("Successfully connected", "info", codestatsopts)
+    -- notify("Successfully connected", "info", codestatsopts)
 else
     notify("Missing API key", "info", codestatsopts)
     -- require("notify")("not", "warn", {title="Title"})

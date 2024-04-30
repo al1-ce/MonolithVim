@@ -41,10 +41,10 @@ require('lualine').setup {
         lualine_b = {'branch', 'fancy_diff', 'diagnostics' },
         lualine_c = { current_signature, },
         lualine_x = {
-            {
-                require("noice").api.status.command.get,
-                cond = require("noice").api.status.command.has
-            },
+            -- {
+            --     require("noice").api.status.command.get,
+            --     cond = require("noice").api.status.command.has
+            -- },
             'filetype'
         },
         lualine_y = { 'location' },

@@ -127,8 +127,15 @@ local function open_link_vis()
     vim.fn.feedkeys('"vy', "x")
     vim.fn.feedkeys(key, "x")
     local s = vim.fn.getreg("v")
-    vim.fn.execute("!open " .. '"' .. s .. '"')
-    -- require("notify")(getVisualSelection())
+    local async = require("plenary.job")
+    local job = async:new({
+        command = "xdg-open",
+        args = {vim.fn.expand(s)},
+        cwd = vim.fn.getcwd()
+    })
+    job:start()
+    -- vim.fn.execute("silent !open " .. '"' .. vim.fn.expand(s) .. '"')
+    require("notify")(s)
 end
 
 local function open_link_norm()
@@ -139,6 +146,8 @@ end
 
 keymap.set("n", "gx", open_link_norm, opts)
 keymap.set("v", "gx", open_link_vis, opts)
+
+keymap.set("n", "ya", "<cmd>%y<cr>", opts)
 
 -- -------------------------------------------------------------------------- --
 --                                 Insert Mode                                --

@@ -10,7 +10,11 @@ opt.updatetime = 300        -- speeds up autocompletion
 opt.autoread = true         -- default value, autoreload file
 g.mapleader = ";"           -- sets , as leader key
 o.clipboard = "unnamedplus" -- set clipboard to be system
-opt.cmdheight = 1           -- cmd height
+opt.cmdheight = 1           -- cmd height (set to 0 if no noice)
+-- opt.shortmess:append('C')
+-- opt.shortmess:append('S')
+-- opt.shortmess:append('c')
+-- opt.shortmess:append('s')
 
 o.virtualedit = "onemore"
 

@@ -8,4 +8,5 @@ local function load(m)
 end
 
 load("autopairs")
+load("autotag")
 load("cmp")

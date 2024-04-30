@@ -75,7 +75,7 @@ require("noice").setup({
             filter_opts = { reverse = true },
         },
     },
-    notify = {enabled = true,view = "notify",},
+    notify = {enabled = true, view = "notify",},
     lsp = {
         progress = {enabled = false},
         override = {},

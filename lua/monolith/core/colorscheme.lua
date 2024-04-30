@@ -135,6 +135,7 @@ do -- start autocmd block
     autocmd({"BufNewFile", "BufRead", "BufReadPost"}, {pattern = {"*.sdl"}, callback = function() setft("sdlang") end})
     autocmd({"BufNewFile", "BufRead", "BufReadPost"}, {pattern = {"*.bf"}, callback = function() setft("brainfuck") end})
     autocmd({"BufNewFile", "BufRead", "BufReadPost"}, {pattern = {"*.jpp", "*.jspp"}, callback = function() setft("sdlang") end})
+    autocmd({"BufNewFile", "BufRead", "BufReadPost"}, {pattern = {"*.fasm"}, callback = function() setft("fasm") end})
     autocmd({"BufNewFile", "BufRead"}, { pattern = {"*.vs", "*.fs"}, callback = function() setft("glsl") end })
 end -- end autocmd block
 
@@ -220,7 +221,7 @@ if g.colors_name == 'gruvbox' then
     highlightAll({"Constant", "Boolean", "Number", "Float"}, style_const)
     highlightAll({"String", "Character"}, style_string)
     highlightAll({"Special", "SpecialChar"}, style_special)
-    highlightAll({"PreProc", "Define", "Macro", "Precondit"}, style_macro)
+    highlightAll({"Macro", "PreProc", "Define", "Precondit"}, style_macro)
     highlightAll({"Todo", "Tag"}, style_tag)
     highlightAll({"Comment"}, style_comment)
 
@@ -270,6 +271,9 @@ if g.colors_name == 'gruvbox' then
 
         sign define DapBreakpoint text=B texthl=DapSignBreakpoint linehl=DapSignBreakpoint numhl=DapSignBreakpointNumber
         sign define DapStopped text=S texthl=DapSignStopped linehl=DapSignStopped numhl=DapSignStoppedNumber
+
+        hi! link @constant.builtin.d Constant
+        hi! link @lsp.type.macro.c Constant
     ]])
 end
 
