@@ -8,6 +8,36 @@ local feedkey = function(key, mode)
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
 end
 
+require('lspkind').init({
+    symbol_map = {
+      Text = "",
+      Method = "󰆧",
+      Function = "󰊕",
+      Constructor = "",
+      Field = "󰜢",
+      Variable = "󰀫",
+      Class = "󰠱",
+      Interface = "",
+      Module = "",
+      Property = "󰓹",
+      Unit = "󰑭",
+      Value = "",
+      Enum = "󱡠",
+      Keyword = "󰌋",
+      Snippet = "",
+      Color = "󰏘",
+      File = "",
+      Reference = "",
+      Folder = "󰉋",
+      EnumMember = "",
+      Constant = "󰏿",
+      Struct = "󰙅",
+      Event = "",
+      Operator = "󰆕",
+      TypeParameter = "",
+    },
+})
+
 local lspkind = require('lspkind')
 local cmp = require('cmp')
 ---@diagnostic disable-next-line: missing-fields

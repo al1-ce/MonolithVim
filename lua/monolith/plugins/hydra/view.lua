@@ -7,7 +7,6 @@ local M = {}
 local hintPackages = [[
 ┌           View           ┐
   _m_: Preview markdown glow
-  _M_: Preview markdown web
   _t_: View todo
             Link
   _V_: VimAwesome
@@ -27,7 +26,7 @@ function M.hydra()
         mode = '',
         heads = {
             { 'm',     cmd 'Glow' },
-            { 'M',     cmd 'MarkdownPreview' },
+            -- { 'M',     cmd 'MarkdownPreview' },
             -- { 't',     cmd 'TODOTelescope' },
             { 't',     cmd 'TodoLocList' },
 

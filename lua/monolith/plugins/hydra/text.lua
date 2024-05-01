@@ -6,26 +6,25 @@ local M = {}
 
 local hintText = [[
 ┌            Text           ┐
-  _b_: Toggle bool             
-           Surround          
-  _r_: Replace surround        
-  _R_: Remove surround         
-           Comments          
-  _/_: Toggle comment lines    
-  _?_: Toggle comment block    
-  _a_: Make ascii art          
-           Terminal          
-  _t_: Float terminal          
-             Tabs            
-  _n_: New tab                 
-  _w_: Close tab               
-  _o_: Close other tabs        
-            Plugin           
-  _m_: Marks                   
-  _d_: Draw                    
-  _p_: Pick color              
-                             
-  _q_: Quit                    
+  _b_: Toggle bool
+           Surround
+  _r_: Replace surround
+  _R_: Remove surround
+           Comments
+  _/_: Toggle comment lines
+  _?_: Toggle comment block
+  _a_: Make ascii art
+           Terminal
+  _t_: Float terminal
+             Tabs
+  _n_: New tab
+  _w_: Close tab
+  _o_: Close other tabs
+            Plugin
+  _m_: Marks
+  _p_: Pick color
+
+  _q_: Quit
 └                           ┘
 ]]
 
@@ -35,16 +34,16 @@ local commentApi = require("Comment.api")
 local commentEsc = vim.api.nvim_replace_termcodes(
     '<ESC>', true, false, true
 )
-local commentLines = function() 
+local commentLines = function()
     local mode = vim.api.nvim_get_mode().mode
     if mode == 'v' or mode == 'V' or mode == '^V' then
         vim.api.nvim_feedkeys(commentEsc, 'nx', false)
-        commentApi.toggle.linewise(vim.fn.visualmode()) 
+        commentApi.toggle.linewise(vim.fn.visualmode())
     else
         commentApi.toggle.linewise.current()
     end
 end
-local commentBlocks = function() 
+local commentBlocks = function()
     local mode = vim.api.nvim_get_mode().mode
     if mode == 'v' or mode == 'V' or mode == '^V' then
         vim.api.nvim_feedkeys(commentEsc, 'nx', false)
@@ -81,7 +80,7 @@ function M.hydra() return Hydra({
         { 'o', cmd 'tabonly' },
 
         { 'm', cmd 'FzfLua marks' },
-        { 'd', callback.hydraCallback('draw'); },
+        -- { 'd', callback.hydraCallback('draw'); },
         { 'p', cmd 'CccPick' },
 
         { 'q', nil, { exit = true, nowait = true } },

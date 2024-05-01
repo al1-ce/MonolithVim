@@ -17,7 +17,6 @@ local hintFiles = [[
   _g_: Live grep     
        Trees       
   _T_: Tagbar        
-  _u_: Undo tree     
                    
   _q_: Quit          
 └                 ┘
@@ -83,7 +82,7 @@ function M.hydra() return Hydra({
 
             -- { 't', ':NvimTreeToggle<cr><C-w>l' },
             { 'T', cmd 'Lspsaga outline' },
-            { 'u', cmd 'UndotreeToggle' },
+            -- { 'u', cmd 'UndotreeToggle' },
 
             { 'q', nil, { exit = true, nowait = true } },
             { '<Esc>', nil, { exit = true, nowait = true, desc = false } },

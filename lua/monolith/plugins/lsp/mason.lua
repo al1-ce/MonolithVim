@@ -7,7 +7,6 @@ require("mason-lspconfig").setup({
         'jsonls',
         'serve_d',
         'tsserver',
-        'pyright',
         'marksman',
         'jsonls',
         'cmake',
@@ -18,7 +17,7 @@ require("mason-lspconfig").setup({
 })
 -- require("mason-null-ls").setup({})
 ---@diagnostic disable-next-line: missing-fields
-require('mason-nvim-dap').setup({ automatic_setup = true })
+-- require('mason-nvim-dap').setup({ automatic_setup = true })
 
 local masonconf = require('mason-lspconfig')
 local lspconf = require('lspconfig')

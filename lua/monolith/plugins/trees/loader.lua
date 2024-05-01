@@ -10,4 +10,4 @@ end
 -- load("sidebar")
 load("todo")
 -- load("tree")
-load("undotree")
+-- load("undotree")

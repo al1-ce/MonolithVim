@@ -98,3 +98,4 @@ vim.cmd.colorscheme('gruvbox')
 --     -- g.neovide_padding_right=28
 --     -- g.neovide_padding_bottom=10
 -- end
+

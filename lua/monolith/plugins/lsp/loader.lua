@@ -7,7 +7,7 @@ local function load(m)
     return ok
 end
 
-load("colors")
+-- load("colors")
 load("config")
 load("mason")
 load("neodev")

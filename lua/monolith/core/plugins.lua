@@ -54,7 +54,7 @@ require('lazy').setup({
 
     -- -------------------------------- Trees ----------------------------------- --
     -- undo tree [ \fu ]
-    'mbbill/undotree',
+    -- 'mbbill/undotree',
     -- TodoTree [ \vt ]
     'folke/todo-comments.nvim',
     -- Goto quickfix files
@@ -79,19 +79,11 @@ require('lazy').setup({
     'williamboman/mason.nvim',
     -- mason integration
     'williamboman/mason-lspconfig.nvim',
-    -- 'jay-babu/mason-null-ls.nvim',
-    'jay-babu/mason-nvim-dap.nvim',
-    -- Auto-create colorscheme for missing format colors
-    'folke/lsp-colors.nvim',
 
     -- ----------------------------------- DAP ---------------------------------- --
     -- DAP [ \dd ]
     'mfussenegger/nvim-dap',
     'rcarriga/nvim-dap-ui',
-
-    -- ---------------------------------- Lint --------------------------------- --
-    -- linter
-    'mfussenegger/nvim-lint',
 
     -- ------------------------------ Autocomplete ----------------------------- --
     -- A completion engine plugin for neovim written in Lua
@@ -121,8 +113,6 @@ require('lazy').setup({
     "uga-rosa/ccc.nvim",
     -- Toggle tags [ \tp ]
     'nguyenvukhang/nvim-toggler',
-    -- Draw boxes [ \td ]
-    'jbyuki/venn.nvim',
     -- Project-wide rename [ \fR ]
     'windwp/nvim-spectre',
     -- Better quickfix
@@ -141,8 +131,6 @@ require('lazy').setup({
     'meuter/lualine-so-fancy.nvim',
     -- Command suggestions [ : ]
     { 'gelguy/wilder.nvim', build = ":UpdateRemotePlugins" },
-    -- Illuminate matching words
-    'RRethy/vim-illuminate',
 
     -- --------------------------------- Search --------------------------------- --
     -- Jump with keys [ s ]
@@ -153,6 +141,10 @@ require('lazy').setup({
     -- ---------------------------------- Tabs ---------------------------------- --
     -- tab management (tabline)
     'nanozuki/tabby.nvim',
+    -- {
+    --     'romgrk/barbar.nvim',
+    --     init = function() vim.g.barbar_auto_setup = false end,
+    -- },
 
     -- ----------------------------------- GUI ---------------------------------- --
     -- scrollbar
@@ -164,7 +156,7 @@ require('lazy').setup({
     -- Emacs menus [ \ ]
     'anuvyklack/hydra.nvim',
     -- Reworks many things, makes notifications [ ;; ]
-    -- TODO: remove?
+    -- Can't remove since it makes cmdheight=0 viable
     { "folke/noice.nvim", event = "VeryLazy" },
     -- notification engine
     'rcarriga/nvim-notify',
@@ -206,16 +198,10 @@ require('lazy').setup({
     'ethanholz/nvim-lastplace',
     -- .todo.md files
     'aserebryakov/vim-todo-lists',
+    -- Look up at devdocs [:gd]
+    'romainl/vim-devdocs',
 
     -- -------------------------------- Viewers --------------------------------- --
-    -- Preview markdown [ \vM ]
-    -- TODO: consider deleting
-    {
-        "iamcco/markdown-preview.nvim",
-        cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-        ft = { "markdown" },
-        build = function() vim.fn["mkdp#util#install"]() end,
-    },
     -- Preview markdown [ \vm ]
     {"ellisonleao/glow.nvim", config = true, cmd = "Glow"},
 
