@@ -1,3 +1,5 @@
+local noremap = require("utils.noremap")
+
 return {
     -- FZF [ ;ff ;fr ;fp ;fg \ff ... ]
     {
@@ -124,9 +126,9 @@ return {
                 diagnostics = { prompt = " " }
             })
 
-            vim.keymap.set("n", "<leader>ff", "<CMD>FzfLua files<cr>", { noremap = true, silent = true })
-            vim.keymap.set("n", "<leader>fr", "<CMD>FzfLua oldfiles<cr>", { noremap = true, silent = true })
-            vim.keymap.set("n", "<leader>fg", "<CMD>FzfLua grep_project<cr>", { noremap = true, silent = true })
+            noremap("n", "<leader>ff", "<CMD>FzfLua files<cr>", { desc = "Opens file picker" })
+            noremap("n", "<leader>fr", "<CMD>FzfLua oldfiles<cr>", { desc = "Opens recent file picker" })
+            noremap("n", "<leader>fg", "<CMD>FzfLua grep_project<cr>", { desc = "Opens project picker" })
         end
     },
 }

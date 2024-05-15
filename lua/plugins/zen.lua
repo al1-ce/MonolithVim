@@ -1,3 +1,5 @@
+local noremap = require("utils.noremap")
+
 return {
     -- true zen
     {
@@ -76,11 +78,7 @@ return {
                 end,
             })
 
-            local opts = { noremap = true, silent = true }
-
-            local keymap = vim.keymap
-
-            keymap.set("n", "<leader>gg", "<cmd>ZenMode<cr>", opts)
+            noremap("n", "<leader>gg", "<cmd>ZenMode<cr>")
         end
     },
 }

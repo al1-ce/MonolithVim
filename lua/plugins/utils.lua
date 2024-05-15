@@ -1,3 +1,5 @@
+local noremap = require("utils.noremap")
+
 return {
     -- Async code
     'nvim-lua/plenary.nvim',
@@ -58,7 +60,7 @@ return {
                 }
             })
 
-            vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+            noremap("n", "-", "<CMD>Oil<CR>", { desc = "open parent directory" })
         end
     },
 
@@ -119,8 +121,7 @@ return {
                 }
             })
 
-            local opts = { noremap = true, silent = true }
-            vim.keymap.set("n", "<leader>b", "<cmd>JABSOpen<cr>", opts)
+            noremap("n", "<leader>b", "<cmd>JABSOpen<cr>", {desc = "Opens buffer switcher"})
         end
     },
 
@@ -135,12 +136,8 @@ return {
             g.EasyMotion_smartcase = 1
             g.EasyMotion_use_smartsign_us = 1
 
-            local opts = { noremap = true, silent = true }
-
-            local keymap = vim.keymap
-
-            keymap.set("n", "S", "<Plug>(easymotion-overwin-f)", opts)
-            keymap.set("n", "s", "<Plug>(easymotion-overwin-f2)", opts)
+            noremap("n", "S", "<Plug>(easymotion-overwin-f)", { desc = "Starts easymotion with one key" })
+            noremap("n", "s", "<Plug>(easymotion-overwin-f2)", { desc = "Starts easymotion with two keys" })
         end
     },
     -- Remove search highlight automatically
@@ -152,19 +149,15 @@ return {
     {
         'fedepujol/move.nvim',
         config = function()
-            local opts = { noremap = true, silent = true }
-
-            local keymap = vim.keymap
-
             require("move").setup({})
 
-            keymap.set('i', '<A-up>', '<Esc><cmd>MoveLine(-1)<CR>i', opts)
-            keymap.set('i', '<A-down>', '<Esc><cmd>MoveLine(1)<CR>i', opts)
+            noremap('i', '<A-up>', '<Esc><cmd>MoveLine(-1)<CR>i', {desc = "Swaps current line with line above"})
+            noremap('i', '<A-down>', '<Esc><cmd>MoveLine(1)<CR>i', {desc = "Swaps current line with line below"})
 
-            keymap.set('v', '<A-up>', ":MoveBlock(-1)<CR>", opts)
-            keymap.set('v', '<A-down>', ":MoveBlock(1)<CR>", opts)
-            keymap.set('v', '<A-right>', ":MoveHBlock(1)<CR>", opts)
-            keymap.set('v', '<A-left>', ":MoveHBlock(-1)<CR>", opts)
+            noremap('v', '<A-up>', ":MoveBlock(-1)<CR>", {desc = "Moves visual block up"})
+            noremap('v', '<A-down>', ":MoveBlock(1)<CR>", {desc = "Moves visual block down"})
+            noremap('v', '<A-right>', ":MoveHBlock(1)<CR>", {desc = "Moves visual block right"})
+            noremap('v', '<A-left>', ":MoveHBlock(-1)<CR>", {desc = "Moves visual block left"})
         end
     },
     -- Sudo edit/save [ \hw \hr ]
@@ -202,14 +195,12 @@ return {
             ]])
             vim.g.VimTodoListsCustomKeyMapper = "VimTodoListsCustomMappins"
 
-            local keymap = vim.keymap
-
             local function setKeymapFiletype(ft, name, mode, map, action)
                 vim.api.nvim_create_autocmd('FileType', {
                     pattern = ft,
                     group = vim.api.nvim_create_augroup(name, { clear = true }),
                     callback = function()
-                        keymap.set(mode, map, action, { silent = true, buffer = true })
+                        noremap(mode, map, action, { buffer = true })
                     end
                 })
             end
@@ -218,7 +209,6 @@ return {
             setKeymapFiletype('todo', 'TodoAddNewAbove', 'n', '<A-CR>', '<CMD>VimTodoListsCreateNewItemAbove<CR>')
             setKeymapFiletype('todo', 'TodoToggle', 'n', '<Space>', '<CMD>VimTodoListsToggleItem<CR>')
 
-            -- vim.keymap.set("n", "<CR>", "<CMD>VimTodoListsNewItemBelow<CR>")
             vim.cmd([[
                 function! VimTodoListsInitFIXED()
                     setlocal tabstop=4
@@ -237,10 +227,7 @@ return {
     {
         'romainl/vim-devdocs',
         config = function()
-            local opts = { noremap = true, silent = true }
-            local keymap = vim.keymap
-
-            keymap.set('n', '<leader>gd', '<cmd>DD<CR>', opts)
+            noremap('n', '<leader>gd', '<cmd>DD<CR>', {desc = "Opens devdocs for symbol under cursor"})
         end
     },
     -- better macros
@@ -373,15 +360,11 @@ return {
                 }
             })
 
-            local opts = { noremap = true, silent = true }
-
-            local keymap = vim.keymap
-
             -- moving panes
-            keymap.set("n", "<A-S-left>", "<cmd>WinShift left<cr>", opts)
-            keymap.set("n", "<A-S-down>", "<cmd>WinShift down<cr>", opts)
-            keymap.set("n", "<A-S-up>", "<cmd>WinShift up<cr>", opts)
-            keymap.set("n", "<A-S-right>", "<cmd>WinShift right<cr>", opts)
+            noremap("n", "<A-S-left>", "<cmd>WinShift left<cr>", {desc = "Moves window left"})
+            noremap("n", "<A-S-right>", "<cmd>WinShift right<cr>", {desc = "Moves window right"})
+            noremap("n", "<A-S-up>", "<cmd>WinShift up<cr>", {desc = "Moves window up"})
+            noremap("n", "<A-S-down>", "<cmd>WinShift down<cr>", {desc = "Moves window down"})
         end
     },
     -- Resize splits [ A-C-Right ... ]
@@ -390,15 +373,11 @@ return {
         config = function()
             require('smart-splits').setup({})
 
-            local opts = { noremap = true, silent = true }
-
-            local keymap = vim.keymap
-
             -- resizing panes
-            keymap.set("n", "<A-C-left>", function() require('smart-splits').resize_left(2) end, opts)
-            keymap.set("n", "<A-C-down>", function() require('smart-splits').resize_down(2) end, opts)
-            keymap.set("n", "<A-C-up>", function() require('smart-splits').resize_up(2) end, opts)
-            keymap.set("n", "<A-C-right>", function() require('smart-splits').resize_right(2) end, opts)
+            noremap("n", "<A-C-left>", function() require('smart-splits').resize_left(2) end, {desc = "Resizes window to left"})
+            noremap("n", "<A-C-right>", function() require('smart-splits').resize_right(2) end, {desc = "Resizes window to right"})
+            noremap("n", "<A-C-up>", function() require('smart-splits').resize_up(2) end, {desc = "Resizes window up"})
+            noremap("n", "<A-C-down>", function() require('smart-splits').resize_down(2) end, {desc = "Resizes window down"})
         end
     },
 }

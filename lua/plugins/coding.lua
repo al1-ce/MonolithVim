@@ -1,3 +1,5 @@
+local noremap = require("utils.noremap")
+
 return {
     -- A completion engine plugin for neovim written in Lua
     {
@@ -182,24 +184,20 @@ return {
             ft({ 'sdl' }, ft.get('c'))
             ft({ 'sdlang' }, ft.get('c'))
 
-            local opts = { noremap = true, silent = true }
-
-            local keymap = vim.keymap
-
             local commentApi = require("Comment.api")
             local commentEsc = vim.api.nvim_replace_termcodes(
                 '<ESC>', true, false, true
             )
-            keymap.set("v", "<C-/>", function()
+            noremap("v", "<C-/>", function()
                 vim.api.nvim_feedkeys(commentEsc, 'nx', false)
                 commentApi.toggle.linewise(vim.fn.visualmode())
-            end);
-            keymap.set("v", "<C-S-/>", function()
+            end, {desc = "Toggles comment linewize"});
+            noremap("v", "<C-S-/>", function()
                 vim.api.nvim_feedkeys(commentEsc, 'nx', false)
                 commentApi.toggle.blockwise(vim.fn.visualmode())
-            end);
-            keymap.set("n", "<C-/>", commentApi.toggle.linewise.current, opts);
-            keymap.set("i", "<C-/>", commentApi.toggle.linewise.current, opts);
+            end, {desc = "Toggles comment blockwise"});
+            noremap("n", "<C-/>", commentApi.toggle.linewise.current, {desc = "Toggles comment"});
+            noremap("i", "<C-/>", commentApi.toggle.linewise.current, {desc = "Toggles comment"});
         end
     },
     -- Alisgn text [ glip= ]
@@ -222,7 +220,7 @@ return {
                 ['send_to_qf'] = {
                     map = "<leader>Q",
                     cmd = "<cmd>lua require('spectre.actions').send_to_qf()<CR>",
-                    desc = "send all items to quickfix"
+                    desc = "Send all items to quickfix"
                 },
             }
         }
@@ -244,14 +242,13 @@ return {
             vim.o.foldmethod = "indent"
             vim.o.foldlevelstart = 99
 
-            -- Using ufo provider need remap `zR` and `zM`. If Neovim is 0.6.1, remap yourself
-            vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
-            vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
+            noremap('n', 'zR', require('ufo').openAllFolds, {desc = "Opens all folds"})
+            noremap('n', 'zM', require('ufo').closeAllFolds, {desc = "Closes all folds"})
 
-            vim.keymap.set('n', 'zc', 'za', { silent = true, noremap = true })
-            vim.keymap.set('n', 'zC', 'zA', { silent = true, noremap = true })
-            vim.keymap.set('n', 'za', 'zc', { silent = true, noremap = true })
-            vim.keymap.set('n', 'zA', 'zC', { silent = true, noremap = true })
+            noremap('n', 'zc', 'za', {desc = "Toggles single fold"})
+            noremap('n', 'zC', 'zA', {desc = "Toggles single fold recursively"})
+            noremap('n', 'za', 'zc', {desc = "Closes single fold"})
+            noremap('n', 'zA', 'zC', {desc = "Closes single fold recursively"})
 
             local handler = function(virtText, lnum, endLnum, width, truncate)
                 local newVirtText = {}

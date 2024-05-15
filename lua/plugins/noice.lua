@@ -1,3 +1,5 @@
+local noremap = require("utils.noremap")
+
 return {
     -- Reworks many things, makes notifications [ ;; ]
     -- Can't remove since it makes cmdheight=0 viable
@@ -151,8 +153,7 @@ return {
                 format = {},          --- @see section on formatting
             })
 
-            local opts = { noremap = true, silent = true }
-            vim.keymap.set("n", "<leader><leader>", "<cmd>Noice dismiss<cr>", opts)
+            noremap("n", "<leader><leader>", "<cmd>Noice dismiss<cr>", {desc = "Hides all noice notifications"})
         end
     },
 

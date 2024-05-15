@@ -14,7 +14,7 @@ return {
                 if sig.hint == "" then
                     return vim.fn.expand('%:t')
                 else
-                    return "「" .. sig.hint .. "」" .. sig.label
+                    return "[ " .. sig.hint .. " ]" .. sig.label
                 end
             end
 
@@ -84,15 +84,33 @@ return {
                     }
                 },
                 sections = {
-                    lualine_a = { { 'fancy_mode', width = 3 } },
-                    lualine_b = { 'branch', 'fancy_diff', 'diagnostics' },
+                    lualine_a = {
+                        { 'fancy_mode', width = 3 }
+                    },
+                    lualine_b = {
+                        {
+                            'branch',
+                            icon = '$',
+                            align = 'left',
+                        },
+                        {
+                            'fancy_diff',
+                            symbols = { added = '+', modified = '~', removed = '-' }, -- Changes the symbols used by the diff.
+                        }, {
+                        'diagnostics',
+                        symbols = { error = 'e', warn = 'w', info = 'i', hint = 'h' },
+                    }
+                    },
                     lualine_c = { current_signature, },
                     lualine_x = {
                         -- {
                         --     require("noice").api.status.command.get,
                         --     cond = require("noice").api.status.command.has
                         -- },
-                        'filetype',
+                        {
+                            'filetype',
+                            icons_enabled = false,
+                        },
                     },
                     lualine_y = {
                         { red_means_looping, color = red_means_recording },

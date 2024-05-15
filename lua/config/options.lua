@@ -1,85 +1,42 @@
 -- nvim settings
 
-local cmd = vim.cmd             -- cmdute Vim commands
-local g = vim.g                 -- global variables
-local o = vim.o                 -- global-like
-local opt = vim.opt             -- global/buffer/windows-scoped options
-
-o.signcolumn = "no"         -- removes gutter
-opt.updatetime = 300        -- speeds up autocompletion
-opt.autoread = true         -- default value, autoreload file
-g.mapleader = ";"           -- sets , as leader key
-o.clipboard = "unnamedplus" -- set clipboard to be system
-opt.cmdheight = 1           -- cmd height (set to 0 if no noice)
--- opt.shortmess:append('C')
--- opt.shortmess:append('S')
--- opt.shortmess:append('c')
--- opt.shortmess:append('s')
-
-o.virtualedit = "onemore"
-
--- cmd [[language en_US.UTF-8]]
-
-
-opt.formatoptions = opt.formatoptions
-  + 'r' -- automatically insert comment leader after CR
-  + 'o' -- automatically insert comment leader for o/O
-  + 'n' -- recognize numbered lists
-
--- opt.number = vim.go.columns >= 88
-opt.number = true                   -- line numbers
--- opt.colorcolumn = '120'             -- 80 symbol split
-opt.cursorline = true               -- cursor line hightlight
--- opt.cursorcolumn = true             -- show cursor column
--- opt.relativenumber = true           -- relative line numbers
-opt.so=0                            -- cursor moves normally (no boundary)
-opt.undofile = true                 -- undo
-opt.splitright = true               -- vertical split right
-opt.splitbelow = true               -- horizontal split down
-opt.hlsearch = true                 -- Set highlight on search
-opt.undofile = true                 -- Save undo history
-opt.ignorecase = true               -- Case insensitive searching unless /C or capital in search
-opt.wrap = false
-opt.smartcase = true                -- Smart case
-opt.showmatch = true                -- highlight matching brackets
-opt.joinspaces = false              -- No double spaces with join after a dot
-
-opt.termguicolors = true            -- 24-bit RGB colors
-opt.showmode = false                -- no --INSERT--
-o.background = "dark"               -- or "light" for light mode
-
-cmd([[filetype indent plugin on]])
-cmd([[syntax enable]])
-
-opt.expandtab = true      -- use spaces instead of tabs
-opt.shiftwidth = 4        -- shift 4 spaces when tab
-opt.tabstop = 4           -- 1 tab == 4 spaces
-opt.smartindent = true    -- autoindent new lines
-
--- don't auto commenting new lines
-cmd [[au BufEnter * set fo-=c fo-=r fo-=o]]
-
--- autocorrects qq to Qq
-cmd([[cabbrev qq Qq]])
--- custom qall command
-vim.api.nvim_create_user_command('Qq',
-function(opts)
-    if (opts.bang) then cmd[[qall!]] else cmd[[qall]] end
-end,
-{ nargs = "?", bang = true })
-
-o.mouse = "nvi"             -- normal, visual, insert
-o.mousemodel = "extend"     -- sets right mouse click to extend selection
-
-o.guifont = "Cascadia Mono PL:h11"
-
-g.ruby_host_prog = '~/.local/share/gem/ruby/3.0.0/bin/neovim-ruby-host'
-
-cmd([[set guicursor=n-v-sm:block,i-c-ci-ve:ver25,r-cr-o:hor20]])
-
+vim.g.gruvbox_baby_transparent_mode = 1
 vim.g.gruvbox_contrast_dark = "medium"
 vim.g.gruvbox_transparent_bg = 1
-vim.g.gruvbox_baby_transparent_mode = 1
+vim.g.ruby_host_prog = '~/.local/share/gem/ruby/3.0.0/bin/neovim-ruby-host'
+
+vim.o.background = "dark"       -- or "light" for light mode
+vim.o.clipboard = "unnamedplus" -- set clipboard to be system
+vim.o.mouse = "nvi"             -- normal, visual, insert
+vim.o.mousemodel = "extend"     -- sets right mouse click to extend selection
+vim.o.signcolumn = "no"         -- removes gutter
+vim.o.virtualedit = "onemore"
+
+vim.opt.autoread = true         -- default value, autoreload file
+vim.opt.cmdheight = 1           -- cmd height (set to 0 if no noice)
+vim.opt.colorcolumn = '0'       -- 80 symbol split
+vim.opt.cursorcolumn = false    -- show cursor column
+vim.opt.cursorline = true       -- cursor line hightlight
+vim.opt.expandtab = true        -- use spaces instead of tabs
+vim.opt.hlsearch = true         -- Set highlight on search
+vim.opt.ignorecase = true       -- Case insensitive searching unless /C or capital in search
+vim.opt.joinspaces = false      -- No double spaces with join after a dot
+vim.opt.number = true           -- line numbers
+vim.opt.relativenumber = false  -- relative line numbers
+vim.opt.shiftwidth = 4          -- shift 4 spaces when tab
+vim.opt.showmatch = true        -- highlight matching brackets
+vim.opt.showmode = false        -- no --INSERT--
+vim.opt.smartcase = true        -- Smart case
+vim.opt.smartindent = true      -- autoindent new lines
+vim.opt.so=0                    -- cursor moves normally (no boundary)
+vim.opt.splitbelow = true       -- horizontal split down
+vim.opt.splitright = true       -- vertical split right
+vim.opt.tabstop = 4             -- 1 tab == 4 spaces
+vim.opt.termguicolors = true    -- 24 -bit RGB colors
+vim.opt.undofile = true         -- Save undo history
+vim.opt.undofile = true         -- undo
+vim.opt.updatetime = 300        -- speeds up autocompletion
+vim.opt.wrap = false
 
 vim.g["lsp-timeout-config"] = {
     stopTimeout  = 1000 * 60 * 5,  -- ms, timeout before stopping all LSP servers
@@ -89,27 +46,17 @@ vim.g["lsp-timeout-config"] = {
 
 vim.cmd.colorscheme('gruvbox')
 
--- ----------------------------- neovide configs ---------------------------- --
--- if vim.g.neovide then
---     local alpha = function()
---       return string.format("%x", math.floor((255 * vim.g.transparency) or 0.8))
---     end
---     g.neovide_transparency = 0.0
---     g.transparency = 0.8
---     g.neovide_background_color = "#262626" .. alpha()
---     g.neovide_scale_factor = 1
---     g.neovide_cursor_animation_length = 0
---     g.neovide_hide_mouse_when_typing = false
---     g.neovide_scroll_animation_length = 0.3
---     g.neovide_remember_window_size = false
---     g.neovide_remember_window_position = false
---     g.neovide_fullscreen = false
---     g.neovide_confirm_quit = true
---
---     -- g.neovide_padding_top=35
---     -- g.neovide_padding_left=28
---     -- g.neovide_padding_right=28
---     -- g.neovide_padding_bottom=10
--- end
+-- don't auto commenting new lines
+vim.cmd [[au BufEnter * set fo-=c fo-=r fo-=o]]
 
+-- autocorrects qq to Qq
+vim.cmd([[cabbrev qq Qq]])
 
+-- custom qall command
+vim.api.nvim_create_user_command('Qq', function(opts) if (opts.bang) then vim.cmd[[qall!]] else vim.cmd[[qall]] end end, { bang = true })
+
+vim.cmd([[set guicursor=n-v-sm:block,i-c-ci-ve:ver25,r-cr-o:hor20]])
+
+-- vim.cmd [[language en_US.UTF-8]]
+vim.cmd([[filetype indent plugin on]])
+vim.cmd([[syntax enable]])

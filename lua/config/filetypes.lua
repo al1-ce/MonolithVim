@@ -78,14 +78,6 @@ do -- start autocmd block
     -- Shebang
     autocmd({"BufNewFile", "BufRead"}, { pattern = {"*"}, callback = detectShebangPattern })
 
-    augroup('YankHighlight', { clear = true })
-    autocmd('TextYankPost', {
-        group = 'YankHighlight',
-        callback = function()
-            vim.highlight.on_yank({ higroup = 'IncSearch', timeout = '1000' })
-        end
-    })
-
     autocmd({"WinEnter", "BufEnter"}, { pattern = "*", command = "setlocal cursorline" })
     autocmd({"WinLeave", "BufLeave"}, { pattern = "*", command = "setlocal nocursorline" })
 
@@ -95,6 +87,13 @@ do -- start autocmd block
     autocmd({"BufNewFile", "BufRead", "BufReadPost"}, {pattern = {"*.jpp", "*.jspp"}, callback = function() setft("sdlang") end})
     autocmd({"BufNewFile", "BufRead", "BufReadPost"}, {pattern = {"*.fasm"}, callback = function() setft("fasm") end})
     autocmd({"BufNewFile", "BufRead", "BufReadPost"}, {pattern = {"*.vs", "*.fs"}, callback = function() setft("glsl") end })
+
+    -- ;h - to edit c headers and source files faster
+    -- TODO: figure out how to do it with vim.api.nvim_create_augroup
+    vim.cmd([[au BufEnter,BufNew *.c nnoremap <silent> ;h :e %<.h<CR>]])
+    vim.cmd([[au BufEnter,BufNew *.h nnoremap <silent> ;h :e %<.c<CR>]])
+    vim.cmd([[au BufEnter,BufNew *.hpp nnoremap <silent> ;h :e %<.cpp<CR>]])
+    vim.cmd([[au BufEnter,BufNew *.cpp nnoremap <silent> ;h :e %<.hpp<CR>]])
 end -- end autocmd block
 
 

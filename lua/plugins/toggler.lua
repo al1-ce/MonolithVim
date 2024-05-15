@@ -1,3 +1,5 @@
+local noremap = require("utils.noremap")
+
 return {
     -- Toggle tags [ \tp ]
     {
@@ -41,11 +43,7 @@ return {
                 remove_default_keybinds = true,
             })
 
-            local opts = { noremap = true, silent = true }
-
-            local keymap = vim.keymap
-
-            keymap.set("n", "<C-`>", require('nvim-toggler').toggle, opts)
+            noremap("n", "<C-`>", require('nvim-toggler').toggle, {desc = "Toggles value under cursor"})
         end
     }
 }

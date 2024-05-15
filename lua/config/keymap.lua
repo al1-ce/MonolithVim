@@ -1,10 +1,7 @@
 -- All primary keymaps. Some plugin-related or screen-local might be in other files
-local opts = { noremap = true, silent = true }
+local noremap = require("utils.noremap")
+local remap = require("utils.remap")
 
-local keymap = vim.keymap
-
-
--- All leader related keys are in lua/config/hydra.lua
 
 -- '' - normal, visual, select, operator pending
 -- n - normal
@@ -29,57 +26,53 @@ local keymap = vim.keymap
 -- ---------------------------- Common shortcuts ---------------------------- --
 
 -- quick navigation
-keymap.set('n', '<Space>', '<C-d>', opts)
--- keymap.set('n', '<C-Space>', '<C-u>', opts)
-keymap.set('n', '<S-Space>', '<C-u>', opts)
+noremap('n', '<Space>', '<C-d>', { desc = "Jumps down by half window" })
+noremap('n', '<S-Space>', '<C-u>', { desc = "Jumps up by half window" })
 
--- keymap.set('n', '<A-u>', '<C-u>', opts)
--- keymap.set("i", "<A-u>", "<Space>", opts)
+noremap('n', '<PageDown>', '<C-d>', { desc = "Jumps down by half window" })
+noremap("n", "<PageUp>", "<C-u>", { desc = "Jumps up by half window" })
+noremap('v', '<PageDown>', '<C-d>', { desc = "Jumps down by half window" })
+noremap("v", "<PageUp>", "<C-u>", { desc = "Jumps up by half window" })
+noremap('i', '<PageDown>', '<Esc><C-d>i', { desc = "Jumps down by half window" })
+noremap("i", "<PageUp>", "<Esc><C-u>i", { desc = "Jumps up by half window" })
 
-keymap.set('n', '<PageDown>', '<C-d>', opts)
-keymap.set("n", "<PageUp>", "<C-u>", opts)
-keymap.set('v', '<PageDown>', '<C-d>', opts)
-keymap.set("v", "<PageUp>", "<C-u>", opts)
-keymap.set('i', '<PageDown>', '<Esc><C-d>i', opts)
-keymap.set("i", "<PageUp>", "<Esc><C-u>i", opts)
+-- noremap("", "q", "<nop>", { desc = "" })
+-- noremap("", "Q", "<nop>", { desc = "" })
+noremap("", "<C-z>", "<nop>", { desc = "I don't like how it works" })
 
--- keymap.set("", "q", "<nop>", opts)
--- keymap.set("", "Q", "<nop>", opts)
-keymap.set("", "<C-z>", "<nop>", opts)
-
-keymap.set('n', '<C-left>', 'b', opts)
-keymap.set('n', '<C-right>', 'e', opts)
+noremap('n', '<C-left>', 'b', { desc = "Goes back by word" })
+noremap('n', '<C-right>', 'e', { desc = "Goes forward by word" })
 
 -- tab navigation
-keymap.set("n", "<A-.>", "<cmd>tabnext<cr>", opts)
-keymap.set("n", "<A-,>", "<cmd>tabprevious<cr>", opts)
+noremap("n", "<A-.>", "<cmd>tabnext<cr>", { desc = "Opens next tab" })
+noremap("n", "<A-,>", "<cmd>tabprevious<cr>", { desc = "Opens previous tab" })
 
-keymap.set("n", "<A-S-.>", "<cmd>tabmove +1<cr>", opts)
-keymap.set("n", "<A-S-,>", "<cmd>tabmove -1<cr>", opts)
+noremap("n", "<A-S-.>", "<cmd>tabmove +1<cr>", { desc = "Moves tab right" })
+noremap("n", "<A-S-,>", "<cmd>tabmove -1<cr>", { desc = "Moves tab left" })
 
 -- moving between panes
-keymap.set("n", "<A-left>", "<C-w>h", opts)
-keymap.set("n", "<A-down>", "<C-w>j", opts)
-keymap.set("n", "<A-up>", "<C-w>k", opts)
-keymap.set("n", "<A-right>", "<C-w>l", opts)
+noremap("n", "<A-left>", "<C-w>h", { desc = "Focuses pane to the left" })
+noremap("n", "<A-right>", "<C-w>l", { desc = "Focuses pane to the right" })
+noremap("n", "<A-up>", "<C-w>k", { desc = "Focuses upper pane" })
+noremap("n", "<A-down>", "<C-w>j", { desc = "Focuses lower pane" })
 
 -- ctrl del
-keymap.set("", "<C-Del>", '"_dw', opts);
-keymap.set("i", "<C-Del>", '<C-o>"_dw', opts);
+noremap("", "<C-Del>", '"_dw', { desc = "Delete in word forward" });
+noremap("i", "<C-Del>", '<C-o>"_dw', { desc = "Delete in word forward" });
 
 -- map delete to black hole yank
-keymap.set("", "<Del>", '"_x', opts)
-keymap.set("i", "<Del>", '<C-o>"_x', opts)
+noremap("", "<Del>", '"_x', { desc = "Delete but into black hole" })
+noremap("i", "<Del>", '<C-o>"_x', { desc = "Delete but into black hole" })
 -- FIXME: check back when https://github.com/wez/wezterm/issues/3621 fixed
-keymap.set("", "<C-h>", "<Del>", {silent = true})
-keymap.set("i", "<C-h>", "<Del>", {silent = true})
+remap("", "<C-h>", "<Del>", { desc = "Wezterm kitty protocol hotfix" })
+remap("i", "<C-h>", "<Del>", { desc = "Wezterm kitty protocol hotfix" })
 
-keymap.set('', '<S-ScrollWheelUp>', '3zh', opts)
-keymap.set('', '<S-ScrollWheelDown>', '3zl', opts)
-keymap.set('i', '<S-ScrollWheelUp>', '<C-o>3zh', opts)
-keymap.set('i', '<S-ScrollWheelDown>', '<C-o>3zl', opts)
+noremap('', '<S-ScrollWheelUp>', '3zh', { desc = "Scrolls right" })
+noremap('', '<S-ScrollWheelDown>', '3zl', { desc = "Scrolls left" })
+noremap('i', '<S-ScrollWheelUp>', '<C-o>3zh', { desc = "Scrolls right" })
+noremap('i', '<S-ScrollWheelDown>', '<C-o>3zl', { desc = "Scrolls left" })
 
-keymap.set('i', '<Esc>', '<Esc>l', opts);
+noremap('i', '<Esc>', '<Esc>l', { desc = "" });
 
 local function lineHome()
     local x = vim.fn.col('.')
@@ -99,35 +92,35 @@ local function lineEnd()
     end
 end
 
-keymap.set('n', "<Home>", lineHome, opts)
-keymap.set('i', "<Home>", lineHome, opts)
-keymap.set('v', "<Home>", lineHome, opts)
-keymap.set('n', "<End>", lineEnd, opts)
-keymap.set('i', "<End>", lineEnd, opts)
-keymap.set('v', "<End>", lineEnd, opts)
+noremap('n', "<Home>", lineHome, { desc = "Goes to beginning of line" })
+noremap('i', "<Home>", lineHome, { desc = "Goes to beginning of line" })
+noremap('v', "<Home>", lineHome, { desc = "Goes to beginning of line" })
+noremap('n', "<End>", lineEnd, { desc = "Goes to end of line" })
+noremap('i', "<End>", lineEnd, { desc = "Goes to end of line" })
+noremap('v', "<End>", lineEnd, { desc = "Goes to end of line" })
 
 -- -------------------------------------------------------------------------- --
 --                                 Normal Mode                                --
 -- -------------------------------------------------------------------------- --
 
 -- backspace to black hole buffer
-keymap.set("n", "<BS>", '"_X', opts);
+noremap("n", "<BS>", '"_X', { desc = "Delete in word backwards" });
 
-keymap.set("n", "<Tab>", ">>", opts)
-keymap.set("n", "<S-Tab>", "<<", opts)
+noremap("n", "<Tab>", ">>", { desc = "Shifts line to right" })
+noremap("n", "<S-Tab>", "<<", { desc = "Shifts line to left" })
 -- fix jump motion (thanks noremap)
-keymap.set("n", "<C-i>", "<C-i>", opts)
+noremap("n", "<C-i>", "<C-i>", { desc = "Jump motion fix" })
 
-keymap.set("n", "<leader>ss", "<CMD>split<CR>", opts)
-keymap.set("n", "<leader>sv", "<CMD>vsplit<CR>", opts)
+noremap("n", "<leader>ss", "<CMD>split<CR>", { desc = "Opens horizontal split" })
+noremap("n", "<leader>sv", "<CMD>vsplit<CR>", { desc = "Opens vertical split" })
 
-keymap.set("n", "<leader>fs", "<C-^>", opts)
+noremap("n", "<leader>fs", "<C-^>", { desc = "Opens previous buffer" })
 
-keymap.set("n", "<leader>q", "<CMD>x<CR>", opts)
-keymap.set("n", "<leader>w", "<CMD>update<CR>", opts)
+noremap("n", "<leader>q", "<CMD>x<CR>", { desc = "Closes buffer" })
+noremap("n", "<leader>w", "<CMD>update<CR>", { desc = "Writes buffer" })
 
-keymap.set("n", "<leader>cd", "<cmd>cd %:h<cr>", opts)
-keymap.set("n", "<leader>ce", "<cmd>edit $MYVIMRC <bar> tcd %:h<cr>", opts)
+noremap("n", "<leader>cd", "<cmd>cd %:h<cr>", { desc = "Changes directory to current file" })
+noremap("n", "<leader>ce", "<cmd>edit $MYVIMRC <bar> tcd %:h<cr>", { desc = "Edits config" })
 
 local function open_link_vis()
     local key = vim.api.nvim_replace_termcodes("<esc>", true, false, true)
@@ -151,10 +144,10 @@ local function open_link_norm()
     open_link_vis()
 end
 
-keymap.set("n", "gx", open_link_norm, opts)
-keymap.set("v", "gx", open_link_vis, opts)
+noremap("n", "gx", open_link_norm, { desc = "Sends link under cursor into XDG-OPEN" })
+noremap("v", "gx", open_link_vis, { desc = "Sends link under cursor into XDG-OPEN" })
 
-keymap.set("n", "ya", "<cmd>%y<cr>", opts)
+noremap("n", "ya", "<cmd>%y<cr>", { desc = "Yanks entire file" })
 
 -- -------------------------------------------------------------------------- --
 --                                 Insert Mode                                --
@@ -162,70 +155,60 @@ keymap.set("n", "ya", "<cmd>%y<cr>", opts)
 
 -- enter visual mode
 -- why not, it does nothing so...
-keymap.set("i", "<S-up>", "<C-o>v<up>", opts)
-keymap.set("i", "<S-down>", "<C-o>v<down>", opts)
-keymap.set("i", "<S-left>", "<C-o>v<left>", opts)
-keymap.set("i", "<S-right>", "<C-o>v<right>", opts)
+noremap("i", "<S-up>", "<C-o>v<up>", { desc = "Selects text in visual mode" })
+noremap("i", "<S-down>", "<C-o>v<down>", { desc = "Selects text in visual mode" })
+noremap("i", "<S-left>", "<C-o>v<left>", { desc = "Selects text in visual mode" })
+noremap("i", "<S-right>", "<C-o>v<right>", { desc = "Selects text in visual mode" })
 
-keymap.set("i", "<C-S-up>", "<C-o>v<C-up>", opts)
-keymap.set("i", "<C-S-down>", "<C-o>v<C-down>", opts)
-keymap.set("i", "<C-S-left>", "<C-o>v<C-left>", opts)
-keymap.set("i", "<C-S-right>", "<C-o>v<C-right>", opts)
+noremap("i", "<C-S-up>", "<C-o>v<C-up>", { desc = "Selects text in visual mode" })
+noremap("i", "<C-S-down>", "<C-o>v<C-down>", { desc = "Selects text in visual mode" })
+noremap("i", "<C-S-left>", "<C-o>v<C-left>", { desc = "Selects text in visual mode" })
+noremap("i", "<C-S-right>", "<C-o>v<C-right>", { desc = "Selects text in visual mode" })
 
 -- erase word
-keymap.set("i", "<C-BS>", '<C-\\><C-o>"_db', opts)
+noremap("i", "<C-BS>", '<C-\\><C-o>"_db', { desc = "Deletes word backwards" })
 
 -- Black magic:
-keymap.set('i', '<A-S-up>', '<Esc>"myy`["mPi', opts)
-keymap.set('i', '<A-S-down>', '<Esc>"myy`]"mpi', opts)
+noremap('i', '<A-S-up>', '<Esc>"myy`["mPi', { desc = "Duplicates line up" })
+noremap('i', '<A-S-down>', '<Esc>"myy`]"mpi', { desc = "Duplicates line down" })
 
-keymap.set('v', '<A-S-up>', '<S-v>"my`["mP`[V`]v', opts)
-keymap.set('v', '<A-S-down>', '<S-v>"my`]"mp`[V`]v', opts)
+noremap('v', '<A-S-up>', '<S-v>"my`["mP`[V`]v', { desc = "Duplicates lines up" })
+noremap('v', '<A-S-down>', '<S-v>"my`]"mp`[V`]v', { desc = "Duplicates lines down" })
 
 -- erase one tab
-keymap.set("i", "<S-Tab>", "<C-o><<", opts);
+noremap("i", "<S-Tab>", "<C-o><<", { desc = "Shifts line left" });
 
 -- -------------------------------------------------------------------------- --
 --                                 Visual Mode                                --
 -- -------------------------------------------------------------------------- --
 
 -- remap selections
-keymap.set("v", "<C-S-up>", "<up>", opts)
-keymap.set("v", "<C-S-down>", "<down>", opts)
-keymap.set("v", "<C-S-left>", "<C-left>", opts)
-keymap.set("v", "<C-S-right>", "<C-right>", opts)
+noremap("v", "<C-S-up>", "<up>", { desc = "Dumb remap" })
+noremap("v", "<C-S-down>", "<down>", { desc = "Dumb remap" })
+noremap("v", "<C-S-left>", "<C-left>", { desc = "Dumb remap" })
+noremap("v", "<C-S-right>", "<C-right>", { desc = "Dumb remap" })
 
-keymap.set("v", "<C-up>", "<up>", opts)
-keymap.set("v", "<C-down>", "<down>", opts)
-keymap.set("v", "<C-left>", "<C-left>", opts)
-keymap.set("v", "<C-right>", "<C-right>", opts)
+noremap("v", "<C-up>", "<up>", { desc = "Dumb remap" })
+noremap("v", "<C-down>", "<down>", { desc = "Dumb remap" })
+noremap("v", "<C-left>", "<C-left>", { desc = "Dumb remap" })
+noremap("v", "<C-right>", "<C-right>", { desc = "Dumb remap" })
 
-keymap.set("v", "<S-up>", "<up>", opts)
-keymap.set("v", "<S-down>", "<down>", opts)
-keymap.set("v", "<S-left>", "<left>", opts)
-keymap.set("v", "<S-right>", "<right>", opts)
+noremap("v", "<S-up>", "<up>", { desc = "Dumb remap" })
+noremap("v", "<S-down>", "<down>", { desc = "Dumb remap" })
+noremap("v", "<S-left>", "<left>", { desc = "Dumb remap" })
+noremap("v", "<S-right>", "<right>", { desc = "Dumb remap" })
 
 -- backspace
-keymap.set("v", "<BS>", '"_X', opts);
+noremap("v", "<BS>", '"_X', { desc = "Deletes into black hole" });
 
 -- move tabs
-keymap.set("v", "<Tab>", ">`<V`>", opts)
-keymap.set("v", "<S-Tab>", "<`<V`>", opts)
+noremap("v", "<Tab>", ">`<V`>", { desc = "Shifts lines right" })
+noremap("v", "<S-Tab>", "<`<V`>", { desc = "Shifts lines left" })
 
 -- -------------------------------------------------------------------------- --
 --                                Terminal Mode                               --
 -- -------------------------------------------------------------------------- --
 
 -- Use Esc to quit builtin terminal
-keymap.set("t", "<Esc>", [[<c-\><c-n>]], opts)
-
--- -------------------------------------------------------------------------- --
---                              Language Specific                             --
--- -------------------------------------------------------------------------- --
-
--- TODO: figure out how to do it with vim.api.nvim_create_augroup
-vim.cmd([[au BufEnter,BufNew *.c nnoremap <silent> ;h :e %<.h<CR>]])
-vim.cmd([[au BufEnter,BufNew *.h nnoremap <silent> ;h :e %<.c<CR>]])
-vim.cmd([[au BufEnter,BufNew *.hpp nnoremap <silent> ;h :e %<.cpp<CR>]])
-vim.cmd([[au BufEnter,BufNew *.cpp nnoremap <silent> ;h :e %<.hpp<CR>]])
+noremap("t", "<Esc>", [[<c-\><c-n>]], { desc = "Closes builtin terminal" })
 

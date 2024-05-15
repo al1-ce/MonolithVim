@@ -1,6 +1,8 @@
-local load = require("loader")
+local load = require("utils.loader")
 
 vim.loader.enable()
+
+vim.g.mapleader = ";"
 
 load('config.options')
 load('config.filetypes')
