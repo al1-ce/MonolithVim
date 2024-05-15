@@ -14,7 +14,7 @@ Build key sequences:
 ### Config
 You can configure your build tasks with  justfile located in your Current Directory. These tasks are local and will be displayed only for this local project.
 
-Any output coming from executing tasks will be directed into *quickfix* and upon completing/failing task the bell will play using `~/.config/nvim/res/build_success.wav` or `~/.config/nvim/res/build_error.wav` accordingly. This can be changed in [lua/monolith.plugins.justbuild.lua](lua/monolith.plugins.justbuild.lua) or same file in typescript (preferred, but requires executing TypescriptToLua and executing `tstl -p ~/.config/nvim/tsconfig.json`)
+Any output coming from executing tasks will be directed into *quickfix* and upon completing/failing task the bell will play using `~/.config/nvim/res/build_success.wav` or `~/.config/nvim/res/build_error.wav` accordingly. This can be changed in [lua/plugins.justbuild.lua](lua/plugins.justbuild.lua) or same file in typescript (preferred, but requires executing TypescriptToLua and executing `tstl -p ~/.config/nvim/tsconfig.json`)
 
 #### Basic justfile configuration
 This configuration if called with `\bb` from any Lua file will execute `init.lua` in project root (pwd/cwd) directory.

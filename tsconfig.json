@@ -20,8 +20,8 @@
         "noImplicitSelf": true,
         "noImplicitGlobalVariables": true,
         "luaLibImport": "inline",
-        "luaBundleEntry": "lua/monolith/plugins/utils/justbuild.ts",
-        "luaBundle": "lua/monolith/plugins/utils/justbuild.lua",
+        "luaBundleEntry": "lua/utils/justbuild.ts",
+        "luaBundle": "lua/utils/justbuild.lua",
         "noResolvePaths": [
             "telescope",
             "telescope.pickers",

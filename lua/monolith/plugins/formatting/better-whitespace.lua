@@ -1,1 +1,0 @@
--- vim.g.better_whitespace_operator = "<leader>s"

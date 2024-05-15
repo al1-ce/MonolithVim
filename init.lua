@@ -1,16 +1,11 @@
 local load = require("loader")
 
-load('monolith.core.settings')
-load('monolith.core.plugins')
+vim.loader.enable()
 
--- speeds up plugin load time
-load('impatient')
-
-load('monolith.plugins.loader')
-
-load('monolith.core.mappings')
-
-load('monolith.core.colorscheme')
-
-load("monolith.plugins.utils.alpha")
+load('config.options')
+load('config.filetypes')
+load('config.lazy')
+load('config.keymap')
+load('config.autocmd')
+load('config.theme')
 
