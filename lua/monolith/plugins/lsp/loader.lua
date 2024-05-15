@@ -8,6 +8,7 @@ local function load(m)
 end
 
 -- load("colors")
+-- load("neoconf") -- must be loaded before lspconfig
 load("config")
 load("mason")
 load("neodev")

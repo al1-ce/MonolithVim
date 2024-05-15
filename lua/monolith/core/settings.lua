@@ -20,10 +20,17 @@ o.virtualedit = "onemore"
 
 -- cmd [[language en_US.UTF-8]]
 
+
+opt.formatoptions = opt.formatoptions
+  + 'r' -- automatically insert comment leader after CR
+  + 'o' -- automatically insert comment leader for o/O
+  + 'n' -- recognize numbered lists
+
+-- opt.number = vim.go.columns >= 88
+opt.number = true                   -- line numbers
 -- opt.colorcolumn = '120'             -- 80 symbol split
 opt.cursorline = true               -- cursor line hightlight
 -- opt.cursorcolumn = true             -- show cursor column
-opt.number = true                   -- line numbers
 -- opt.relativenumber = true           -- relative line numbers
 opt.so=0                            -- cursor moves normally (no boundary)
 opt.undofile = true                 -- undo
@@ -55,7 +62,7 @@ cmd [[au BufEnter * set fo-=c fo-=r fo-=o]]
 -- autocorrects qq to Qq
 cmd([[cabbrev qq Qq]])
 -- custom qall command
-vim.api.nvim_create_user_command('Qq', 
+vim.api.nvim_create_user_command('Qq',
 function(opts)
     if (opts.bang) then cmd[[qall!]] else cmd[[qall]] end
 end,

@@ -13,27 +13,15 @@ local hintLeader = [[
   _t_: Text/Term/Tab  
        Devenv       
   _l_: Lsp            
-  _g_: Git            
   _b_: Build          
-  _d_: Debug          
         Misc        
-  _D_: Dashboard      
   _p_: Package        
   _v_: View           
       Settings      
-  _c_: Config/Dir     
   _o_: Options        
   _h_: Help           
-       Motion       
-  _s_: Split          
-  _w_: Save file      
-  _W_: Force save     
-  _q_: Close file     
-  _Q_: Close all      
-  _P_: Select pasted  
-  _/_: Clear search   
                     
-  _x_: Quit           
+  _q_: Quit           
 └                  ┘
 ]]
 
@@ -48,27 +36,15 @@ Hydra({
         { 't', callback.hydraCallback('text') },
 
         { 'l', callback.hydraCallback('lsp') },
-        { 'g', callback.hydraCallback('git') },
         { 'b', callback.hydraCallback('build') },
-        { 'd', callback.hydraCallback('debug') },
 
-        { 'D', cmd 'Alpha' },
         { 'p', callback.hydraCallback('packages') },
         { 'v', callback.hydraCallback('view') },
 
-        { 'c', callback.hydraCallback('config') },
         { 'o', callback.hydraCallback('options') },
         { 'h', callback.hydraCallback('manual') },
 
-        { 's', callback.hydraCallback('window') },
-        { 'w', cmd 'update' },
-        { 'W', cmd 'update!' },
-        { 'q', cmd 'x' },
-        { 'Q', cmd 'qa!' },
-        { 'P', "printf('`[%s`]', getregtype()[0])", { expr = true } },
-        { '/', ':nohl<cr>' },
-
-        { 'x', nil, { exit = true, nowait = true } },
+        { 'q', nil, { exit = true, nowait = true } },
         { '<Esc>', nil, { exit = true, nowait = true, desc = false } },
         { '\\', nil, { exit = true, nowait = true, desc = false } },
     }

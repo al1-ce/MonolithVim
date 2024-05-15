@@ -7,7 +7,6 @@ local function load(m)
     return ok
 end
 
-load("alpha")
 -- load("cellularautomaton")
 load("justbuild")
 load("lastplace")
@@ -18,5 +17,7 @@ load("devdocs")
 -- load("rememberme")
 load("sessions")
 load("todo")
+load("recorder")
 -- load("sniprun")
 -- load("urlview")
+load("image")

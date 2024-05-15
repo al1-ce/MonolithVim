@@ -89,3 +89,6 @@ dap.configurations.cpp = { {
 
 dap.configurations.d = dap.configurations.cpp
 dap.configurations.c = dap.configurations.cpp
+
+vim.api.nvim_create_user_command('DapBreak', function() vim.cmd("DapToggleBreakpoint") end, {})
+

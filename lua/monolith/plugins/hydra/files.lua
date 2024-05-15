@@ -47,7 +47,7 @@ local function deleteProject(paths)
     end
 end
 
-local function fzfProjects()
+function fzfProjects()
     require("fzf-lua").fzf_exec(
         reverse(require("project_nvim").get_recent_projects()),
         {
@@ -89,5 +89,7 @@ function M.hydra() return Hydra({
         }
     })
 end
+
+function M.fzfProjects() fzfProjects() end
 
 return M;

@@ -1,9 +1,4 @@
-local function load(m)
-  local ok, err = pcall(require, m)
-  if not ok then
-      vim.api.nvim_err_writeln("Package \"" .. m .. "\" failed to load. \n\n" .. err)
-  end
-end
+local load = require("loader")
 
 load('monolith.core.settings')
 load('monolith.core.plugins')
@@ -16,3 +11,6 @@ load('monolith.plugins.loader')
 load('monolith.core.mappings')
 
 load('monolith.core.colorscheme')
+
+load("monolith.plugins.utils.alpha")
+

@@ -1,3 +1,30 @@
+local icons = {
+
+    cmdline        = ">",   -- command
+    cmdall         = "@",   -- vis command
+    search_down    = "/",   -- search down
+    search_up      = "?",   -- search up
+    filter         = "$",   -- :! aka run sh
+    lua            = "lua", -- :lua
+    help           = "?",   -- :help
+    checkhealth    = "<3",  -- :checkhealth
+    telescope      = "%",   -- :Telescope
+    lazy           = "#",   -- :Lazy
+    lspsaga        = "&",   -- :Lspsaga
+    -- cmdline     = "",
+    -- cmdall      = "＠",
+    -- search_down = " ",
+    -- search_up   = " ",
+    -- filter      = "$",
+    -- lua         = "",
+    -- help        = "",
+    -- checkhealth = "🤍",
+    -- telescope   = "",
+    -- lazy        = "🥡",
+    -- lspsaga     = "",
+
+}
+
 require("noice").setup({
     cmdline = {
         enabled = true,     -- enables the Noice cmdline UI
@@ -9,17 +36,17 @@ require("noice").setup({
             -- opts: any options passed to the view
             -- icon_hl_group: optional hl_group for the icon
             -- title: set to anything or empty string to hide
-            cmdline = { pattern = "^:", icon = "", lang = "vim" },
-            cmdall = { pattern = "^:'<,'>", icon = "＠", lang = "vim" },
-            search_down = { kind = "search", pattern = "^/", icon = " ", lang = "regex" },
-            search_up = { kind = "search", pattern = "^%?", icon = " ", lang = "regex" },
-            filter = { pattern = "^:%s*!", icon = "$", lang = "bash" },
-            lua = { pattern = { "^:%s*lua%s+", "^:%s*lua%s*=%s*", "^:%s*=%s*" }, icon = "", lang = "lua" },
-            help = { pattern = "^:%s*he?l?p?%s+", icon = "" },
-            checkhealth = { pattern = "^:%s*check?h?e?a?l?t?h?%s+", icon = "🤍" },
-            telescope = { pattern = "^:%s*Tele?s?c?o?p?e?%s+", icon = "" },
-            lazy = { pattern = "^:%s*Lazy%s+", icon = "🥡" },
-            lspsaga = { pattern = "^:%s*Lspsaga%s+", icon = "" },
+            cmdline = { pattern = "^:", icon = icons.cmdline, lang = "vim" },
+            cmdall = { pattern = "^:'<,'>", icon = icons.cmdall, lang = "vim" },
+            search_down = { kind = "search", pattern = "^/", icon = icons.search_down, lang = "regex" },
+            search_up = { kind = "search", pattern = "^%?", icon = icons.search_up, lang = "regex" },
+            filter = { pattern = "^:%s*!", icon = icons.filter, lang = "bash" },
+            lua = { pattern = { "^:%s*lua%s+", "^:%s*lua%s*=%s*", "^:%s*=%s*" }, icon = icons.lua, lang = "lua" },
+            help = { pattern = "^:%s*he?l?p?%s+", icon = icons.help },
+            checkhealth = { pattern = "^:%s*check?h?e?a?l?t?h?%s+", icon = icons.checkhealth },
+            -- telescope = { pattern = "^:%s*Tele?s?c?o?p?e?%s+", icon = icons.telescope },
+            -- lazy = { pattern = "^:%s*Lazy%s+", icon = icons.lazy },
+            -- lspsaga = { pattern = "^:%s*Lspsaga%s+", icon = icons.lspsaga },
             input = {}, -- Used by input()
         },
     },

@@ -2,14 +2,14 @@
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
+    })
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -25,16 +25,23 @@ require('lazy').setup({
     'MunifTanjim/nui.nvim',
     -- async (required by UFO?)
     "kevinhwang91/promise-async",
+    {
+        "vhyrro/luarocks.nvim",
+        priority = 1001, -- this plugin needs to run before anything else
+        opts = {
+            rocks = { "magick" },
+        },
+    },
 
     -- --------------------------------- Syntax --------------------------------- --
-    -- 'fladson/vim-kitty',
+    'fladson/vim-kitty', -- just a syntax file
     'tikhomirov/vim-glsl',
     -- Dart
     'dart-lang/dart-vim-plugin',
     -- 'natebosch/vim-lsc'
     -- 'natebosch/vim-lsc-dart'
     {
-    "NoahTheDuke/vim-just",
+        "NoahTheDuke/vim-just",
         event = { "BufReadPre", "BufNewFile" },
         ft = { "\\cjustfile", "*.just", ".justfile", "justfile" },
     },
@@ -87,10 +94,10 @@ require('lazy').setup({
 
     -- ------------------------------ Autocomplete ----------------------------- --
     -- A completion engine plugin for neovim written in Lua
-    'hrsh7th/nvim-cmp', -- autocompletion engine
+    'hrsh7th/nvim-cmp',     -- autocompletion engine
     'hrsh7th/cmp-nvim-lsp', -- allows to use lsp
     -- 'hrsh7th/cmp-path', -- allows to do paths
-    'hrsh7th/cmp-buffer', -- allows to use buffer text
+    'hrsh7th/cmp-buffer',   -- allows to use buffer text
     -- 'hrsh7th/cmp-cmdline', -- commandline?
     -- Popup snippets
     'hrsh7th/cmp-vsnip', -- for popups
@@ -98,7 +105,7 @@ require('lazy').setup({
     -- Auto-close brackets
     {
         "altermo/ultimate-autopair.nvim",
-        event = {"InsertEnter", "CmdlineEnter"},
+        event = { "InsertEnter", "CmdlineEnter" },
         branch = "v0.6", -- TODO: check later
     },
     -- auto-close html tags
@@ -115,6 +122,8 @@ require('lazy').setup({
     'nguyenvukhang/nvim-toggler',
     -- Project-wide rename [ \fR ]
     'windwp/nvim-spectre',
+    -- Edit search as buffer
+    'dyng/ctrlsf.vim',
     -- Better quickfix
     -- { 'yorickpeterse/nvim-pqf', commit = "b2f1882" },
     'yorickpeterse/nvim-pqf',
@@ -152,12 +161,12 @@ require('lazy').setup({
     -- remove background
     'tribela/vim-transparent',
     -- lsp progressbar
-    {'j-hui/fidget.nvim', tag = 'legacy' },
+    { 'j-hui/fidget.nvim',  tag = 'legacy' },
     -- Emacs menus [ \ ]
     'anuvyklack/hydra.nvim',
     -- Reworks many things, makes notifications [ ;; ]
     -- Can't remove since it makes cmdheight=0 viable
-    { "folke/noice.nvim", event = "VeryLazy" },
+    { "folke/noice.nvim",      event = "VeryLazy" },
     -- notification engine
     'rcarriga/nvim-notify',
     -- [WIP] An implementation of the Popup API from vim in Neovim
@@ -200,26 +209,31 @@ require('lazy').setup({
     'aserebryakov/vim-todo-lists',
     -- Look up at devdocs [:gd]
     'romainl/vim-devdocs',
+    -- better macros
+    'chrisgrieser/nvim-recorder',
+    -- run repl (do not use it's broken as hell)
+    -- { 'michaelb/sniprun', build = "sh install.sh" },
+    -- view images in terminal
+    "3rd/image.nvim",
 
     -- -------------------------------- Viewers --------------------------------- --
     -- Preview markdown [ \vm ]
-    {"ellisonleao/glow.nvim", config = true, cmd = "Glow"},
+    { "ellisonleao/glow.nvim", config = true,     cmd = "Glow" },
 
     -- 'dstein64/vim-startuptime'
 
     -- tips on start
-    {
-      "TobinPalmer/Tip.nvim",
-      event = "VimEnter",
-      init = function()
-        -- Default config
-        require("tip").setup({
-          seconds = 2,
-          title = "Tip!",
-          url = "https://vtip.43z.one", -- Or https://vimiscool.tech/neotip
-        })
-      end,
-    },
+    -- {
+    --   "TobinPalmer/Tip.nvim",
+    --   event = "VimEnter",
+    --   init = function()
+    --     -- Default config
+    --     require("tip").setup({
+    --       seconds = 2,
+    --       title = "Tip!",
+    --       url = "https://vtip.43z.one", -- Or https://vimiscool.tech/neotip
+    --     })
+    --   end,
+    -- },
 
 })
-

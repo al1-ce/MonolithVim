@@ -9,6 +9,44 @@ local current_signature = function()
     end
 end
 
+local red_means_looping = function ()
+    if not pcall(require, 'recorder') then return "[o o] Error!" end
+    local status = require("recorder").recordingStatus()
+    local regist = string.sub(require("recorder").displaySlots(), 6, 9);
+    local time = vim.loop.now()
+    local stage = math.floor((time / 250) % 4)
+    if string.match(status, "Recording") then
+        if stage == 0 then
+            return "[o o] Recording..."
+        end
+        if stage % 4 == 1 then
+            return "[o⠠o] Recording..."
+        end
+        if stage % 4 == 2 then
+            return "[o⠤o] Recording..."
+        end
+        if stage % 4 == 3 then
+            return "[o⠄o] Recording..."
+        end
+    else
+        if regist == "[a]b" then
+            return "[o o] Side A"
+        else
+            return "[o o] Side B"
+        end
+    end
+end
+
+local red_means_recording = function ()
+    if not pcall(require, 'recorder') then return {fg = vim.g.terminal_color_7} end
+    local status = require("recorder").recordingStatus()
+    if string.match(status, "Recording") then
+        return { fg = vim.g.terminal_color_9 }
+    else
+        return { fg = vim.g.terminal_color_7 }
+    end
+end
+
 require('lualine').setup {
     options = {
         icons_enabled = true,
@@ -31,7 +69,7 @@ require('lualine').setup {
         always_divide_middle = true,
         globalstatus = true,
         refresh = {
-            statusline = 1000,
+            statusline = 250,
             tabline = 1000,
             winbar = 1000,
         }
@@ -45,9 +83,12 @@ require('lualine').setup {
             --     require("noice").api.status.command.get,
             --     cond = require("noice").api.status.command.has
             -- },
-            'filetype'
+            'filetype',
         },
-        lualine_y = { 'location' },
+        lualine_y = {
+            { red_means_looping, color = red_means_recording },
+            -- 'location'
+        },
         lualine_z = { 'progress'  }
     },
     inactive_sections = {

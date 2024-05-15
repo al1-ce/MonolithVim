@@ -167,7 +167,10 @@ syn match dAnnotation	"@[_$a-zA-Z][_$a-zA-Z0-9_]*\>" contains=dAttribute
 syn keyword dStatement    scope version
 " syn keyword dStatement    __traits pragma
 " syn keyword dPragma    __traits pragma
-syn match dMacro "\<\u[A-Z0-9_]\+\>"
+syn match dMacro "\<[A-Z0-9_]\+\>" contained
+" HACK: forced type highlight
+" FIXME: forced type highlight
+syn match dType "\<[A-Z][_a-zA-Z0-9]\+\>" contains=dMacro
 
 " Necessary to highlight C++ in extern modifiers.
 syn match dExternIdentifier "C\(++\)\?" contained

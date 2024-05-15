@@ -52,7 +52,8 @@ local shebangList = {
     ["node"] = "javascript",
     ["rdmd"] = "d",
     ["rund"] = "d",
-    ["dub"] = "d"
+    ["dub"] = "d",
+    ["fish"] = "fish"
 }
 
 local function setCustomHighlight(lang)
@@ -136,7 +137,7 @@ do -- start autocmd block
     autocmd({"BufNewFile", "BufRead", "BufReadPost"}, {pattern = {"*.bf"}, callback = function() setft("brainfuck") end})
     autocmd({"BufNewFile", "BufRead", "BufReadPost"}, {pattern = {"*.jpp", "*.jspp"}, callback = function() setft("sdlang") end})
     autocmd({"BufNewFile", "BufRead", "BufReadPost"}, {pattern = {"*.fasm"}, callback = function() setft("fasm") end})
-    autocmd({"BufNewFile", "BufRead"}, { pattern = {"*.vs", "*.fs"}, callback = function() setft("glsl") end })
+    autocmd({"BufNewFile", "BufRead", "BufReadPost"}, {pattern = {"*.vs", "*.fs"}, callback = function() setft("glsl") end })
 end -- end autocmd block
 
 -------------------- Highlight --------------------------------------

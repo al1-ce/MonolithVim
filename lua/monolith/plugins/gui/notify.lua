@@ -23,7 +23,7 @@ local notify = require('notify')
 -- end
 
 notify.setup({
-    background_color = '#000000',
+    background_color = 'Normal',
     stages = 'slide',
 
     on_open = function (win)
@@ -31,5 +31,6 @@ notify.setup({
     end,
     render = "wrapped-compact",
     minimum_width = 0,
+    level = 2,
     -- require("notify")("My super important message", "warn", {title="Title"})
 })

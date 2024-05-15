@@ -33,8 +33,8 @@ keymap.set('n', '<Space>', '<C-d>', opts)
 -- keymap.set('n', '<C-Space>', '<C-u>', opts)
 keymap.set('n', '<S-Space>', '<C-u>', opts)
 
-keymap.set('n', '<A-u>', '<C-u>', opts)
-keymap.set("i", "<A-u>", "<Space>", opts)
+-- keymap.set('n', '<A-u>', '<C-u>', opts)
+-- keymap.set("i", "<A-u>", "<Space>", opts)
 
 keymap.set('n', '<PageDown>', '<C-d>', opts)
 keymap.set("n", "<PageUp>", "<C-u>", opts)
@@ -43,7 +43,8 @@ keymap.set("v", "<PageUp>", "<C-u>", opts)
 keymap.set('i', '<PageDown>', '<Esc><C-d>i', opts)
 keymap.set("i", "<PageUp>", "<Esc><C-u>i", opts)
 
-keymap.set("", "q", "<nop>", opts)
+-- keymap.set("", "q", "<nop>", opts)
+-- keymap.set("", "Q", "<nop>", opts)
 keymap.set("", "<C-z>", "<nop>", opts)
 
 keymap.set('n', '<C-left>', 'b', opts)
@@ -69,6 +70,9 @@ keymap.set("i", "<C-Del>", '<C-o>"_dw', opts);
 -- map delete to black hole yank
 keymap.set("", "<Del>", '"_x', opts)
 keymap.set("i", "<Del>", '<C-o>"_x', opts)
+-- FIXME: check back when https://github.com/wez/wezterm/issues/3621 fixed
+keymap.set("", "<C-h>", "<Del>", {silent = true})
+keymap.set("i", "<C-h>", "<Del>", {silent = true})
 
 keymap.set('', '<S-ScrollWheelUp>', '3zh', opts)
 keymap.set('', '<S-ScrollWheelDown>', '3zl', opts)
@@ -122,6 +126,9 @@ keymap.set("n", "<leader>fs", "<C-^>", opts)
 keymap.set("n", "<leader>q", "<CMD>x<CR>", opts)
 keymap.set("n", "<leader>w", "<CMD>update<CR>", opts)
 
+keymap.set("n", "<leader>cd", "<cmd>cd %:h<cr>", opts)
+keymap.set("n", "<leader>ce", "<cmd>edit $MYVIMRC <bar> tcd %:h<cr>", opts)
+
 local function open_link_vis()
     local key = vim.api.nvim_replace_termcodes("<esc>", true, false, true)
     vim.fn.feedkeys('"vy', "x")
@@ -146,8 +153,6 @@ end
 
 keymap.set("n", "gx", open_link_norm, opts)
 keymap.set("v", "gx", open_link_vis, opts)
-
-keymap.set("n", "ya", "<cmd>%y<cr>", opts)
 
 -- -------------------------------------------------------------------------- --
 --                                 Insert Mode                                --

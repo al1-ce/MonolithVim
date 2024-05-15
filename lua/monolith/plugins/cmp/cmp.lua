@@ -11,7 +11,7 @@ end
 require('lspkind').init({
     symbol_map = {
       Text = "",
-      Method = "󰆧",
+      Method = "", -- 󰆧
       Function = "󰊕",
       Constructor = "",
       Field = "󰜢",

@@ -8,7 +8,6 @@ require("mason-lspconfig").setup({
         'serve_d',
         'tsserver',
         'marksman',
-        'jsonls',
         'cmake',
         'clangd',
         'bashls',
@@ -27,7 +26,7 @@ masonconf.setup_handlers({
         lspconf[server_name].setup({
         })
     end,
-    ['serve_d'] = function ()
+    ['serve_d'] = function()
         lspconf.serve_d.setup({
             -- disable default formatting
             capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
@@ -48,3 +47,8 @@ masonconf.setup_handlers({
     -- end,
 })
 
+-- DISABLE marksman
+vim.api.nvim_create_autocmd(
+    { "BufNewFile", "BufRead", "BufReadPost" },
+    { pattern = { "*.md" }, callback = function(opt) vim.diagnostic.disable(opt.buf) end }
+)
