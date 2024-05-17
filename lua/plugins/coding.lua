@@ -171,6 +171,7 @@ return {
             local ft = require('Comment.ft')
             local cm = require('Comment')
 
+            ---@diagnostic disable-next-line: missing-fields
             cm.setup {
                 mappings = {
                     ---Operator-pending mapping; `gcc` `gbc` `gc[count]{motion}` `gb[count]{motion}`
@@ -191,14 +192,21 @@ return {
             noremap("v", "<C-/>", function()
                 vim.api.nvim_feedkeys(commentEsc, 'nx', false)
                 commentApi.toggle.linewise(vim.fn.visualmode())
-            end, {desc = "Toggles comment linewize"});
+            end, { desc = "Toggles comment linewize" });
             noremap("v", "<C-S-/>", function()
                 vim.api.nvim_feedkeys(commentEsc, 'nx', false)
                 commentApi.toggle.blockwise(vim.fn.visualmode())
-            end, {desc = "Toggles comment blockwise"});
-            noremap("n", "<C-/>", commentApi.toggle.linewise.current, {desc = "Toggles comment"});
-            noremap("i", "<C-/>", commentApi.toggle.linewise.current, {desc = "Toggles comment"});
-        end
+            end, { desc = "Toggles comment blockwise" });
+            noremap("n", "<C-/>", commentApi.toggle.linewise.current, { desc = "Toggles comment" });
+            noremap("i", "<C-/>", commentApi.toggle.linewise.current, { desc = "Toggles comment" });
+        end,
+        -- -- Does not work for some reason
+        -- keys = {
+        --     { "<C-/>", "gc", mode = "v", noremap = false, silent = true, desc = "Toggles comment linewise" },
+        --     { "<C-S-/>", "gb", mode = "v", noremap = false, silent = true, desc = "Toggles comment blockwise" },
+        --     { "<C-/>", "gcc", mode = "n", noremap = false, silent = true, desc = "Toggles comment" },
+        --     { "<C-/>", "<C-o>gcc", mode = "i", noremap = false, silent = true, desc = "Toggles comment" },
+        -- },
     },
     -- Alisgn text [ glip= ]
     {
@@ -209,7 +217,15 @@ return {
         end
     },
     -- Colour picker and colour background
-    "uga-rosa/ccc.nvim",
+    {
+        "uga-rosa/ccc.nvim",
+        config = {
+            highlighter = {
+                auto_enable = true,
+                lsp = true
+            }
+        }
+    },
     -- Project-wide rename [ \fR ]
     {
         'windwp/nvim-spectre',
@@ -241,14 +257,6 @@ return {
 
             vim.o.foldmethod = "indent"
             vim.o.foldlevelstart = 99
-
-            noremap('n', 'zR', require('ufo').openAllFolds, {desc = "Opens all folds"})
-            noremap('n', 'zM', require('ufo').closeAllFolds, {desc = "Closes all folds"})
-
-            noremap('n', 'zc', 'za', {desc = "Toggles single fold"})
-            noremap('n', 'zC', 'zA', {desc = "Toggles single fold recursively"})
-            noremap('n', 'za', 'zc', {desc = "Closes single fold"})
-            noremap('n', 'zA', 'zC', {desc = "Closes single fold recursively"})
 
             local handler = function(virtText, lnum, endLnum, width, truncate)
                 local newVirtText = {}
@@ -284,7 +292,13 @@ return {
                 end,
                 fold_virt_text_handler = handler
             })
-        end
+        end,
+        keys = {
+            { "zc", "za", mode = "n", noremap = true, silent = true, desc = "Toggles single fold" },
+            { "zC", "zA", mode = "n", noremap = true, silent = true, desc = "Toggles single fold recursively" },
+            { "za", "zc", mode = "n", noremap = true, silent = true, desc = "Closes single fold" },
+            { "zA", "zC", mode = "n", noremap = true, silent = true, desc = "Closes single fold recursively" },
+        },
     },
     -- Text to ascii art (comments) [ \ta ]
     {

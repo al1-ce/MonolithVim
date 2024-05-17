@@ -2,7 +2,7 @@ local opts = { noremap = true, silent = true }
 
 local function noremap(mode, keys, target, options)
     local t
-    if options == nil or #options == 0 then
+    if options == nil then
         t = opts
     else
         t = options

@@ -1,10 +1,10 @@
+---@diagnostic disable: undefined-field, need-check-nil, redundant-parameter
 return {
     {
         'mfussenegger/nvim-dap',
         dependencies = {
             'rcarriga/nvim-dap-ui',
             'nvim-neotest/nvim-nio',
-            "mfussenegger/nvim-dap"
         },
         config = function()
             -- █▀▄ ▄▀█ █▀█
@@ -107,6 +107,7 @@ return {
             -- █▄▀ █▀█ █▀▀ █▄█  █
             local dapui = require("dapui")
 
+            ---@diagnostic disable-next-line: missing-fields
             dapui.setup({
                 layouts = {
                     {

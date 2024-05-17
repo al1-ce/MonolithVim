@@ -36,10 +36,6 @@ noremap("v", "<PageUp>", "<C-u>", { desc = "Jumps up by half window" })
 noremap('i', '<PageDown>', '<Esc><C-d>i', { desc = "Jumps down by half window" })
 noremap("i", "<PageUp>", "<Esc><C-u>i", { desc = "Jumps up by half window" })
 
--- noremap("", "q", "<nop>", { desc = "" })
--- noremap("", "Q", "<nop>", { desc = "" })
-noremap("", "<C-z>", "<nop>", { desc = "I don't like how it works" })
-
 noremap('n', '<C-left>', 'b', { desc = "Goes back by word" })
 noremap('n', '<C-right>', 'e', { desc = "Goes forward by word" })
 
@@ -51,6 +47,10 @@ noremap("n", "<A-S-.>", "<cmd>tabmove +1<cr>", { desc = "Moves tab right" })
 noremap("n", "<A-S-,>", "<cmd>tabmove -1<cr>", { desc = "Moves tab left" })
 
 -- moving between panes
+noremap("n", "<A-h>", "<C-w>h", { desc = "Focuses pane to the left" })
+noremap("n", "<A-l>", "<C-w>l", { desc = "Focuses pane to the right" })
+noremap("n", "<A-k>", "<C-w>k", { desc = "Focuses upper pane" })
+noremap("n", "<A-j>", "<C-w>j", { desc = "Focuses lower pane" })
 noremap("n", "<A-left>", "<C-w>h", { desc = "Focuses pane to the left" })
 noremap("n", "<A-right>", "<C-w>l", { desc = "Focuses pane to the right" })
 noremap("n", "<A-up>", "<C-w>k", { desc = "Focuses upper pane" })
@@ -181,22 +181,6 @@ noremap("i", "<S-Tab>", "<C-o><<", { desc = "Shifts line left" });
 -- -------------------------------------------------------------------------- --
 --                                 Visual Mode                                --
 -- -------------------------------------------------------------------------- --
-
--- remap selections
-noremap("v", "<C-S-up>", "<up>", { desc = "Dumb remap" })
-noremap("v", "<C-S-down>", "<down>", { desc = "Dumb remap" })
-noremap("v", "<C-S-left>", "<C-left>", { desc = "Dumb remap" })
-noremap("v", "<C-S-right>", "<C-right>", { desc = "Dumb remap" })
-
-noremap("v", "<C-up>", "<up>", { desc = "Dumb remap" })
-noremap("v", "<C-down>", "<down>", { desc = "Dumb remap" })
-noremap("v", "<C-left>", "<C-left>", { desc = "Dumb remap" })
-noremap("v", "<C-right>", "<C-right>", { desc = "Dumb remap" })
-
-noremap("v", "<S-up>", "<up>", { desc = "Dumb remap" })
-noremap("v", "<S-down>", "<down>", { desc = "Dumb remap" })
-noremap("v", "<S-left>", "<left>", { desc = "Dumb remap" })
-noremap("v", "<S-right>", "<right>", { desc = "Dumb remap" })
 
 -- backspace
 noremap("v", "<BS>", '"_X', { desc = "Deletes into black hole" });

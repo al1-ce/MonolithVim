@@ -1,5 +1,3 @@
-local noremap = require("utils.noremap")
-
 return {
     -- FZF [ ;ff ;fr ;fp ;fg \ff ... ]
     {
@@ -125,10 +123,11 @@ return {
                 },
                 diagnostics = { prompt = " " }
             })
-
-            noremap("n", "<leader>ff", "<CMD>FzfLua files<cr>", { desc = "Opens file picker" })
-            noremap("n", "<leader>fr", "<CMD>FzfLua oldfiles<cr>", { desc = "Opens recent file picker" })
-            noremap("n", "<leader>fg", "<CMD>FzfLua grep_project<cr>", { desc = "Opens project picker" })
-        end
+        end,
+        keys = {
+            { "<leader>ff", "<cmd>FzfLua files<cr>", mode = "n", noremap = true, silent = true, desc = "Opens file picker" },
+            { "<leader>fr", "<cmd>FzfLua oldfiles<cr>", mode = "n", noremap = true, silent = true, desc = "Opens oldfile picker" },
+            { "<leader>fg", "<cmd>FzfLua grep_project<cr>", mode = "n", noremap = true, silent = true, desc = "Opens project picker" },
+        },
     },
 }

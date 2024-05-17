@@ -1,5 +1,3 @@
-local noremap = require("utils.noremap")
-
 return {
     -- Configs for the Nvim LSP client (:help lsp)
     {
@@ -102,23 +100,26 @@ return {
                 end
             })
 
-            noremap("n", "K", "<cmd>Lspsaga hover_doc<cr>", {desc = "Shows hover doc for symbol"})
-            noremap("n", "gD", "<cmd>Lspsaga peek_definition<cr>", {desc = "Peeks symbol definition"})
+            -- FIXME: rewrite for lua..?
+        end,
+        keys = {
+            { "K", "<cmd>Lspsaga hover_doc<cr>", mode = "n", desc = "Shows hover doc for symbol" },
+            { "gD", "<cmd>Lspsaga peek_definition<cr>", mode = "n", desc = "Peeks symbol definition" },
 
-            noremap("n", "<A-s>", "<cmd>Lspsaga hover_doc<cr>", {desc = "Shows hover doc for symbol"})
-            noremap("i", "<A-s>", "<cmd>Lspsaga hover_doc<cr>", {desc = "Shows hover doc for symbol"})
-            noremap("n", "<A-d>", "<cmd>Lspsaga peek_definition<cr>", {desc = "Peeks symbol definition"})
-            noremap("i", "<A-d>", "<cmd>Lspsaga peek_definition<cr>", {desc = "Peeks symbol definition"})
-            noremap('n', '<C-s>', vim.lsp.buf.signature_help, {desc = "Shows signature help"})
-            noremap('i', '<C-s>', vim.lsp.buf.signature_help, {desc = "Shows signature help"})
+            { "<A-s>", "<cmd>Lspsaga hover_doc<cr>", mode = "n", desc = "Shows hover doc for symbol" },
+            { "<A-s>", "<cmd>Lspsaga hover_doc<cr>", mode = 'i', desc = "Shows hover doc for symbol" },
+            { "<A-d>", "<cmd>Lspsaga peek_definition<cr>", mode = "n", desc = "Peeks symbol definition" },
+            { "<A-d>", "<cmd>Lspsaga peek_definition<cr>", mode = 'i', desc = "Peeks symbol definition" },
+            { '<C-s>', vim.lsp.buf.signature_help, mode = "n", desc = "Shows signature help" },
+            { '<C-s>', vim.lsp.buf.signature_help, mode = 'i', desc = "Shows signature help" },
 
-            noremap("n", "<leader>ca", "<cmd>Lspsaga code_action<cr>", {desc = "Shows available code actions"})
-            noremap("n", "<leader>d", "<cmd>Lspsaga show_line_diagnostics<cr>", {desc = "Shows diagnostics for line"})
+            { "<leader>ca", "<cmd>Lspsaga code_action<cr>", mode = "n", desc = "Shows available code actions" },
+            { "<leader>d", "<cmd>Lspsaga show_line_diagnostics<cr>", mode = "n", desc = "Shows diagnostics for line" },
 
-            noremap("n", "gd", vim.lsp.buf.definition, {desc = "Opens symbol definition in current buffer"})
-            noremap("n", "gi", vim.lsp.buf.implementation, {desc = "Opens symbol implementation in current buffer"})
-            noremap("n", "gr", vim.lsp.buf.references, {desc = "Opens symbol references in quickfix list"})
-        end
+            { "gd", vim.lsp.buf.definition, mode = "n", desc = "Opens symbol definition in current buffer" },
+            { "gi", vim.lsp.buf.implementation, mode = "n", desc = "Opens symbol implementation in current buffer" },
+            { "gr", vim.lsp.buf.references, mode = "n", desc = "Opens symbol references in quickfix list" },
+        }
     },
     -- Nvim lua api
     {

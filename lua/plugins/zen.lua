@@ -4,15 +4,7 @@ return {
     -- true zen
     {
         'folke/zen-mode.nvim',
-        config = function()
-            local function zen_width_calc()
-                -- 120
-                local w = vim.o.columns;
-                if w < 120 then return 120 end
-                return 0.5
-            end
-
-            require("zen-mode").setup({
+        config = {
                 window = {
                     backdrop = 1, -- shade the backdrop of the Zen window. Set to 1 to keep the same as Normal
                     -- height and width can be:
@@ -20,12 +12,12 @@ return {
                     -- * a percentage of the width / height of the editor when <= 1
                     -- * a function that returns the width or the height
                     width = 140, -- width of the Zen window
-                    height = 1, -- height of the Zen window
+                    height = 1,  -- height of the Zen window
                     -- by default, no options are changed for the Zen window
                     -- uncomment any of the options below, or add other vim.wo options you want to apply
                     options = {
                         signcolumn = "no", -- disable signcolumn
-                        number = false, -- disable number column
+                        number = false,    -- disable number column
                         -- relativenumber = false, -- disable relative numbers
                         -- cursorline = false, -- disable cursorline
                         -- cursorcolumn = false, -- disable cursor column
@@ -38,15 +30,15 @@ return {
                     -- comment the lines to not apply the options
                     options = {
                         enabled = true,
-                        ruler = false, -- disables the ruler text in the cmd line area
+                        ruler = false,   -- disables the ruler text in the cmd line area
                         showcmd = false, -- disables the command in the last line of the screen
                         -- you may turn on/off statusline in zen mode by setting 'laststatus'
                         -- statusline will be shown only if 'laststatus' == 3
-                        laststatus = 0, -- turn off the statusline in zen mode
+                        laststatus = 0,             -- turn off the statusline in zen mode
                     },
                     twilight = { enabled = false }, -- enable to start Twilight when zen mode opens
                     gitsigns = { enabled = false }, -- disables git signs
-                    tmux = { enabled = false }, -- disables the tmux statusline
+                    tmux = { enabled = false },     -- disables the tmux statusline
                     -- this will change the font size on kitty when in zen mode
                     -- to make this work, you need to set the following kitty options:
                     -- - allow_remote_control socket-only
@@ -76,9 +68,9 @@ return {
                 -- callback where you can add custom code when the Zen window closes
                 on_close = function()
                 end,
-            })
-
-            noremap("n", "<leader>gg", "<cmd>ZenMode<cr>")
-        end
+            },
+        keys = {
+            { "<leader>gg", "<cmd>ZenMode<cr>", mode = "n", noremap = true, silent = true, desc = "Starts or stops zen mode" },
+        }
     },
 }

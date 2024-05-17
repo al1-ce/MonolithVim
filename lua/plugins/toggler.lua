@@ -39,6 +39,7 @@ return {
                     ['row'] = 'column',
                     ['start'] = 'end',
                     ['after'] = 'before',
+                    ['above'] = 'below',
                 },
                 remove_default_keybinds = true,
             })

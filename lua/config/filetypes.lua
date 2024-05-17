@@ -10,7 +10,7 @@ local shebangList = {
     ["rdmd"] = "d",
     ["rund"] = "d",
     ["dub"] = "d",
-    ["fish"] = "fish"
+    ["fish"] = "fish",
 }
 
 local function setCustomHighlight(lang)
@@ -90,6 +90,7 @@ do -- start autocmd block
 
     -- ;h - to edit c headers and source files faster
     -- TODO: figure out how to do it with vim.api.nvim_create_augroup
+    -- FIXME: rewrite as lua function and find appropriate .h or .hpp file
     vim.cmd([[au BufEnter,BufNew *.c nnoremap <silent> ;h :e %<.h<CR>]])
     vim.cmd([[au BufEnter,BufNew *.h nnoremap <silent> ;h :e %<.c<CR>]])
     vim.cmd([[au BufEnter,BufNew *.hpp nnoremap <silent> ;h :e %<.cpp<CR>]])

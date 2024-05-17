@@ -11,3 +11,5 @@ load('config.keymap')
 load('config.autocmd')
 load('config.theme')
 
+load('utils.codestats.loader')
+

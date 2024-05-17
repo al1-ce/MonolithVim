@@ -179,5 +179,3 @@ if g.colors_name == 'gruvbox' then
     ]])
 end
 
-
-

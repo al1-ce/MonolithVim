@@ -35,33 +35,32 @@ return {
     {
         "stevearc/oil.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
-        config = function()
-            require("oil").setup({
-                keymaps = {
-                    ["g?"] = "actions.show_help",
-                    ["<CR>"] = "actions.select",
-                    ["<C-s>"] = "actions.select_vsplit",
-                    ["<C-h>"] = "actions.select_split",
-                    ["<C-t>"] = "actions.select_tab",
-                    ["<C-p>"] = "actions.preview",
-                    ["q"] = "actions.close",
-                    ["<C-l>"] = "actions.refresh",
-                    ["-"] = "actions.parent",
-                    ["_"] = "actions.open_cwd",
-                    ["`"] = "actions.cd",
-                    ["~"] = "actions.tcd",
-                    ["gs"] = "actions.change_sort",
-                    ["gx"] = "actions.open_external",
-                    ["g."] = "actions.toggle_hidden",
-                },
-                use_default_keymaps = false,
-                view_options = {
-                    show_hidden = true
-                }
-            })
-
-            noremap("n", "-", "<CMD>Oil<CR>", { desc = "open parent directory" })
-        end
+        config = {
+            keymaps = {
+                ["g?"] = "actions.show_help",
+                ["<cr>"] = "actions.select",
+                ["<C-s>"] = "actions.select_vsplit",
+                ["<C-h>"] = "actions.select_split",
+                ["<C-t>"] = "actions.select_tab",
+                ["<C-p>"] = "actions.preview",
+                ["q"] = "actions.close",
+                ["<C-l>"] = "actions.refresh",
+                ["-"] = "actions.parent",
+                ["_"] = "actions.open_cwd",
+                ["`"] = "actions.cd",
+                ["~"] = "actions.tcd",
+                ["gs"] = "actions.change_sort",
+                ["gx"] = "actions.open_external",
+                ["g."] = "actions.toggle_hidden",
+            },
+            use_default_keymaps = false,
+            view_options = {
+                show_hidden = true
+            }
+        },
+        keys = {
+            { "-", "<cmd>Oil<cr>", mode = "n", noremap = true, silent = true, desc = "Opens parent directory" },
+        },
     },
 
     -- TodoTree [ \vt ]
@@ -100,29 +99,28 @@ return {
     {
         'matbme/JABS.nvim',
         dependencies = { "nvim-tree/nvim-web-devicons" },
-        config = function()
-            require("jabs").setup({
-                keymap = {
-                    close = "d",   -- Close buffer. Default D
-                    jump = "<cr>", -- Jump to buffer. Default <cr>
-                    h_split = "s", -- Horizontally split buffer. Default s
-                    v_split = "v", -- Vertically split buffer. Default v
-                    preview = "p", -- Open buffer preview. Default P
-                },
+        config = {
+            keymap = {
+                close = "d",   -- Close buffer. Default D
+                jump = "<cr>", -- Jump to buffer. Default <cr>
+                h_split = "s", -- Horizontally split buffer. Default s
+                v_split = "v", -- Vertically split buffer. Default v
+                preview = "p", -- Open buffer preview. Default P
+            },
 
-                border = "none",
-                -- border = { "┌", " ", "┐", " ", "┘", " ", "└", " " },
-                relative = "cursor",
-                position = { 'right', 'bottom' },
+            border = "none",
+            -- border = { "┌", " ", "┐", " ", "┘", " ", "└", " " },
+            relative = "cursor",
+            position = { 'right', 'bottom' },
 
-                preview = {
-                    -- border = 'none'
-                    border = { "┌", " ", "┐", " ", "┘", " ", "└", " " },
-                }
-            })
-
-            noremap("n", "<leader>b", "<cmd>JABSOpen<cr>", {desc = "Opens buffer switcher"})
-        end
+            preview = {
+                -- border = 'none'
+                border = { "┌", " ", "┐", " ", "┘", " ", "└", " " },
+            }
+        },
+        keys = {
+            { "<leader>b", "<cmd>JABSOpen<cr>", mode = "n", noremap = true, silent = true, desc = "Opens buffer switcher" },
+        }
     },
 
     -- Jump with keys [ s ]
@@ -135,10 +133,11 @@ return {
             g.EasyMotion_use_upper = 0
             g.EasyMotion_smartcase = 1
             g.EasyMotion_use_smartsign_us = 1
-
-            noremap("n", "S", "<Plug>(easymotion-overwin-f)", { desc = "Starts easymotion with one key" })
-            noremap("n", "s", "<Plug>(easymotion-overwin-f2)", { desc = "Starts easymotion with two keys" })
-        end
+        end,
+        keys = {
+            { "S", "<Plug>(easymotion-overwin-f)",  mode = "n", noremap = true, silent = true, desc = "Starts easymotion with one key" },
+            { "s", "<Plug>(easymotion-overwin-f2)", mode = "n", noremap = true, silent = true, desc = "Starts easymotion with two keys" },
+        }
     },
     -- Remove search highlight automatically
     { "nvimdev/hlsearch.nvim", event = { "BufRead" }, config = true },
@@ -148,17 +147,17 @@ return {
     -- Move lines and characters [ A-Up A-Down ]
     {
         'fedepujol/move.nvim',
-        config = function()
-            require("move").setup({})
+        config = true,
+        keys = {
+            { "<A-up>",    "<esc><cmd>MoveLine(-1)<cr>i", mode = "i", noremap = true, silent = true, desc = "Swaps current line with line above" },
+            { "<A-down>",  "<esc><cmd>MoveLine(1)<cr>i",  mode = "i", noremap = true, silent = true, desc = "Swaps current line with line below" },
 
-            noremap('i', '<A-up>', '<Esc><cmd>MoveLine(-1)<CR>i', {desc = "Swaps current line with line above"})
-            noremap('i', '<A-down>', '<Esc><cmd>MoveLine(1)<CR>i', {desc = "Swaps current line with line below"})
-
-            noremap('v', '<A-up>', ":MoveBlock(-1)<CR>", {desc = "Moves visual block up"})
-            noremap('v', '<A-down>', ":MoveBlock(1)<CR>", {desc = "Moves visual block down"})
-            noremap('v', '<A-right>', ":MoveHBlock(1)<CR>", {desc = "Moves visual block right"})
-            noremap('v', '<A-left>', ":MoveHBlock(-1)<CR>", {desc = "Moves visual block left"})
-        end
+            -- for some reason <cmd> breaks it, probably because '<,'>
+            { "<A-up>",    ":MoveBlock(-1)<cr>",          mode = "v", noremap = true, silent = true, desc = "Moves visual block up" },
+            { "<A-down>",  ":MoveBlock(1)<cr>",           mode = "v", noremap = true, silent = true, desc = "Moves visual block down" },
+            { "<A-right>", ":MoveHBlock(1)<cr>",          mode = "v", noremap = true, silent = true, desc = "Moves visual block right" },
+            { "<A-left>",  ":MoveHBlock(-1)<cr>",         mode = "v", noremap = true, silent = true, desc = "Moves visual block left" },
+        }
     },
     -- Sudo edit/save [ \hw \hr ]
     'lambdalisue/suda.vim',
@@ -205,9 +204,10 @@ return {
                 })
             end
 
-            setKeymapFiletype('todo', 'TodoAddNew', 'n', '<CR>', '<CMD>VimTodoListsCreateNewItemBelow<CR>')
-            setKeymapFiletype('todo', 'TodoAddNewAbove', 'n', '<A-CR>', '<CMD>VimTodoListsCreateNewItemAbove<CR>')
-            setKeymapFiletype('todo', 'TodoToggle', 'n', '<Space>', '<CMD>VimTodoListsToggleItem<CR>')
+            -- TODO: rewrite with lazy keys using ft="todo"
+            setKeymapFiletype('todo', 'TodoAddNew', 'n', '<cr>', '<cmd>VimTodoListsCreateNewItemBelow<cr>')
+            setKeymapFiletype('todo', 'TodoAddNewAbove', 'n', '<A-CR>', '<cmd>VimTodoListsCreateNewItemAbove<cr>')
+            setKeymapFiletype('todo', 'TodoToggle', 'n', '<Space>', '<cmd>VimTodoListsToggleItem<cr>')
 
             vim.cmd([[
                 function! VimTodoListsInitFIXED()
@@ -226,9 +226,9 @@ return {
     -- Look up at devdocs [:gd]
     {
         'romainl/vim-devdocs',
-        config = function()
-            noremap('n', '<leader>gd', '<cmd>DD<CR>', {desc = "Opens devdocs for symbol under cursor"})
-        end
+        keys = {
+            { "<leader>gd", "<cmd>DD<cr>", mode = "n", noremap = true, silent = true, desc = "Opens devdocs for symbol under cursor" },
+        }
     },
     -- better macros
     {
@@ -353,31 +353,41 @@ return {
     -- Move splits [ A-S-Right ... ]
     {
         'sindrets/winshift.nvim',
-        config = function()
-            require("winshift").setup({
-                keymaps = {
-                    disable_defaults = false,
-                }
-            })
-
-            -- moving panes
-            noremap("n", "<A-S-left>", "<cmd>WinShift left<cr>", {desc = "Moves window left"})
-            noremap("n", "<A-S-right>", "<cmd>WinShift right<cr>", {desc = "Moves window right"})
-            noremap("n", "<A-S-up>", "<cmd>WinShift up<cr>", {desc = "Moves window up"})
-            noremap("n", "<A-S-down>", "<cmd>WinShift down<cr>", {desc = "Moves window down"})
-        end
+        config = {
+            keymaps = {
+                disable_defaults = false,
+            }
+        },
+        keys = {
+            { "<A-S-left>",  "<cmd>WinShift left<cr>",  mode = "n", noremap = true, silent = true, desc = "Moves window left" },
+            { "<A-S-right>", "<cmd>WinShift right<cr>", mode = "n", noremap = true, silent = true, desc = "Moves window right" },
+            { "<A-S-up>",    "<cmd>WinShift up<cr>",    mode = "n", noremap = true, silent = true, desc = "Moves window up" },
+            { "<A-S-down>",  "<cmd>WinShift down<cr>",  mode = "n", noremap = true, silent = true, desc = "Moves window down" },
+            { "<A-S-h>",     "<cmd>WinShift left<cr>",  mode = "n", noremap = true, silent = true, desc = "Moves window left" },
+            { "<A-S-l>",     "<cmd>WinShift right<cr>", mode = "n", noremap = true, silent = true, desc = "Moves window right" },
+            { "<A-S-k>",     "<cmd>WinShift up<cr>",    mode = "n", noremap = true, silent = true, desc = "Moves window up" },
+            { "<A-S-j>",     "<cmd>WinShift down<cr>",  mode = "n", noremap = true, silent = true, desc = "Moves window down" },
+        }
     },
     -- Resize splits [ A-C-Right ... ]
     {
         'mrjones2014/smart-splits.nvim',
-        config = function()
-            require('smart-splits').setup({})
-
-            -- resizing panes
-            noremap("n", "<A-C-left>", function() require('smart-splits').resize_left(2) end, {desc = "Resizes window to left"})
-            noremap("n", "<A-C-right>", function() require('smart-splits').resize_right(2) end, {desc = "Resizes window to right"})
-            noremap("n", "<A-C-up>", function() require('smart-splits').resize_up(2) end, {desc = "Resizes window up"})
-            noremap("n", "<A-C-down>", function() require('smart-splits').resize_down(2) end, {desc = "Resizes window down"})
-        end
+        config = true,
+        keys = {
+            { "<A-C-left>",  function() require('smart-splits').resize_left(2) end,   mode = "n", noremap = true, silent = true, desc = "Resizes window to left" },
+            { "<A-C-right>", function() require('smart-splits').resize_right(2) end,  mode = "n", noremap = true, silent = true, desc = "Resizes window to right" },
+            { "<A-C-up>",    function() require('smart-splits').resize_up(2) end,     mode = "n", noremap = true, silent = true, desc = "Resizes window up" },
+            { "<A-C-down>",  function() require('smart-splits').resize_down(2) end,   mode = "n", noremap = true, silent = true, desc = "Resizes window down" },
+            { "<A-C-h>",     function() require('smart-splits').resize_left(2) end,   mode = "n", noremap = true, silent = true, desc = "Resizes window to left" },
+            { "<A-C-l>",     function() require('smart-splits').resize_right(2) end,  mode = "n", noremap = true, silent = true, desc = "Resizes window to right" },
+            { "<A-C-k>",     function() require('smart-splits').resize_up(2) end,     mode = "n", noremap = true, silent = true, desc = "Resizes window up" },
+            { "<A-C-j>",     function() require('smart-splits').resize_down(2) end,   mode = "n", noremap = true, silent = true, desc = "Resizes window down" },
+        }
     },
+    -- {
+    --     'Lokaltog/neoranger',
+    --     keys = {
+    --         { "-", "<cmd>RangerCurrentFile<cr>", desc = "Opens ranger", mode = "n" }
+    --     },
+    -- }
 }

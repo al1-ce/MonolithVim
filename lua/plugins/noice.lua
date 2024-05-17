@@ -1,18 +1,3 @@
-local noremap = require("utils.noremap")
-
-return {
-    -- Reworks many things, makes notifications [ ;; ]
-    -- Can't remove since it makes cmdheight=0 viable
-    -- lazy.nvim
-    {
-        "folke/noice.nvim",
-        event = "VeryLazy",
-        dependencies = {
-            "MunifTanjim/nui.nvim",
-            "rcarriga/nvim-notify",            -- optional
-            'nvim-treesitter/nvim-treesitter', -- optional
-        },
-        config = function()
             local icons = {
 
                 cmdline     = ">", -- command
@@ -40,7 +25,19 @@ return {
 
             }
 
-            require("noice").setup({
+return {
+    -- Reworks many things, makes notifications [ ;; ]
+    -- Can't remove since it makes cmdheight=0 viable
+    -- lazy.nvim
+    {
+        "folke/noice.nvim",
+        event = "VeryLazy",
+        dependencies = {
+            "MunifTanjim/nui.nvim",
+            "rcarriga/nvim-notify",            -- optional
+            'nvim-treesitter/nvim-treesitter', -- optional
+        },
+        config = {
                 cmdline = {
                     enabled = true, -- enables the Noice cmdline UI
                     view = "cmdline", -- view for rendering the cmdline. Change to `cmdline` to get a classic cmdline at the bottom
@@ -151,10 +148,10 @@ return {
                 routes = {},          --- @see section on routes
                 status = {},          --- @see section on statusline components
                 format = {},          --- @see section on formatting
-            })
-
-            noremap("n", "<leader><leader>", "<cmd>Noice dismiss<cr>", {desc = "Hides all noice notifications"})
-        end
+        },
+        keys = {
+            { "<leader><leader>", "<cmd>Noice dismiss<cr>", mode = "n", noremap = true, silent = true, desc = "Hides all notifications" },
+        }
     },
 
 }

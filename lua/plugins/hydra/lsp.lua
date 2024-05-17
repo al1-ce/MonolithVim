@@ -7,12 +7,9 @@ local M = {}
 
 local hintLsp = [[
 ┌         Lsp         ┐
-  _a_: Code actions      
   _D_: Diagnostic        
   _f_: Finder            
-  _h_: Hover doc         
         Symbols        
-  _p_: Peek definition   
   _r_: Rename symbol     
   _s_: Symbol list       
   _S_: Symbol qflist     
@@ -43,12 +40,9 @@ function M.hydra() return Hydra({
         config = colors.passAllow(),
         mode = '',
         heads = {
-            { 'a', cmd 'Lspsaga code_action' },
             { 'D', cmd 'Lspsaga show_workspace_diagnostics' },
             { 'f', cmd 'FzfLua lsp_finder' },
-            { 'h', cmd 'Lspsaga hover_doc' },
 
-            { 'p', cmd 'Lspsaga peek_definition' },
             { 'r', cmd 'Lspsaga rename' },
             { 's', cmd 'FzfLua lsp_document_symbols' },
             { 'S', cmd 'lua vim.lsp.buf.document_symbol()' },
