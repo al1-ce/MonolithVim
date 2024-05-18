@@ -99,9 +99,8 @@ return {
                     vim.diagnostic.open_float(nil, opts)
                 end
             })
-
-            -- FIXME: rewrite for lua..?
         end,
+        event = "VimEnter",
         keys = {
             { "K", "<cmd>Lspsaga hover_doc<cr>", mode = "n", desc = "Shows hover doc for symbol" },
             { "gD", "<cmd>Lspsaga peek_definition<cr>", mode = "n", desc = "Peeks symbol definition" },

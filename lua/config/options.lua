@@ -44,8 +44,6 @@ vim.g["lsp-timeout-config"] = {
     silent       = true           -- true to suppress notifications
 }
 
-vim.cmd.colorscheme('gruvbox')
-
 -- don't auto commenting new lines
 vim.cmd [[au BufEnter * set fo-=c fo-=r fo-=o]]
 

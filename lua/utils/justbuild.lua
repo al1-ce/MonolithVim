@@ -267,6 +267,22 @@ do
         return table.concat(parts)
     end
 end
+
+local function __TS__StringSlice(self, start, ____end)
+    if start == nil or start ~= start then
+        start = 0
+    end
+    if ____end ~= ____end then
+        ____end = 0
+    end
+    if start >= 0 then
+        start = start + 1
+    end
+    if ____end ~= nil and ____end < 0 then
+        ____end = ____end - 1
+    end
+    return string.sub(self, start, ____end)
+end
 -- End of Lua Library inline imports
 local ____exports = {}
 local pickers = require("telescope.pickers")
@@ -276,6 +292,7 @@ local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
 local themes = require("telescope.themes")
 local async = require("plenary.job")
+local progress = require("fidget.progress")
 local notify = require("notify")
 local asyncWorker
 local function popup(message, errlvl, title)
@@ -508,6 +525,7 @@ local function get_build_args(build_name)
     end
     return argsout
 end
+local MESSAGE_LIMIT = 32
 local function build_runner(build_name)
     if asyncWorker ~= nil then
         popup("Build job is already running", "error", "Build")
@@ -523,11 +541,10 @@ local function build_runner(build_name)
         popup("Justfile not found in project directory", "error", "Build")
         return
     end
+    local handle = progress.handle.create({title = "", message = "Starting build job...", lsp_client = {name = "Build job"}, percentage = 0})
     local command = (((justloc .. " -d . ") .. build_name) .. " ") .. table.concat(args, " ")
     vim.schedule(function()
-        vim.cmd("copen")
         vim.fn.setqflist({{text = "Starting build job: " .. command}, {text = ""}}, "r")
-        vim.cmd("wincmd p")
     end)
     local stime = os.clock()
     local function sleep(t)
@@ -551,6 +568,10 @@ local function build_runner(build_name)
             data = __TS__StringReplaceAll(data, "\0", "")
             vim.cmd(("caddexpr '" .. data) .. "'")
             vim.cmd("cbottom")
+            if #data > MESSAGE_LIMIT then
+                data = __TS__StringSlice(data, 0, MESSAGE_LIMIT - 1) .. "..."
+            end
+            handle.message = data
         end)
     end
     local function onStderrFunc(err, data)
@@ -573,6 +594,10 @@ local function build_runner(build_name)
                 data = __TS__StringReplaceAll(data, "\0", "")
                 vim.cmd(("caddexpr '" .. data) .. "'")
                 vim.cmd("cbottom")
+                if #data > MESSAGE_LIMIT then
+                    data = __TS__StringSlice(data, 0, MESSAGE_LIMIT - 1) .. "..."
+                end
+                handle.message = data
             end)
         )
     end
@@ -589,11 +614,17 @@ local function build_runner(build_name)
                 vim.schedule_wrap(function()
                     local status = ""
                     if asyncWorker == nil then
+                        handle.message = "Cancelled"
+                        handle:cancel()
                         status = "Cancelled"
                     else
                         if ret == 0 then
+                            handle.message = "Finished"
+                            handle:finish()
                             status = "Finished"
                         else
+                            handle.message = "Failed"
+                            handle:finish()
                             status = "Failed"
                         end
                     end

@@ -9,7 +9,9 @@ load('config.filetypes')
 load('config.lazy')
 load('config.keymap')
 load('config.autocmd')
-load('config.theme')
+-- load('config.theme')
+
+vim.cmd.colorscheme('gruvbox')
 
 load('utils.codestats.loader')
 

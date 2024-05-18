@@ -124,6 +124,7 @@ return {
                 diagnostics = { prompt = " " }
             })
         end,
+        event = "VimEnter",
         keys = {
             { "<leader>ff", "<cmd>FzfLua files<cr>", mode = "n", noremap = true, silent = true, desc = "Opens file picker" },
             { "<leader>fr", "<cmd>FzfLua oldfiles<cr>", mode = "n", noremap = true, silent = true, desc = "Opens oldfile picker" },

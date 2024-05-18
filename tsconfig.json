@@ -31,7 +31,9 @@
             "telescope.actions",
             "telescope.actions.state",
             "notify",
-            "plenary.job"
+            "plenary.job",
+            "fidget.progress",
+            "fidget.notification"
         ]
     }
 }

@@ -36,6 +36,7 @@ return {
         "stevearc/oil.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
         config = {
+            default_file_explorer = true,
             keymaps = {
                 ["g?"] = "actions.show_help",
                 ["<cr>"] = "actions.select",
@@ -58,6 +59,7 @@ return {
                 show_hidden = true
             }
         },
+        event = "VimEnter",
         keys = {
             { "-", "<cmd>Oil<cr>", mode = "n", noremap = true, silent = true, desc = "Opens parent directory" },
         },
@@ -118,6 +120,7 @@ return {
                 border = { "┌", " ", "┐", " ", "┘", " ", "└", " " },
             }
         },
+        event = "VimEnter",
         keys = {
             { "<leader>b", "<cmd>JABSOpen<cr>", mode = "n", noremap = true, silent = true, desc = "Opens buffer switcher" },
         }
@@ -148,6 +151,7 @@ return {
     {
         'fedepujol/move.nvim',
         config = true,
+        event = "VimEnter",
         keys = {
             { "<A-up>",    "<esc><cmd>MoveLine(-1)<cr>i", mode = "i", noremap = true, silent = true, desc = "Swaps current line with line above" },
             { "<A-down>",  "<esc><cmd>MoveLine(1)<cr>i",  mode = "i", noremap = true, silent = true, desc = "Swaps current line with line below" },
@@ -339,6 +343,7 @@ return {
     {
         "ellisonleao/glow.nvim",
         cmd = "Glow",
+        event = "VimEnter",
         config = {
 
             style = "~/.config/nvim/res/gruvbox.json",
@@ -353,6 +358,7 @@ return {
     -- Move splits [ A-S-Right ... ]
     {
         'sindrets/winshift.nvim',
+        event = "VimEnter",
         config = {
             keymaps = {
                 disable_defaults = false,
@@ -373,6 +379,7 @@ return {
     {
         'mrjones2014/smart-splits.nvim',
         config = true,
+        event = "VimEnter",
         keys = {
             { "<A-C-left>",  function() require('smart-splits').resize_left(2) end,   mode = "n", noremap = true, silent = true, desc = "Resizes window to left" },
             { "<A-C-right>", function() require('smart-splits').resize_right(2) end,  mode = "n", noremap = true, silent = true, desc = "Resizes window to right" },

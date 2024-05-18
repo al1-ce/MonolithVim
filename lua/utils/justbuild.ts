@@ -75,6 +75,20 @@ declare namespace telescope {
     }
 }
 
+declare namespace fidget {
+    namespace progress {
+        namespace handle {
+            function create(opts: any): fidget.progress.Handle;
+        }
+        interface Handle {
+            message: string;
+            report(opts: any): any;
+            cancel(): any;
+            finish(): any;
+        }
+    }
+}
+
 interface PlenaryJobConstructor {
     new(job: any): PlenaryJob;
 }
@@ -126,6 +140,7 @@ let actions = require("telescope.actions") as typeof telescope.actions;
 let action_state = require("telescope.actions.state") as typeof telescope.actions.state;
 let themes = require("telescope.themes") as typeof telescope.themes;
 let async = require("plenary.job") as PlenaryJob
+let progress = require("fidget.progress") as typeof fidget.progress;
 
 let notify = require("notify");
 
@@ -294,6 +309,8 @@ function get_build_args(build_name: string): string[] {
     return argsout;
 }
 
+const MESSAGE_LIMIT = 32; // 15 is around cutoff of first word
+
 // doesnt include aliases
 function build_runner(build_name: string): void {
     if (asyncWorker != null) {
@@ -311,6 +328,13 @@ function build_runner(build_name: string): void {
         return;
     }
 
+    let handle = progress.handle.create({
+        title: "",
+        message: "Starting build job...",
+        lsp_client: { name: "Build job" },
+        percentage: 0
+    })
+
     let command: string = `${justloc} -d . ${build_name} ${args.join(" ")}`;
     // popup(command);
     // let success: string = `aplay ${getConfigDir()}/res/build_success.wav -q`;
@@ -326,9 +350,9 @@ function build_runner(build_name: string): void {
     // and AsyncRun was giving me some wierd errors at some places
     // and I can make it even prettier
     vim.schedule(function() {
-        vim.cmd("copen");
+        // vim.cmd("copen");
         vim.fn.setqflist([{text: "Starting build job: " + command}, {text: ""}], "r");
-        vim.cmd("wincmd p");
+        // vim.cmd("wincmd p");
     });
 
     let stime = os.clock();
@@ -363,6 +387,8 @@ function build_runner(build_name: string): void {
 
             vim.cmd(`caddexpr '${data}'`);
             vim.cmd("cbottom");
+            if (data.length > MESSAGE_LIMIT) data = data.slice(0, MESSAGE_LIMIT - 1) + "...";
+            handle.message = data;
         });
     }
     let onStderrFunc = function(err: string, data: string) {
@@ -382,6 +408,8 @@ function build_runner(build_name: string): void {
             // popup(data);
             vim.cmd(`caddexpr '${data}'`);
             vim.cmd("cbottom");
+            if (data.length > MESSAGE_LIMIT) data = data.slice(0, MESSAGE_LIMIT - 1) + "...";
+            handle.message = data;
         // });
         }));
     }
@@ -399,11 +427,17 @@ function build_runner(build_name: string): void {
             timer.start(50, 0, vim.schedule_wrap(function() {
                 let status: string = "";
                 if (asyncWorker == null) {
+                    handle.message = "Cancelled";
+                    handle.cancel();
                     status = "Cancelled";
                 } else {
                     if (ret == 0) {
+                        handle.message = "Finished";
+                        handle.finish();
                         status = "Finished";
                     } else {
+                        handle.message = "Failed";
+                        handle.finish();
                         status = "Failed"
                     }
                 }

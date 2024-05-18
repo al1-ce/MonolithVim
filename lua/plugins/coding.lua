@@ -293,6 +293,7 @@ return {
                 fold_virt_text_handler = handler
             })
         end,
+        event = "VimEnter",
         keys = {
             { "zc", "za", mode = "n", noremap = true, silent = true, desc = "Toggles single fold" },
             { "zC", "zA", mode = "n", noremap = true, silent = true, desc = "Toggles single fold recursively" },

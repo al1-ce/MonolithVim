@@ -9,5 +9,9 @@ do -- BEGIN AUTOCMD
             vim.highlight.on_yank({ higroup = 'IncSearch', timeout = '1000' })
         end
     })
+
+    autocmd("ColorScheme", { callback = function ()
+        require("config.theme")
+    end })
 end -- END AUTOCMD
 
