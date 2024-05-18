@@ -10,8 +10,8 @@ do -- BEGIN AUTOCMD
         end
     })
 
-    autocmd("ColorScheme", { callback = function ()
-        require("config.theme")
-    end })
+    -- autocmd("ColorScheme", { callback = function ()
+    --     require("config.theme")
+    -- end })
 end -- END AUTOCMD
 

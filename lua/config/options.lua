@@ -1,8 +1,14 @@
 -- nvim settings
 
+vim.g.mapleader = ";"
+-- KEEP IT HERE FOR GOD SAKE
+-- IT BREAKS IF YOU'RE NOT DOING THAT
+vim.cmd.colorscheme('gruvbox')
+
 vim.g.gruvbox_baby_transparent_mode = 1
 vim.g.gruvbox_contrast_dark = "medium"
 vim.g.gruvbox_transparent_bg = 1
+
 vim.g.ruby_host_prog = '~/.local/share/gem/ruby/3.0.0/bin/neovim-ruby-host'
 
 vim.o.background = "dark"       -- or "light" for light mode
@@ -58,3 +64,4 @@ vim.cmd([[set guicursor=n-v-sm:block,i-c-ci-ve:ver25,r-cr-o:hor20]])
 -- vim.cmd [[language en_US.UTF-8]]
 vim.cmd([[filetype indent plugin on]])
 vim.cmd([[syntax enable]])
+

@@ -154,6 +154,10 @@ if g.colors_name == 'gruvbox' then
     highlightAll({"DapSignBreakpoint"}, style_breakpoint)
     highlightAll({"DapSignBreakpointNumber"}, style_breakpoint_fg)
 
+    highlight("LuaLineDiffAdd", style_string)
+    highlight("LuaLineDiffChange", style_special)
+    highlight("LuaLineDiffDelete", style_keyword)
+
     -- CMP
 
     highlightAll({"CmpItemKindText", "CmpItemKindField", "CmpItemKindValue", "CmpItemKindOperator", "CmpItemKindTypeParameter"}, style_normal)
