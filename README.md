@@ -34,10 +34,10 @@
 - Language Server Protocol with Native LSP
 - Debug Adapter Protocol with nvim-dap
 - Powerful shortcut engine with Hydra
-- Build system with Just ([docs](readme/build.md))
+- Build system with Just ([just.nvim](https://github.com/al1-ce/just.nvim))
 - Preconfigured for D 
 
-And much more. For sources and other plugins with descriptions see [lua/monolith/core/plugins.lua](lua/monolith/core/plugins.lua) file.
+And much more. For sources and other plugins with descriptions see "plugins" directory.
 
 ## Requirements (not full list, see issue #17)
 - Nerd Fonts

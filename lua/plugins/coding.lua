@@ -1,4 +1,5 @@
 local noremap = require("utils.noremap")
+local sysdep = require("utils.sysdep")
 
 return {
     -- A completion engine plugin for neovim written in Lua
@@ -19,7 +20,7 @@ return {
                 unpack = unpack or table.unpack
                 local line, col = unpack(vim.api.nvim_win_get_cursor(0))
                 return col ~= 0 and
-                    vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+                vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
             end
 
             local feedkey = function(key, mode)
@@ -126,7 +127,7 @@ return {
                         return true
                     else
                         return not context.in_treesitter_capture("comment")
-                            and not context.in_syntax_group("Comment")
+                        and not context.in_syntax_group("Comment")
                     end
                 end
             })
@@ -142,7 +143,9 @@ return {
     -- auto-close html tags
     {
         'windwp/nvim-ts-autotag',
+        dependencies = { "nvim-treesitter/nvim-treesitter" },
         config = function()
+            ---@diagnostic disable-next-line: missing-fields
             require("nvim-ts-autotag").setup({
                 autotag = {
                     enable = true,
@@ -192,13 +195,13 @@ return {
             noremap("v", "<C-/>", function()
                 vim.api.nvim_feedkeys(commentEsc, 'nx', false)
                 commentApi.toggle.linewise(vim.fn.visualmode())
-            end, { desc = "Toggles comment linewize" });
+            end, { desc = "Toggles comment linewize" })
             noremap("v", "<C-S-/>", function()
                 vim.api.nvim_feedkeys(commentEsc, 'nx', false)
                 commentApi.toggle.blockwise(vim.fn.visualmode())
-            end, { desc = "Toggles comment blockwise" });
-            noremap("n", "<C-/>", commentApi.toggle.linewise.current, { desc = "Toggles comment" });
-            noremap("i", "<C-/>", commentApi.toggle.linewise.current, { desc = "Toggles comment" });
+            end, { desc = "Toggles comment blockwise" })
+            noremap("n", "<C-/>", commentApi.toggle.linewise.current, { desc = "Toggles comment" })
+            noremap("i", "<C-/>", commentApi.toggle.linewise.current, { desc = "Toggles comment" })
         end,
         -- -- Does not work for some reason
         -- keys = {
@@ -219,7 +222,7 @@ return {
     -- Colour picker and colour background
     {
         "uga-rosa/ccc.nvim",
-        config = {
+        opts = {
             highlighter = {
                 auto_enable = true,
                 lsp = true
@@ -230,7 +233,7 @@ return {
     {
         'windwp/nvim-spectre',
         dependencies = { "nvim-lua/plenary.nvim" },
-        config = {
+        opts = {
             live_update = true,
             mapping = {
                 ['send_to_qf'] = {
@@ -286,6 +289,7 @@ return {
                 return newVirtText
             end
 
+            ---@diagnostic disable-next-line: missing-fields
             require('ufo').setup({
                 provider_selector = function(bufnr, filetype, buftype)
                     return { 'treesitter', 'indent' }
@@ -304,10 +308,67 @@ return {
     -- Text to ascii art (comments) [ \ta ]
     {
         "olidacombe/commentalist.nvim",
+        cond = sysdep({ "boxes", "cowsay", "figlet" }),
         dependencies = {
             'nvim-telescope/telescope.nvim',
             'numToStr/Comment.nvim',
         },
         config = true
     }, -- instead of comment frame
+    {
+        "jellydn/quick-code-runner.nvim",
+        dependencies = { "MunifTanjim/nui.nvim" },
+        cond = sysdep({ "dub", "node", "npx", "python", "go" }),
+        opts = {
+            debug = false,
+            file_types = {
+                d = { "dub run --single" },
+                javascript = { 'node' },
+                typescript = { 'npx tsx run' },
+                python = { 'python -u' },
+                go = { "go run", },
+            },
+        },
+        cmd = { "QuickCodeRunner", "QuickCodePad" },
+        keys = {
+            {
+                "<leader>cr",
+                ":QuickCodeRunner<CR>",
+                desc = "Quick Code Runner",
+                mode = "v",
+            },
+            {
+                "<leader>cr",
+                "gg0vGg$:QuickCodeRunner<CR>",
+                desc = "Quick File Code Runner",
+                mode = "n",
+            },
+            {
+                "<leader>cp",
+                ":QuickCodePad<CR>",
+                desc = "Quick Code Pad",
+            },
+        },
+    },
+    {
+        "al1-ce/just.nvim",
+        dependencies = {
+            'nvim-lua/plenary.nvim',
+            'nvim-telescope/telescope.nvim',
+            'rcarriga/nvim-notify',
+            'j-hui/fidget.nvim',
+        },
+        cond = sysdep({ "aplay" }),
+        opts = {
+            fidget_message_limit = 32,
+            play_sound = true,
+            open_qf_on_error = true,
+            telescope_borders = {
+                prompt = { " ", " ", " ", " ", "┌", "┐", " ", " " },
+                results = { " ", " ", " ", " ", "├", "┤", "┘", "└" },
+                preview = { " ", " ", " ", " ", "┌", "┐", "┘", "└" }
+            }
+
+        }
+    },
 }

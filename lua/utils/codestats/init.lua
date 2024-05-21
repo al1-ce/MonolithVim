@@ -77,7 +77,7 @@ function M.setup(options)
   timer = uv.new_timer()
 
   -- Start the timer loop
-  timer:start(1000, 1000, function ()
+  timer:start(1000, 1000, vim.schedule_wrap(function ()
     -- Check if the last_timestamp + interval is greater than the current unix timestamp
     if last_timestamp + opts.interval > utils.unix_timestamp() then
       return
@@ -90,7 +90,7 @@ function M.setup(options)
       -- Update the "last_timestamp" variable to the current unix timestamp
       last_timestamp = utils.unix_timestamp()
     end)())
-  end)
+  end))
 end
 
 function M.send_pulses()

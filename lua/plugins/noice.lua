@@ -1,29 +1,31 @@
-            local icons = {
+local sysdep = require("utils.sysdep")
 
-                cmdline     = ">", -- command
-                cmdall      = "@", -- vis command
-                search_down = "/", -- search down
-                search_up   = "?", -- search up
-                filter      = "$", -- :! aka run sh
-                lua         = "lua", -- :lua
-                help        = "?", -- :help
-                checkhealth = "<3", -- :checkhealth
-                telescope   = "%", -- :Telescope
-                lazy        = "#", -- :Lazy
-                lspsaga     = "&", -- :Lspsaga
-                -- cmdline     = "",
-                -- cmdall      = "＠",
-                -- search_down = " ",
-                -- search_up   = " ",
-                -- filter      = "$",
-                -- lua         = "",
-                -- help        = "",
-                -- checkhealth = "🤍",
-                -- telescope   = "",
-                -- lazy        = "🥡",
-                -- lspsaga     = "",
+local icons = {
 
-            }
+    cmdline     = ">", -- command
+    cmdall      = "@", -- vis command
+    search_down = "/", -- search down
+    search_up   = "?", -- search up
+    filter      = "$", -- :! aka run sh
+    lua         = "lua", -- :lua
+    help        = "?", -- :help
+    checkhealth = "<3", -- :checkhealth
+    telescope   = "%", -- :Telescope
+    lazy        = "#", -- :Lazy
+    lspsaga     = "&", -- :Lspsaga
+    -- cmdline     = "",
+    -- cmdall      = "＠",
+    -- search_down = " ",
+    -- search_up   = " ",
+    -- filter      = "$",
+    -- lua         = "",
+    -- help        = "",
+    -- checkhealth = "🤍",
+    -- telescope   = "",
+    -- lazy        = "🥡",
+    -- lspsaga     = "",
+
+}
 
 return {
     -- Reworks many things, makes notifications [ ;; ]
@@ -37,7 +39,7 @@ return {
             "rcarriga/nvim-notify",            -- optional
             'nvim-treesitter/nvim-treesitter', -- optional
         },
-        config = {
+        opts = {
                 cmdline = {
                     enabled = true, -- enables the Noice cmdline UI
                     view = "cmdline", -- view for rendering the cmdline. Change to `cmdline` to get a classic cmdline at the bottom

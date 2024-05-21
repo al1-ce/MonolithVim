@@ -1,7 +1,9 @@
+local sysdep = require("utils.sysdep")
 return {
     -- Configs for the Nvim LSP client (:help lsp)
     {
         'neovim/nvim-lspconfig',
+        cond = sysdep({ "glsl_analyzer" }),
         config = function()
             local lspconfig = require('lspconfig')
 
@@ -15,6 +17,7 @@ return {
     {
         'nvimtools/none-ls.nvim',
         dependencies = { "nvim-lua/plenary.nvim" },
+        cond = sysdep({ "dfmt" }),
         config = function()
             require("null-ls").setup({
                 -- debug = true,
@@ -102,35 +105,36 @@ return {
         end,
         event = "VimEnter",
         keys = {
-            { "K", "<cmd>Lspsaga hover_doc<cr>", mode = "n", desc = "Shows hover doc for symbol" },
-            { "gD", "<cmd>Lspsaga peek_definition<cr>", mode = "n", desc = "Peeks symbol definition" },
+            { "K",          "<cmd>Lspsaga hover_doc<cr>",             mode = "n", desc = "Shows hover doc for symbol" },
+            { "gD",         "<cmd>Lspsaga peek_definition<cr>",       mode = "n", desc = "Peeks symbol definition" },
 
-            { "<A-s>", "<cmd>Lspsaga hover_doc<cr>", mode = "n", desc = "Shows hover doc for symbol" },
-            { "<A-s>", "<cmd>Lspsaga hover_doc<cr>", mode = 'i', desc = "Shows hover doc for symbol" },
-            { "<A-d>", "<cmd>Lspsaga peek_definition<cr>", mode = "n", desc = "Peeks symbol definition" },
-            { "<A-d>", "<cmd>Lspsaga peek_definition<cr>", mode = 'i', desc = "Peeks symbol definition" },
-            { '<C-s>', vim.lsp.buf.signature_help, mode = "n", desc = "Shows signature help" },
-            { '<C-s>', vim.lsp.buf.signature_help, mode = 'i', desc = "Shows signature help" },
+            { "<A-s>",      "<cmd>Lspsaga hover_doc<cr>",             mode = "n", desc = "Shows hover doc for symbol" },
+            { "<A-s>",      "<cmd>Lspsaga hover_doc<cr>",             mode = 'i', desc = "Shows hover doc for symbol" },
+            { "<A-d>",      "<cmd>Lspsaga peek_definition<cr>",       mode = "n", desc = "Peeks symbol definition" },
+            { "<A-d>",      "<cmd>Lspsaga peek_definition<cr>",       mode = 'i', desc = "Peeks symbol definition" },
+            { '<C-s>',      vim.lsp.buf.signature_help,               mode = "n", desc = "Shows signature help" },
+            { '<C-s>',      vim.lsp.buf.signature_help,               mode = 'i', desc = "Shows signature help" },
 
-            { "<leader>ca", "<cmd>Lspsaga code_action<cr>", mode = "n", desc = "Shows available code actions" },
-            { "<leader>d", "<cmd>Lspsaga show_line_diagnostics<cr>", mode = "n", desc = "Shows diagnostics for line" },
+            { "<leader>ca", "<cmd>Lspsaga code_action<cr>",           mode = "n", desc = "Shows available code actions" },
+            { "<leader>d",  "<cmd>Lspsaga show_line_diagnostics<cr>", mode = "n", desc = "Shows diagnostics for line" },
 
-            { "gd", vim.lsp.buf.definition, mode = "n", desc = "Opens symbol definition in current buffer" },
-            { "gi", vim.lsp.buf.implementation, mode = "n", desc = "Opens symbol implementation in current buffer" },
-            { "gr", vim.lsp.buf.references, mode = "n", desc = "Opens symbol references in quickfix list" },
+            { "gd",         vim.lsp.buf.definition,                   mode = "n", desc = "Opens symbol definition in current buffer" },
+            { "gi",         vim.lsp.buf.implementation,               mode = "n", desc = "Opens symbol implementation in current buffer" },
+            { "gr",         vim.lsp.buf.references,                   mode = "n", desc = "Opens symbol references in quickfix list" },
         }
     },
     -- Nvim lua api
     {
         'folke/neodev.nvim',
         dependencies = { 'hrsh7th/nvim-cmp' },
+        cond = sysdep({ "lua-language-server" }),
         config = true
     },
     -- Show function signature
     {
         'ray-x/lsp_signature.nvim',
         event = "VeryLazy",
-        config = {
+        opts = {
             bind = true, -- This is mandatory, otherwise border config won't get registered.
             handler_opts = {
                 border = {
@@ -154,11 +158,12 @@ return {
     {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
+        cond = sysdep({ "tree-sitter", "node", "git", "cc" }),
         config = function()
             ---@diagnostic disable-next-line: missing-fields
             require('nvim-treesitter.configs').setup {
                 -- A list of parser names, or 'all'
-                ensure_installed = { 'c', 'lua' },
+                ensure_installed = { 'c', 'lua', 'markdown', 'markdown_inline', 'regex', 'bash', 'vim' },
                 sync_install = false,
                 auto_install = false,
                 highlight = {
@@ -170,7 +175,11 @@ return {
         end
     },
     -- LSP package manager [ \pm ]
-    { 'williamboman/mason.nvim', config = true },
+    {
+        'williamboman/mason.nvim',
+        cond = sysdep({ "git", "curl", "unzip", "tar", "gzip" }),
+        config = true
+    },
     -- mason integration
     {
         'williamboman/mason-lspconfig.nvim',

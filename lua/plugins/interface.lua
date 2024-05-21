@@ -1,3 +1,4 @@
+local sysdep = require("utils.sysdep")
 return {
     -- scrollbar
     {
@@ -39,7 +40,7 @@ return {
     -- lsp progressbar
     {
         'j-hui/fidget.nvim',
-        config = {
+        opts = {
             notification = {
                 window = {
                     winblend = 0
@@ -57,7 +58,7 @@ return {
     -- notification engine
     {
         'rcarriga/nvim-notify',
-        config = {
+        opts = {
             background_color = 'Normal',
             stages = 'slide',
 
@@ -78,7 +79,7 @@ return {
     -- override input handling (makes input pop up sometimes...)
     {
         'stevearc/dressing.nvim',
-        config = {
+        opts = {
             input = {
                 enabled = true,
             },
@@ -95,6 +96,7 @@ return {
     {
         'gelguy/wilder.nvim',
         build = ":UpdateRemotePlugins",
+        cond = sysdep({ "python" }),
         config = function()
             local wilder = require('wilder')
             wilder.setup({ modes = { ':', '/', '?' } })
@@ -124,13 +126,14 @@ return {
     -- { 'yorickpeterse/nvim-pqf', commit = "b2f1882" },
     {
         'yorickpeterse/nvim-pqf',
+        enabled = true,
         config = function()
             require('pqf').setup({
                 signs = {
-                    error = '',
-                    warning = '',
-                    info = '',
-                    hint = '' -- note
+                    error = { text = '', hl = "DiagnosticSignError" },
+                    warning = { text = '', hl = "DiagnosticSignWarn" },
+                    info = { text = '', hl = "DiagnosticSignInfo" },
+                    hint = { text = '', hl = "DiagnosticSignHint" } -- note
                 },
                 show_multiple_lines = true,
                 max_filename_length = 0,

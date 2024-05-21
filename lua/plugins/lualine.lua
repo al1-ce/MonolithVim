@@ -1,3 +1,5 @@
+local sysdep = require("utils.sysdep")
+
 local current_signature = function()
     if not pcall(require, 'lsp_signature') then return end
     local sig = require("lsp_signature").status_line()
@@ -55,7 +57,7 @@ return {
             'nvim-tree/nvim-web-devicons',
             "meuter/lualine-so-fancy.nvim",
         },
-        config = {
+        opts = {
             options = {
                 icons_enabled = true,
                 theme = 'gruvbox',

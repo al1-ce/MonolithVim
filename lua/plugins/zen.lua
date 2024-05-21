@@ -1,10 +1,11 @@
+local sysdep = require("utils.sysdep")
 local noremap = require("utils.noremap")
 
 return {
     -- true zen
     {
         'folke/zen-mode.nvim',
-        config = {
+        opts = {
             window = {
                 backdrop = 1, -- shade the backdrop of the Zen window. Set to 1 to keep the same as Normal
                 -- height and width can be:

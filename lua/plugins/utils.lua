@@ -1,3 +1,4 @@
+local sysdep = require("utils.sysdep")
 local noremap = require("utils.noremap")
 
 return {
@@ -6,6 +7,7 @@ return {
 
     {
         "vhyrro/luarocks.nvim",
+        cond = sysdep({ "luarocks" }),
         priority = 1000,
         config = true,
         opts = {
@@ -35,7 +37,7 @@ return {
     {
         "stevearc/oil.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
-        config = {
+        opts = {
             default_file_explorer = true,
             keymaps = {
                 ["g?"] = "actions.show_help",
@@ -69,7 +71,7 @@ return {
     {
         'folke/todo-comments.nvim',
         dependencies = { "nvim-lua/plenary.nvim" },
-        config = {
+        opts = {
             keywords = {
                 FIX = {
                     icon = " ", -- used for the sign, and search results
@@ -101,7 +103,7 @@ return {
     {
         'matbme/JABS.nvim',
         dependencies = { "nvim-tree/nvim-web-devicons" },
-        config = {
+        opts = {
             keymap = {
                 close = "d",   -- Close buffer. Default D
                 jump = "<cr>", -- Jump to buffer. Default <cr>
@@ -168,7 +170,7 @@ return {
     -- Session manager [ :SessionsLoad :SessionsSave ]
     {
         'natecraddock/sessions.nvim',
-        config = {
+        opts = {
             events = { "VimLeavePre" },
             session_filepath = vim.fn.stdpath("data") .. "/sessions",
             absolute = true,
@@ -177,7 +179,7 @@ return {
     -- remember last edited line
     {
         'ethanholz/nvim-lastplace',
-        config = {
+        opts = {
             lastplace_ignore_buftype = { "quickfix", "nofile", "help" },
             lastplace_ignore_filetype = { "gitcommit", "gitrebase", "svn", "hgcommit" },
             lastplace_open_folds = true
@@ -238,7 +240,7 @@ return {
     {
         "chrisgrieser/nvim-recorder",
         dependencies = { "rcarriga/nvim-notify" },
-        config = {
+        opts = {
             -- Named registers where macros are saved (single lowercase letters only).
             -- The first register is the default register used as macro-slot after
             -- startup.
@@ -295,7 +297,8 @@ return {
     {
         "3rd/image.nvim",
         dependencies = { "luarocks.nvim" },
-        config = {
+        cond = sysdep({ "magick" }),
+        opts = {
             backend = "kitty",
             integrations = {
                 markdown = {
@@ -337,15 +340,18 @@ return {
         }
     },
     -- Git wrapper [ :Git ]
-    "tpope/vim-fugitive",
+    {
+        "tpope/vim-fugitive",
+        cond = sysdep({ "git" }),
+    },
 
     -- Preview markdown [ \vm ]
     {
         "ellisonleao/glow.nvim",
         cmd = "Glow",
         event = "VimEnter",
-        config = {
-
+        cond = sysdep({ "glow" }),
+        opts = {
             style = "~/.config/nvim/res/gruvbox.json",
             border = 'solid',
             width = 160,
@@ -359,7 +365,7 @@ return {
     {
         'sindrets/winshift.nvim',
         event = "VimEnter",
-        config = {
+        opts = {
             keymaps = {
                 disable_defaults = false,
             }
@@ -381,14 +387,14 @@ return {
         config = true,
         event = "VimEnter",
         keys = {
-            { "<A-C-left>",  function() require('smart-splits').resize_left(2) end,   mode = "n", noremap = true, silent = true, desc = "Resizes window to left" },
-            { "<A-C-right>", function() require('smart-splits').resize_right(2) end,  mode = "n", noremap = true, silent = true, desc = "Resizes window to right" },
-            { "<A-C-up>",    function() require('smart-splits').resize_up(2) end,     mode = "n", noremap = true, silent = true, desc = "Resizes window up" },
-            { "<A-C-down>",  function() require('smart-splits').resize_down(2) end,   mode = "n", noremap = true, silent = true, desc = "Resizes window down" },
-            { "<A-C-h>",     function() require('smart-splits').resize_left(2) end,   mode = "n", noremap = true, silent = true, desc = "Resizes window to left" },
-            { "<A-C-l>",     function() require('smart-splits').resize_right(2) end,  mode = "n", noremap = true, silent = true, desc = "Resizes window to right" },
-            { "<A-C-k>",     function() require('smart-splits').resize_up(2) end,     mode = "n", noremap = true, silent = true, desc = "Resizes window up" },
-            { "<A-C-j>",     function() require('smart-splits').resize_down(2) end,   mode = "n", noremap = true, silent = true, desc = "Resizes window down" },
+            { "<A-C-left>",  function() require('smart-splits').resize_left(2) end,  mode = "n", noremap = true, silent = true, desc = "Resizes window to left" },
+            { "<A-C-right>", function() require('smart-splits').resize_right(2) end, mode = "n", noremap = true, silent = true, desc = "Resizes window to right" },
+            { "<A-C-up>",    function() require('smart-splits').resize_up(2) end,    mode = "n", noremap = true, silent = true, desc = "Resizes window up" },
+            { "<A-C-down>",  function() require('smart-splits').resize_down(2) end,  mode = "n", noremap = true, silent = true, desc = "Resizes window down" },
+            { "<A-C-h>",     function() require('smart-splits').resize_left(2) end,  mode = "n", noremap = true, silent = true, desc = "Resizes window to left" },
+            { "<A-C-l>",     function() require('smart-splits').resize_right(2) end, mode = "n", noremap = true, silent = true, desc = "Resizes window to right" },
+            { "<A-C-k>",     function() require('smart-splits').resize_up(2) end,    mode = "n", noremap = true, silent = true, desc = "Resizes window up" },
+            { "<A-C-j>",     function() require('smart-splits').resize_down(2) end,  mode = "n", noremap = true, silent = true, desc = "Resizes window down" },
         }
     },
     -- {

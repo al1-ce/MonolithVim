@@ -1,8 +1,10 @@
+local sysdep = require("utils.sysdep")
 return {
     -- FZF has priority over Telescope because Telescope often skips things
     {
         'nvim-telescope/telescope.nvim',
         dependencies = { 'nvim-lua/plenary.nvim' },
+        cond = sysdep({ "rg", "fd" }),
         config = function()
             local actions = require("telescope.actions")
             local previewers = require("telescope.previewers")

@@ -1,7 +1,7 @@
 local Hydra = require('hydra')
 local colors = require('plugins.hydra.colors')
 local cmd = require('hydra.keymap-util').cmd
-local builder = require('utils.justbuild')
+local builder = require('just')
 local M = {}
 
 local hintBuild = [[

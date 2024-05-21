@@ -1,3 +1,4 @@
+local sysdep = require("utils.sysdep")
 ---@diagnostic disable: undefined-field, need-check-nil, redundant-parameter
 return {
     {
@@ -6,6 +7,8 @@ return {
             'rcarriga/nvim-dap-ui',
             'nvim-neotest/nvim-nio',
         },
+        cond = sysdep({ "pgrep", "lldb-vscode", "wezterm", "gdb" }),
+        enabled = true,
         config = function()
             -- █▀▄ ▄▀█ █▀█
             -- █▄▀ █▀█ █▀▀
@@ -36,18 +39,21 @@ return {
                     else
                         print('Launched external terminal', pid_or_err)
                         while not config.pid do -- Adding a timeout or something might make sensedo
+                            ---@diagnostic disable-next-line: inject-field
                             config.pid = tonumber(vim.fn.system({ 'pgrep', '-P', pid_or_err }))
                         end
                         print('Launched', config.program, 'within terminal with PID', config.pid)
+                        ---@diagnostic disable-next-line: inject-field
                         config.program = nil
                     end
                 end
+                ---@diagnostic disable-next-line: param-type-mismatch
                 cb(adapter)
             end
 
             dap.adapters.cpp = {
                 type = 'executable',
-                command = '/usr/bin/lldb-vscode', -- adjust as needed, must be absolute path
+                command = '/bin/lldb-vscode', -- adjust as needed, must be absolute path
                 name = 'lldb',
                 -- env = {
                 --   LLDB_LAUNCH_FLAG_LAUNCH_IN_TTY = "NO"
@@ -60,7 +66,7 @@ return {
                 -- dap.defaults.cpp.external_terminal = {
                 -- command = "/usr/bin/alacritty",
                 -- args = {'-e', '--hold'}
-                command = "/usr/bin/kitty",
+                command = "/bin/wezterm",
                 args = { '--hold' }
             }
             dap.defaults.d.external_terminal = dap.defaults.fallback.external_terminal
