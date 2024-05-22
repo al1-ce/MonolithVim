@@ -48,13 +48,6 @@ return {
             }
         }
     },
-    -- Emacs menus [ \ ]
-    {
-        'anuvyklack/hydra.nvim',
-        config = function()
-            require("plugins.hydra.root")
-        end
-    },
     -- notification engine
     {
         'rcarriga/nvim-notify',

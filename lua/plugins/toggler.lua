@@ -46,6 +46,9 @@ return {
             })
 
             noremap("n", "<C-`>", require('nvim-toggler').toggle, {desc = "Toggles value under cursor"})
+            noremap("v", "<C-`>", require('nvim-toggler').toggle, {desc = "Toggles value under cursor"})
+            noremap("n", "<leader>ct", require('nvim-toggler').toggle, {desc = "Toggles value under cursor"})
+            noremap("v", "<leader>ct", require('nvim-toggler').toggle, {desc = "Toggles value under cursor"})
         end
     }
 }

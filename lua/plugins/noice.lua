@@ -12,7 +12,6 @@ local icons = {
     checkhealth = "<3", -- :checkhealth
     telescope   = "%", -- :Telescope
     lazy        = "#", -- :Lazy
-    lspsaga     = "&", -- :Lspsaga
     -- cmdline     = "",
     -- cmdall      = "＠",
     -- search_down = " ",
@@ -23,8 +22,6 @@ local icons = {
     -- checkhealth = "🤍",
     -- telescope   = "",
     -- lazy        = "🥡",
-    -- lspsaga     = "",
-
 }
 
 return {
@@ -60,7 +57,6 @@ return {
                         checkhealth = { pattern = "^:%s*check?h?e?a?l?t?h?%s+", icon = icons.checkhealth },
                         -- telescope = { pattern = "^:%s*Tele?s?c?o?p?e?%s+", icon = icons.telescope },
                         -- lazy = { pattern = "^:%s*Lazy%s+", icon = icons.lazy },
-                        -- lspsaga = { pattern = "^:%s*Lspsaga%s+", icon = icons.lspsaga },
                         input = {}, -- Used by input()
                     },
                 },

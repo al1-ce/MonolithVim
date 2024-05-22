@@ -1,6 +1,5 @@
 -- nvim settings
 
-vim.g.mapleader = ";"
 -- KEEP IT HERE FOR GOD SAKE
 -- IT BREAKS IF YOU'RE NOT DOING THAT
 vim.cmd.colorscheme('gruvbox')
@@ -8,6 +7,13 @@ vim.cmd.colorscheme('gruvbox')
 vim.g.gruvbox_baby_transparent_mode = 1
 vim.g.gruvbox_contrast_dark = "medium"
 vim.g.gruvbox_transparent_bg = 1
+
+vim.g.gruvbox_material_enable_italic = true
+vim.g.gruvbox_material_background = 'hard'
+vim.g.gurvbox_material_foreground = 'original'
+vim.g.gurvbox_material_transparent_background = 1
+-- vim.g.gruvbox_material_better_performance = 1
+vim.g.gruvbox_material_visual = 'reverse'
 
 vim.g.ruby_host_prog = '~/.local/share/gem/ruby/3.0.0/bin/neovim-ruby-host'
 
@@ -58,6 +64,8 @@ vim.cmd([[cabbrev qq Qq]])
 
 -- custom qall command
 vim.api.nvim_create_user_command('Qq', function(opts) if (opts.bang) then vim.cmd[[qall!]] else vim.cmd[[qall]] end end, { bang = true })
+vim.api.nvim_create_user_command('Spell', function() vim.o.spell = not vim.o.spell end, {})
+vim.api.nvim_create_user_command('Wrap', function() vim.o.wrap = not vim.o.wrap end, {})
 
 vim.cmd([[set guicursor=n-v-sm:block,i-c-ci-ve:ver25,r-cr-o:hor20]])
 

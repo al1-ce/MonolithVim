@@ -20,7 +20,7 @@ return {
                 unpack = unpack or table.unpack
                 local line, col = unpack(vim.api.nvim_win_get_cursor(0))
                 return col ~= 0 and
-                vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+                    vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
             end
 
             local feedkey = function(key, mode)
@@ -127,7 +127,7 @@ return {
                         return true
                     else
                         return not context.in_treesitter_capture("comment")
-                        and not context.in_syntax_group("Comment")
+                            and not context.in_syntax_group("Comment")
                     end
                 end
             })
@@ -158,7 +158,7 @@ return {
                     underline = true,
                     virtual_text = {
                         spacing = 5,
-                        severity_limit = 'Warning',
+                        severity = { min = vim.diagnostic.severity.WARN },
                     },
                     update_in_insert = true,
                 }
@@ -203,13 +203,6 @@ return {
             noremap("n", "<C-/>", commentApi.toggle.linewise.current, { desc = "Toggles comment" })
             noremap("i", "<C-/>", commentApi.toggle.linewise.current, { desc = "Toggles comment" })
         end,
-        -- -- Does not work for some reason
-        -- keys = {
-        --     { "<C-/>", "gc", mode = "v", noremap = false, silent = true, desc = "Toggles comment linewise" },
-        --     { "<C-S-/>", "gb", mode = "v", noremap = false, silent = true, desc = "Toggles comment blockwise" },
-        --     { "<C-/>", "gcc", mode = "n", noremap = false, silent = true, desc = "Toggles comment" },
-        --     { "<C-/>", "<C-o>gcc", mode = "i", noremap = false, silent = true, desc = "Toggles comment" },
-        -- },
     },
     -- Alisgn text [ glip= ]
     {
@@ -227,7 +220,10 @@ return {
                 auto_enable = true,
                 lsp = true
             }
-        }
+        },
+        keys = {
+            { "<leader>cp", "<cmd>CccPick<cr>", mode = "n", noremap = true, silent = true, desc = "Opens color picker" },
+        },
     },
     -- Project-wide rename [ \fR ]
     {
@@ -242,7 +238,10 @@ return {
                     desc = "Send all items to quickfix"
                 },
             }
-        }
+        },
+        keys = {
+            { "<leader>fR", function() require("spectre").open() end, mode = "n", noremap = true, silent = true, desc = "Opens project-wide rename" },
+        },
     },
     -- Edit search as buffer
     'dyng/ctrlsf.vim',
@@ -313,7 +312,11 @@ return {
             'nvim-telescope/telescope.nvim',
             'numToStr/Comment.nvim',
         },
-        config = true
+        config = true,
+        keys = {
+            { "<leader>ta", "<cmd>Commentalist<cr>", mode = "n", noremap = true, silent = true, desc = "Creates ascii comments" },
+        },
+
     }, -- instead of comment frame
     {
         "jellydn/quick-code-runner.nvim",
@@ -368,7 +371,16 @@ return {
                 results = { " ", " ", " ", " ", "├", "┤", "┘", "└" },
                 preview = { " ", " ", " ", " ", "┌", "┐", "┘", "└" }
             }
+        },
+        keys = {
+            { "<leader>bd", "<cmd>JustDefault<cr>"       , mode = "n", noremap = true, silent = true, desc = "" },
+            { "<leader>bb", "<cmd>JustBuild<cr>"         , mode = "n", noremap = true, silent = true, desc = "" },
+            { "<leader>br", "<cmd>JustRun<cr>"           , mode = "n", noremap = true, silent = true, desc = "" },
+            { "<leader>bt", "<cmd>JustTest<cr>"          , mode = "n", noremap = true, silent = true, desc = "" },
+            { "<leader>ba", "<cmd>JustSelect<cr>"        , mode = "n", noremap = true, silent = true, desc = "" },
+            { "<leader>bc", "<cmd>JustCreateTemplate<cr>", mode = "n", noremap = true, silent = true, desc = "" },
+            { "<leader>bs", "<cmd>JustStop<cr>"          , mode = "n", noremap = true, silent = true, desc = "" },
+        },
 
-        }
     },
 }

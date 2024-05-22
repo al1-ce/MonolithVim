@@ -115,12 +115,20 @@ noremap("n", "<leader>ss", "<CMD>split<CR>", { desc = "Opens horizontal split" }
 noremap("n", "<leader>sv", "<CMD>vsplit<CR>", { desc = "Opens vertical split" })
 
 noremap("n", "<leader>fs", "<C-^>", { desc = "Opens previous buffer" })
+noremap("n", "<leader>fe", "<cmd>enew<cr>", { desc = "Creates new file" })
 
 noremap("n", "<leader>q", "<CMD>x<CR>", { desc = "Closes buffer" })
 noremap("n", "<leader>w", "<CMD>update<CR>", { desc = "Writes buffer" })
 
 noremap("n", "<leader>cd", "<cmd>cd %:h<cr>", { desc = "Changes directory to current file" })
 noremap("n", "<leader>ce", "<cmd>edit $MYVIMRC <bar> tcd %:h<cr>", { desc = "Edits config" })
+
+noremap("n", "<leader>tn", "<cmd>tabnew<cr>", { desc = "Creates new tab" })
+noremap("n", "<leader>tw", "<cmd>tabclose<cr>", { desc = "Closes current tab" })
+noremap("n", "<leader>to", "<cmd>tabonly<cr>", { desc = "Closes other tabs" })
+
+noremap("n", "<leader>fF", vim.lsp.buf.format, { desc = "Formats current buffer" })
+
 
 local function open_link_vis()
     local key = vim.api.nvim_replace_termcodes("<esc>", true, false, true)

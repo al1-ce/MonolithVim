@@ -95,6 +95,9 @@ return {
                 keyword = 'fg',
                 after = 'empty',
             }
+        },
+        keys = {
+            { "<leader>ft", "<cmd>TodoLocList<cr>", mode = "n", noremap = true, silent = true, desc = "Opens todo in loclist" },
         }
     },
     -- Goto quickfix files
@@ -148,7 +151,13 @@ return {
     { "nvimdev/hlsearch.nvim", event = { "BufRead" }, config = true },
 
     -- cool smart surrounding [ \tr \tR ]
-    'tpope/vim-surround',
+    {
+        'tpope/vim-surround',
+        keys = {
+            { "<leader>sr", "<Plug>Csurround", mode = "n", noremap = true, silent = true, desc = "Replaces surrounding" },
+            { "<leader>sa", "<Plug>Dsurround", mode = "n", noremap = true, silent = true, desc = "Surrounds text" },
+        }
+    },
     -- Move lines and characters [ A-Up A-Down ]
     {
         'fedepujol/move.nvim',
@@ -360,6 +369,10 @@ return {
             height_ratio = 0.8,
             pager = false,
         },
+        keys = {
+            { "<leader>gm", "<cmd>Glow<cr>", mode = "n", noremap = true, silent = true, desc = "Opens markdown preview" },
+        },
+        ft = { "*.md", "*.markdown" }
     },
     -- Move splits [ A-S-Right ... ]
     {
@@ -397,10 +410,4 @@ return {
             { "<A-C-j>",     function() require('smart-splits').resize_down(2) end,  mode = "n", noremap = true, silent = true, desc = "Resizes window down" },
         }
     },
-    -- {
-    --     'Lokaltog/neoranger',
-    --     keys = {
-    --         { "-", "<cmd>RangerCurrentFile<cr>", desc = "Opens ranger", mode = "n" }
-    --     },
-    -- }
 }

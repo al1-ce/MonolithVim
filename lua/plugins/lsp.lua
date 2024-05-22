@@ -83,6 +83,7 @@ return {
             vim.diagnostic.config({
                 virtual_text = false,
                 signs = true,
+                ---@diagnostic disable-next-line: assign-type-mismatch
                 float = { border = borders },
                 underline = true,
                 update_in_insert = true,
@@ -105,22 +106,22 @@ return {
         end,
         event = "VimEnter",
         keys = {
-            { "K",          "<cmd>Lspsaga hover_doc<cr>",             mode = "n", desc = "Shows hover doc for symbol" },
-            { "gD",         "<cmd>Lspsaga peek_definition<cr>",       mode = "n", desc = "Peeks symbol definition" },
 
-            { "<A-s>",      "<cmd>Lspsaga hover_doc<cr>",             mode = "n", desc = "Shows hover doc for symbol" },
-            { "<A-s>",      "<cmd>Lspsaga hover_doc<cr>",             mode = 'i', desc = "Shows hover doc for symbol" },
-            { "<A-d>",      "<cmd>Lspsaga peek_definition<cr>",       mode = "n", desc = "Peeks symbol definition" },
-            { "<A-d>",      "<cmd>Lspsaga peek_definition<cr>",       mode = 'i', desc = "Peeks symbol definition" },
-            { '<C-s>',      vim.lsp.buf.signature_help,               mode = "n", desc = "Shows signature help" },
-            { '<C-s>',      vim.lsp.buf.signature_help,               mode = 'i', desc = "Shows signature help" },
+            { '<C-s>', "<cmd>Lspsaga hover_doc<cr>", mode = "n", desc = "Shows signature help" },
+            { '<C-s>', vim.lsp.buf.signature_help,   mode = 'i', desc = "Shows signature help" },
 
             { "<leader>ca", "<cmd>Lspsaga code_action<cr>",           mode = "n", desc = "Shows available code actions" },
             { "<leader>d",  "<cmd>Lspsaga show_line_diagnostics<cr>", mode = "n", desc = "Shows diagnostics for line" },
 
-            { "gd",         vim.lsp.buf.definition,                   mode = "n", desc = "Opens symbol definition in current buffer" },
-            { "gi",         vim.lsp.buf.implementation,               mode = "n", desc = "Opens symbol implementation in current buffer" },
-            { "gr",         vim.lsp.buf.references,                   mode = "n", desc = "Opens symbol references in quickfix list" },
+            { "<leader>gD", "<cmd>Lspsaga peek_definition<cr>",       mode = "n", desc = "Peeks symbol definition" },
+            { "<leader>gd", vim.lsp.buf.definition,                   mode = "n", desc = "Opens symbol definition in current buffer" },
+            { "<leader>gi", vim.lsp.buf.implementation,               mode = "n", desc = "Opens symbol implementation in current buffer" },
+            { "<leader>gr", vim.lsp.buf.references,                   mode = "n", desc = "Opens symbol references in quickfix list" },
+
+            { "<leader>fT", "<cmd>Lspsaga outline<cr>",     mode = "n", desc = "Shows outline" },
+            { "<leader>tt", "<cmd>Lspsaga term_toggle<cr>", mode = "n", desc = "Opens toggleterm" },
+
+            { "<leader>D", "<cmd>Lspsaga show_workspace_diagnostics<cr>", mode = "n", desc = "Shows workspace diagnostics" },
         }
     },
     -- Nvim lua api
@@ -178,7 +179,10 @@ return {
     {
         'williamboman/mason.nvim',
         cond = sysdep({ "git", "curl", "unzip", "tar", "gzip" }),
-        config = true
+        config = true,
+        keys = {
+            { "<leader>pm", "<cmd>Mason<cr>", mode = "n", noremap = true, silent = true, desc = "Opens Mason" },
+        },
     },
     -- mason integration
     {

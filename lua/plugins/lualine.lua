@@ -1,4 +1,4 @@
-local sysdep = require("utils.sysdep")
+-- local sysdep = require("utils.sysdep")
 
 local current_signature = function()
     if not pcall(require, 'lsp_signature') then return end
@@ -97,9 +97,17 @@ return {
                     {
                         'diff',
                         colored = true,
-                        symbols = { added = '+', modified = '~', removed = '-' },     -- Changes the symbols used by the diff.
-                    }, {
+                        symbols = { added = '+', modified = '~', removed = '-' }, -- Changes the symbols used by the diff.
+                    },
+                    {
                     'diagnostics',
+                    -- diagnostics_color = {
+                    --     -- Same values as the general color option can be used here.
+                    --     error = 'DiagnosticError', -- Changes diagnostics' error color.
+                    --     warn  = 'DiagnosticWarn', -- Changes diagnostics' warn color.
+                    --     info  = 'DiagnosticInfo', -- Changes diagnostics' info color.
+                    --     hint  = 'DiagnosticHint', -- Changes diagnostics' hint color.
+                    -- },
                     symbols = { error = 'e', warn = 'w', info = 'i', hint = 'h' },
                 }
                 },

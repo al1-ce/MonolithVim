@@ -3,6 +3,25 @@
 
 local g = vim.g -- global variables
 
+local color_indices = {
+    c0  = "#000000",
+    c1  = "#880000",
+    c2  = "#008800",
+    c3  = "#aa8800",
+    c4  = "#000088",
+    c5  = "#aa0088",
+    c6  = "#00aa88",
+    c7  = "#555555",
+    c8  = "#888888",
+    c9  = "#ff0000",
+    c10 = "#00ff00",
+    c11 = "#ffff00",
+    c12 = "#0000ff",
+    c13 = "#ff00ff",
+    c14 = "#00ffff",
+    c15 = "#ffffff",
+}
+
 -------------------- Functions --------------------------------------
 
 -- https://neovim.io/doc/user/api.html#nvim_set_hl()
@@ -93,39 +112,55 @@ highlight("HydraPink",     {fg = g.terminal_color_13, ctermfg = 13})
 -- custom gruv colors
 
 if g.colors_name == 'gruvbox' then
-    local style_normal      = {fg = g.terminal_color_15, ctermfg = 15}
-    local style_function    = {fg = g.terminal_color_12, ctermfg = 12}
-    local style_keyword     = {fg = g.terminal_color_9, ctermfg = 9}
-    local style_type        = {fg = g.terminal_color_9, ctermfg = 9, italic = true}
-    local style_const       = {fg = g.terminal_color_13, ctermfg = 13}
-    local style_string      = {fg = g.terminal_color_10, ctermfg = 10}
-    local style_macro       = {fg = g.terminal_color_14, ctermfg = 14}
-    local style_identifier  = {fg = "#d5c4a1", ctermfg = 15}
-    local style_special     = {fg = "#fe8019", ctermfg = 11}
-    local style_tag         = {fg = "#7c6f63", ctermfg = 7}
-    local style_comment     = {fg = "#7c6f63", ctermfg = 7, italic = true}
+    local style_normal      = {fg = g.terminal_color_15, ctermfg = 15} -- white
+    local style_delimiter   = {fg = "#bdae95", ctermfg = 15} -- white
+    local style_function    = {fg = g.terminal_color_12, ctermfg = 12} -- lt_blue
+    local style_keyword     = {fg = g.terminal_color_9, ctermfg = 9} -- lt_red
+    local style_type        = {fg = g.terminal_color_9, ctermfg = 9, italic = true} -- lt_red
+    local style_const       = {fg = g.terminal_color_13, ctermfg = 13} -- lt_purple
+    local style_string      = {fg = g.terminal_color_10, ctermfg = 10} -- lt_green
+    local style_macro       = {fg = g.terminal_color_14, ctermfg = 14} -- lt_aqua
+    local style_identifier  = {fg = "#d5c4a1", ctermfg = 15} -- white / white
+    local style_special     = {fg = "#fe8019", ctermfg = 11} -- orange / lt_yellow
+    local style_tag         = {fg = "#7c6f63", ctermfg = 7} -- gray / gray
+    local style_comment     = {fg = "#7c6f63", ctermfg = 7, italic = true} -- gray / gray
 
-    local style_sign_warning    = {bg = "#352C28", ctermbg = 11}
-    local style_sign_error      = {bg = "#302828", ctermbg = 1}
-    local style_sign_warning_fg = {fg = "#fe8019", bg = "#352C28", ctermfg = 11, ctermbg = 3}
-    local style_sign_error_fg   = {fg = "#fb4934", bg = "#302828", ctermfg = 9, ctermbg = 1}
-    local style_breakpoint      = {bg = "#282830", ctermbg = 4}
-    local style_breakpoint_fg   = {fg = "#83a598", bg = "#283030", ctermfg = 12, ctermbg = 4}
+    local style_underline_error   = { sp = g.terminal_color_9, underline = true }
+    local style_underline_hint    = { sp = g.terminal_color_12, underline = true }
+    local style_underline_info    = { sp = g.terminal_color_13, underline = true }
+    local style_underline_ok      = { sp = g.terminal_color_10, underline = true }
+    local style_underline_warning = { sp = "#fe8019", underline = true }
+
+    local style_sign_warning    = {bg = "#352C28", ctermbg = 11} -- custom / yellow
+    local style_sign_error      = {bg = "#302828", ctermbg = 1} -- custom / red
+    local style_sign_warning_fg = {fg = "#fe8019", bg = "#352C28", ctermfg = 11, ctermbg = 3} -- custom / lt_yellow / yellow
+    local style_sign_error_fg   = {fg = "#fb4934", bg = "#302828", ctermfg = 9, ctermbg = 1} -- custom / lt_red / red
+    local style_breakpoint      = {bg = "#282830", ctermbg = 4} -- custom / blue
+    local style_breakpoint_fg   = {fg = "#83a598", bg = "#283030", ctermfg = 12, ctermbg = 4} -- custom / lt_blue / blue
 
     -- common syntax
 
-    highlightAll({"Normal", "NormalFloat", "FloatBorder"}, style_normal)
+    --  DiagnosticUnderlineWarnxxx cterm=underline gui=underline guisp=NvimLightYellow
+    highlightAll({"Normal", "NormalFloat", "FloatBorder", "cParenError", "MatchParen", "@variable", "@module.d"}, style_normal)
     highlightAll({"Function"}, style_function)
-    highlightAll({"Identifier", "Delimiter"}, style_identifier)
+    highlightAll({"Delimiter", "@punctuation.delimiter.d"}, style_delimiter)
+    -- highlightAll({"@punctuation.bracket.d"}, style_special)
+    highlightAll({"Identifier"}, style_identifier)
     highlightAll({"Label", "Conditional", "Debug", "Exception", "Include", "Repeat"}, style_keyword)
     highlightAll({"StorageClass", "Structure", "Typedef", "Keyword", "Operator", "Statement"}, style_keyword)
-    highlightAll({"Type"}, style_type)
+    highlightAll({"Type", "@type.builtin.d"}, style_type)
     highlightAll({"Constant", "Boolean", "Number", "Float"}, style_const)
     highlightAll({"String", "Character"}, style_string)
     highlightAll({"Special", "SpecialChar"}, style_special)
     highlightAll({"Macro", "PreProc", "Define", "Precondit"}, style_macro)
     highlightAll({"Todo", "Tag"}, style_tag)
-    highlightAll({"Comment"}, style_comment)
+    highlightAll({"Comment", "WinSeparator"}, style_comment)
+
+    highlight("DiagnosticUnderlineError", style_underline_error)
+    highlight("DiagnosticUnderlineHint", style_underline_hint)
+    highlight("DiagnosticUnderlineInfo", style_underline_info)
+    highlight("DiagnosticUnderlineOk", style_underline_ok)
+    highlight("DiagnosticUnderlineWarn", style_underline_warning)
 
     highlightAll({"Search"}, {reverse = true})
 
