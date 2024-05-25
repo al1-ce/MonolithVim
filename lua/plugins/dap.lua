@@ -7,7 +7,7 @@ return {
             'rcarriga/nvim-dap-ui',
             'nvim-neotest/nvim-nio',
         },
-        cond = sysdep({ "pgrep", "lldb-vscode", "wezterm", "gdb" }),
+        cond = sysdep({ "pgrep", "gdb" }),
         enabled = true,
         config = function()
             -- █▀▄ ▄▀█ █▀█
