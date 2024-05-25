@@ -166,8 +166,9 @@ return {
             { "<leader>fr", "<cmd>FzfLua oldfiles<cr>",     mode = "n", noremap = true, silent = true, desc = "Opens oldfile picker" },
             { "<leader>fg", "<cmd>FzfLua grep_project<cr>", mode = "n", noremap = true, silent = true, desc = "Opens project search" },
             { "<leader>fp", fzfProjects,                    mode = "n", noremap = true, silent = true, desc = "Opens project picker" },
-            { "<leader>fF", "<cmd>FzfLua blines<cr>",       mode = "n", noremap = true, silent = true, desc = "Opens file search" },
             { "<leader>fm", "<cmd>FzfLua marks<cr>",        mode = "n", noremap = true, silent = true, desc = "Opens marks picker" },
+            { "<leader>fk", "<cmd>FzfLua keymaps<cr>",      mode = "n", noremap = true, silent = true, desc = "Shows keymap" },
+            { "<leader>f/", "<cmd>FzfLua blines<cr>",       mode = "n", noremap = true, silent = true, desc = "Search in file" },
         },
     },
 }

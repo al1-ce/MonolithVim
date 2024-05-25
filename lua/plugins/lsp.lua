@@ -110,18 +110,24 @@ return {
             { '<C-s>', "<cmd>Lspsaga hover_doc<cr>", mode = "n", desc = "Shows signature help" },
             { '<C-s>', vim.lsp.buf.signature_help,   mode = 'i', desc = "Shows signature help" },
 
+            { 'K', "<cmd>Lspsaga hover_doc<cr>", mode = "n", desc = "Shows signature help" },
+            { 'K', vim.lsp.buf.signature_help,   mode = 'i', desc = "Shows signature help" },
+
             { "<leader>ca", "<cmd>Lspsaga code_action<cr>",           mode = "n", desc = "Shows available code actions" },
             { "<leader>d",  "<cmd>Lspsaga show_line_diagnostics<cr>", mode = "n", desc = "Shows diagnostics for line" },
 
-            { "<leader>gD", "<cmd>Lspsaga peek_definition<cr>",       mode = "n", desc = "Peeks symbol definition" },
-            { "<leader>gd", vim.lsp.buf.definition,                   mode = "n", desc = "Opens symbol definition in current buffer" },
-            { "<leader>gi", vim.lsp.buf.implementation,               mode = "n", desc = "Opens symbol implementation in current buffer" },
-            { "<leader>gr", vim.lsp.buf.references,                   mode = "n", desc = "Opens symbol references in quickfix list" },
+            { "<leader>gD", "<cmd>Lspsaga peek_definition<cr>", mode = "n", desc = "Peeks symbol definition" },
+            { "<leader>gd", vim.lsp.buf.definition,             mode = "n", desc = "Opens symbol definition in current buffer" },
+            { "<leader>gi", vim.lsp.buf.implementation,         mode = "n", desc = "Opens symbol implementation in current buffer" },
+            { "<leader>gr", vim.lsp.buf.references,             mode = "n", desc = "Opens symbol references in quickfix list" },
 
             { "<leader>fT", "<cmd>Lspsaga outline<cr>",     mode = "n", desc = "Shows outline" },
             { "<leader>tt", "<cmd>Lspsaga term_toggle<cr>", mode = "n", desc = "Opens toggleterm" },
 
-            { "<leader>D", "<cmd>Lspsaga show_workspace_diagnostics<cr>", mode = "n", desc = "Shows workspace diagnostics" },
+            { "<leader>D",  "<cmd>Lspsaga show_workspace_diagnostics<cr>", mode = "n", desc = "Shows workspace diagnostics" },
+
+            { "]d", vim.diagnostic.goto_next, mode = "n", desc = "Next diagnostics" },
+            { "[d", vim.diagnostic.goto_prev, mode = "n", desc = "Prev diagnostics" },
         }
     },
     -- Nvim lua api
@@ -230,9 +236,20 @@ return {
             -- DISABLE marksman
             vim.api.nvim_create_autocmd(
                 { "BufNewFile", "BufRead", "BufReadPost" },
-                { pattern = { "*.md" }, callback = function(opt) vim.diagnostic.disable(opt.buf) end }
+                { pattern = { "*.md" }, callback = function(opt) vim.diagnostic.enable(false, { bufnr = opt.buf }) end }
             )
         end
     },
-
+    {
+        "al1-ce/garbage-day.nvim",
+        -- dir = "/g/garbage-day.nvim",
+        dependencies = "neovim/nvim-lspconfig",
+        event = "VeryLazy",
+        opts = {
+            notifications = true,
+            grace_period = 60 * 15,
+            aggresive_mode = false,
+            notification_engine = "fidget",
+        }
+    },
 }

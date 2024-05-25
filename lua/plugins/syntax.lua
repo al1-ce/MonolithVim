@@ -16,4 +16,8 @@ return {
         "IndianBoy42/tree-sitter-just",
         dependencies = { "nvim-treesitter/nvim-treesitter" }
     },
+    {
+        'Fymyte/rasi.vim',
+        ft = 'rasi',
+    }
 }

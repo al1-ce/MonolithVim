@@ -72,7 +72,7 @@ noremap('', '<S-ScrollWheelDown>', '3zl', { desc = "Scrolls left" })
 noremap('i', '<S-ScrollWheelUp>', '<C-o>3zh', { desc = "Scrolls right" })
 noremap('i', '<S-ScrollWheelDown>', '<C-o>3zl', { desc = "Scrolls left" })
 
-noremap('i', '<Esc>', '<Esc>l', { desc = "" });
+noremap('i', '<Esc>', '<Esc>l', { desc = "Makes insert exit at correct spot" });
 
 local function lineHome()
     local x = vim.fn.col('.')

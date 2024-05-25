@@ -32,6 +32,7 @@ vim.opt.cursorline = true       -- cursor line hightlight
 vim.opt.expandtab = true        -- use spaces instead of tabs
 vim.opt.hlsearch = true         -- Set highlight on search
 vim.opt.ignorecase = true       -- Case insensitive searching unless /C or capital in search
+vim.opt.inccommand = "split"    -- shows %s/// in split
 vim.opt.joinspaces = false      -- No double spaces with join after a dot
 vim.opt.number = true           -- line numbers
 vim.opt.relativenumber = false  -- relative line numbers
@@ -48,7 +49,7 @@ vim.opt.termguicolors = true    -- 24 -bit RGB colors
 vim.opt.undofile = true         -- Save undo history
 vim.opt.undofile = true         -- undo
 vim.opt.updatetime = 300        -- speeds up autocompletion
-vim.opt.wrap = false
+vim.opt.wrap = false            -- removes wrapping of lines
 
 vim.g["lsp-timeout-config"] = {
     stopTimeout  = 1000 * 60 * 5,  -- ms, timeout before stopping all LSP servers

@@ -64,6 +64,7 @@ return {
         event = "VimEnter",
         keys = {
             { "-", "<cmd>Oil<cr>", mode = "n", noremap = true, silent = true, desc = "Opens parent directory" },
+            { "<leader>-", function() require("oil").toggle_float() end, mode = "n", noremap = true, silent = true, desc = "Opens parent directory in float" },
         },
     },
 

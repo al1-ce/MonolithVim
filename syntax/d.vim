@@ -95,7 +95,7 @@ endif
 syn keyword dDebug                 deprecated unittest invariant
 syn keyword dExceptions            throw try catch finally
 syn keyword dScopeDecl             public protected private export package 
-syn keyword dStatement             debug return with
+syn keyword dStatement             debug return with noreturn
 syn keyword dStatement             function delegate __ctfe mixin macro __simd
 syn keyword dStatement             in out body
 syn keyword dStorageClass          contained in out scope

@@ -9,9 +9,9 @@ return {
             'hrsh7th/cmp-nvim-lsp', -- allows to use lsp
             -- 'hrsh7th/cmp-path', -- allows to do paths
             'hrsh7th/cmp-buffer',   -- allows to use buffer text
-            -- 'hrsh7th/cmp-cmdline', -- commandline?
+            'hrsh7th/cmp-cmdline',  -- commandline!
             -- Popup snippets
-            'hrsh7th/cmp-vsnip', -- for popups
+            'hrsh7th/cmp-vsnip',    -- for popups
             'hrsh7th/vim-vsnip',
             'onsails/lspkind.nvim',
         },
@@ -131,6 +131,34 @@ return {
                     end
                 end
             })
+            -- `/` cmdline setup.
+            cmp.setup.cmdline({ '/', '?' }, {
+                mapping = cmp.mapping.preset.cmdline(),
+                sources = {
+                    { name = 'buffer' }
+                },
+                view = {
+                    entries = { name = 'wildmenu', separator = '  ' }
+                },
+            })
+            -- `:` cmdline setup.
+            cmp.setup.cmdline(':', {
+                mapping = cmp.mapping.preset.cmdline(),
+                sources = cmp.config.sources({
+                    { name = 'path' }
+                }, {
+                    {
+                        name = 'cmdline',
+                        option = {
+                            ignore_cmds = { 'Man', '!' }
+                        }
+                    }
+                }),
+                view = {
+                    entries = { name = 'wildmenu', separator = '  ' }
+                },
+
+            })
         end
     }, -- autocompletion engine
     -- Auto-close brackets
@@ -215,7 +243,8 @@ return {
     -- Colour picker and colour background
     {
         "uga-rosa/ccc.nvim",
-        opts = {
+        event = { "BufEnter", "BufNew" },
+        config = {
             highlighter = {
                 auto_enable = true,
                 lsp = true
@@ -335,15 +364,21 @@ return {
         cmd = { "QuickCodeRunner", "QuickCodePad" },
         keys = {
             {
-                "<leader>cr",
+                "<leader>x",
                 ":QuickCodeRunner<CR>",
                 desc = "Quick Code Runner",
                 mode = "v",
             },
             {
-                "<leader>cr",
+                "<leader>X",
                 "gg0vGg$:QuickCodeRunner<CR>",
                 desc = "Quick File Code Runner",
+                mode = "n",
+            },
+            {
+                "<leader>x",
+                "V:QuickCodeRunner<CR>",
+                desc = "Run single line",
                 mode = "n",
             },
             {
@@ -373,13 +408,13 @@ return {
             }
         },
         keys = {
-            { "<leader>bd", "<cmd>JustDefault<cr>"       , mode = "n", noremap = true, silent = true, desc = "" },
-            { "<leader>bb", "<cmd>JustBuild<cr>"         , mode = "n", noremap = true, silent = true, desc = "" },
-            { "<leader>br", "<cmd>JustRun<cr>"           , mode = "n", noremap = true, silent = true, desc = "" },
-            { "<leader>bt", "<cmd>JustTest<cr>"          , mode = "n", noremap = true, silent = true, desc = "" },
-            { "<leader>ba", "<cmd>JustSelect<cr>"        , mode = "n", noremap = true, silent = true, desc = "" },
+            { "<leader>bd", "<cmd>JustDefault<cr>",        mode = "n", noremap = true, silent = true, desc = "" },
+            { "<leader>bb", "<cmd>JustBuild<cr>",          mode = "n", noremap = true, silent = true, desc = "" },
+            { "<leader>br", "<cmd>JustRun<cr>",            mode = "n", noremap = true, silent = true, desc = "" },
+            { "<leader>bt", "<cmd>JustTest<cr>",           mode = "n", noremap = true, silent = true, desc = "" },
+            { "<leader>ba", "<cmd>JustSelect<cr>",         mode = "n", noremap = true, silent = true, desc = "" },
             { "<leader>bc", "<cmd>JustCreateTemplate<cr>", mode = "n", noremap = true, silent = true, desc = "" },
-            { "<leader>bs", "<cmd>JustStop<cr>"          , mode = "n", noremap = true, silent = true, desc = "" },
+            { "<leader>bs", "<cmd>JustStop<cr>",           mode = "n", noremap = true, silent = true, desc = "" },
         },
 
     },
