@@ -129,6 +129,17 @@ noremap("n", "<leader>to", "<cmd>tabonly<cr>", { desc = "Closes other tabs" })
 
 noremap("n", "<leader>fF", vim.lsp.buf.format, { desc = "Formats current buffer" })
 
+noremap("n", "<leader>t1", "1gt", { desc = "Go to tab 1" })
+noremap("n", "<leader>t2", "2gt", { desc = "Go to tab 2" })
+noremap("n", "<leader>t3", "3gt", { desc = "Go to tab 3" })
+noremap("n", "<leader>t4", "4gt", { desc = "Go to tab 4" })
+noremap("n", "<leader>t5", "5gt", { desc = "Go to tab 5" })
+noremap("n", "<leader>t6", "6gt", { desc = "Go to tab 6" })
+noremap("n", "<leader>t7", "7gt", { desc = "Go to tab 7" })
+noremap("n", "<leader>t8", "8gt", { desc = "Go to tab 8" })
+noremap("n", "<leader>t9", "9gt", { desc = "Go to tab 9" })
+noremap("n", "<leader>t0", "<cmd>tablast<cr>", { desc = "Go to last tab" })
+
 
 local function open_link_vis()
     local key = vim.api.nvim_replace_termcodes("<esc>", true, false, true)
@@ -155,7 +166,7 @@ end
 noremap("n", "gx", open_link_norm, { desc = "Sends link under cursor into XDG-OPEN" })
 noremap("v", "gx", open_link_vis, { desc = "Sends link under cursor into XDG-OPEN" })
 
-noremap("n", "ya", "<cmd>%y<cr>", { desc = "Yanks entire file" })
+noremap("n", "yA", "<cmd>%y<cr>", { desc = "Yanks entire file" })
 
 -- -------------------------------------------------------------------------- --
 --                                 Insert Mode                                --

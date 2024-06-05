@@ -58,6 +58,8 @@ return {
             })
 
             local cmp = require('cmp')
+            local str = require("cmp.utils.str")
+            local types = require("cmp.types")
             ---@diagnostic disable-next-line: missing-fields
             cmp.setup({
                 snippet = {
@@ -107,17 +109,28 @@ return {
                 }, {
                     { name = 'buffer' },
                 }),
+                window = {
+                    completion = {
+                        winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
+                        col_offset = -3,
+                        side_padding = 0,
+                    },
+                },
                 ---@diagnostic disable-next-line: missing-fields
                 formatting = {
-                    format = require('lspkind').cmp_format({
-                        mode = 'symbol_text',  -- show only symbol annotations
-                        maxwidth = 50,         -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-                        ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
-                        -- The function below will be called before any actual modifications from lspkind
-                        before = function(entry, vim_item)
-                            return vim_item
-                        end
-                    })
+                    fields = { "kind", "abbr", "menu" },
+                    format = function(p_entry, p_vim_item)
+                        local kind = require('lspkind').cmp_format({
+                            mode = 'symbol_text',  -- show only symbol annotations
+                            maxwidth = 50,         -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+                            ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+                        })(p_entry, p_vim_item)
+                        local strings = vim.split(kind.kind, "%s", { trimempty = true })
+                        kind.kind = " " .. (strings[1] or "") .. ""
+                        kind.menu = "" .. (strings[2] or "") .. ""
+
+                        return kind
+                    end
                 },
                 enabled = function()
                     -- disable completion in comments
@@ -396,6 +409,7 @@ return {
             'rcarriga/nvim-notify',
             'j-hui/fidget.nvim',
         },
+        event = "VimEnter",
         cond = sysdep({ "aplay" }),
         opts = {
             fidget_message_limit = 32,
@@ -413,7 +427,6 @@ return {
             { "<leader>br", "<cmd>JustRun<cr>",            mode = "n", noremap = true, silent = true, desc = "" },
             { "<leader>bt", "<cmd>JustTest<cr>",           mode = "n", noremap = true, silent = true, desc = "" },
             { "<leader>ba", "<cmd>JustSelect<cr>",         mode = "n", noremap = true, silent = true, desc = "" },
-            { "<leader>bc", "<cmd>JustCreateTemplate<cr>", mode = "n", noremap = true, silent = true, desc = "" },
             { "<leader>bs", "<cmd>JustStop<cr>",           mode = "n", noremap = true, silent = true, desc = "" },
         },
 

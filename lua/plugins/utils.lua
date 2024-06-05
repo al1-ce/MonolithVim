@@ -63,7 +63,7 @@ return {
         },
         event = "VimEnter",
         keys = {
-            { "-", "<cmd>Oil<cr>", mode = "n", noremap = true, silent = true, desc = "Opens parent directory" },
+            { "-",         "<cmd>Oil<cr>",                               mode = "n", noremap = true, silent = true, desc = "Opens parent directory" },
             { "<leader>-", function() require("oil").toggle_float() end, mode = "n", noremap = true, silent = true, desc = "Opens parent directory in float" },
         },
     },
@@ -409,6 +409,34 @@ return {
             { "<A-C-l>",     function() require('smart-splits').resize_right(2) end, mode = "n", noremap = true, silent = true, desc = "Resizes window to right" },
             { "<A-C-k>",     function() require('smart-splits').resize_up(2) end,    mode = "n", noremap = true, silent = true, desc = "Resizes window up" },
             { "<A-C-j>",     function() require('smart-splits').resize_down(2) end,  mode = "n", noremap = true, silent = true, desc = "Resizes window down" },
+        }
+    },
+    {
+        'vidocqh/data-viewer.nvim',
+        opts = {
+            autoDisplayWhenOpenFile = false,
+            maxLineEachTable = 100,
+            columnColorEnable = true,
+            columnColorRoulette = { -- Highlight groups
+                "Normal",
+                "Normal",
+                "Normal",
+            },
+            view = {
+                float = true, -- False will open in current window
+                width = 0.8, -- Less than 1 means ratio to screen width, valid when float = true
+                height = 0.8, -- Less than 1 means ratio to screen height, valid when float = true
+                zindex = 50, -- Valid when float = true
+            },
+            keymap = {
+                quit = "q",
+                next_table = "<C-l>",
+                prev_table = "<C-h>",
+            },
+        },
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            -- "kkharji/sqlite.lua", -- Optional, sqlite support
         }
     },
 }

@@ -137,7 +137,6 @@ if g.colors_name == 'gruvbox' then
     local style_sign_error_fg   = {fg = "#fb4934", bg = "#302828", ctermfg = 9, ctermbg = 1} -- custom / lt_red / red
     local style_breakpoint      = {bg = "#282830", ctermbg = 4} -- custom / blue
     local style_breakpoint_fg   = {fg = "#83a598", bg = "#283030", ctermfg = 12, ctermbg = 4} -- custom / lt_blue / blue
-
     -- common syntax
 
     --  DiagnosticUnderlineWarnxxx cterm=underline gui=underline guisp=NvimLightYellow
@@ -197,8 +196,8 @@ if g.colors_name == 'gruvbox' then
 
     highlightAll({"CmpItemKindText", "CmpItemKindField", "CmpItemKindValue", "CmpItemKindOperator", "CmpItemKindTypeParameter"}, style_normal)
     highlightAll({"CmpItemKindSnippet", "CmpItemKindKeyword", "CmpItemKindUnit", "CmpItemKindEnum"}, style_keyword)
-    highlightAll({"CmpItemAbbrDeprecated"}, style_comment)
-    highlightAll({"CmpItemAbbrMatch", "CmpItemAbbrMatchFuzzy"}, style_identifier)
+    highlightAll({"CmpItemAbbrDeprecated", "CmpItemMenu"}, style_comment)
+    highlightAll({"CmpItemAbbrMatch", "CmpItemAbbrMatchFuzzy", "PmenuSel"}, style_identifier)
     highlightAll({"CmpItemKindValue", "CmpItemKindEnumMember", "CmpItemKindColor", "CmpItemKindConstant", "CmpItemKindEvent"}, style_const)
     highlightAll({"CmpItemKindFile", "CmpItemKindReference", "CmpItemKindFolder"}, style_string)
     highlightAll({"CmpItemKindMethod", "CmpItemKindFunction", "CmpItemKindConstructor", "CmpItemKindProperty"}, style_function)
