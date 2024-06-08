@@ -8,6 +8,7 @@ load('config.filetypes')
 load('config.theme')
 load('config.keymap')
 load('config.autocmd')
+load('config.commands')
 load('config.lazy')
 
 load('utils.codestats.loader')

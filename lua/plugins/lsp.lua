@@ -275,4 +275,9 @@ return {
             yankDiagnosticCodeToSystemClipboard = true,
         }
     },
+    {
+        "z0mbix/vim-shfmt",
+        filetypes = { "sh" },
+        enabled = sysdep({"shfmt"})
+    }
 }

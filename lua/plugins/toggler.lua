@@ -32,6 +32,7 @@ return {
                     ['always'] = 'never',
                     ['top'] = 'bottom',
                     ['left'] = 'right',
+                    ['up'] = 'down',
                     ['relative'] = 'absolute',
                     ['width'] = 'height',
                     ['vertical'] = 'horizontal',

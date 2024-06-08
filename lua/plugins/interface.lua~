@@ -143,4 +143,6 @@ return {
     },
     -- :Calendar
     "itchyny/calendar.vim",
+    -- Highlight undos
+    'tzachar/highlight-undo.nvim',
 }

@@ -63,9 +63,11 @@ noremap("i", "<C-Del>", '<C-o>"_dw', { desc = "Delete in word forward" });
 -- map delete to black hole yank
 noremap("", "<Del>", '"_x', { desc = "Delete but into black hole" })
 noremap("i", "<Del>", '<C-o>"_x', { desc = "Delete but into black hole" })
+
 -- FIXME: check back when https://github.com/wez/wezterm/issues/3621 fixed
 remap("", "<C-h>", "<Del>", { desc = "Wezterm kitty protocol hotfix" })
 remap("i", "<C-h>", "<Del>", { desc = "Wezterm kitty protocol hotfix" })
+remap("t", "<C-h>", "<Del>", { desc = "Wezterm kitty protocol hotfix" })
 
 noremap('', '<S-ScrollWheelUp>', '3zh', { desc = "Scrolls right" })
 noremap('', '<S-ScrollWheelDown>', '3zl', { desc = "Scrolls left" })
@@ -196,6 +198,9 @@ noremap('v', '<A-S-down>', '<S-v>"my`]"mp`[V`]v', { desc = "Duplicates lines dow
 
 -- erase one tab
 noremap("i", "<S-Tab>", "<C-o><<", { desc = "Shifts line left" });
+
+noremap("v", "<S-down>", "<down>", { desc = "Prevent buffer scroll" })
+noremap("v", "<S-up>", "<up>", { desc = "Prevent buffer scroll" })
 
 -- -------------------------------------------------------------------------- --
 --                                 Visual Mode                                --

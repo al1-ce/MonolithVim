@@ -7,6 +7,7 @@ end
 
 local shebangList = {
     ["node"] = "javascript",
+    ["npx"] = "javascript",
     ["rdmd"] = "d",
     ["rund"] = "d",
     ["dub"] = "d",
@@ -24,10 +25,12 @@ end
 local function detectShebangPattern()
     for k, v in pairs(shebangList) do
         local sb = vim.api.nvim_buf_get_lines(0, 0, -1, false)[1]
-        if sb == "#!/bin/" .. k or
-           sb == "#!/usr/bin/" .. k or
-           sb == "#!/bin/env " .. k or
-           sb == "#!/usr/bin/env " .. k then
+        if sb:find("^#!/bin/" .. k) ~= nil or
+           sb:find("^#!/usr/bin/" .. k) ~= nil or
+           sb:find("^#!/bin/env " .. k) ~= nil or
+           sb:find("^#!/bin/env %-S " .. k) ~= nil or
+           sb:find("^#!/usr/bin/env " .. k) ~= nil or
+           sb:find("^#!/usr/bin/env %-S " .. k) ~= nil then
             setft(v)
             setCustomHighlight(v)
         end

@@ -24,9 +24,6 @@ return {
                 }
             }
 
-            local hydraHelp = "<cmd>lua require('hydra').activate(require('plugins.hydra.manual').hydra())<cr>"
-            local fzfProjects = "<cmd>lua require('plugins.hydra.files').fzfProjects()<cr>"
-
             --- @param sc string
             --- @param txt string
             --- @param keybind string? optional
@@ -66,9 +63,8 @@ return {
                 type = "group",
                 val = {
                     button("∖fr", "> open oldfiles", "<cmd>FzfLua oldfiles<cr>"),
-                    button("∖fp", "> open projects", fzfProjects),
+                    button("∖fp", "> open projects", "<cmd>FzfLuaProjects<cr>"),
                     button("∖ce", "> open config", "<cmd>edit $MYVIMRC | tcd %:p:h<cr>"),
-                    button("∖h ", "> open manual", hydraHelp),
                     button("e  ", "> new file", "<cmd>enew<cr>"),
                     button("q  ", "> quit", "<cmd>qa<cr>"),
                 },

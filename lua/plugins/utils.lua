@@ -155,8 +155,8 @@ return {
     {
         'tpope/vim-surround',
         keys = {
-            { "<leader>sr", "<Plug>Csurround", mode = "n", noremap = true, silent = true, desc = "Replaces surrounding" },
-            { "<leader>sa", "<Plug>Dsurround", mode = "n", noremap = true, silent = true, desc = "Surrounds text" },
+            { "<leader>tr", "<Plug>Csurround", mode = "n", noremap = true, silent = true, desc = "Replaces surrounding" },
+            { "<leader>ts", "<Plug>Dsurround", mode = "n", noremap = true, silent = true, desc = "Surrounds text" },
         }
     },
     -- Move lines and characters [ A-Up A-Down ]
@@ -424,9 +424,9 @@ return {
             },
             view = {
                 float = true, -- False will open in current window
-                width = 0.8, -- Less than 1 means ratio to screen width, valid when float = true
+                width = 0.8,  -- Less than 1 means ratio to screen width, valid when float = true
                 height = 0.8, -- Less than 1 means ratio to screen height, valid when float = true
-                zindex = 50, -- Valid when float = true
+                zindex = 50,  -- Valid when float = true
             },
             keymap = {
                 quit = "q",

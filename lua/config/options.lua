@@ -4,14 +4,14 @@
 -- IT BREAKS IF YOU'RE NOT DOING THAT
 vim.cmd.colorscheme('gruvbox')
 
-vim.g.gruvbox_baby_transparent_mode = 1
+vim.g.gruvbox_baby_transparent_mode = 0
 vim.g.gruvbox_contrast_dark = "medium"
-vim.g.gruvbox_transparent_bg = 1
+vim.g.gruvbox_transparent_bg = 0
 
 vim.g.gruvbox_material_enable_italic = true
 vim.g.gruvbox_material_background = 'hard'
 vim.g.gurvbox_material_foreground = 'original'
-vim.g.gurvbox_material_transparent_background = 1
+vim.g.gurvbox_material_transparent_background = 0
 -- vim.g.gruvbox_material_better_performance = 1
 vim.g.gruvbox_material_visual = 'reverse'
 
@@ -59,14 +59,6 @@ vim.g["lsp-timeout-config"] = {
 
 -- don't auto commenting new lines
 vim.cmd [[au BufEnter * set fo-=c fo-=r fo-=o]]
-
--- autocorrects qq to Qq
-vim.cmd([[cabbrev qq Qq]])
-
--- custom qall command
-vim.api.nvim_create_user_command('Qq', function(opts) if (opts.bang) then vim.cmd[[qall!]] else vim.cmd[[qall]] end end, { bang = true })
-vim.api.nvim_create_user_command('Spell', function() vim.o.spell = not vim.o.spell end, {})
-vim.api.nvim_create_user_command('Wrap', function() vim.o.wrap = not vim.o.wrap end, {})
 
 vim.cmd([[set guicursor=n-v-sm:block,i-c-ci-ve:ver25,r-cr-o:hor20]])
 

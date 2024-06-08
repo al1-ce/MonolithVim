@@ -10,8 +10,8 @@ do -- BEGIN AUTOCMD
         end
     })
 
-    -- autocmd("ColorScheme", { callback = function ()
-    --     require("config.theme")
-    -- end })
+    autocmd("ColorScheme", { callback = function ()
+        dofile(vim.fn.stdpath('config') .. "/lua/config/theme.lua")
+    end })
 end -- END AUTOCMD
 

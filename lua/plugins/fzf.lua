@@ -1,37 +1,5 @@
 local sysdep = require("utils.sysdep")
 
-local function reverse(tab)
-    for i = 1, #tab / 2, 1 do
-        tab[i], tab[#tab - i + 1] = tab[#tab - i + 1], tab[i]
-    end
-    return tab
-end
-
-local function deleteProject(paths)
-    for _, fpath in ipairs(paths) do
-        local choice = vim.fn.confirm("Delete '" .. fpath .. "' from project list?", "&Yes\n&No", 2)
-
-        if choice == 1 then
-            require("project_nvim.utils.history").delete_project({ value = fpath })
-        end
-    end
-end
-
-local function fzfProjects()
-    require("fzf-lua").fzf_exec(
-        reverse(require("project_nvim").get_recent_projects()),
-        {
-            prompt = " ",
-            -- fzf_opts = {['--layout'] = 'reverse'},
-            actions = {
-                ['default'] = function(selected, opts) require("fzf-lua").files({ cwd = selected[1] }) end,
-                ["ctrl-d"] = deleteProject,
-                ["ctrl-w"] = function(selected, opts) vim.api.nvim_set_current_dir(selected[1]) end,
-            }
-        }
-    )
-end
-
 return {
     -- FZF [ ;ff ;fr ;fp ;fg \ff ... ]
     {
@@ -159,16 +127,20 @@ return {
                 },
                 diagnostics = { prompt = " " }
             })
+
+            vim.api.nvim_create_user_command("FzfLuaProjects", function ()
+                require("utils.fzf").FzfProjects()
+            end, {})
         end,
         event = "VimEnter",
         keys = {
-            { "<leader>ff", "<cmd>FzfLua files<cr>",        mode = "n", noremap = true, silent = true, desc = "Opens file picker" },
-            { "<leader>fr", "<cmd>FzfLua oldfiles<cr>",     mode = "n", noremap = true, silent = true, desc = "Opens oldfile picker" },
-            { "<leader>fg", "<cmd>FzfLua grep_project<cr>", mode = "n", noremap = true, silent = true, desc = "Opens project search" },
-            { "<leader>fp", fzfProjects,                    mode = "n", noremap = true, silent = true, desc = "Opens project picker" },
-            { "<leader>fm", "<cmd>FzfLua marks<cr>",        mode = "n", noremap = true, silent = true, desc = "Opens marks picker" },
-            { "<leader>fk", "<cmd>FzfLua keymaps<cr>",      mode = "n", noremap = true, silent = true, desc = "Shows keymap" },
-            { "<leader>f/", "<cmd>FzfLua blines<cr>",       mode = "n", noremap = true, silent = true, desc = "Search in file" },
+            { "<leader>ff", "<cmd>FzfLua files<cr>",          mode = "n", noremap = true, silent = true, desc = "Opens file picker" },
+            { "<leader>fr", "<cmd>FzfLua oldfiles<cr>",       mode = "n", noremap = true, silent = true, desc = "Opens oldfile picker" },
+            { "<leader>fg", "<cmd>FzfLua grep_project<cr>",   mode = "n", noremap = true, silent = true, desc = "Opens project search" },
+            { "<leader>fp", "<cmd>FzfLuaProjects<cr>",        mode = "n", noremap = true, silent = true, desc = "Opens project picker" },
+            { "<leader>fm", "<cmd>FzfLua marks<cr>",          mode = "n", noremap = true, silent = true, desc = "Opens marks picker" },
+            { "<leader>fk", "<cmd>FzfLua keymaps<cr>",        mode = "n", noremap = true, silent = true, desc = "Shows keymap" },
+            { "<leader>f/", "<cmd>FzfLua blines<cr>",         mode = "n", noremap = true, silent = true, desc = "Search in file" },
         },
     },
 }
