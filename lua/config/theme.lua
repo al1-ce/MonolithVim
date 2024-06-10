@@ -11,8 +11,8 @@ local color_indices = {
     c4  = "#000088",
     c5  = "#aa0088",
     c6  = "#00aa88",
-    c7  = "#555555",
-    c8  = "#888888",
+    c7  = "#888888",
+    c8  = "#555555",
     c9  = "#ff0000",
     c10 = "#00ff00",
     c11 = "#ffff00",
@@ -111,109 +111,133 @@ highlight("HydraPink",     {fg = g.terminal_color_13, ctermfg = 13})
 
 -- custom gruv colors
 
+local custom_colors = {
+    dk_gray = g.terminal_color_8,
+    gray = g.terminal_color_15,
+    lt_gray = g.terminal_color_15,
+    orange = g.terminal_color_11,
+    fn_orange = g.terminal_color_3,
+    fn_red = g.terminal_color_1,
+    fn_blue = g.terminal_color_4,
+    fn_cyan = g.terminal_color_6,
+    fn_gray = g.terminal_color_8
+}
+
 if g.colors_name == 'gruvbox' then
-    local style_normal      = {fg = g.terminal_color_15, ctermfg = 15} -- white
-    local style_delimiter   = {fg = "#bdae95", ctermfg = 15} -- white
-    local style_function    = {fg = g.terminal_color_12, ctermfg = 12} -- lt_blue
-    local style_keyword     = {fg = g.terminal_color_9, ctermfg = 9} -- lt_red
-    local style_type        = {fg = g.terminal_color_9, ctermfg = 9, italic = true} -- lt_red
-    local style_const       = {fg = g.terminal_color_13, ctermfg = 13} -- lt_purple
-    local style_string      = {fg = g.terminal_color_10, ctermfg = 10} -- lt_green
-    local style_macro       = {fg = g.terminal_color_14, ctermfg = 14} -- lt_aqua
-    local style_identifier  = {fg = "#d5c4a1", ctermfg = 15} -- white / white
-    local style_special     = {fg = "#fe8019", ctermfg = 11} -- orange / lt_yellow
-    local style_tag         = {fg = "#7c6f63", ctermfg = 7} -- gray / gray
-    local style_comment     = {fg = "#7c6f63", ctermfg = 7, italic = true} -- gray / gray
-
-    local style_underline_error   = { sp = g.terminal_color_9, underline = true }
-    local style_underline_hint    = { sp = g.terminal_color_12, underline = true }
-    local style_underline_info    = { sp = g.terminal_color_13, underline = true }
-    local style_underline_ok      = { sp = g.terminal_color_10, underline = true }
-    local style_underline_warning = { sp = "#fe8019", underline = true }
-
-    local style_sign_warning    = {bg = "#352C28", ctermbg = 11} -- custom / yellow
-    local style_sign_error      = {bg = "#302828", ctermbg = 1} -- custom / red
-    local style_sign_warning_fg = {fg = "#fe8019", bg = "#352C28", ctermfg = 11, ctermbg = 3} -- custom / lt_yellow / yellow
-    local style_sign_error_fg   = {fg = "#fb4934", bg = "#302828", ctermfg = 9, ctermbg = 1} -- custom / lt_red / red
-    local style_breakpoint      = {bg = "#282830", ctermbg = 4} -- custom / blue
-    local style_breakpoint_fg   = {fg = "#83a598", bg = "#283030", ctermfg = 12, ctermbg = 4} -- custom / lt_blue / blue
-    -- common syntax
-
-    --  DiagnosticUnderlineWarnxxx cterm=underline gui=underline guisp=NvimLightYellow
-    highlightAll({"Normal", "NormalFloat", "FloatBorder", "cParenError", "MatchParen", "@variable", "@module.d"}, style_normal)
-    highlightAll({"Function"}, style_function)
-    highlightAll({"Delimiter", "@punctuation.delimiter.d"}, style_delimiter)
-    -- highlightAll({"@punctuation.bracket.d"}, style_special)
-    highlightAll({"Identifier"}, style_identifier)
-    highlightAll({"Label", "Conditional", "Debug", "Exception", "Include", "Repeat"}, style_keyword)
-    highlightAll({"StorageClass", "Structure", "Typedef", "Keyword", "Operator", "Statement"}, style_keyword)
-    highlightAll({"Type", "@type.builtin.d"}, style_type)
-    highlightAll({"Constant", "Boolean", "Number", "Float"}, style_const)
-    highlightAll({"String", "Character"}, style_string)
-    highlightAll({"Special", "SpecialChar"}, style_special)
-    highlightAll({"Macro", "PreProc", "Define", "Precondit"}, style_macro)
-    highlightAll({"Todo", "Tag"}, style_tag)
-    highlightAll({"Comment", "WinSeparator"}, style_comment)
-
-    highlight("DiagnosticUnderlineError", style_underline_error)
-    highlight("DiagnosticUnderlineHint", style_underline_hint)
-    highlight("DiagnosticUnderlineInfo", style_underline_info)
-    highlight("DiagnosticUnderlineOk", style_underline_ok)
-    highlight("DiagnosticUnderlineWarn", style_underline_warning)
-
-    highlightAll({"Search"}, {reverse = true})
-
-    -- https://github.com/kevinhwang91/nvim-ufo#highlight-groups
-    local style_fold_line = {bg = "#353535", ctermbg = 8}
-    highlight("UfoFoldedBg", style_fold_line)
-
-    highlight("vimTodoListsDone", style_comment)
-    highlight("vimTodoListsNormal", style_normal)
-    highlight("vimTodoListsImportant", style_macro)
-
-    -- PQF && DAP
-
-    highlightAll({"LspSagaDiagnosticBorder"}, style_normal)
-
-    highlightAll({"Error", "DiagnosticError"}, style_keyword)
-    highlightAll({"Directory", "DiagnosticInfo"}, style_function)
-    highlightAll({"DiagnosticWarn"}, style_special)
-    highlightAll({"DiagnosticHint"}, style_macro)
-
-    highlightAll({"DiagnosticSignError", "DapSignStopped"}, style_sign_error)
-    highlightAll({"DiagnosticSignWarn"}, style_sign_warning)
-    highlightAll({"DiagnosticSignErrorNumber", "DapSignStoppedNumber"}, style_sign_error_fg)
-    highlightAll({"DiagnosticSignWarnNumber"}, style_sign_warning_fg)
-
-    highlightAll({"DapSignBreakpoint"}, style_breakpoint)
-    highlightAll({"DapSignBreakpointNumber"}, style_breakpoint_fg)
-
-    highlight("LuaLineDiffAdd", style_string)
-    highlight("LuaLineDiffChange", style_special)
-    highlight("LuaLineDiffDelete", style_keyword)
-
-    -- CMP
-
-    highlightAll({"CmpItemKindText", "CmpItemKindField", "CmpItemKindValue", "CmpItemKindOperator", "CmpItemKindTypeParameter"}, style_normal)
-    highlightAll({"CmpItemKindSnippet", "CmpItemKindKeyword", "CmpItemKindUnit", "CmpItemKindEnum"}, style_keyword)
-    highlightAll({"CmpItemAbbrDeprecated", "CmpItemMenu"}, style_comment)
-    highlightAll({"CmpItemAbbrMatch", "CmpItemAbbrMatchFuzzy", "PmenuSel"}, style_identifier)
-    highlightAll({"CmpItemKindValue", "CmpItemKindEnumMember", "CmpItemKindColor", "CmpItemKindConstant", "CmpItemKindEvent"}, style_const)
-    highlightAll({"CmpItemKindFile", "CmpItemKindReference", "CmpItemKindFolder"}, style_string)
-    highlightAll({"CmpItemKindMethod", "CmpItemKindFunction", "CmpItemKindConstructor", "CmpItemKindProperty"}, style_function)
-    highlightAll({"CmpItemKindClass", "CmpItemKindStruct", "CmpItemKindInterface", "CmpItemKindModule"}, style_special)
-
-    vim.cmd([[
-        sign define DiagnosticSignError text=E texthl=DiagnosticSignError linehl=DiagnosticSignError numhl=DiagnosticSignErrorNumber
-        sign define DiagnosticSignWarn text=W texthl=DiagnosticSignWarn linehl=DiagnosticSignWarn numhl=DiagnosticSignWarnNumber
-        sign define DiagnosticSignInfo text=I texthl=DiagnosticSignInfo linehl= numhl=DiagnosticSignInfo
-        sign define DiagnosticSignHint text=H texthl=DiagnosticSignHint linehl= numhl=DiagnosticSignHint
-
-        sign define DapBreakpoint text=B texthl=DapSignBreakpoint linehl=DapSignBreakpoint numhl=DapSignBreakpointNumber
-        sign define DapStopped text=S texthl=DapSignStopped linehl=DapSignStopped numhl=DapSignStoppedNumber
-
-        hi! link @constant.builtin.d Constant
-        hi! link @lsp.type.macro.c Constant
-    ]])
+    custom_colors.dk_gray = "#7c6f63"
+    custom_colors.gray = "#bdae95"
+    custom_colors.lt_gray = "#d5c4a1"
+    custom_colors.orange = "#fe8019"
+    custom_colors.fn_orange = "#352C28"
+    custom_colors.fn_red = "#302828"
+    custom_colors.fn_blue = "#282830"
+    custom_colors.fn_cyan = "#283030"
+    custom_colors.fn_gray = "#353535"
 end
+
+local style_normal      = {fg = g.terminal_color_15, ctermfg = 15} -- white
+local style_delimiter   = {fg = custom_colors.gray, ctermfg = 15} -- white
+local style_function    = {fg = g.terminal_color_12, ctermfg = 12} -- lt_blue
+local style_keyword     = {fg = g.terminal_color_9, ctermfg = 9} -- lt_red
+local style_type        = {fg = g.terminal_color_9, ctermfg = 9, italic = true} -- lt_red
+local style_const       = {fg = g.terminal_color_13, ctermfg = 13} -- lt_purple
+local style_string      = {fg = g.terminal_color_10, ctermfg = 10} -- lt_green
+local style_macro       = {fg = g.terminal_color_14, ctermfg = 14} -- lt_aqua
+local style_identifier  = {fg = custom_colors.lt_gray, ctermfg = 15} -- white / white
+local style_special     = {fg = custom_colors.orange, ctermfg = 11} -- orange / lt_yellow
+local style_tag         = {fg = custom_colors.dk_gray, ctermfg = 7} -- gray / gray
+local style_comment     = {fg = custom_colors.dk_gray, ctermfg = 7, italic = true} -- gray / gray
+
+local style_underline_error   = { sp = g.terminal_color_9, underline = true }
+local style_underline_hint    = { sp = g.terminal_color_12, underline = true }
+local style_underline_info    = { sp = g.terminal_color_13, underline = true }
+local style_underline_ok      = { sp = g.terminal_color_10, underline = true }
+local style_underline_warning = { sp = custom_colors.orange, underline = true }
+
+local style_sign_warning    = {bg = custom_colors.fn_orange, ctermbg = 11} -- custom / yellow
+local style_sign_error      = {bg = custom_colors.fn_red, ctermbg = 1} -- custom / red
+local style_sign_warning_fg = {fg = custom_colors.orange, bg = custom_colors.fn_orange, ctermfg = 11, ctermbg = 3} -- custom / lt_yellow / yellow
+local style_sign_error_fg   = {fg = g.terminal_color_9, bg = custom_colors.fn_red, ctermfg = 9, ctermbg = 1} -- custom / lt_red / red
+local style_breakpoint      = {bg = custom_colors.fn_blue, ctermbg = 4} -- custom / blue
+local style_breakpoint_fg   = {fg = g.terminal_color_12, bg = custom_colors.fn_cyan, ctermfg = 12, ctermbg = 4} -- custom / lt_blue / blue
+
+-- https://github.com/kevinhwang91/nvim-ufo#highlight-groups
+local style_fold_line = {bg = custom_colors.fn_gray, ctermbg = 8}
+
+-- common syntax
+
+--  DiagnosticUnderlineWarnxxx cterm=underline gui=underline guisp=NvimLightYellow
+highlightAll({"Normal", "NormalFloat", "FloatBorder", "cParenError", "MatchParen", "@variable", "@module.d"}, style_normal)
+highlightAll({"Function"}, style_function)
+highlightAll({"Delimiter", "@punctuation.delimiter.d"}, style_delimiter)
+-- highlightAll({"@punctuation.bracket.d"}, style_special)
+highlightAll({"Identifier"}, style_identifier)
+highlightAll({"Label", "Conditional", "Debug", "Exception", "Include", "Repeat"}, style_keyword)
+highlightAll({"StorageClass", "Structure", "Typedef", "Keyword", "Operator", "Statement"}, style_keyword)
+highlightAll({"Type", "@type.builtin.d"}, style_type)
+highlightAll({"Constant", "Boolean", "Number", "Float"}, style_const)
+highlightAll({"String", "Character"}, style_string)
+highlightAll({"Special", "SpecialChar"}, style_special)
+highlightAll({"Macro", "PreProc", "Define", "Precondit"}, style_macro)
+highlightAll({"Todo", "Tag"}, style_tag)
+highlightAll({"Comment", "WinSeparator"}, style_comment)
+
+highlight("DiagnosticUnderlineError", style_underline_error)
+highlight("DiagnosticUnderlineHint", style_underline_hint)
+highlight("DiagnosticUnderlineInfo", style_underline_info)
+highlight("DiagnosticUnderlineOk", style_underline_ok)
+highlight("DiagnosticUnderlineWarn", style_underline_warning)
+
+highlightAll({"Search"}, {reverse = true})
+
+highlight("UfoFoldedBg", style_fold_line)
+
+highlight("vimTodoListsDone", style_comment)
+highlight("vimTodoListsNormal", style_normal)
+highlight("vimTodoListsImportant", style_macro)
+
+-- PQF && DAP
+
+highlightAll({"LspSagaDiagnosticBorder"}, style_normal)
+
+highlightAll({"Error", "DiagnosticError"}, style_keyword)
+highlightAll({"Directory", "DiagnosticInfo"}, style_function)
+highlightAll({"DiagnosticWarn"}, style_special)
+highlightAll({"DiagnosticHint"}, style_macro)
+
+highlightAll({"DiagnosticSignError", "DapSignStopped"}, style_sign_error)
+highlightAll({"DiagnosticSignWarn"}, style_sign_warning)
+highlightAll({"DiagnosticSignErrorNumber", "DapSignStoppedNumber"}, style_sign_error_fg)
+highlightAll({"DiagnosticSignWarnNumber"}, style_sign_warning_fg)
+
+highlightAll({"DapSignBreakpoint"}, style_breakpoint)
+highlightAll({"DapSignBreakpointNumber"}, style_breakpoint_fg)
+
+highlight("LuaLineDiffAdd", style_string)
+highlight("LuaLineDiffChange", style_special)
+highlight("LuaLineDiffDelete", style_keyword)
+
+-- CMP
+
+highlightAll({"CmpItemKindText", "CmpItemKindField", "CmpItemKindValue", "CmpItemKindOperator", "CmpItemKindTypeParameter"}, style_normal)
+highlightAll({"CmpItemKindSnippet", "CmpItemKindKeyword", "CmpItemKindUnit", "CmpItemKindEnum"}, style_keyword)
+highlightAll({"CmpItemAbbrDeprecated", "CmpItemMenu"}, style_comment)
+highlightAll({"CmpItemAbbrMatch", "CmpItemAbbrMatchFuzzy", "PmenuSel"}, style_identifier)
+highlightAll({"CmpItemKindValue", "CmpItemKindEnumMember", "CmpItemKindColor", "CmpItemKindConstant", "CmpItemKindEvent"}, style_const)
+highlightAll({"CmpItemKindFile", "CmpItemKindReference", "CmpItemKindFolder"}, style_string)
+highlightAll({"CmpItemKindMethod", "CmpItemKindFunction", "CmpItemKindConstructor", "CmpItemKindProperty"}, style_function)
+highlightAll({"CmpItemKindClass", "CmpItemKindStruct", "CmpItemKindInterface", "CmpItemKindModule"}, style_special)
+
+vim.cmd([[
+    sign define DiagnosticSignError text=E texthl=DiagnosticSignError linehl=DiagnosticSignError numhl=DiagnosticSignErrorNumber
+    sign define DiagnosticSignWarn text=W texthl=DiagnosticSignWarn linehl=DiagnosticSignWarn numhl=DiagnosticSignWarnNumber
+    sign define DiagnosticSignInfo text=I texthl=DiagnosticSignInfo linehl= numhl=DiagnosticSignInfo
+    sign define DiagnosticSignHint text=H texthl=DiagnosticSignHint linehl= numhl=DiagnosticSignHint
+
+    sign define DapBreakpoint text=B texthl=DapSignBreakpoint linehl=DapSignBreakpoint numhl=DapSignBreakpointNumber
+    sign define DapStopped text=S texthl=DapSignStopped linehl=DapSignStopped numhl=DapSignStoppedNumber
+
+    hi! link @constant.builtin.d Constant
+    hi! link @lsp.type.macro.c Constant
+]])
 

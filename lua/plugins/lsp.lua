@@ -111,7 +111,6 @@ return {
             { '<C-s>',      vim.lsp.buf.signature_help,                    mode = 'i', desc = "Shows signature help" },
 
             { 'K',          "<cmd>Lspsaga hover_doc<cr>",                  mode = "n", desc = "Shows signature help" },
-            { 'K',          vim.lsp.buf.signature_help,                    mode = 'i', desc = "Shows signature help" },
 
             { "<leader>ca", "<cmd>Lspsaga code_action<cr>",                mode = "n", desc = "Shows available code actions" },
             { "<leader>d",  "<cmd>Lspsaga show_line_diagnostics<cr>",      mode = "n", desc = "Shows diagnostics for line" },

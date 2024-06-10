@@ -54,9 +54,13 @@ end
 
 M.select = function()
     require("fzf-lua").fzf_exec(listdir(), {
-        complete = function(selected, opts, line, col)
-            insert_file(selected[1])
-        end
+        actions = {
+            ['default'] = {
+                fn = function(sel, opts)
+                    insert_file(sel[1])
+                end
+            }
+        }
     })
 end
 

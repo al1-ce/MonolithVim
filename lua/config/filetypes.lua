@@ -72,6 +72,7 @@ do -- start autocmd block
     local event_filetype = { "BufEnter", "BufRead", "BufNewFile" }
 
     augroup("SetCustomFiletypes", { clear = true })
+    augroup("ToggleCursorLine", { clear = true })
 
     -- Templates
     -- D templates, template!val and template!(val)
@@ -86,8 +87,8 @@ do -- start autocmd block
     -- Shebang
     autocmd(event_filetype, { group = "SetCustomFiletypes", pattern = {"*"}, callback = detectShebangPattern })
 
-    autocmd({"WinEnter", "BufEnter"}, { pattern = "*", command = "setlocal cursorline" })
-    autocmd({"WinLeave", "BufLeave"}, { pattern = "*", command = "setlocal nocursorline" })
+    autocmd({"WinEnter", "BufEnter"}, { group = "ToggleCursorLine", pattern = "*", command = "setlocal cursorline" })
+    autocmd({"WinLeave", "BufLeave"}, { group = "ToggleCursorLine", pattern = "*", command = "setlocal nocursorline" })
 
     -- Set filetypes
     autocmd(event_filetype, { group = "SetCustomFiletypes", pattern = {"*.sdl"}, callback = function() setft("sdlang") end })
@@ -98,12 +99,11 @@ do -- start autocmd block
     autocmd(event_filetype, { group = "SetCustomFiletypes", pattern = {"*.vs", "*.fs"}, callback = function() setft("glsl") end })
 
     -- ;h - to edit c headers and source files faster
-    -- TODO: figure out how to do it with vim.api.nvim_create_augroup
-    -- FIXME: rewrite as lua function and find appropriate .h or .hpp file
-    vim.cmd([[au BufEnter,BufNew *.c nnoremap <silent> ;h :e %<.h<CR>]])
-    vim.cmd([[au BufEnter,BufNew *.h nnoremap <silent> ;h :e %<.c<CR>]])
-    vim.cmd([[au BufEnter,BufNew *.hpp nnoremap <silent> ;h :e %<.cpp<CR>]])
-    vim.cmd([[au BufEnter,BufNew *.cpp nnoremap <silent> ;h :e %<.hpp<CR>]])
+    -- use :Ouroboros instead
+    -- vim.cmd([[au BufEnter,BufNew *.c nnoremap <silent> ;h :e %<.h<CR>]])
+    -- vim.cmd([[au BufEnter,BufNew *.h nnoremap <silent> ;h :e %<.c<CR>]])
+    -- vim.cmd([[au BufEnter,BufNew *.hpp nnoremap <silent> ;h :e %<.cpp<CR>]])
+    -- vim.cmd([[au BufEnter,BufNew *.cpp nnoremap <silent> ;h :e %<.hpp<CR>]])
 end -- end autocmd block
 
 

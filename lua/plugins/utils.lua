@@ -439,4 +439,48 @@ return {
             -- "kkharji/sqlite.lua", -- Optional, sqlite support
         }
     },
+    {
+        "zk-org/zk-nvim",
+        config = function()
+            vim.cmd([[ let $ZK_NOTEBOOK_DIR = $HOME."/zk" ]])
+            require("zk").setup({
+                picker = "fzf_lua",
+
+                lsp = {
+                    -- `config` is passed to `vim.lsp.start_client(config)`
+                    config = {
+                        cmd = { "zk", "lsp" },
+                        name = "zk",
+                        -- on_attach = ...
+                        -- etc, see `:h vim.lsp.start_client()`
+                    },
+
+                    -- automatically attach buffers in a zk notebook that match the given filetypes
+                    auto_attach = {
+                        enabled = true,
+                        filetypes = { "markdown" },
+                    },
+                },
+            })
+        end,
+        keys = {
+            { "<leader>zk", "<cmd>ZkNotes { sort = { 'modified' } }<cr>",                                       mode = "n", noremap = true, silent = true, desc = "Open Zettelkasten notes" },
+            { "<leader>zn", "<cmd>ZkNew { title = vim.fn.input('Title: ') }<cr>",                               mode = "n", noremap = true, silent = true, desc = "New zk note" },
+            { "<leader>zt", "<cmd>ZkTags<cr>",                                                                  mode = "n", noremap = true, silent = true, desc = "Open zk note by tag" },
+            { "<leader>zf", "<cmd>ZkNotes { sort = { 'modified' }, match = { vim.fn.input('Search: ') } }<cr>", mode = "n", noremap = true, silent = true, desc = "Match zk notes" },
+            { "<leader>zf", ":'<,'>ZkMatch<cr>",                                                                mode = "v", noremap = true, silent = true, desc = "Match zk notes" },
+        },
+        event = "VimEnter"
+    },
+    -- easy . repeat for plugins
+    "tpope/vim-repeat",
+    -- close inactive buffers
+    {
+        'axkirillov/hbac.nvim',
+        opts = {
+            autoclose = true,
+            threshold = 10,
+            close_buffers_with_windows = false,
+        }
+    }
 }

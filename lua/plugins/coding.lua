@@ -13,6 +13,8 @@ return {
             -- Popup snippets
             'hrsh7th/cmp-vsnip',    -- for popups
             'hrsh7th/vim-vsnip',
+            -- vsnip snippets
+            "rafamadriz/friendly-snippets",
             'onsails/lspkind.nvim',
         },
         config = function()
@@ -221,28 +223,29 @@ return {
                     ---Operator-pending mapping; `gcc` `gbc` `gc[count]{motion}` `gb[count]{motion}`
                     basic = true,
                     ---Extra mapping; `gco`, `gcO`, `gcA`
-                    extra = false,
+                    extra = true,
                 }
             }
 
             ft({ 'd' }, ft.get('c'))
             ft({ 'sdl' }, ft.get('c'))
             ft({ 'sdlang' }, ft.get('c'))
+            ft({ 'kdl' }, ft.get('c'))
 
-            local commentApi = require("Comment.api")
-            local commentEsc = vim.api.nvim_replace_termcodes(
-                '<ESC>', true, false, true
-            )
-            noremap("v", "<C-/>", function()
-                vim.api.nvim_feedkeys(commentEsc, 'nx', false)
-                commentApi.toggle.linewise(vim.fn.visualmode())
-            end, { desc = "Toggles comment linewize" })
-            noremap("v", "<C-S-/>", function()
-                vim.api.nvim_feedkeys(commentEsc, 'nx', false)
-                commentApi.toggle.blockwise(vim.fn.visualmode())
-            end, { desc = "Toggles comment blockwise" })
-            noremap("n", "<C-/>", commentApi.toggle.linewise.current, { desc = "Toggles comment" })
-            noremap("i", "<C-/>", commentApi.toggle.linewise.current, { desc = "Toggles comment" })
+            -- local commentApi = require("Comment.api")
+            -- local commentEsc = vim.api.nvim_replace_termcodes(
+            --     '<ESC>', true, false, true
+            -- )
+            -- noremap("v", "<C-/>", function()
+            --     vim.api.nvim_feedkeys(commentEsc, 'nx', false)
+            --     commentApi.toggle.linewise(vim.fn.visualmode())
+            -- end, { desc = "Toggles comment linewize" })
+            -- noremap("v", "<C-S-/>", function()
+            --     vim.api.nvim_feedkeys(commentEsc, 'nx', false)
+            --     commentApi.toggle.blockwise(vim.fn.visualmode())
+            -- end, { desc = "Toggles comment blockwise" })
+            -- noremap("n", "<C-/>", commentApi.toggle.linewise.current, { desc = "Toggles comment" })
+            -- noremap("i", "<C-/>", commentApi.toggle.linewise.current, { desc = "Toggles comment" })
         end,
     },
     -- Alisgn text [ glip= ]
@@ -268,6 +271,7 @@ return {
         },
     },
     -- Project-wide rename [ \fR ]
+    -- TODO: remove in favor of replacer?
     {
         'windwp/nvim-spectre',
         dependencies = { "nvim-lua/plenary.nvim" },
@@ -285,8 +289,26 @@ return {
             { "<leader>fR", function() require("spectre").open() end, mode = "n", noremap = true, silent = true, desc = "Opens project-wide rename" },
         },
     },
+    -- Allows for alternative project-wide replacements
+    -- To use:
+    -- - fzf-lua's grep for value and send to qf
+    -- - :Replacer
+    -- - change values
+    -- - :w
+    -- - profit
+    {
+        'gabrielpoca/replacer.nvim',
+        config = function()
+            vim.api.nvim_create_user_command("Replacer", function()
+                require("replacer").run({ save_on_write = true, rename_files = false })
+            end, {})
+            vim.api.nvim_create_user_command("ReplacerRename", function()
+                require("replacer").run({ save_on_write = true, rename_files = true })
+            end, {})
+        end
+    },
     -- Edit search as buffer
-    'dyng/ctrlsf.vim',
+    -- 'dyng/ctrlsf.vim',
     -- Highlights trailing whitespaces
     "ntpeters/vim-better-whitespace",
     -- Pretty folding [ zc zC za zA zR zM ]
@@ -422,13 +444,78 @@ return {
             }
         },
         keys = {
-            { "<leader>bd", "<cmd>JustDefault<cr>",        mode = "n", noremap = true, silent = true, desc = "" },
-            { "<leader>bb", "<cmd>JustBuild<cr>",          mode = "n", noremap = true, silent = true, desc = "" },
-            { "<leader>br", "<cmd>JustRun<cr>",            mode = "n", noremap = true, silent = true, desc = "" },
-            { "<leader>bt", "<cmd>JustTest<cr>",           mode = "n", noremap = true, silent = true, desc = "" },
-            { "<leader>ba", "<cmd>JustSelect<cr>",         mode = "n", noremap = true, silent = true, desc = "" },
-            { "<leader>bs", "<cmd>JustStop<cr>",           mode = "n", noremap = true, silent = true, desc = "" },
+            { "<leader>bd", "<cmd>JustDefault<cr>", mode = "n", noremap = true, silent = true, desc = "Run default task" },
+            { "<leader>bb", "<cmd>JustBuild<cr>",   mode = "n", noremap = true, silent = true, desc = "Run build task" },
+            { "<leader>br", "<cmd>JustRun<cr>",     mode = "n", noremap = true, silent = true, desc = "Run run task" },
+            { "<leader>bt", "<cmd>JustTest<cr>",    mode = "n", noremap = true, silent = true, desc = "Run test task" },
+            { "<leader>ba", "<cmd>JustSelect<cr>",  mode = "n", noremap = true, silent = true, desc = "Open task selector" },
+            { "<leader>bs", "<cmd>JustStop<cr>",    mode = "n", noremap = true, silent = true, desc = "Stop current task" },
         },
 
     },
+    -- Markdown outline
+    {
+        "vim-voom/VOoM",
+        cmd = "Voom",
+        ft = { "markdown" }
+    },
+    -- TOC generator
+    {
+        "mzlogin/vim-markdown-toc",
+        config = function()
+            vim.g.vmt_auto_update_on_save = 1
+            vim.g.vmt_dont_insert_fence = 0
+            vim.g.vmt_fence_text = "markdown-toc"
+            vim.g.vmt_fence_closing_text = "markdown-toc"
+            vim.g.vmt_fence_hidden_markdown_style = ""
+            vim.g.vmt_cycle_list_item_markers = 0
+            vim.g.vmt_list_item_char = '-'
+            vim.g.vmt_include_headings_before = 0
+            vim.g.vmt_list_indent_text = ''
+            vim.g.vmt_link = 1
+            vim.g.vmt_min_level = 1
+            vim.g.vmt_max_level = 2
+        end,
+        ft = { "markdown" },
+        cmd = { "GenTocGFM", "GenTocMarked" }
+    },
+    {
+        'jakemason/ouroboros',
+        dependencies = { 'nvim-lua/plenary.nvim' },
+        opts = {
+            extension_preferences_table = {
+                c = { h = 2, hpp = 1 },
+                h = { c = 2, cpp = 1 },
+                cpp = { hpp = 2, h = 1 },
+                hpp = { cpp = 2, c = 1 },
+            },
+            -- if this is true and the matching file is already open in a pane, we'll
+            -- switch to that pane instead of opening it in the current buffer
+            switch_to_open_pane_if_possible = true,
+        },
+        cmd = "Ouroboros",
+        ft = { "c", "cpp" },
+        keys = {
+            { "<leader>h", "<cmd>Ouroboros<cr>", mode = "n", noremap = true, silent = true, desc = "Switch to header" },
+        }
+    },
+    -- TODO: implement D https://github.com/Wansmer/treesj/blob/main/tests/README.md
+    {
+        'Wansmer/treesj',
+        dependencies = { 'nvim-treesitter/nvim-treesitter' },
+        opts = {
+            use_default_keymaps = false,
+            check_syntax_error = true,
+            max_join_length = 120,
+            cursor_behavior = 'hold',
+            notify = true,
+            dot_repeat = true,
+            on_error = nil,
+            langs = {},
+        },
+        event = "VimEnter",
+        keys = {
+            { "<leader>m", "<cmd>TSJToggle<cr>", mode = "n", noremap = true, silent = true, desc = "Toggle split join" },
+        },
+    }
 }
