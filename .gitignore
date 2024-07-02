@@ -1,4 +1,4 @@
 lua/.luarc.json
-plugin/
+# plugin/
 .vscode/
 lazy-lock.json

@@ -56,7 +56,7 @@ return {
                     preview = {
                         -- default = "bat",
                         border = "noborder",
-                        vertical = "down:0%",
+                        vertical = "down:15%",
                         horizontal = "right:60%",
                     }
                 },
@@ -138,16 +138,24 @@ return {
             vim.api.nvim_create_user_command("FzfLuaProjects", function ()
                 require("utils.fzf").FzfProjects()
             end, {})
+
+            vim.api.nvim_create_user_command("Colorschemes", function ()
+                require("fzf-lua.providers.colorschemes").colorschemes({
+                    actions = {
+                        ["default"] = require("utils.fzf").set_colorscheme
+                    }
+                })
+            end, {})
         end,
         event = "VimEnter",
         keys = {
-            { "<leader>ff", "<cmd>FzfLua files<cr>",          mode = "n", noremap = true, silent = true, desc = "Opens file picker" },
-            { "<leader>fr", "<cmd>FzfLua oldfiles<cr>",       mode = "n", noremap = true, silent = true, desc = "Opens oldfile picker" },
-            { "<leader>fg", "<cmd>FzfLua grep_project<cr>",   mode = "n", noremap = true, silent = true, desc = "Opens project search" },
-            { "<leader>fp", "<cmd>FzfLuaProjects<cr>",        mode = "n", noremap = true, silent = true, desc = "Opens project picker" },
-            { "<leader>fm", "<cmd>FzfLua marks<cr>",          mode = "n", noremap = true, silent = true, desc = "Opens marks picker" },
-            { "<leader>fk", "<cmd>FzfLua keymaps<cr>",        mode = "n", noremap = true, silent = true, desc = "Shows keymap" },
-            { "<leader>f/", "<cmd>FzfLua blines<cr>",         mode = "n", noremap = true, silent = true, desc = "Search in file" },
+            { "<leader>ff", "<cmd>FzfLua files<cr>",          mode = "n", noremap = true, silent = true, desc = "[F]ind [F]ile" },
+            { "<leader>fr", "<cmd>FzfLua oldfiles<cr>",       mode = "n", noremap = true, silent = true, desc = "[F]ile [R]ecent" },
+            { "<leader>fg", "<cmd>FzfLua grep_project<cr>",   mode = "n", noremap = true, silent = true, desc = "[F]ile [G]rep" },
+            { "<leader>fp", "<cmd>FzfLuaProjects<cr>",        mode = "n", noremap = true, silent = true, desc = "[F]ind [P]roject" },
+            { "<leader>fm", "<cmd>FzfLua marks<cr>",          mode = "n", noremap = true, silent = true, desc = "[F]ind [M]arks" },
+            { "<leader>fk", "<cmd>FzfLua keymaps<cr>",        mode = "n", noremap = true, silent = true, desc = "[F]ind [K]eys" },
+            { "<leader>f/", "<cmd>FzfLua blines<cr>",         mode = "n", noremap = true, silent = true, desc = "[F]ile [/]search" },
         },
     },
 }

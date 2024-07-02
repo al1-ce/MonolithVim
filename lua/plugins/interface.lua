@@ -1,45 +1,5 @@
 local sysdep = require("utils.sysdep")
 return {
-    -- scrollbar
-    {
-        'petertriho/nvim-scrollbar',
-        dependencies = {
-            'lewis6991/gitsigns.nvim',
-        },
-        config = function()
-            require('gitsigns').setup({
-                signcolumn = true
-            })
-
-            -- require('hlslens').setup()
-
-            require("scrollbar").setup({
-                marks = {
-                    Cursor = { color = '#504945', text = '█' },
-                    Search = { color = '#FABD2F' },
-                    Error = { color = '#FB4934' },
-                    Warn = { color = '#D65D0E' },
-                    Info = { color = '#458599' },
-                    Hint = { color = '#689D6A' },
-                    Misc = { color = '#B16286' },
-                    GitAdd = { color = '#B8BB26', text = '│' },
-                    GitChange = { color = '#D79921', text = '│' },
-                    GitDelete = { color = '#CC241D', text = '│' },
-                },
-                excluded_filetypes = {
-                    "dashboard", "alpha"
-                }
-            })
-
-            -- require("scrollbar.handlers.search").setup({})
-            require("scrollbar.handlers.gitsigns").setup()
-        end
-    },
-    -- remove background
-    {
-        'tribela/vim-transparent',
-        enabled = false
-    },
     -- lsp progressbar
     {
         'j-hui/fidget.nvim',
@@ -67,11 +27,6 @@ return {
             -- require("notify")("My super important message", "warn", {title="Title"})
         }
     },
-    -- [WIP] An implementation of the Popup API from vim in Neovim
-    {
-        'nvim-lua/popup.nvim',
-        dependencies = { "nvim-lua/plenary.nvim" },
-    },
     -- override input handling (makes input pop up sometimes...)
     {
         'stevearc/dressing.nvim',
@@ -81,10 +36,7 @@ return {
             },
             select = {
                 enabled = true,
-                backend = {
-                    "nui", "fzf_lua", "telescope",
-                    "builtin"
-                }
+                backend = { "nui", "fzf_lua", "telescope", "builtin" }
             },
         }
     },
@@ -141,7 +93,61 @@ return {
             -- sily.logger log format
         end
     },
-    -- :Calendar
-    "itchyny/calendar.vim",
+    {
+        "rachartier/tiny-devicons-auto-colors.nvim",
+        dependencies = {
+            "nvim-tree/nvim-web-devicons"
+        },
+        event = "VeryLazy",
+        config = function()
+            require('tiny-devicons-auto-colors').setup({
+                factors = {
+                    lightness = 1.35, -- 1.75
+                    chroma = 1,       -- 1
+                    hue = 1.25,       -- 1.25
+                },
+                autoreload = false,
+            })
+        end
+    },
+    {
+        "lukas-reineke/headlines.nvim",
+        dependencies = "nvim-treesitter/nvim-treesitter",
+        opts = {
+            markdown = { fat_headlines = false, },
+            rmd = { fat_headlines = false, },
+            norg = { fat_headlines = false, },
+            org = { fat_headlines = false, },
+        }
+    },
+    -- mode indicator in cursorline
+    {
+        'mawkler/modicator.nvim',
+        init = function()
+            vim.o.cursorline = true
+            vim.o.number = true
+            vim.o.termguicolors = true
+        end,
+        opts = {
+            show_warnings = false,
+            integration = {
+                lualine = {
+                    enabled = true,
+                    mode_section = "a",
+                    highlight = "bg"
+                }
+            }
+        },
+        event = "VimEnter"
+    },
+    {
+        'tummetott/reticle.nvim',
+        event = 'VeryLazy', -- optionally lazy load the plugin
+        opts = {
+            on_startup = { cursorline = true, cursorcolumn = false },
+            disable_in_insert = false,
+            disable_in_diff = true,
+            always_highlight_number = true,
+        },
+    },
 }
-

@@ -3,7 +3,11 @@ return {
     -- FZF has priority over Telescope because Telescope often skips things
     {
         'nvim-telescope/telescope.nvim',
-        dependencies = { 'nvim-lua/plenary.nvim' },
+        dependencies = {
+            'nvim-lua/plenary.nvim',
+            "cosmicboots/unicode_picker.nvim",
+            "uga-rosa/utf8.nvim"
+        },
         cond = sysdep({ "rg", "fd" }),
         config = function()
             local actions = require("telescope.actions")
@@ -126,6 +130,7 @@ return {
             -- require('telescope').load_extension('symbols')
             -- require('telescope').load_extension('howdoi')
             -- require('telescope').load_extension('media')
+            require('telescope').load_extension('unicode_picker')
         end
     },
 }

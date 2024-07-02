@@ -1,20 +1,5 @@
 -- nvim settings
 
--- KEEP IT HERE FOR GOD SAKE
--- IT BREAKS IF YOU'RE NOT DOING THAT
-vim.cmd.colorscheme('gruvbox')
-
-vim.g.gruvbox_baby_transparent_mode = 0
-vim.g.gruvbox_contrast_dark = "medium"
-vim.g.gruvbox_transparent_bg = 0
-
-vim.g.gruvbox_material_enable_italic = true
-vim.g.gruvbox_material_background = 'hard'
-vim.g.gurvbox_material_foreground = 'original'
-vim.g.gurvbox_material_transparent_background = 0
--- vim.g.gruvbox_material_better_performance = 1
-vim.g.gruvbox_material_visual = 'reverse'
-
 vim.g.ruby_host_prog = '~/.local/share/gem/ruby/3.0.0/bin/neovim-ruby-host'
 
 vim.o.background = "dark"       -- or "light" for light mode

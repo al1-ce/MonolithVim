@@ -149,7 +149,7 @@ return {
                 format = {},          --- @see section on formatting
         },
         keys = {
-            { "<leader><leader>", "<cmd>Noice dismiss<cr>", mode = "n", noremap = true, silent = true, desc = "Hides all notifications" },
+            { "<leader>nd", "<cmd>Noice dismiss<cr>", mode = "n", noremap = true, silent = true, desc = "[N]otification [D]ismiss" },
         }
     },
 

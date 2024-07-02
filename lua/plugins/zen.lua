@@ -72,7 +72,7 @@ return {
         },
         event = "VimEnter",
         keys = {
-            { "<leader>gg", "<cmd>ZenMode<cr>", mode = "n", noremap = true, silent = true, desc = "Starts or stops zen mode" },
+            { "<leader>gg", "<cmd>ZenMode<cr>", mode = "n", noremap = true, silent = true, desc = "[G]o [G]o zen" },
         }
     },
 }

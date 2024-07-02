@@ -2,180 +2,6 @@ local noremap = require("utils.noremap")
 local sysdep = require("utils.sysdep")
 
 return {
-    -- A completion engine plugin for neovim written in Lua
-    {
-        'hrsh7th/nvim-cmp',
-        dependencies = {
-            'hrsh7th/cmp-nvim-lsp', -- allows to use lsp
-            -- 'hrsh7th/cmp-path', -- allows to do paths
-            'hrsh7th/cmp-buffer',   -- allows to use buffer text
-            'hrsh7th/cmp-cmdline',  -- commandline!
-            -- Popup snippets
-            'hrsh7th/cmp-vsnip',    -- for popups
-            'hrsh7th/vim-vsnip',
-            -- vsnip snippets
-            "rafamadriz/friendly-snippets",
-            'onsails/lspkind.nvim',
-        },
-        config = function()
-            local has_words_before = function()
-                unpack = unpack or table.unpack
-                local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-                return col ~= 0 and
-                    vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-            end
-
-            local feedkey = function(key, mode)
-                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
-            end
-
-            require('lspkind').init({
-                symbol_map = {
-                    Text = "",
-                    Method = "", -- 󰆧
-                    Function = "󰊕",
-                    Constructor = "",
-                    Field = "󰜢",
-                    Variable = "󰀫",
-                    Class = "󰠱",
-                    Interface = "",
-                    Module = "",
-                    Property = "󰓹",
-                    Unit = "󰑭",
-                    Value = "",
-                    Enum = "󱡠",
-                    Keyword = "󰌋",
-                    Snippet = "",
-                    Color = "󰏘",
-                    File = "",
-                    Reference = "",
-                    Folder = "󰉋",
-                    EnumMember = "",
-                    Constant = "󰏿",
-                    Struct = "󰙅",
-                    Event = "",
-                    Operator = "󰆕",
-                    TypeParameter = "",
-                },
-            })
-
-            local cmp = require('cmp')
-            local str = require("cmp.utils.str")
-            local types = require("cmp.types")
-            ---@diagnostic disable-next-line: missing-fields
-            cmp.setup({
-                snippet = {
-                    -- REQUIRED - you must specify a snippet engine
-                    expand = function(args)
-                        vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-                        -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-                        -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
-                        -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
-                    end,
-                },
-                mapping = cmp.mapping.preset.insert({
-                    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-                    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-                    -- ['<C-Space>'] = cmp.mapping.complete(),
-                    ['<C-e>'] = cmp.mapping.abort(),
-                    ['<CR>'] = cmp.mapping.confirm({ select = false }),
-                    ["<Tab>"] = cmp.mapping(function(fallback)
-                        if cmp.visible() then
-                            cmp.select_next_item()
-                        elseif vim.fn["vsnip#available"](1) == 1 then
-                            feedkey("<Plug>(vsnip-expand-or-jump)", "")
-                        elseif has_words_before() then
-                            cmp.complete()
-                        else
-                            fallback() -- The fallback function sends a already mapped key. In this case, it's probably `<Tab>`.
-                        end
-                    end, { "i", "s" }),
-                    ["<S-Tab>"] = cmp.mapping(function(fallback)
-                        if cmp.visible() then
-                            cmp.select_prev_item()
-                        elseif vim.fn["vsnip#jumpable"](-1) == 1 then
-                            feedkey("<Plug>(vsnip-jump-prev)", "")
-                        else
-                            fallback()
-                        end
-                    end, { "i", "s" }),
-                    ['<Up>'] = cmp.mapping(function(fallback) fallback() end),
-                    ['<Down>'] = cmp.mapping(function(fallback) fallback() end),
-                }),
-                sources = cmp.config.sources({
-                    { name = 'nvim_lsp' },
-                    { name = 'vsnip' }, -- For vsnip users.
-                    -- { name = 'luasnip' }, -- For luasnip users.
-                    -- { name = 'ultisnips' }, -- For ultisnips users.
-                    -- { name = 'snippy' }, -- For snippy users.
-                }, {
-                    { name = 'buffer' },
-                }),
-                window = {
-                    completion = {
-                        winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
-                        col_offset = -3,
-                        side_padding = 0,
-                    },
-                },
-                ---@diagnostic disable-next-line: missing-fields
-                formatting = {
-                    fields = { "kind", "abbr", "menu" },
-                    format = function(p_entry, p_vim_item)
-                        local kind = require('lspkind').cmp_format({
-                            mode = 'symbol_text',  -- show only symbol annotations
-                            maxwidth = 50,         -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-                            ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
-                        })(p_entry, p_vim_item)
-                        local strings = vim.split(kind.kind, "%s", { trimempty = true })
-                        kind.kind = " " .. (strings[1] or "") .. ""
-                        kind.menu = "" .. (strings[2] or "") .. ""
-
-                        return kind
-                    end
-                },
-                enabled = function()
-                    -- disable completion in comments
-                    local context = require 'cmp.config.context'
-                    -- keep command mode completion enabled when cursor is in a comment
-                    if vim.api.nvim_get_mode().mode == 'c' then
-                        return true
-                    else
-                        return not context.in_treesitter_capture("comment")
-                            and not context.in_syntax_group("Comment")
-                    end
-                end
-            })
-            -- `/` cmdline setup.
-            cmp.setup.cmdline({ '/', '?' }, {
-                mapping = cmp.mapping.preset.cmdline(),
-                sources = {
-                    { name = 'buffer' }
-                },
-                view = {
-                    entries = { name = 'wildmenu', separator = '  ' }
-                },
-            })
-            -- `:` cmdline setup.
-            cmp.setup.cmdline(':', {
-                mapping = cmp.mapping.preset.cmdline(),
-                sources = cmp.config.sources({
-                    { name = 'path' }
-                }, {
-                    {
-                        name = 'cmdline',
-                        option = {
-                            ignore_cmds = { 'Man', '!' }
-                        }
-                    }
-                }),
-                view = {
-                    entries = { name = 'wildmenu', separator = '  ' }
-                },
-
-            })
-        end
-    }, -- autocompletion engine
     -- Auto-close brackets
     {
         "altermo/ultimate-autopair.nvim",
@@ -233,6 +59,7 @@ return {
             ft({ 'kdl' }, ft.get('c'))
 
             -- local commentApi = require("Comment.api")
+            -- vim.keycode is better option
             -- local commentEsc = vim.api.nvim_replace_termcodes(
             --     '<ESC>', true, false, true
             -- )
@@ -260,7 +87,7 @@ return {
     {
         "uga-rosa/ccc.nvim",
         event = { "BufEnter", "BufNew" },
-        config = {
+        opts = {
             highlighter = {
                 auto_enable = true,
                 lsp = true
@@ -275,6 +102,7 @@ return {
     {
         'windwp/nvim-spectre',
         dependencies = { "nvim-lua/plenary.nvim" },
+        enabled = false,
         opts = {
             live_update = true,
             mapping = {
@@ -372,6 +200,7 @@ return {
     {
         "olidacombe/commentalist.nvim",
         cond = sysdep({ "boxes", "cowsay", "figlet" }),
+        enabled = false,
         dependencies = {
             'nvim-telescope/telescope.nvim',
             'numToStr/Comment.nvim',
@@ -386,6 +215,7 @@ return {
         "jellydn/quick-code-runner.nvim",
         dependencies = { "MunifTanjim/nui.nvim" },
         cond = sysdep({ "dub", "node", "npx", "python", "go" }),
+        enabled = false,
         opts = {
             debug = false,
             file_types = {
@@ -496,26 +326,107 @@ return {
         cmd = "Ouroboros",
         ft = { "c", "cpp" },
         keys = {
-            { "<leader>h", "<cmd>Ouroboros<cr>", mode = "n", noremap = true, silent = true, desc = "Switch to header" },
+            { "<leader>gh", "<cmd>Ouroboros<cr>", mode = "n", noremap = true, silent = true, desc = "Switch to header", ft = { "c", "cpp" } },
         }
     },
-    -- TODO: implement D https://github.com/Wansmer/treesj/blob/main/tests/README.md
+    -- https://github.com/Wansmer/treesj/blob/main/tests/README.md
     {
         'Wansmer/treesj',
         dependencies = { 'nvim-treesitter/nvim-treesitter' },
-        opts = {
-            use_default_keymaps = false,
-            check_syntax_error = true,
-            max_join_length = 120,
-            cursor_behavior = 'hold',
-            notify = true,
-            dot_repeat = true,
-            on_error = nil,
-            langs = {},
-        },
+        config = function()
+            local lang_utils = require("treesj.langs.utils")
+
+            require("treesj").setup({
+                use_default_keymaps = false,
+                check_syntax_error = true,
+                max_join_length = 120,
+                cursor_behavior = 'hold',
+                notify = true,
+                dot_repeat = true,
+                on_error = nil,
+                langs = {
+                    d = {
+                        parameters = lang_utils.set_preset_for_args(),
+                        arguments = lang_utils.set_preset_for_args(),
+                        aggregate_initializer = lang_utils.set_preset_for_list(),
+                        block_statement = lang_utils.set_preset_for_statement({
+                            both = {
+                                no_format_with = { 'block_statement' },
+                                recursive = false,
+                            },
+                            join = {
+                                force_insert = ';',
+                            },
+                        }),
+                        if_statement = { target_nodes = { 'block_statement' } },
+                        function_declaration = {
+                            target_nodes = { 'parameters', 'arguments' },
+                        },
+                        expression_statement = {
+                            target_nodes = { 'parameters', 'arguments' },
+                        },
+                        array_literal = lang_utils.set_preset_for_list(),
+                        enum = { target_nodes = { 'aggregate_initializer' } },
+                    }
+                },
+            })
+        end,
         event = "VimEnter",
         keys = {
             { "<leader>m", "<cmd>TSJToggle<cr>", mode = "n", noremap = true, silent = true, desc = "Toggle split join" },
         },
+    },
+    -- ;x V;x - execute lines
+    -- TODO: WIP
+    {
+        dir = "/g/runme.nvim",
+        opts = {
+            filetypes = {
+                javascript = {
+                    cmd = "node run",
+                },
+                bash = {
+                    cmd = "bash",
+                },
+                d = {
+                    cmd = "dub run --single $FILENAME",
+                    template = [[
+                        /++ dub.sdl:
+                        name: scratch
+                        +/
+                        import std;
+                        void main() {
+                            $RUNME_CODE
+                        }
+                    ]]
+                },
+                c = {
+                    cmd = "gcc -o $FILEOUT $FILENAME && ./$FILEOUT",
+                    template = [[
+                        #include <stdio.h>
+                        int main() {
+                            $RUNME_CODE
+                            return 0;
+                        }
+                    ]]
+                }
+            }
+        },
+        keys = {
+            { "<leader>xc", "<cmd>Runme<cr>",      mode = "n", noremap = true, silent = true, desc = "E[X]ecute code" },
+            { "<leader>xc", ":Runme<cr>",          mode = "v", noremap = true, silent = true, desc = "E[X]ecute code" },
+            { "<leader>xp", "<cmd>RunmePaste<cr>", mode = "n", noremap = true, silent = true, desc = "E[X]ecute and [P]aste" },
+            { "<leader>xp", ":RunmePaste<cr>",     mode = "v", noremap = true, silent = true, desc = "E[X]ecute and [P]aste" },
+            { "<leader>xf", "<cmd>RunmeFile<cr>",  mode = "n", noremap = true, silent = true, desc = "E[X]ecute [F]ile" },
+            { "<leader>xf", ":RunmeFile<cr>",      mode = "v", noremap = true, silent = true, desc = "E[X]ecute [F]ile" },
+        },
+        event = "VimEnter"
+    },
+    {
+        "Mythos-404/xmake.nvim",
+        lazy = true,
+        event = "BufReadPost xmake.lua",
+        config = true,
+        dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
     }
 }

@@ -32,5 +32,28 @@ M.FzfProjects = function()
     )
 end
 
-return M
+M.set_colorscheme = function(selected, opts)
+    -- print(vim.inspect(selected[1]))
+    -- TODO: apply also to lualine
+    local colorscheme = selected[1]:match("^[^:]+")
+    pcall(function() vim.cmd("colorscheme " .. colorscheme) end)
+    local config_loc = vim.fn.fnamemodify(vim.fn.expand("$HOME"), ":p:h") .. "/.config/neovim-theme.lua"
+    vim.loop.fs_open(config_loc, "w", 432, function(err, fd)
+        ---@diagnostic disable-next-line: param-type-mismatch
+        vim.loop.fs_write(fd, "vim.cmd.colorscheme('" .. selected[1] .. "')", nil, function()
+            ---@diagnostic disable-next-line: param-type-mismatch
+            vim.loop.fs_close(fd)
+        end)
+    end)
+end
 
+M.source_colorscheme = function()
+    local config_loc = vim.fn.fnamemodify(vim.fn.expand("$HOME"), ":p:h") .. "/.config/neovim-theme.lua"
+    local f = io.open(config_loc, "r")
+    if f ~= nil then
+        io.close(f)
+        vim.cmd("source " .. config_loc)
+    end
+end
+
+return M

@@ -1,18 +1,5 @@
 local sysdep = require("utils.sysdep")
 return {
-    -- Configs for the Nvim LSP client (:help lsp)
-    {
-        'neovim/nvim-lspconfig',
-        cond = sysdep({ "glsl_analyzer" }),
-        config = function()
-            local lspconfig = require('lspconfig')
-
-            lspconfig.lua_ls.setup({})
-            lspconfig.glsl_analyzer.setup({})
-
-            lspconfig.dartls.setup({})
-        end
-    },
     -- lsp but formatting
     {
         'nvimtools/none-ls.nvim',
@@ -112,52 +99,21 @@ return {
 
             { 'K',          "<cmd>Lspsaga hover_doc<cr>",                  mode = "n", desc = "Shows signature help" },
 
-            { "<leader>ca", "<cmd>Lspsaga code_action<cr>",                mode = "n", desc = "Shows available code actions" },
-            { "<leader>d",  "<cmd>Lspsaga show_line_diagnostics<cr>",      mode = "n", desc = "Shows diagnostics for line" },
+            { "<leader>ca", "<cmd>Lspsaga code_action<cr>",                mode = "n", desc = "Shows available [C]ode [A]ctions" },
+            { "<leader>d",  "<cmd>Lspsaga show_line_diagnostics<cr>",      mode = "n", desc = "Shows [D]iagnostics for line" },
 
-            { "<leader>gD", "<cmd>Lspsaga peek_definition<cr>",            mode = "n", desc = "Peeks symbol definition" },
-            { "<leader>gd", vim.lsp.buf.definition,                        mode = "n", desc = "Opens symbol definition in current buffer" },
-            { "<leader>gi", vim.lsp.buf.implementation,                    mode = "n", desc = "Opens symbol implementation in current buffer" },
-            { "<leader>gr", vim.lsp.buf.references,                        mode = "n", desc = "Opens symbol references in quickfix list" },
+            { "<leader>gD", "<cmd>Lspsaga peek_definition<cr>",            mode = "n", desc = "Peek [G]o [D]efinition" },
+            { "<leader>gd", vim.lsp.buf.definition,                        mode = "n", desc = "[G]o to [D]efinition" },
+            { "<leader>gi", vim.lsp.buf.implementation,                    mode = "n", desc = "[G]o to [I]mplementation" },
+            { "<leader>gr", vim.lsp.buf.references,                        mode = "n", desc = "[G]o to [R]eferences" },
 
-            { "<leader>fT", "<cmd>Lspsaga outline<cr>",                    mode = "n", desc = "Shows outline" },
-            { "<leader>tt", "<cmd>Lspsaga term_toggle<cr>",                mode = "n", desc = "Opens toggleterm" },
+            { "<leader>fT", "<cmd>Lspsaga outline<cr>",                    mode = "n", desc = "[F]ile [T]ags (outline)" },
+            { "<leader>tt", "<cmd>Lspsaga term_toggle<cr>",                mode = "n", desc = "[T]oggle [T]erminal" },
 
-            { "<leader>D",  "<cmd>Lspsaga show_workspace_diagnostics<cr>", mode = "n", desc = "Shows workspace diagnostics" },
+            { "<leader>D",  "<cmd>Lspsaga show_workspace_diagnostics<cr>", mode = "n", desc = "Shows workspace [D]iagnostics" },
 
-            { "]d",         vim.diagnostic.goto_next,                      mode = "n", desc = "Next diagnostics" },
-            { "[d",         vim.diagnostic.goto_prev,                      mode = "n", desc = "Prev diagnostics" },
-        }
-    },
-    -- Nvim lua api
-    {
-        'folke/neodev.nvim',
-        dependencies = { 'hrsh7th/nvim-cmp' },
-        cond = sysdep({ "lua-language-server" }),
-        config = true
-    },
-    -- Show function signature
-    {
-        'ray-x/lsp_signature.nvim',
-        event = "VeryLazy",
-        opts = {
-            bind = true, -- This is mandatory, otherwise border config won't get registered.
-            handler_opts = {
-                border = {
-                    { "┌", "FloatBorder" },
-                    { " ", "FloatBorder" },
-                    { "┐", "FloatBorder" },
-                    { " ", "FloatBorder" },
-                    { "┘", "FloatBorder" },
-                    { " ", "FloatBorder" },
-                    { "└", "FloatBorder" },
-                    { " ", "FloatBorder" },
-                }
-            },
-            doc_lines = 0,
-            hint_enable = false,
-            timer_interval = 100,
-            floating_window = false,
+            { "]d",         vim.diagnostic.goto_next,                      mode = "n", desc = "Next [D]iagnostics" },
+            { "[d",         vim.diagnostic.goto_prev,                      mode = "n", desc = "Prev [D]iagnostics" },
         }
     },
     -- parser
@@ -184,52 +140,62 @@ return {
     {
         'williamboman/mason.nvim',
         cond = sysdep({ "git", "curl", "unzip", "tar", "gzip" }),
-        config = true,
+        event = "VimEnter",
         keys = {
-            { "<leader>pm", "<cmd>Mason<cr>", mode = "n", noremap = true, silent = true, desc = "Opens Mason" },
+            { "<leader>pm", "<cmd>Mason<cr>", mode = "n", noremap = true, silent = true, desc = "[P]lugin [M]ason" },
         },
-    },
-    -- mason integration
-    {
-        'williamboman/mason-lspconfig.nvim',
         dependencies = {
+            'williamboman/mason-lspconfig.nvim',
             'neovim/nvim-lspconfig',
             'williamboman/mason.nvim',
+            'hrsh7th/nvim-cmp',
         },
         config = function()
+            require("mason").setup({})
+
+            local masonconf = require('mason-lspconfig')
+            local lspconfig = require('lspconfig')
+
+            local vscodecap = {
+                capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()),
+            }
+
+            if sysdep({ "dart" }) then lspconfig.dartls.setup({}) end
+            if sysdep({ "glsl_analyzer" }) then lspconfig.glsl_analyzer.setup({}) end
+
+            local function gen_default_capabilities() require("cmp_nvim_lsp").default_capabilities() end
+
             -- https://github.com/williamboman/mason-lspconfig.nvim#automatic-server-setup-advanced-feature
-            require("mason-lspconfig").setup({
+            masonconf.setup({
                 ensure_installed = {
                     'lua_ls',
                     'jsonls',
                     'serve_d',
-                    'tsserver',
+                    'vtsls',
                     'marksman',
                     'cmake',
                     'clangd',
                     'bashls',
                 },
-                automatic_installation = true
-            })
-
-            local masonconf = require('mason-lspconfig')
-            local lspconf = require('lspconfig')
-
-            masonconf.setup_handlers({
-                function(server_name)
-                    lspconf[server_name].setup({
-                    })
-                end,
-                ['serve_d'] = function()
-                    lspconf.serve_d.setup({
-                        -- disable default formatting
-                        capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol
-                            .make_client_capabilities()),
-                        on_attach = function(client)
-                            client.server_capabilities.documentFormattingProvider = false
-                        end,
-                    })
-                end,
+                automatic_installation = true,
+                handlers = {
+                    function(server_name) lspconfig[server_name].setup({ capabilities = gen_default_capabilities() }) end,
+                    ['serve_d'] = function()
+                        lspconfig.serve_d.setup({
+                            -- disable default formatting (see none-ls config)
+                            capabilities = gen_default_capabilities(),
+                            on_attach = function(client) client.server_capabilities.documentFormattingProvider = false end,
+                        })
+                    end,
+                    ['cssls'] = function() lspconfig.cssls.setup(vscodecap) end,
+                    ['html'] = function() lspconfig.html.setup(vscodecap) end,
+                    ['jsonls'] = function() lspconfig.jsonls.setup(vscodecap) end,
+                    ['lua_ls'] = function()
+                        if sysdep({ "lua-language-server" }) then
+                            lspconfig.lua_ls.setup({ capabilities = gen_default_capabilities() })
+                        end
+                    end
+                }
             })
 
             -- DISABLE marksman
@@ -254,29 +220,9 @@ return {
             }
         }
     },
-    -- https://github.com/chrisgrieser/nvim-rulebook
-    {
-        "chrisgrieser/nvim-rulebook",
-        keys = {
-            { "<leader>ri", function() require("rulebook").ignoreRule() end },
-            { "<leader>rl", function() require("rulebook").lookupRule() end },
-            { "<leader>ry", function() require("rulebook").yankDiagnosticCode() end },
-        },
-        opts = {
-            ignoreComments = {
-                dscanner = {
-                    comment = "// dscanner-ignore: %s",
-                    location = "prevLine",
-                },
-            },
-
-            forwSearchLines = 10,
-            yankDiagnosticCodeToSystemClipboard = true,
-        }
-    },
     {
         "z0mbix/vim-shfmt",
         filetypes = { "sh" },
-        enabled = sysdep({"shfmt"})
+        enabled = sysdep({ "shfmt" })
     }
 }

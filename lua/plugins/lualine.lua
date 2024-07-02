@@ -1,14 +1,7 @@
 -- local sysdep = require("utils.sysdep")
 
-local current_signature = function()
-    if not pcall(require, 'lsp_signature') then return end
-    local sig = require("lsp_signature").status_line()
-    sig = require("lsp_signature").status_line(vim.api.nvim_win_get_width(0) - 27 - sig.hint:len())
-    if sig.hint == "" then
-        return vim.fn.expand('%:t')
-    else
-        return "[ " .. sig.hint .. " ]" .. sig.label
-    end
+local function get_color(group, attr)
+    return vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID(group)), attr)
 end
 
 local red_means_looping = function()
@@ -43,10 +36,62 @@ local red_means_recording = function()
     if not pcall(require, 'recorder') then return { fg = vim.g.terminal_color_7 } end
     local status = require("recorder").recordingStatus()
     if string.match(status, "Recording") then
-        return { fg = vim.g.terminal_color_9 }
+        -- return { fg = vim.g.terminal_color_9 }
+        return { fg = get_color("Keyword", "fg#") }
     else
-        return { fg = vim.g.terminal_color_7 }
+        -- return { fg = get_color("lualine_c_normal", "fg#")}
+        return {}
+        -- return { fg = vim.g.terminal_color_7 }
     end
+end
+
+local function custom_gruvbox()
+    -- [ a | b | c         x | y | z ]
+    local colors = {
+        black        = '#282828',
+        white        = '#ebdbb2',
+        red          = '#fb4934',
+        green        = '#b8bb26',
+        blue         = '#83a598',
+        yellow       = '#fe8019',
+        gray         = '#a89984',
+        darkgray     = '#3c3836',
+        lightgray    = '#504945',
+        inactivegray = '#7c6f64',
+    }
+
+    return {
+        normal = {
+            a = { bg = colors.gray, fg = colors.black, gui = 'bold' },
+            b = { bg = colors.darkgray, fg = colors.gray },
+            c = { bg = colors.darkgray, fg = colors.gray },
+        },
+        insert = {
+            a = { bg = colors.blue, fg = colors.black, gui = 'bold' },
+            b = { bg = colors.darkgray, fg = colors.gray },
+            c = { bg = colors.darkgray, fg = colors.gray },
+        },
+        visual = {
+            a = { bg = colors.yellow, fg = colors.black, gui = 'bold' },
+            b = { bg = colors.darkgray, fg = colors.gray },
+            c = { bg = colors.darkgray, fg = colors.gray },
+        },
+        replace = {
+            a = { bg = colors.red, fg = colors.black, gui = 'bold' },
+            b = { bg = colors.darkgray, fg = colors.gray },
+            c = { bg = colors.darkgray, fg = colors.gray },
+        },
+        command = {
+            a = { bg = colors.green, fg = colors.black, gui = 'bold' },
+            b = { bg = colors.darkgray, fg = colors.gray },
+            c = { bg = colors.darkgray, fg = colors.gray },
+        },
+        inactive = {
+            a = { bg = colors.darkgray, fg = colors.gray, gui = 'bold' },
+            b = { bg = colors.darkgray, fg = colors.gray },
+            c = { bg = colors.darkgray, fg = colors.gray },
+        },
+    }
 end
 
 return {
@@ -60,7 +105,7 @@ return {
         opts = {
             options = {
                 icons_enabled = false,
-                theme = 'gruvbox',
+                -- theme = custom_gruvbox(),
                 component_separators = { left = '', right = '' },
                 section_separators = { left = '', right = '' },
                 disabled_filetypes = {
@@ -89,6 +134,8 @@ return {
                     { 'fancy_mode', width = 3 }
                 },
                 lualine_b = {
+                },
+                lualine_c = {
                     {
                         'branch',
                         icon = '$',
@@ -96,7 +143,7 @@ return {
                     },
                     {
                         'diff',
-                        colored = true,
+                        colored = false,
                         symbols = { added = '+', modified = '~', removed = '-' }, -- Changes the symbols used by the diff.
                     },
                     {
@@ -108,10 +155,11 @@ return {
                         --     info  = 'DiagnosticInfo', -- Changes diagnostics' info color.
                         --     hint  = 'DiagnosticHint', -- Changes diagnostics' hint color.
                         -- },
+                        colored = false,
                         symbols = { error = 'e', warn = 'w', info = 'i', hint = 'h' },
-                    }
+                    },
+                    'filename',
                 },
-                lualine_c = { current_signature, },
                 lualine_x = {
                     -- {
                     --     require("noice").api.status.command.get,
@@ -121,9 +169,10 @@ return {
                         'filetype',
                         icons_enabled = false,
                     },
+                    { red_means_looping, color = red_means_recording },
                 },
                 lualine_y = {
-                    { red_means_looping, color = red_means_recording },
+                    -- { red_means_looping, color = red_means_recording },
                     -- 'location'
                 },
                 lualine_z = { 'progress' }

@@ -1,7 +1,7 @@
 local sysdep = require("utils.sysdep")
 
 return {
-    'fladson/vim-kitty', -- just a syntax file
+    -- 'fladson/vim-kitty', -- just a syntax file
     'tikhomirov/vim-glsl',
     -- Dart
     'dart-lang/dart-vim-plugin',

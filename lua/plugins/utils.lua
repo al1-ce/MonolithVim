@@ -1,10 +1,11 @@
+---@diagnostic disable: unused-local
 local sysdep = require("utils.sysdep")
 local noremap = require("utils.noremap")
+local os_spec = require("utils.osspec")
 
 return {
     -- Async code
     'nvim-lua/plenary.nvim',
-
     {
         "vhyrro/luarocks.nvim",
         cond = sysdep({ "luarocks" }),
@@ -14,7 +15,6 @@ return {
             rocks = { "magick" },
         },
     },
-
     -- project manager [ \fp ]
     {
         "ahmedkhalf/project.nvim",
@@ -57,6 +57,7 @@ return {
                 ["g."] = "actions.toggle_hidden",
             },
             use_default_keymaps = false,
+            delete_to_trash = true,
             view_options = {
                 show_hidden = true
             }
@@ -67,7 +68,6 @@ return {
             { "<leader>-", function() require("oil").toggle_float() end, mode = "n", noremap = true, silent = true, desc = "Opens parent directory in float" },
         },
     },
-
     -- TodoTree [ \vt ]
     {
         'folke/todo-comments.nvim',
@@ -97,8 +97,9 @@ return {
                 after = 'empty',
             }
         },
+        event = "VimEnter",
         keys = {
-            { "<leader>ft", "<cmd>TodoLocList<cr>", mode = "n", noremap = true, silent = true, desc = "Opens todo in loclist" },
+            { "<leader>ft", "<cmd>TodoLocList<cr>", mode = "n", noremap = true, silent = true, desc = "[F]ind [T]odo" },
         }
     },
     -- Goto quickfix files
@@ -128,36 +129,33 @@ return {
         },
         event = "VimEnter",
         keys = {
-            { "<leader>b", "<cmd>JABSOpen<cr>", mode = "n", noremap = true, silent = true, desc = "Opens buffer switcher" },
+            { "<leader>B", "<cmd>JABSOpen<cr>", mode = "n", noremap = true, silent = true, desc = "Opens [B]uffer switcher" },
         }
     },
-
-    -- Jump with keys [ s ]
     {
-        'easymotion/vim-easymotion',
+        'ggandor/leap.nvim',
+        enabled = true,
         config = function()
-            local g = vim.g             -- global variables
-
-            g.EasyMotion_do_mapping = 0 -- Disable default mappings
-            g.EasyMotion_use_upper = 0
-            g.EasyMotion_smartcase = 1
-            g.EasyMotion_use_smartsign_us = 1
+            local leap = require("leap")
+            leap.opts.safe_labels = ''
+            leap.opts.labels = 'asdghklqwertyuiopzxcvbnmfj;'
+            noremap("n", "s", "<Plug>(leap)", { desc = "Leap" })
+            noremap("n", "S", "<Plug>(leap-from-window)", { desc = "Leap to other window" })
         end,
-        keys = {
-            { "S", "<Plug>(easymotion-overwin-f)",  mode = "n", noremap = true, silent = true, desc = "Starts easymotion with one key" },
-            { "s", "<Plug>(easymotion-overwin-f2)", mode = "n", noremap = true, silent = true, desc = "Starts easymotion with two keys" },
-        }
     },
     -- Remove search highlight automatically
-    { "nvimdev/hlsearch.nvim", event = { "BufRead" }, config = true },
-
-    -- cool smart surrounding [ \tr \tR ]
     {
-        'tpope/vim-surround',
-        keys = {
-            { "<leader>tr", "<Plug>Csurround", mode = "n", noremap = true, silent = true, desc = "Replaces surrounding" },
-            { "<leader>ts", "<Plug>Dsurround", mode = "n", noremap = true, silent = true, desc = "Surrounds text" },
-        }
+        "nvimdev/hlsearch.nvim",
+        event = { "BufRead" },
+        config = true,
+    },
+    -- cool smart surrounding cs ys ds
+    {
+        -- 'tpope/vim-surround',
+        "kylechui/nvim-surround",
+        version = "*",
+        event = "VeryLazy",
+        config = true
     },
     -- Move lines and characters [ A-Up A-Down ]
     {
@@ -190,7 +188,7 @@ return {
     {
         'ethanholz/nvim-lastplace',
         opts = {
-            lastplace_ignore_buftype = { "quickfix", "nofile", "help" },
+            lastplace_ignore_buftype = { "quickfix", "nofile", "help", "alpha" },
             lastplace_ignore_filetype = { "gitcommit", "gitrebase", "svn", "hgcommit" },
             lastplace_open_folds = true
         }
@@ -210,21 +208,6 @@ return {
             ]])
             vim.g.VimTodoListsCustomKeyMapper = "VimTodoListsCustomMappins"
 
-            local function setKeymapFiletype(ft, name, mode, map, action)
-                vim.api.nvim_create_autocmd('FileType', {
-                    pattern = ft,
-                    group = vim.api.nvim_create_augroup(name, { clear = true }),
-                    callback = function()
-                        noremap(mode, map, action, { buffer = true })
-                    end
-                })
-            end
-
-            -- TODO: rewrite with lazy keys using ft="todo"
-            setKeymapFiletype('todo', 'TodoAddNew', 'n', '<cr>', '<cmd>VimTodoListsCreateNewItemBelow<cr>')
-            setKeymapFiletype('todo', 'TodoAddNewAbove', 'n', '<A-CR>', '<cmd>VimTodoListsCreateNewItemAbove<cr>')
-            setKeymapFiletype('todo', 'TodoToggle', 'n', '<Space>', '<cmd>VimTodoListsToggleItem<cr>')
-
             vim.cmd([[
                 function! VimTodoListsInitFIXED()
                     setlocal tabstop=4
@@ -237,13 +220,19 @@ return {
                     autocmd FileType todo call VimTodoListsInitFIXED()
                 augroup end
             ]])
-        end
+        end,
+        keys = {
+            { "<cr>",    "<cmd>VimTodoListsCreateNewItemBelow<cr>", mode = "n", ft = "todo", desc = "Add todo below" },
+            { "<s-cr>",  "<cmd>VimTodoListsCreateNewItemAbove<cr>", mode = "n", ft = "todo", desc = "Add todo above" },
+            { "<space>", "<cmd>VimTodoListsToggleItem<cr>",         mode = "n", ft = "todo", desc = "Toggle todo item" }
+        },
+        event = "VimEnter",
     },
     -- Look up at devdocs [:gd]
     {
         'romainl/vim-devdocs',
         keys = {
-            { "<leader>gd", "<cmd>DD<cr>", mode = "n", noremap = true, silent = true, desc = "Opens devdocs for symbol under cursor" },
+            { "<leader>gd", "<cmd>DD<cr>", mode = "n", noremap = true, silent = true, desc = "Opens [D]ev[D]ocs for symbol under cursor" },
         }
     },
     -- better macros
@@ -303,78 +292,6 @@ return {
             dapSharedKeymaps = false,
         }
     },
-    -- view images in terminal
-    {
-        "3rd/image.nvim",
-        dependencies = { "luarocks.nvim" },
-        cond = sysdep({ "magick" }),
-        opts = {
-            backend = "kitty",
-            integrations = {
-                markdown = {
-                    enabled = true,
-                    clear_in_insert_mode = true,
-                    download_remote_images = true,
-                    only_render_image_at_cursor = true,
-                    filetypes = { "markdown", "vimwiki" }, -- markdown extensions (ie. quarto) can go here
-                },
-                neorg = {
-                    enabled = true,
-                    clear_in_insert_mode = true,
-                    download_remote_images = true,
-                    only_render_image_at_cursor = true,
-                    filetypes = { "norg" },
-                },
-                html = {
-                    enabled = true,
-                    clear_in_insert_mode = true,
-                    download_remote_images = true,
-                    only_render_image_at_cursor = true,
-                },
-                css = {
-                    enabled = true,
-                    clear_in_insert_mode = true,
-                    download_remote_images = true,
-                    only_render_image_at_cursor = true,
-                },
-            },
-            max_width = nil,
-            max_height = nil,
-            max_width_window_percentage = nil,
-            max_height_window_percentage = 25,
-            window_overlap_clear_enabled = false,                                              -- toggles images when windows are overlapped
-            window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
-            editor_only_render_when_focused = true,                                            -- auto show/hide images when the editor gains/looses focus
-            tmux_show_only_in_active_window = false,                                           -- auto show/hide images in the correct Tmux window (needs visual-activity off)
-            hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.gif" }, -- render image files as images when opened
-        }
-    },
-    -- Git wrapper [ :Git ]
-    {
-        "tpope/vim-fugitive",
-        cond = sysdep({ "git" }),
-    },
-
-    -- Preview markdown [ \vm ]
-    {
-        "ellisonleao/glow.nvim",
-        cmd = "Glow",
-        event = "VimEnter",
-        cond = sysdep({ "glow" }),
-        opts = {
-            style = "~/.config/nvim/res/gruvbox.json",
-            border = 'solid',
-            width = 160,
-            height = 100,
-            width_ratio = 0.8,
-            height_ratio = 0.8,
-            pager = false,
-        },
-        keys = {
-            { "<leader>gm", "<cmd>Glow<cr>", mode = "n", noremap = true, silent = true, desc = "Opens markdown preview" },
-        },
-        ft = { "*.md", "*.markdown" }
-    },
     -- Move splits [ A-S-Right ... ]
     {
         'sindrets/winshift.nvim',
@@ -412,34 +329,6 @@ return {
         }
     },
     {
-        'vidocqh/data-viewer.nvim',
-        opts = {
-            autoDisplayWhenOpenFile = false,
-            maxLineEachTable = 100,
-            columnColorEnable = true,
-            columnColorRoulette = { -- Highlight groups
-                "Normal",
-                "Normal",
-                "Normal",
-            },
-            view = {
-                float = true, -- False will open in current window
-                width = 0.8,  -- Less than 1 means ratio to screen width, valid when float = true
-                height = 0.8, -- Less than 1 means ratio to screen height, valid when float = true
-                zindex = 50,  -- Valid when float = true
-            },
-            keymap = {
-                quit = "q",
-                next_table = "<C-l>",
-                prev_table = "<C-h>",
-            },
-        },
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-            -- "kkharji/sqlite.lua", -- Optional, sqlite support
-        }
-    },
-    {
         "zk-org/zk-nvim",
         config = function()
             vim.cmd([[ let $ZK_NOTEBOOK_DIR = $HOME."/zk" ]])
@@ -464,11 +353,11 @@ return {
             })
         end,
         keys = {
-            { "<leader>zk", "<cmd>ZkNotes { sort = { 'modified' } }<cr>",                                       mode = "n", noremap = true, silent = true, desc = "Open Zettelkasten notes" },
-            { "<leader>zn", "<cmd>ZkNew { title = vim.fn.input('Title: ') }<cr>",                               mode = "n", noremap = true, silent = true, desc = "New zk note" },
-            { "<leader>zt", "<cmd>ZkTags<cr>",                                                                  mode = "n", noremap = true, silent = true, desc = "Open zk note by tag" },
-            { "<leader>zf", "<cmd>ZkNotes { sort = { 'modified' }, match = { vim.fn.input('Search: ') } }<cr>", mode = "n", noremap = true, silent = true, desc = "Match zk notes" },
-            { "<leader>zf", ":'<,'>ZkMatch<cr>",                                                                mode = "v", noremap = true, silent = true, desc = "Match zk notes" },
+            { "<leader>zk", "<cmd>ZkNotes { sort = { 'modified' } }<cr>",                                       mode = "n", noremap = true, silent = true, desc = "[Z][K] notes" },
+            { "<leader>zn", "<cmd>ZkNew { title = vim.fn.input('Title: ') }<cr>",                               mode = "n", noremap = true, silent = true, desc = "[Z]k [N]ew" },
+            { "<leader>zt", "<cmd>ZkTags<cr>",                                                                  mode = "n", noremap = true, silent = true, desc = "[Z]k [T]ags" },
+            { "<leader>zf", "<cmd>ZkNotes { sort = { 'modified' }, match = { vim.fn.input('Search: ') } }<cr>", mode = "n", noremap = true, silent = true, desc = "[Z]k [F]ind" },
+            { "<leader>zf", ":'<,'>ZkMatch<cr>",                                                                mode = "v", noremap = true, silent = true, desc = "[Z]k [F]ind" },
         },
         event = "VimEnter"
     },
@@ -482,5 +371,7 @@ return {
             threshold = 10,
             close_buffers_with_windows = false,
         }
-    }
+    },
+    -- Focus <cmd>number line
+    { "nacro90/numb.nvim", config = true },
 }
