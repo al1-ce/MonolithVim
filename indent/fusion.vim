@@ -11,3 +11,4 @@ setlocal cindent
 let b:undo_indent = "setl cin<"
 
 " vim: ts=8 noet
+

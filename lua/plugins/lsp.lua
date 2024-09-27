@@ -3,11 +3,15 @@ return {
     -- lsp but formatting
     {
         'nvimtools/none-ls.nvim',
-        dependencies = { "nvim-lua/plenary.nvim" },
         cond = sysdep({ "dfmt" }),
         config = function()
             require("null-ls").setup({
                 -- debug = true,
+                diagnostic_format = "",
+                diagnostic_config = {
+                    virtual_text = false,
+                    signs = false,
+                },
                 sources = {
                     require("null-ls").builtins.formatting.dfmt.with({
                         -- cmd = "dfmt",
@@ -29,7 +33,7 @@ return {
             })
         end
     },
-    -- many cool features like hover diagnostic
+    -- many cool features
     {
         'nvimdev/lspsaga.nvim',
         dependencies = {
@@ -56,6 +60,11 @@ return {
                     code_action = '?',
                     actionfix = '!',
                     hover = '>',
+                    imp_sign = '$',
+                    expand = '#',
+                    collapse = '~',
+                    title = false,
+                    devicon = false,
                     -- icons in finder
                     kind = {}
                 },
@@ -63,57 +72,99 @@ return {
                     open_browser = '!qute'
                 },
                 symbol_in_winbar = {
-                    enable = false
-                }
+                    enable = false,
+                },
+                implement = {
+                    virtual_text = false,
+                },
+                diagnostic = {
+                    diagnostic_only_current = false,
+                },
             })
 
+            -- disable default vim diagnostics
             vim.diagnostic.config({
                 virtual_text = false,
-                signs = true,
+                signs = false,
                 ---@diagnostic disable-next-line: assign-type-mismatch
                 float = { border = borders },
-                underline = true,
+                underline = {
+                    severity = {
+                        vim.diagnostic.severity.ERROR,
+                        vim.diagnostic.severity.WARN,
+                        vim.diagnostic.severity.HINT,
+                        vim.diagnostic.severity.INFO,
+                    },
+                },
                 update_in_insert = true,
             })
 
-            vim.api.nvim_create_autocmd("CursorHold", {
-                buffer = 0,
-                callback = function()
-                    local opts = {
-                        focusable = false,
-                        close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
-                        border = borders,
-                        source = 'always',
-                        prefix = ' ',
-                        scope = 'cursor',
-                    }
-                    vim.diagnostic.open_float(nil, opts)
-                end
-            })
+            -- vim.api.nvim_create_autocmd("CursorHold", {
+            --     buffer = 0,
+            --     callback = function()
+            --         local opts = {
+            --             focusable = false,
+            --             close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+            --             border = borders,
+            --             source = 'always',
+            --             prefix = ' ',
+            --             scope = 'cursor',
+            --         }
+            --         vim.diagnostic.open_float(nil, opts)
+            --     end
+            -- })
         end,
         event = "VimEnter",
         keys = {
 
-            { '<C-s>',      "<cmd>Lspsaga hover_doc<cr>",                  mode = "n", desc = "Shows signature help" },
-            { '<C-s>',      vim.lsp.buf.signature_help,                    mode = 'i', desc = "Shows signature help" },
+            { '<C-s>',      "<cmd>Lspsaga hover_doc<cr>",                             mode = "n", desc = "Shows signature help" },
+            { '<C-s>',      vim.lsp.buf.signature_help,                               mode = 'i', desc = "Shows signature help" },
 
-            { 'K',          "<cmd>Lspsaga hover_doc<cr>",                  mode = "n", desc = "Shows signature help" },
+            { 'K',          "<cmd>Lspsaga hover_doc<cr>",                             mode = "n", desc = "Shows signature help" },
 
-            { "<leader>ca", "<cmd>Lspsaga code_action<cr>",                mode = "n", desc = "Shows available [C]ode [A]ctions" },
-            { "<leader>d",  "<cmd>Lspsaga show_line_diagnostics<cr>",      mode = "n", desc = "Shows [D]iagnostics for line" },
+            { "<leader>ca", "<cmd>Lspsaga code_action<cr>",                           mode = "n", desc = "Shows available [C]ode [A]ctions" },
+            { "<leader>d",  "<cmd>Lspsaga show_line_diagnostics<cr>",                 mode = "n", desc = "Shows [D]iagnostics for line" },
 
-            { "<leader>gD", "<cmd>Lspsaga peek_definition<cr>",            mode = "n", desc = "Peek [G]o [D]efinition" },
-            { "<leader>gd", vim.lsp.buf.definition,                        mode = "n", desc = "[G]o to [D]efinition" },
-            { "<leader>gi", vim.lsp.buf.implementation,                    mode = "n", desc = "[G]o to [I]mplementation" },
-            { "<leader>gr", vim.lsp.buf.references,                        mode = "n", desc = "[G]o to [R]eferences" },
+            { "<leader>gD", "<cmd>Lspsaga peek_definition<cr>",                       mode = "n", desc = "Peek [G]o [D]efinition" },
+            { "<leader>gd", vim.lsp.buf.definition,                                   mode = "n", desc = "[G]o to [D]efinition" },
+            { "<leader>gi", vim.lsp.buf.implementation,                               mode = "n", desc = "[G]o to [I]mplementation" },
+            { "<leader>gr", vim.lsp.buf.references,                                   mode = "n", desc = "[G]o to [R]eferences" },
 
-            { "<leader>fT", "<cmd>Lspsaga outline<cr>",                    mode = "n", desc = "[F]ile [T]ags (outline)" },
-            { "<leader>tt", "<cmd>Lspsaga term_toggle<cr>",                mode = "n", desc = "[T]oggle [T]erminal" },
+            { "<leader>fT", "<cmd>Lspsaga outline<cr>",                               mode = "n", desc = "[F]ile [T]ags (outline)" },
+            { "<leader>tt", "<cmd>Lspsaga term_toggle<cr>",                           mode = "n", desc = "[T]oggle [T]erminal" },
 
-            { "<leader>D",  "<cmd>Lspsaga show_workspace_diagnostics<cr>", mode = "n", desc = "Shows workspace [D]iagnostics" },
+            { "<leader>D",  "<cmd>Lspsaga show_workspace_diagnostics<cr>",            mode = "n", desc = "Shows workspace [D]iagnostics" },
 
-            { "]d",         vim.diagnostic.goto_next,                      mode = "n", desc = "Next [D]iagnostics" },
-            { "[d",         vim.diagnostic.goto_prev,                      mode = "n", desc = "Prev [D]iagnostics" },
+            { "]d",         function() vim.diagnostic.goto_next({ float = false }) end, mode = "n", desc = "Next [D]iagnostics" },
+            { "[d",         function() vim.diagnostic.goto_prev({ float = false }) end, mode = "n", desc = "Prev [D]iagnostics" },
+        }
+    },
+    {
+        "dgagn/diagflow.nvim",
+        opts = {
+            enable = true,
+            text_align = "right",
+            placement = "top",
+            padding_top = 1,
+            padding_right = 0,
+            gap_size = 1,
+            scope = "line",
+            show_sign = false,
+            border_chars = {
+                top_left = "┌",
+                top_right = "┐",
+                bottom_left = "└",
+                bottom_right = "┘",
+                horizontal = "─",
+                vertical = "│"
+            },
+            show_borders = false,
+        }
+    },
+    {
+        "ivanjermakov/troublesum.nvim",
+        opts = {
+            enabled = true,
         }
     },
     -- parser
@@ -125,7 +176,15 @@ return {
             ---@diagnostic disable-next-line: missing-fields
             require('nvim-treesitter.configs').setup {
                 -- A list of parser names, or 'all'
-                ensure_installed = { 'c', 'lua', 'markdown', 'markdown_inline', 'regex', 'bash', 'vim' },
+                ensure_installed = {
+                    'c',
+                    'lua',
+                    'markdown',
+                    'markdown_inline',
+                    'regex',
+                    'bash',
+                    'vim',
+                },
                 sync_install = false,
                 auto_install = false,
                 highlight = {
@@ -171,11 +230,11 @@ return {
                     'lua_ls',
                     'jsonls',
                     'serve_d',
-                    'vtsls',
                     'marksman',
                     'cmake',
                     'clangd',
                     'bashls',
+                    'vimls',
                 },
                 automatic_installation = true,
                 handlers = {

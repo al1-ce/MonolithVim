@@ -1,6 +1,6 @@
 -- nvim settings
 
-vim.g.ruby_host_prog = '~/.local/share/gem/ruby/3.0.0/bin/neovim-ruby-host'
+-- vim.g.ruby_host_prog = '~/.local/share/gem/ruby/3.0.0/bin/neovim-ruby-host'
 
 vim.o.background = "dark"       -- or "light" for light mode
 vim.o.clipboard = "unnamedplus" -- set clipboard to be system
@@ -35,6 +35,7 @@ vim.opt.undofile = true         -- Save undo history
 vim.opt.undofile = true         -- undo
 vim.opt.updatetime = 300        -- speeds up autocompletion
 vim.opt.wrap = false            -- removes wrapping of lines
+-- vim.o.conceallevel = 2
 
 vim.g["lsp-timeout-config"] = {
     stopTimeout  = 1000 * 60 * 5,  -- ms, timeout before stopping all LSP servers

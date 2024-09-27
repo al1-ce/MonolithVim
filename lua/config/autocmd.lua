@@ -28,3 +28,5 @@ augroup reloadfileifchanged
 augroup END
 ]])
 
+require("utils.nohl").setup({ autoenable = true })
+

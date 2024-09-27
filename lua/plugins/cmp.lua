@@ -9,6 +9,7 @@ return {
             'hrsh7th/cmp-buffer',      -- allows to use buffer text
             'hrsh7th/cmp-cmdline',     -- commandline!
             'hrsh7th/cmp-calc',        -- calculator
+            -- 'hrsh7th/cmp-nvim-lsp-document-symbol', -- search symbols with @
             'uga-rosa/cmp-dynamic',    -- dynamically define completions
             'aca/cmp-function',        -- define function to execute instead of completion
             'Jezda1337/nvim-html-css', -- html id completion
@@ -21,7 +22,21 @@ return {
             -- icons
             'onsails/lspkind.nvim',
             -- neovim conf
-            { 'folke/lazydev.nvim', ft = "lua", opts = {} }
+            {
+                'folke/lazydev.nvim',
+                -- dir = "/g/lazydev.nvim",
+                ft = "lua",
+                opts = {
+                    library = {
+                        { path = "wezterm-types", mods = { "wezterm" } },
+                        { path = "xmake-luals-addon/library", files = { "xmake.lua" } },
+                    }
+                },
+                dependencies = {
+                    "justinsgithub/wezterm-types",
+                    "LelouchHe/xmake-luals-addon"
+                }
+            }
         },
         config = function()
             require('lspkind').init({
@@ -96,7 +111,7 @@ return {
             ---@diagnostic disable-next-line: missing-fields
             cmp.setup({
                 snippet = { expand = function(args) vim.snippet.expand(args.body) end, },
-                mapping = cmp.mapping.preset.insert({
+                mapping = {
                     ['<C-e>'] = cmp.mapping.abort(),
                     ['<Esc>'] = cmp.mapping(function(fallback)
                         if cmp.visible() and cmp.get_active_entry() then cmp.abort() else fallback() end
@@ -115,7 +130,7 @@ return {
                         end
                     end
                     , { "i" }),
-                }),
+                },
                 sources = cmp.config.sources({
                     { name = 'nvim_lsp' },
                     { name = 'luasnip' },
@@ -160,11 +175,12 @@ return {
                         return not context.in_treesitter_capture("comment")
                             and not context.in_syntax_group("Comment")
                     end
-                end
+                end,
+                view = { entries = { name = 'custom', selection_order = 'near_cursor' } }
             })
 
-            local function jump_up() return vim.snippet.active { direction = 1 } and vim.snippet.jump(1) end
-            local function jump_down() return vim.snippet.active { direction = -1 } and vim.snippet.jump(-1) end
+            local function jump_up() return vim.snippet.active { direction = -1 } and vim.snippet.jump(1) end
+            local function jump_down() return vim.snippet.active { direction =  1 } and vim.snippet.jump(-1) end
 
             noremap({ "i", "s" }, "<C-k>", jump_up, { desc = "Jump up in snippet" })
             noremap({ "i", "s" }, "<C-j>", jump_down, { desc = "Jump down in snippet" })
@@ -177,6 +193,7 @@ return {
                 mapping = cmp.mapping.preset.cmdline(),
                 sources = { { name = 'buffer' } },
                 view = { entries = { name = 'wildmenu', separator = '  ' } },
+                -- view = { entries = { name = "custom", selection_order = "near_cursor" } }
             })
 
             -- COMMANDLINE COMPLETION SETUP

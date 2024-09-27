@@ -64,6 +64,7 @@ end
 -------------------- Highlight --------------------------------------
 -- Custom function highlight
 highlightAll({"dCustomFunc", "dCustomDFunc"}, {link = "Function"})
+highlight("haxeFunction", { link = "Keyword" })
 
 -- Borders
 highlightAll({
@@ -246,4 +247,3 @@ vim.cmd([[
     hi! link @constant.builtin.d Constant
     hi! link @lsp.type.macro.c Constant
 ]])
-

@@ -13,26 +13,11 @@ return {
     {
         'windwp/nvim-ts-autotag',
         dependencies = { "nvim-treesitter/nvim-treesitter" },
-        config = function()
-            ---@diagnostic disable-next-line: missing-fields
-            require("nvim-ts-autotag").setup({
-                autotag = {
-                    enable = true,
-                }
-            })
-
-            vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
-                vim.lsp.diagnostic.on_publish_diagnostics,
-                {
-                    underline = true,
-                    virtual_text = {
-                        spacing = 5,
-                        severity = { min = vim.diagnostic.severity.WARN },
-                    },
-                    update_in_insert = true,
-                }
-            )
-        end
+        opts = {
+            autotag = {
+                enable = true,
+            }
+        }
     },
 
     -- Toggle comments [ C-/ ]
@@ -138,7 +123,12 @@ return {
     -- Edit search as buffer
     -- 'dyng/ctrlsf.vim',
     -- Highlights trailing whitespaces
-    "ntpeters/vim-better-whitespace",
+    {
+        "ntpeters/vim-better-whitespace",
+        config = function()
+            vim.cmd([[ let g:better_whitespace_operator = "" ]])
+        end
+    },
     -- Pretty folding [ zc zC za zA zR zM ]
     {
         "kevinhwang91/nvim-ufo",
@@ -427,6 +417,7 @@ return {
         lazy = true,
         event = "BufReadPost xmake.lua",
         config = true,
+        enabled = false,
         dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
     }
 }

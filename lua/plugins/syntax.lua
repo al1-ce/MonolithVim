@@ -5,6 +5,8 @@ return {
     'tikhomirov/vim-glsl',
     -- Dart
     'dart-lang/dart-vim-plugin',
+    -- Haxe
+    'jdonaldson/vaxe',
     -- 'natebosch/vim-lsc'
     -- 'natebosch/vim-lsc-dart'
     {
@@ -20,4 +22,8 @@ return {
         'Fymyte/rasi.vim',
         ft = 'rasi',
     },
+    {
+        -- dir = "/g/jsl/jsl.vim"
+        "jsl-lang/jsl.vim"
+    }
 }

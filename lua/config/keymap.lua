@@ -130,16 +130,16 @@ noremap("n", "<leader>tw", "<cmd>tabclose<cr>", { desc = "[T]ab [C]lose" })
 noremap("n", "<leader>to", "<cmd>tabonly<cr>", { desc = "[T]ab [O]nly" })
 
 noremap("n", "<leader>fF", vim.lsp.buf.format, { desc = "[F]ile [F]ormat" })
-noremap("n", "<leader>lI", function ()
-    ---@diagnostic disable-next-line: missing-parameter
-    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-    ---@diagnostic disable-next-line: missing-parameter
-    if vim.lsp.inlay_hint.is_enabled() then
-        print("Enabled inlay hint")
-    else
-        print("Disabled inlay hint")
-    end
-end, { desc = "[L]sp [I]nlay toggle" })
+-- noremap("n", "<leader>lI", function ()
+--     ---@diagnostic disable-next-line: missing-parameter
+--     vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+--     ---@diagnostic disable-next-line: missing-parameter
+--     if vim.lsp.inlay_hint.is_enabled() then
+--         print("Enabled inlay hint")
+--     else
+--         print("Disabled inlay hint")
+--     end
+-- end, { desc = "[L]sp [I]nlay toggle" })
 
 noremap("n", "<leader>t1", "1gt", { desc = "Go to [t]ab [1]" })
 noremap("n", "<leader>t2", "2gt", { desc = "Go to [t]ab [2]" })

@@ -17,19 +17,29 @@ return {
     },
     -- project manager [ \fp ]
     {
-        "ahmedkhalf/project.nvim",
+        "al1-ce/project.nvim",
         config = function()
             require("project_nvim").setup({
                 show_hidden = true,
                 silent_chdir = true,
                 detection_methods = { "pattern" }, -- "lsp" makes it jump too much
                 patterns = {
-                    "dub.json", "dub.sdl",         -- d
+                    "!.ignore_project",
+                    "!>out",
                     ".git", ".gitignore",          -- git
-                    "src", "source",               -- general
+                    "dub.json", "dub.sdl",         -- d
                     "package.json",                -- js
                     "*.sln",                       -- c#
-                }
+                    -- Generic:
+                    "src", "source",
+                    "justfile",
+                    "xmake.lua", "premake5.lua",
+                    "meson.build", "build.ninja",
+                    ".vscode",
+
+                    -- Do not enable since it can be in subdirs
+                    -- "Makefile", "CmakeLists.txt",
+                },
             })
         end
     },
@@ -55,6 +65,8 @@ return {
                 ["gs"] = "actions.change_sort",
                 ["gx"] = "actions.open_external",
                 ["g."] = "actions.toggle_hidden",
+                ["gh"] = { desc = "Open home directory", callback = function(opts) require("oil").open("~") end },
+                ["gc"] = "actions.open_cwd",
             },
             use_default_keymaps = false,
             delete_to_trash = true,
@@ -129,7 +141,7 @@ return {
         },
         event = "VimEnter",
         keys = {
-            { "<leader>B", "<cmd>JABSOpen<cr>", mode = "n", noremap = true, silent = true, desc = "Opens [B]uffer switcher" },
+            { "<leader>l", "<cmd>JABSOpen<cr>", mode = "n", noremap = true, silent = true, desc = "[L]ist Buffers" },
         }
     },
     {
@@ -142,12 +154,6 @@ return {
             noremap("n", "s", "<Plug>(leap)", { desc = "Leap" })
             noremap("n", "S", "<Plug>(leap-from-window)", { desc = "Leap to other window" })
         end,
-    },
-    -- Remove search highlight automatically
-    {
-        "nvimdev/hlsearch.nvim",
-        event = { "BufRead" },
-        config = true,
     },
     -- cool smart surrounding cs ys ds
     {
@@ -374,4 +380,14 @@ return {
     },
     -- Focus <cmd>number line
     { "nacro90/numb.nvim", config = true },
+    {
+        "iamcco/markdown-preview.nvim",
+        cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+        ft = { "markdown" },
+        build = function() vim.fn["mkdp#util#install"]() end,
+    },
+    {
+        "inkarkat/vim-SyntaxRange",
+        enabled = false,
+},
 }
