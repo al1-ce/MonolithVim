@@ -370,6 +370,7 @@ return {
     -- TODO: WIP
     {
         dir = "/g/runme.nvim",
+        enabled = false,
         opts = {
             filetypes = {
                 javascript = {

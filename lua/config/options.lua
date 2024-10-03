@@ -7,7 +7,8 @@ vim.o.clipboard = "unnamedplus" -- set clipboard to be system
 vim.o.mouse = "nvi"             -- normal, visual, insert
 vim.o.mousemodel = "extend"     -- sets right mouse click to extend selection
 vim.o.signcolumn = "no"         -- removes gutter
-vim.o.virtualedit = "onemore"
+vim.o.virtualedit = "onemore"   -- allow to go a single char after eol
+vim.o.linebreak = true          -- wraps lines by words (softbreak)
 
 vim.opt.autoread = true         -- default value, autoreload file
 vim.opt.cmdheight = 1           -- cmd height (set to 0 if no noice)

@@ -37,6 +37,8 @@ local remap = require("utils.remap")
 -- noremap('i', '<PageDown>', '<Esc><C-d>i', { desc = "Jumps down by half window" })
 -- noremap("i", "<PageUp>", "<Esc><C-u>i", { desc = "Jumps up by half window" })
 
+noremap('n', '<C-h>', 'b', { desc = "Goes back by word" })
+noremap('n', '<C-l>', 'e', { desc = "Goes forward by word" })
 noremap('n', '<C-left>', 'b', { desc = "Goes back by word" })
 noremap('n', '<C-right>', 'e', { desc = "Goes forward by word" })
 

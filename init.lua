@@ -12,7 +12,7 @@ load('config.lazy')
 -- persistent colorscheme
 require('utils.fzf').source_colorscheme()
 
--- :GetMissingDeps command to get list of
+-- :DepsMissing command to get list of
 -- binaries that are needed on system
 require('utils.sysdep-man').init_command()
 

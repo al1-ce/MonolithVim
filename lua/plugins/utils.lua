@@ -26,10 +26,10 @@ return {
                 patterns = {
                     "!.ignore_project",
                     "!>out",
-                    ".git", ".gitignore",          -- git
-                    "dub.json", "dub.sdl",         -- d
-                    "package.json",                -- js
-                    "*.sln",                       -- c#
+                    ".git", ".gitignore",  -- git
+                    "dub.json", "dub.sdl", -- d
+                    "package.json",        -- js
+                    "*.sln",               -- c#
                     -- Generic:
                     "src", "source",
                     "justfile",
@@ -336,6 +336,7 @@ return {
     },
     {
         "zk-org/zk-nvim",
+        enabled = sysdep({ "zk" }),
         config = function()
             vim.cmd([[ let $ZK_NOTEBOOK_DIR = $HOME."/zk" ]])
             require("zk").setup({
@@ -367,6 +368,30 @@ return {
         },
         event = "VimEnter"
     },
+    {
+        "jakewvincent/mkdnflow.nvim",
+        opts = {
+            modules = {
+                bib = false,
+                buffers = true,
+                conceal = false,
+                cursor = true,
+                folds = false,
+                foldtext = false,
+                links = true,
+                lists = false,
+                maps = false,
+                paths = true,
+                tables = false,
+                yaml = false,
+                cmp = false
+            },
+        },
+        keys = {
+            { "C-]", "<cmd>MkdnFollowLink<cr>", ft = "markdown", mode = "n", noremap = true, silent = true, desc = "Follow markdown link" }
+        },
+        ft = "markdown"
+    },
     -- easy . repeat for plugins
     "tpope/vim-repeat",
     -- close inactive buffers
@@ -389,5 +414,5 @@ return {
     {
         "inkarkat/vim-SyntaxRange",
         enabled = false,
-},
+    },
 }

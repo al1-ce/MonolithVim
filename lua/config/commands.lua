@@ -15,4 +15,6 @@ vim.api.nvim_create_user_command('Template', template.paste_template, { range = 
 vim.api.nvim_create_user_command('TemplateSelect', template.select, {})
 
 noremap("n", "<leader>ST", template.select, { desc = "Select template with fzf and paste it under cursor" })
+noremap("n", "<leader>ow", "<cmd>Wrap<cr>", { desc = "Toggle [O]ption - [W]rap" })
+noremap("n", "<leader>os", "<cmd>Spell<cr>", { desc = "Toggle [O]ption - [S]pell" })
 

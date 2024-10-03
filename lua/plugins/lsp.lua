@@ -1,4 +1,5 @@
 local sysdep = require("utils.sysdep")
+local optdep = require("utils.optdep")
 return {
     -- lsp but formatting
     {
@@ -219,8 +220,8 @@ return {
                 capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()),
             }
 
-            if sysdep({ "dart" }) then lspconfig.dartls.setup({}) end
-            if sysdep({ "glsl_analyzer" }) then lspconfig.glsl_analyzer.setup({}) end
+            if optdep({ "dart" }) then lspconfig.dartls.setup({}) end
+            if optdep({ "glsl_analyzer" }) then lspconfig.glsl_analyzer.setup({}) end
 
             local function gen_default_capabilities() require("cmp_nvim_lsp").default_capabilities() end
 
