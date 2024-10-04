@@ -28,6 +28,7 @@ if canload("zk.util") then
         -- bufnoremap('n', '<leader>zb', '<Cmd>lua vim.lsp.buf.references()<CR>', opts)
         -- Open notes linked by the current buffer.
         bufnoremap("n", "<leader>zl", "<Cmd>ZkLinks<CR>", { desc = "[Z]k [L]inks" })
+        bufnoremap("n", "<leader>zo", "<Cmd>ZkOrphans<CR>", { desc = "[Z]k [O]phans" })
 
         -- Preview a linked note.
         bufnoremap("n", "K", "<Cmd>lua vim.lsp.buf.hover()<CR>", { desc = "Preview linked note" })

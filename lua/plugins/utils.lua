@@ -339,7 +339,9 @@ return {
         enabled = sysdep({ "zk" }),
         config = function()
             vim.cmd([[ let $ZK_NOTEBOOK_DIR = $HOME."/zk" ]])
-            require("zk").setup({
+            local zk = require("zk")
+            local commands = require("zk.commands")
+            zk.setup({
                 picker = "fzf_lua",
 
                 lsp = {
@@ -358,12 +360,26 @@ return {
                     },
                 },
             })
+            commands.add("ZkOrphans", function(options)
+                options = vim.tbl_extend("force", { orphan = true }, options or {})
+                zk.edit(options, { title = "Zk Orphans" })
+            end)
+            commands.add("ZkNav", function(options)
+                options = vim.tbl_extend("force", {
+                    matchStrategy = "exact",
+                    match = { "Index " },
+                    -- limit = 1,
+                    tags = { "nav" }
+                }, options or {})
+                zk.edit(options, { title = "Zk Index" })
+            end)
         end,
         keys = {
             { "<leader>zk", "<cmd>ZkNotes { sort = { 'modified' } }<cr>",                                       mode = "n", noremap = true, silent = true, desc = "[Z][K] notes" },
             { "<leader>zn", "<cmd>ZkNew { title = vim.fn.input('Title: ') }<cr>",                               mode = "n", noremap = true, silent = true, desc = "[Z]k [N]ew" },
             { "<leader>zt", "<cmd>ZkTags<cr>",                                                                  mode = "n", noremap = true, silent = true, desc = "[Z]k [T]ags" },
             { "<leader>zf", "<cmd>ZkNotes { sort = { 'modified' }, match = { vim.fn.input('Search: ') } }<cr>", mode = "n", noremap = true, silent = true, desc = "[Z]k [F]ind" },
+            { "<leader>zh", "<cmd>ZkNav<cr>",                                                                  mode = "n", noremap = true, silent = true, desc = "[Z]k [H]ome" },
             { "<leader>zf", ":'<,'>ZkMatch<cr>",                                                                mode = "v", noremap = true, silent = true, desc = "[Z]k [F]ind" },
         },
         event = "VimEnter"
