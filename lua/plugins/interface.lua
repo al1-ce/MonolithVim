@@ -91,6 +91,9 @@ return {
             -- Most general error there could be
             vim.opt.errorformat:append("%t%*[^:]: %m")
             -- sily.logger log format
+
+            -- some nodejs
+            vim.opt.errorformat:append("\\[%l:%c\\] %m")
         end
     },
     {

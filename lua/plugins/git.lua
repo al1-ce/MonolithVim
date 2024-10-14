@@ -51,4 +51,13 @@ return {
             vim.api.nvim_create_user_command("Git", function() require("neogit").open() end, {})
         end,
     },
+    {
+        "chrisgrieser/nvim-tinygit",
+        enabled = false,
+        dependencies = {
+            "stevearc/dressing.nvim",
+            "nvim-telescope/telescope.nvim", -- optional, but recommended
+            "rcarriga/nvim-notify", -- optional, but recommended
+        },
+    },
 }

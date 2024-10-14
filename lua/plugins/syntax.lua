@@ -25,5 +25,9 @@ return {
     {
         -- dir = "/g/jsl/jsl.vim"
         "jsl-lang/jsl.vim"
+    },
+    {
+        "hat0uma/csvview.nvim",
+        opts = { view = { display_mode = "border" } }
     }
 }

@@ -244,7 +244,12 @@ return {
         },
     },
     {
+        "al1-ce/jsfunc.nvim",
+        -- dir = "/g/jsfunc.nvim"
+    },
+    {
         "al1-ce/just.nvim",
+        -- dir = "/g/just.nvim",
         dependencies = {
             'nvim-lua/plenary.nvim',
             'nvim-telescope/telescope.nvim',
@@ -258,16 +263,15 @@ return {
             play_sound = true,
             open_qf_on_error = true,
             telescope_borders = {
-                prompt = { " ", " ", " ", " ", "┌", "┐", " ", " " },
-                results = { " ", " ", " ", " ", "├", "┤", "┘", "└" },
-                preview = { " ", " ", " ", " ", "┌", "┐", "┘", "└" }
+                prompt = require("utils/borders").telescope_top,
+                results = require("utils/borders").telescope_bottom,
+                preview = require("utils/borders").telescope
             }
         },
         keys = {
             { "<leader>bd", "<cmd>JustDefault<cr>", mode = "n", noremap = true, silent = true, desc = "Run default task" },
             { "<leader>bb", "<cmd>JustBuild<cr>",   mode = "n", noremap = true, silent = true, desc = "Run build task" },
             { "<leader>br", "<cmd>JustRun<cr>",     mode = "n", noremap = true, silent = true, desc = "Run run task" },
-            { "<leader>bt", "<cmd>JustTest<cr>",    mode = "n", noremap = true, silent = true, desc = "Run test task" },
             { "<leader>ba", "<cmd>JustSelect<cr>",  mode = "n", noremap = true, silent = true, desc = "Open task selector" },
             { "<leader>bs", "<cmd>JustStop<cr>",    mode = "n", noremap = true, silent = true, desc = "Stop current task" },
         },
@@ -412,6 +416,57 @@ return {
             { "<leader>xf", ":RunmeFile<cr>",      mode = "v", noremap = true, silent = true, desc = "E[X]ecute [F]ile" },
         },
         event = "VimEnter"
+    },
+    {
+        "LintaoAmons/scratch.nvim",
+        event = "VeryLazy",
+        dependencies = {
+            { "ibhagwan/fzf-lua" },
+            { "stevearc/dressing.nvim" }
+        },
+        opts = {
+            window_cmd = "rightbelow vsplit",
+            use_telescope = false,
+            file_picker = "fzflua",
+            filetypes = { "lua", "js", "sh", "ts" },
+            filetype_details = {
+                d = {
+                    content = vim.split('/+ dub.sdl:\nname "scratch"\n+/\nmodule main;\n\nimport std;\n\nvoid main() {\n    \n}\n', "\n"),
+                    cursor = {
+                        location = { 9, 4 },
+                        insert_mode = false,
+                    }
+                }
+            },
+            localKeys = {
+                { -- d
+                    filenameContains = { ".d" },
+                    LocalKeys = {
+                        {
+                            cmd = function() 
+                                vim.cmd([[!dub run --single -q "]] .. vim.fn.expand("%:p") .. [["]])
+                                vim.cmd([[echo "]] .. vim.fn.expand("%:p") .. [["]])
+                            end,
+                            key = "<leader>xf",
+                            modes = { "n" }
+                        }
+                    }
+                } -- d
+            }, -- localKeys
+            hooks = {
+                {
+                    callback = function()
+                        local timer = vim.uv.new_timer()
+                        timer:start(500, 0, vim.schedule_wrap(function()
+                            vim.api.nvim_command("write")
+                        end))
+                    end
+                }
+            }
+        }, -- opts
+        keys = {
+            { "<leader>xs", "<cmd>Scratch<cr>", mode = "n", noremap = true, silent = true, desc = "E[X]ecute [S]cratch" },
+        }
     },
     {
         "Mythos-404/xmake.nvim",

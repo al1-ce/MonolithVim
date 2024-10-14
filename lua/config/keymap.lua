@@ -63,9 +63,46 @@ noremap("n", "<A-down>", "<C-w>j", { desc = "Focuses lower pane" })
 -- noremap("", "<C-Del>", '"_dw', { desc = "Delete in word forward" });
 -- noremap("i", "<C-Del>", '<C-o>"_dw', { desc = "Delete in word forward" });
 
+local function line_len(c_row)
+    return #(vim.api.nvim_buf_get_lines(0, c_row, c_row + 1, false)[1])
+end
+
+local function delete_char(is_backspace)
+    local cursor_pos = vim.api.nvim_win_get_cursor(0)
+    local c_row = cursor_pos[1] - 1
+    local c_col = cursor_pos[2]
+    local row_count = vim.api.nvim_buf_line_count(0)
+    local col_count = line_len(c_row)
+    -- vim.notify(vim.inspect(vim.api.nvim_buf_get_lines(0, c_row, c_row + 1, false)))
+
+    if is_backspace == 1 then
+        if c_row == 0 and c_col == 0 then return end
+        if c_col == 0 then
+            vim.api.nvim_buf_set_text(0, c_row - 1, line_len(c_row - 1), c_row, c_col, {})
+        else
+            vim.api.nvim_buf_set_text(0, c_row, c_col - 1, c_row, c_col, {})
+        end
+    else
+        if c_row == row_count - 1 and c_col == col_count then return end
+        if c_col == col_count then
+            vim.api.nvim_buf_set_text(0, c_row, col_count, c_row + 1, 0, {})
+        else
+            vim.api.nvim_buf_set_text(0, c_row, c_col, c_row, c_col + 1, {})
+        end
+    end
+    -- bs - start higher then end
+    -- dle - invalid end_col: out of range
+end
+
+noremap("n", "<Del>", function() delete_char(0) end, { desc = "Delete but into black hole" })
+noremap("i", "<Del>", function() delete_char(0) end, { desc = "Delete but into black hole" })
+noremap("n", "<BS>", function() delete_char(1) end, { desc = "Deletes into black hole" });
+noremap("i", "<BS>", function() delete_char(1) end, { desc = "Deletes into black hole" });
+
 -- map delete to black hole yank
-noremap("", "<Del>", '"_x', { desc = "Delete but into black hole" })
-noremap("i", "<Del>", '<C-o>"_x', { desc = "Delete but into black hole" })
+-- noremap("", "<Del>", '"_x', { desc = "Delete but into black hole" })
+-- noremap("i", "<Del>", '<C-o>"_x', { desc = "Delete but into black hole" })
+-- noremap("n", "<BS>", '"_X', { desc = "Deletes into black hole" });
 
 -- FIXME: check back when https://github.com/wez/wezterm/issues/3621 fixed
 -- remap("", "<C-h>", "<Del>", { desc = "Wezterm kitty protocol hotfix" })
@@ -107,8 +144,6 @@ noremap('v', "<End>", lineEnd, { desc = "Goes to end of line" })
 -- -------------------------------------------------------------------------- --
 --                                 Normal Mode                                --
 -- -------------------------------------------------------------------------- --
--- delete into black hole
-noremap("n", "<BS>", '"_X', { desc = "Deletes into black hole" });
 
 noremap("n", "<Tab>", ">>", { desc = "Shifts line to right" })
 noremap("n", "<S-Tab>", "<<", { desc = "Shifts line to left" })
@@ -249,4 +284,3 @@ noremap("o", "g$", ":norm vg$h<cr>", { desc = "To end of line text object" })
 noremap("o", "g_", ":norm vg_h<cr>", { desc = "To last char in line text object" })
 noremap("o", "^", ":norm v^<cr>", { desc = "To first char in line text object" })
 noremap("o", "0", ":norm v0<cr>", { desc = "To start of line text object" })
-

@@ -16,6 +16,12 @@ require('utils.fzf').source_colorscheme()
 -- binaries that are needed on system
 require('utils.sysdep-man').init_command()
 
+-- improve cmdheight=0
+require('utils.messages').override_messages();
+
 -- code::stats plugin
 load('utils.codestats.loader')
+
+-- todo
+-- check yukimemi/dvpm
 

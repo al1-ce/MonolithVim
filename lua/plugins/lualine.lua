@@ -3,7 +3,7 @@
 local function get_color(group, attr)
     return vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID(group)), attr)
 end
-
+-- vim.print(vim.inspect(vim.fn.synIDtrans(vim.fn.hlID("Normal"))))
 local red_means_looping = function()
     if not pcall(require, 'recorder') then return "[o o] Error!" end
     local status = require("recorder").recordingStatus()

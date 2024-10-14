@@ -36,7 +36,7 @@ return {
             "rcarriga/nvim-notify",            -- optional
             'nvim-treesitter/nvim-treesitter', -- optional
         },
-        enabled = true,
+        enabled = false,
         opts = {
                 cmdline = {
                     enabled = true, -- enables the Noice cmdline UI

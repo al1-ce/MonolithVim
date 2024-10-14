@@ -11,7 +11,7 @@ vim.o.virtualedit = "onemore"   -- allow to go a single char after eol
 vim.o.linebreak = true          -- wraps lines by words (softbreak)
 
 vim.opt.autoread = true         -- default value, autoreload file
-vim.opt.cmdheight = 1           -- cmd height (set to 0 if no noice)
+vim.opt.cmdheight = 0           -- cmd height (set to 0 if no noice)
 vim.opt.colorcolumn = '0'       -- 80 symbol split
 vim.opt.cursorcolumn = false    -- show cursor column
 vim.opt.cursorline = true       -- cursor line hightlight

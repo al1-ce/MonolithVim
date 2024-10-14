@@ -3,6 +3,13 @@ local sysdep = require("utils.sysdep")
 local noremap = require("utils.noremap")
 local os_spec = require("utils.osspec")
 
+local function ctx_callback(func)
+    return {
+        type = "callback",
+        callback = func
+    }
+end
+
 return {
     -- Async code
     'nvim-lua/plenary.nvim',
@@ -42,6 +49,41 @@ return {
                 },
             })
         end
+    },
+    {
+        "LintaoAmons/cd-project.nvim",
+        enabled = false,
+        opts = {
+            project_config_filepath = vim.fs.normalize(vim.fn.stdpath('data') .. "/cd-project.nvim.json"),
+            patterns = {
+                -- "!.ignore_project",
+                -- "!>out",
+                ".git", ".gitignore",  -- git
+                "dub.json", "dub.sdl", -- d
+                "package.json",        -- js
+                "*.sln",               -- c#
+                -- Generic:
+                "src", "source",
+                "justfile",
+                "xmake.lua", "premake5.lua",
+                "meson.build", "build.ninja",
+                ".vscode",
+
+                -- Do not enable since it can be in subdirs
+                -- "Makefile", "CmakeLists.txt",
+            },
+            project_picker = "vim-ui",
+            auto_register_project = false,
+            hooks = {
+                -- {
+                --   trigger_point = "BEFORE_CD",
+                --   callback = function(_)
+                --     vim.print("before cd project")
+                --     require("bookmarks").api.mark({name = "before cd project"})
+                --   end,
+                -- },
+            }
+        }
     },
     -- file manager as buffer [ - ]
     {
@@ -130,13 +172,12 @@ return {
             },
 
             border = "none",
-            -- border = { "┌", " ", "┐", " ", "┘", " ", "└", " " },
             relative = "cursor",
             position = { 'right', 'bottom' },
 
             preview = {
                 -- border = 'none'
-                border = { "┌", " ", "┐", " ", "┘", " ", "└", " " },
+                border = require("utils/borders").normal
             }
         },
         event = "VimEnter",
@@ -171,12 +212,18 @@ return {
         keys = {
             { "<A-up>",    "<esc><cmd>MoveLine(-1)<cr>i", mode = "i", noremap = true, silent = true, desc = "Swaps current line with line above" },
             { "<A-down>",  "<esc><cmd>MoveLine(1)<cr>i",  mode = "i", noremap = true, silent = true, desc = "Swaps current line with line below" },
+            { "<A-k>",     "<esc><cmd>MoveLine(-1)<cr>i", mode = "i", noremap = true, silent = true, desc = "Swaps current line with line above" },
+            { "<A-j>",     "<esc><cmd>MoveLine(1)<cr>i",  mode = "i", noremap = true, silent = true, desc = "Swaps current line with line below" },
 
             -- for some reason <cmd> breaks it, probably because '<,'>
             { "<A-up>",    ":MoveBlock(-1)<cr>",          mode = "v", noremap = true, silent = true, desc = "Moves visual block up" },
             { "<A-down>",  ":MoveBlock(1)<cr>",           mode = "v", noremap = true, silent = true, desc = "Moves visual block down" },
             { "<A-right>", ":MoveHBlock(1)<cr>",          mode = "v", noremap = true, silent = true, desc = "Moves visual block right" },
             { "<A-left>",  ":MoveHBlock(-1)<cr>",         mode = "v", noremap = true, silent = true, desc = "Moves visual block left" },
+            { "<A-k>",     ":MoveBlock(-1)<cr>",          mode = "v", noremap = true, silent = true, desc = "Moves visual block up" },
+            { "<A-j>",     ":MoveBlock(1)<cr>",           mode = "v", noremap = true, silent = true, desc = "Moves visual block down" },
+            { "<A-l>",     ":MoveHBlock(1)<cr>",          mode = "v", noremap = true, silent = true, desc = "Moves visual block right" },
+            { "<A-h>",     ":MoveHBlock(-1)<cr>",         mode = "v", noremap = true, silent = true, desc = "Moves visual block left" },
         }
     },
     -- Sudo edit/save [ \hw \hr ]
@@ -376,11 +423,35 @@ return {
         end,
         keys = {
             { "<leader>zk", "<cmd>ZkNotes { sort = { 'modified' } }<cr>",                                       mode = "n", noremap = true, silent = true, desc = "[Z][K] notes" },
-            { "<leader>zn", "<cmd>ZkNew { title = vim.fn.input('Title: ') }<cr>",                               mode = "n", noremap = true, silent = true, desc = "[Z]k [N]ew" },
             { "<leader>zt", "<cmd>ZkTags<cr>",                                                                  mode = "n", noremap = true, silent = true, desc = "[Z]k [T]ags" },
             { "<leader>zf", "<cmd>ZkNotes { sort = { 'modified' }, match = { vim.fn.input('Search: ') } }<cr>", mode = "n", noremap = true, silent = true, desc = "[Z]k [F]ind" },
-            { "<leader>zh", "<cmd>ZkNav<cr>",                                                                  mode = "n", noremap = true, silent = true, desc = "[Z]k [H]ome" },
+            { "<leader>zh", "<cmd>ZkNav<cr>",                                                                   mode = "n", noremap = true, silent = true, desc = "[Z]k [H]ome" },
             { "<leader>zf", ":'<,'>ZkMatch<cr>",                                                                mode = "v", noremap = true, silent = true, desc = "[Z]k [F]ind" },
+            {
+                "<leader>zn",
+                function()
+                    local zk = require("zk")
+                    local util = require("zk.util")
+                    local title = vim.fn.input("Title: ")
+                    local dir = vim.fn.input("Directory (empty to skip): ")
+                    if title == "" then vim.api.nvim_err_writeln("Cannot create note without title") end
+                    if dir == "" then
+                        zk.new({ title = title })
+                    else
+                        local npath = util.notebook_root(util.resolve_notebook_path(0))
+                        dir = vim.fn.fnamemodify(npath .. '/' .. dir, ":p")
+                        if vim.fn.isdirectory(dir) == 0 then
+                            vim.fn.mkdir(dir, 'p')
+                        end
+                        zk.new({ title = title, dir = dir })
+                    end
+                    -- "<cmd>ZkNew { title = vim.fn.input('Title: '), dir = vim.fn.input('Directory: ') }<cr>"
+                end,
+                mode = "n",
+                noremap = true,
+                silent = true,
+                desc = "[Z]k [N]ew"
+            },
         },
         event = "VimEnter"
     },
@@ -431,4 +502,229 @@ return {
         "inkarkat/vim-SyntaxRange",
         enabled = false,
     },
-}
+    {
+        -- "al1-ce/context-menu.nvim",
+        dir = "/g/context-menu.nvim",
+        opts = {
+            menu_items = {
+                {
+                    name = "Run File",
+                    hl = { bg = "#efefef", fg = "#efefef" },
+                    ft = { "!markdown" },
+                    cmd = function(context)
+                        if context.ft == "lua" then
+                            return vim.cmd([[source %]])
+                        elseif context.ft == "javascript" then
+                            return vim.print("run javascript:: haven't impl yet")
+                        end
+                    end,
+                },
+                {
+                    name = "Sub CMD",
+                    order = 1,
+                    hl = "String",
+                    ft = { "!markdown" },
+                    sub_menu = {
+                        { name = " 1.──────────── ", cmd = function() end },
+                        { name = " 1.1 Cde::Format", cmd = vim.lsp.buf.format, },
+                        { name = " 1.2 Coe::Format", cmd = vim.lsp.buf.format, },
+                        {
+                            name = "Sub CMD",
+                            hl = "String",
+                            ft = { "!markdown" },
+                            sub_menu = {
+                                { name = " 1.──────────── ", cmd = function() end },
+                                { name = " 1.1 Cde::Format", cmd = vim.lsp.buf.format, },
+                                { name = " 1.2 Coe::Format", cmd = vim.lsp.buf.format, },
+                            },
+                        },
+                    },
+                },
+                { name = " 0──────────── ", hl = "Float", cmd = function() end },
+                { name = " 1Code::Fomat", cmd = vim.lsp.buf.format, },
+                { name = " 2de::Fomt", cmd = vim.lsp.buf.format, },
+                { name = " 3Code::Forat", hl = "DiagnosticUnderlineError", cmd = vim.lsp.buf.format, },
+                { name = " 4Code::Forat", cmd = vim.lsp.buf.format, },
+                { name = " 5Code::ormat", cmd = vim.lsp.buf.format, },
+                { name = " 6Code::Forat", cmd = vim.lsp.buf.format, },
+                { name = " 7Code::rma", cmd = vim.lsp.buf.format, },
+                { name = " 8Code::Format", cmd = vim.lsp.buf.format, },
+            },
+            debug = false,
+            keymap = {
+                close = { "q", "<ESC>" },
+                confirm = { "<CR>", "o" },
+                back = { "h", "<left>" }
+            },
+            window = {
+                style = "SignColumn",
+                border_style = "SignColumn",
+                border = "double",
+                cursor = { underline = true },
+                separator = "-",
+                submenu = ">",
+            },
+        },
+        keys = {
+            { "<leader>cc", function() require("context-menu").trigger_context_menu() end, mode = "n", noremap = true, silent = true, desc = "[C]ontext [M]enu" }
+        },
+        event = "VimEnter"
+    },
+    {
+        "LintaoAmons/bookmarks.nvim",
+        -- recommand, pin the plugin at specific version for stability
+        -- backup your db.json file when you want to upgrade the plugin
+        dependencies = {
+            { "nvim-telescope/telescope.nvim" },
+            { "stevearc/dressing.nvim" }, -- optional: to have the same UI shown in the GIF
+        },
+        opts = {
+            -- where you want to put your bookmarks db file (a simple readable json file, which you can edit manually as well)
+            json_db_path = vim.fs.normalize(vim.fn.stdpath("config") .. "/bookmarks.db.json"),
+            -- This is how the sign looks.
+            signs = {
+                mark = { icon = "󰃁", color = "red", line_bg = "#572626" },
+            },
+            picker = {
+                -- choose built-in sort logic by name: string, find all the sort logics in `bookmarks.adapter.sort-logic`
+                -- or custom sort logic: function(bookmarks: Bookmarks.Bookmark[]): nil
+                sort_by = "last_visited",
+            },
+            -- optional, backup the json db file when a new neovim session started and you try to mark a place
+            -- you can find the file under the same folder
+            enable_backup = true,
+            -- optional, show the result of the calibration when you try to calibrate the bookmarks
+            show_calibrate_result = true,
+            -- optional, auto calibrate the current buffer when you enter it
+            auto_calibrate_cur_buf = true,
+            -- treeview options
+            treeview = {
+                bookmark_format = function(bookmark)
+                    if bookmark.name ~= "" then return bookmark.name else return "[No Name]" end
+                end,
+                keymap = {
+                    quit = { "q", "<ESC>" },
+                    refresh = "R",
+                    create_folder = "a",
+                    tree_cut = "x",
+                    tree_paste = "p",
+                    collapse = "o",
+                    delete = "d",
+                    active = "s",
+                    copy = "c",
+                },
+            },
+            -- do whatever you like by hooks
+            hooks = {
+                {
+                    ---a sample hook that change the working directory when goto bookmark
+                    ---@param bookmark Bookmarks.Bookmark
+                    ---@param projects Bookmarks.Project[]
+                    callback = function(bookmark, projects)
+                        local project_path
+                        for _, p in ipairs(projects) do
+                            if p.name == bookmark.location.project_name then
+                                project_path = p.path
+                            end
+                        end
+                        if project_path then
+                            vim.cmd("cd " .. project_path)
+                        end
+                    end,
+                },
+            },
+        }
+    },
+    {
+        "notomo/cmdbuf.nvim",
+        config = function()
+            vim.api.nvim_create_user_command("Cmdbuf", function()
+                require("cmdbuf").split_open(vim.o.cmdwinheight)
+            end, {})
+            vim.api.nvim_create_user_command("Luabuf", function()
+                require("cmdbuf").split_open(vim.o.cmdwinheight, { type = "lua/cmd" })
+            end, {})
+            vim.keymap.set("ca", "cmdbuf", "Cmdbuf")
+            vim.keymap.set("ca", "luabuf", "Luabuf")
+
+
+            -- Custom buffer mappings
+            vim.api.nvim_create_autocmd({ "User" }, {
+                group = vim.api.nvim_create_augroup("cmdbuf_setting", {}),
+                pattern = { "CmdbufNew" },
+                callback = function(args)
+                    vim.bo.bufhidden = "wipe" -- if you don't need previous opened buffer state
+                    vim.keymap.set("n", "q", [[<Cmd>quit<CR>]], { nowait = true, buffer = true })
+                    vim.keymap.set("n", "dd", [[<Cmd>lua require('cmdbuf').delete()<CR>]], { buffer = true })
+                    vim.keymap.set({ "n", "i" }, "<C-c>", function()
+                        return require("cmdbuf").cmdline_expr()
+                    end, { buffer = true, expr = true })
+
+                    local typ = require("cmdbuf").get_context().type
+                    if typ == "vim/cmd" then
+                        -- you can filter buffer lines
+                        local lines = vim
+                            .iter(vim.api.nvim_buf_get_lines(args.buf, 0, -1, false))
+                            :filter(function(line)
+                                return line ~= "q"
+                            end)
+                            :totable()
+                        vim.api.nvim_buf_set_lines(args.buf, 0, -1, false, lines)
+                    end
+                end,
+            })
+
+            noremap("n", "<leader>cb", "<cmd>Cmdbuf<cr>", { desc = "[C]md [B]uffer" })
+            noremap("n", "<leader>cl", "<cmd>Luabuf<cr>", { desc = "[C]md [L]ua buffer" })
+        end
+    },
+    {
+        "jubnzv/mdeval.nvim",
+        enabled = false,
+        opts = {
+            -- Don't ask before executing code blocks
+            require_confirmation = false,
+            -- Change code blocks evaluation options.
+            eval_options = {
+                -- Set custom configuration for C++
+                cpp = {
+                    command = { "clang++", "-std=c++20", "-O0" },
+                    default_header = [[
+    #include <iostream>
+    #include <vector>
+    using namespace std;
+      ]]
+                },
+                -- Add new configuration for Racket
+                racket = {
+                    command = { "racket" }, -- Command to run interpreter
+                    language_code = "racket", -- Markdown language code
+                    exec_type = "interpreted", -- compiled or interpreted
+                    extension = "rkt", -- File extension for temporary files
+                },
+            },
+        }
+    },
+    {
+        "MagicDuck/grug-far.nvim",
+        opts = true
+    },
+    {
+        "chrisgrieser/nvim-rip-substitute",
+        cmd = "RipSubstitute",
+        opts = {
+            popupWin = {
+                title = "rip-substitute",
+                border = require("utils/borders").normal
+            }
+        },
+        keys = {
+            {
+                "<leader>rg",
+                function() require("rip-substitute").sub() end,
+                mode = { "n", "x" },
+                desc = "[R]ipgrep [S]ubstitute",
+            },
+        },
+    },
+} -- return
