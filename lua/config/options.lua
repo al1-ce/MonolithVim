@@ -48,12 +48,12 @@ vim.opt.shada               = "!,'20,f1,<50,s10,h" -- oldfiles config
 
 -- netrw config
 vim.g.netrw_banner          = 0
-vim.g.netrw_cursor          = 5
+-- vim.g.netrw_cursor          = 5
 vim.g.netrw_keepdir         = 0
 vim.g.netrw_keepj           = ''
 -- vim.g.netrw_list_hide       = [[\(^\|\s\s\)\zs\.\S\+]]
 vim.g.netrw_list_hide       = "^\\.\\.\\=/\\=$"
-vim.g.netrw_liststyle       = 1
+-- vim.g.netrw_liststyle       = 1
 vim.g.netrw_localcopydircmd = 'cp -r'
 
 vim.g["lsp-timeout-config"] = {
