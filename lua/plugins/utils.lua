@@ -257,6 +257,7 @@ return {
             session_filepath = vim.fn.stdpath("data") .. "/sessions",
             absolute = true,
         },
+        event = "VimEnter",
         keys = {
             { "<leader>SS",    "<cmd>SessionsSave<cr>", mode = "n", noremap = true, silent = true, desc = "[S]ession [S]save" },
             { "<leader>SL",    "<cmd>SessionsLoad<cr>", mode = "n", noremap = true, silent = true, desc = "[S]ession [L]oad" },

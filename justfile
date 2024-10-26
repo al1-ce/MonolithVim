@@ -22,6 +22,8 @@ sync:
     cpdir ~/.config/monolith.nvim/ftdetect ~/.config/despair.nvim/
     cpdir ~/.config/monolith.nvim/indent ~/.config/despair.nvim/
     cpdir ~/.config/monolith.nvim/syntax ~/.config/despair.nvim/
+    # Remove plugin related stuff
+    rm -rf ~/.config/despair.nvim/after/plugin
     # Files
     cpfile ~/.config/monolith.nvim/lua/config/theme.lua ~/.config/despair.nvim/lua/
     cpfile ~/.config/monolith.nvim/lua/config/filetypes.lua ~/.config/despair.nvim/lua/
