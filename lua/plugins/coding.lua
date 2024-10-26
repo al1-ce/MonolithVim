@@ -1,4 +1,4 @@
-local noremap = require("utils.noremap")
+local noremap = require("map").noremap
 local sysdep = require("utils.sysdep")
 
 return {
@@ -265,9 +265,9 @@ return {
             play_sound = true,
             open_qf_on_error = true,
             telescope_borders = {
-                prompt = require("utils/borders").telescope_top,
-                results = require("utils/borders").telescope_bottom,
-                preview = require("utils/borders").telescope
+                prompt = require("utils.borders").telescope_top,
+                results = require("utils.borders").telescope_bottom,
+                preview = require("utils.borders").telescope
             }
         },
         keys = {

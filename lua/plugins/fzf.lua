@@ -49,7 +49,7 @@ return {
                     -- height = 0.25,
                     -- row = 1,
                     -- column = 0,
-                    border = require("utils/borders").normal,
+                    border = require("utils.borders").normal,
                     preview = {
                         -- default = "bat",
                         border = "noborder",

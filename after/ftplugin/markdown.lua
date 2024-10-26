@@ -1,11 +1,11 @@
 ---@diagnostic disable: undefined-global
-local canload = require("utils.canload")
-local bufnoremap = require("utils/bufnoremap")
+local can_load = require("module").can_load
+local bufnoremap = require("map").bufnoremap
 
 vim.b.wrap = true
 vim.b.spell = true
 
-if canload("zk.util") then
+if can_load("zk.util") then
     -- Add the key mappings only for Markdown files in a zk notebook.
     if require("zk.util").notebook_root(vim.fn.expand('%:p')) ~= nil then
         -- Open the link under the caret.
@@ -37,6 +37,6 @@ if canload("zk.util") then
     end
 end
 
--- if canload("nvim-treesitter") then
+-- if can_load("nvim-treesitter") then
 --     bufnoremap("n", "<C-]>", '<cmd>lua require("utils.mdlinks").follow_link()<cr>', { desc = "Follow markdown link" })
 -- end

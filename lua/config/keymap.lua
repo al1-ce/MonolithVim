@@ -1,6 +1,6 @@
 -- All primary keymaps. Some plugin-related or screen-local might be in other files
-local noremap = require("utils.noremap")
-local remap = require("utils.remap")
+local noremap = require("map").noremap
+local remap = require("map").remap
 
 -- tip: o switches vis direction
 

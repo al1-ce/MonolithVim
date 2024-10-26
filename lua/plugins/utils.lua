@@ -1,6 +1,6 @@
 ---@diagnostic disable: unused-local
 local sysdep = require("utils.sysdep")
-local noremap = require("utils.noremap")
+local noremap = require("map").noremap
 local os_spec = require("utils.osspec")
 
 local function ctx_callback(func)
@@ -198,7 +198,7 @@ return {
 
             preview = {
                 -- border = 'none'
-                border = require("utils/borders").normal
+                border = require("utils.borders").normal
             }
         },
         event = "VimEnter",
@@ -732,7 +732,7 @@ return {
         opts = {
             popupWin = {
                 title = "rip-substitute",
-                border = require("utils/borders").normal
+                border = require("utils.borders").normal
             }
         },
         keys = {

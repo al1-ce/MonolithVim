@@ -1,5 +1,5 @@
 local sysdep = require("utils.sysdep")
-local noremap = require("utils.noremap")
+local noremap = require("map").noremap
 
 return {
     -- true zen

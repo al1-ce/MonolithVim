@@ -25,7 +25,7 @@ end, {})
 -- vim.api.nvim_create_user_command('FixColors', function() dofile(vim.fn.stdpath('config') .. "/lua/config/theme.lua") end, {})
 
 local template = require("utils.template")
-local noremap = require("utils.noremap")
+local noremap = require("map").noremap
 
 vim.api.nvim_create_user_command('Template', template.paste_template, { range = false, nargs = '+', complete = template.autocomplete, })
 vim.api.nvim_create_user_command('TemplateSelect', template.select, {})

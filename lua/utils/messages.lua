@@ -1,4 +1,4 @@
-local canload = require("utils.canload")
+local can_load = require("module").can_load
 
 local M = {}
 
@@ -12,7 +12,7 @@ local hl_group = {
 }
 
 M.override_messages = function()
-    if canload("notify") then
+    if can_load("notify") then
         local notify = require("notify")
 
         M.notify = vim.notify

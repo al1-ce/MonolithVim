@@ -1,4 +1,4 @@
-local noremap = require("utils.noremap")
+local noremap = require("map").noremap
 return {
     -- A completion engine plugin for neovim written in Lua
     {

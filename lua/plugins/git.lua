@@ -1,4 +1,4 @@
-local noremap = require("utils.noremap")
+local noremap = require("map").noremap
 local sysdep = require("utils.sysdep")
 
 return {

@@ -52,7 +52,7 @@ return {
                     path_display = { "truncate" },
                     winblend = 0,
                     border = true,
-                    borderchars = require("utils/borders").telescope,
+                    borderchars = require("utils.borders").telescope,
                     -- borderchars = { " ", " ", " ", " ", " ", " ", " ", " " },
                     color_devicons = true,
                     set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,

@@ -21,7 +21,7 @@ require('lazy').setup({
     }
 })
 
-local noremap = require("utils/noremap")
+local noremap = require("map").noremap
 
 noremap("n", "<leader>pi", "<cmd>Lazy install<cr>", { desc = "[P]lugin [I]nstall" })
 noremap("n", "<leader>pc", "<cmd>Lazy clean<cr>", { desc = "[P]lugin [C]lean" })

@@ -1,5 +1,6 @@
-local load = require("utils.loader")
+local load = require("module").load
 
+vim.g.vim_distro = "monolith.nvim"
 vim.g.mapleader = ";"
 
 load('config.options')
