@@ -42,6 +42,7 @@ return {
             ft({ 'sdl' }, ft.get('c'))
             ft({ 'sdlang' }, ft.get('c'))
             ft({ 'kdl' }, ft.get('c'))
+            ft({ 'vox' }, ft.get('c'))
 
             -- local commentApi = require("Comment.api")
             -- vim.keycode is better option
@@ -132,6 +133,7 @@ return {
     -- Pretty folding [ zc zC za zA zR zM ]
     {
         "kevinhwang91/nvim-ufo",
+        enabled = true,
         dependencies = { 'kevinhwang91/promise-async' },
         config = function()
             vim.o.foldcolumn = '0' -- '0' is not bad
@@ -245,11 +247,11 @@ return {
     },
     {
         "al1-ce/jsfunc.nvim",
-        -- dir = "/g/jsfunc.nvim"
+        -- dir = "/g/al1-ce/jsfunc.nvim"
     },
     {
         "al1-ce/just.nvim",
-        -- dir = "/g/just.nvim",
+        -- dir = "/g/al1-ce/just.nvim",
         dependencies = {
             'nvim-lua/plenary.nvim',
             'nvim-telescope/telescope.nvim',
@@ -367,13 +369,13 @@ return {
         end,
         event = "VimEnter",
         keys = {
-            { "<leader>m", "<cmd>TSJToggle<cr>", mode = "n", noremap = true, silent = true, desc = "Toggle split join" },
+            { "<leader>j", "<cmd>TSJToggle<cr>", mode = "n", noremap = true, silent = true, desc = "Toggle split join" },
         },
     },
     -- ;x V;x - execute lines
     -- TODO: WIP
     {
-        dir = "/g/runme.nvim",
+        dir = "/g/al1-ce/runme.nvim",
         enabled = false,
         opts = {
             filetypes = {
@@ -431,7 +433,8 @@ return {
             filetypes = { "lua", "js", "sh", "ts" },
             filetype_details = {
                 d = {
-                    content = vim.split('/+ dub.sdl:\nname "scratch"\n+/\nmodule main;\n\nimport std;\n\nvoid main() {\n    \n}\n', "\n"),
+                    content = vim.split(
+                    '/+ dub.sdl:\nname "scratch"\n+/\nmodule main;\n\nimport std;\n\nvoid main() {\n    \n}\n', "\n"),
                     cursor = {
                         location = { 9, 4 },
                         insert_mode = false,
@@ -443,7 +446,7 @@ return {
                     filenameContains = { ".d" },
                     LocalKeys = {
                         {
-                            cmd = function() 
+                            cmd = function()
                                 vim.cmd([[!dub run --single -q "]] .. vim.fn.expand("%:p") .. [["]])
                                 vim.cmd([[echo "]] .. vim.fn.expand("%:p") .. [["]])
                             end,
@@ -452,7 +455,7 @@ return {
                         }
                     }
                 } -- d
-            }, -- localKeys
+            },    -- localKeys
             hooks = {
                 {
                     callback = function()
@@ -475,5 +478,10 @@ return {
         config = true,
         enabled = false,
         dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
+    },
+    {
+        'SCJangra/table-nvim',
+        ft = 'markdown',
+        config = true
     }
 }

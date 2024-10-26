@@ -6,7 +6,9 @@ return {
         'nvimtools/none-ls.nvim',
         cond = sysdep({ "dfmt" }),
         config = function()
-            require("null-ls").setup({
+            local null_ls = require("null-ls")
+            local null_fmt = null_ls.builtins.formatting
+            null_ls.setup({
                 -- debug = true,
                 diagnostic_format = "",
                 diagnostic_config = {
@@ -14,7 +16,7 @@ return {
                     signs = false,
                 },
                 sources = {
-                    require("null-ls").builtins.formatting.dfmt.with({
+                    null_fmt.dfmt.with({
                         -- cmd = "dfmt",
                         extra_args = {
                             '--brace_style', 'otbs',
@@ -28,7 +30,9 @@ return {
                         },
                         filetypes = { "d", 'dub', 'rdmd' },
                     }),
-                    require("null-ls").builtins.formatting.stylelint
+                    null_fmt.stylelint,
+                    null_fmt.shfmt,
+                    null_fmt.htmlbeautifier
                 },
                 -- on_attach = on_attach_null_ls
             })
@@ -254,7 +258,7 @@ return {
                         if sysdep({ "lua-language-server" }) then
                             lspconfig.lua_ls.setup({ capabilities = gen_default_capabilities() })
                         end
-                    end
+                    end,
                 }
             })
 
@@ -267,7 +271,7 @@ return {
     },
     {
         "al1-ce/garbage-day.nvim",
-        -- dir = "/g/garbage-day.nvim",
+        -- dir = "/g/al1-ce/garbage-day.nvim",
         dependencies = "neovim/nvim-lspconfig",
         event = "VeryLazy",
         opts = {

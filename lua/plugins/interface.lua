@@ -1,4 +1,5 @@
 local sysdep = require("utils.sysdep")
+local hlgroups = require("utils.hlgroups")
 return {
     -- lsp progressbar
     {
@@ -151,6 +152,34 @@ return {
             disable_in_insert = false,
             disable_in_diff = true,
             always_highlight_number = true,
+        },
+    },
+    {
+        "nvim-zh/colorful-winsep.nvim",
+        event = { "WinLeave" },
+        config = function()
+            -- have to call in config to get proper hl group
+            -- local hl = hlgroups("Normal")
+            require("colorful-winsep").setup({
+                hi = {
+                    -- fg = hl.fg,
+                    -- bg = hl.bg,
+                    link = "Delimiter"
+                },
+                symbols = require("utils.borders").winsep,
+                only_line_seq = false,
+                smooth = false,
+            })
+        end
+    },
+    {
+        "confusedkernel/center-stage.nvim",
+        branch = "master",
+        opts = {
+            enabled = true,
+        },
+        keys = {
+            { "<leader>os", "<cmd>CCToggle<cr>", mode = "n", noremap = true, silent = true, desc = "[O]ption [C]enter view toggle" },
         },
     },
 }

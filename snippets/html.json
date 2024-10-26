@@ -1,0 +1,26 @@
+{
+    "css": {
+        "prefix": "css",
+        "body": "<link rel=\"stylesheet\" type=\"text/css\" href=\"$1\" />",
+        "description": "HTML - defines stylesheet link",
+        "scope": "text.html"
+    },
+    "defer": {
+        "prefix": "defer",
+        "body": "<script defer>$1</script>",
+        "description": "HTML - defines defer script",
+        "scope": "text.html"
+    },
+    "defer.src": {
+        "prefix": "defer.src",
+        "body": "<script defer src=\"$1\"></script>",
+        "description": "HTML - defines defer script source",
+        "scope": "text.html"
+    },
+    "script.src": {
+        "prefix": "script.src",
+        "body": "<script src=\"$1\"></script>",
+        "description": "HTML - defines script source",
+        "scope": "text.html"
+    }
+}

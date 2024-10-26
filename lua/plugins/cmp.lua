@@ -24,7 +24,7 @@ return {
             -- neovim conf
             {
                 'folke/lazydev.nvim',
-                -- dir = "/g/lazydev.nvim",
+                -- dir = "/g/al1-ce/lazydev.nvim",
                 ft = "lua",
                 opts = {
                     library = {

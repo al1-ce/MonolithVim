@@ -63,6 +63,9 @@ vim.filetype.add({
         fu = 'fusion',
         snippet = 'snippets',
         snippets = 'snippets',
+        vx = 'vox',
+        zs = "zscript",
+        zsc = "zscript",
     }
 })
 

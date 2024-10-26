@@ -46,10 +46,7 @@ return {
     {
         "NeogitOrg/neogit",
         cond = sysdep({ "git" }),
-        config = function()
-            require("neogit").setup({})
-            vim.api.nvim_create_user_command("Git", function() require("neogit").open() end, {})
-        end,
+        opts = {},
     },
     {
         "chrisgrieser/nvim-tinygit",
@@ -57,7 +54,34 @@ return {
         dependencies = {
             "stevearc/dressing.nvim",
             "nvim-telescope/telescope.nvim", -- optional, but recommended
-            "rcarriga/nvim-notify", -- optional, but recommended
+            "rcarriga/nvim-notify",          -- optional, but recommended
+        },
+    },
+    -- Lazy nvim
+    {
+        -- '2kabhishek/octohub.nvim',
+        dir = "/g/al1-ce/octohub.nvim",
+        -- event = "VimEnter",
+        cmd = {
+            'OctoRepos',
+            'OctoRepo',
+            'OctoStats',
+            'OctoActivityStats',
+            'OctoContributionStats',
+            'OctoRepoStats',
+            'OctoProfile',
+            'OctoRepoWeb',
+        },
+        dependencies = {
+            '2kabhishek/utils.nvim',
+            'nvim-telescope/telescope.nvim'
+        },
+        config = {
+            contrib_icons = { '', '', '', '', '', '', '' }, -- Icons for different contribution levels
+            projects_dir = '/g', -- Directory where repositories are cloned
+            per_user_dir = true, -- Create a directory for each user
+            add_default_keybindings = false, -- Add default keybindings for the plugin
         },
     },
 }
+

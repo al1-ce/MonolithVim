@@ -1,6 +1,6 @@
 -- nvim settings
 
--- vim.g.ruby_host_prog = '~/.local/share/gem/ruby/3.0.0/bin/neovim-ruby-host'
+vim.loader.enable()
 
 vim.o.background = "dark"       -- or "light" for light mode
 vim.o.clipboard = "unnamedplus" -- set clipboard to be system
@@ -10,8 +10,9 @@ vim.o.signcolumn = "no"         -- removes gutter
 vim.o.virtualedit = "onemore"   -- allow to go a single char after eol
 vim.o.linebreak = true          -- wraps lines by words (softbreak)
 
+vim.opt.shortmess = "filnxtToOF"
 vim.opt.autoread = true         -- default value, autoreload file
-vim.opt.cmdheight = 0           -- cmd height (set to 0 if no noice)
+vim.opt.cmdheight = 1           -- cmd height (set to 0 if no noice)
 vim.opt.colorcolumn = '0'       -- 80 symbol split
 vim.opt.cursorcolumn = false    -- show cursor column
 vim.opt.cursorline = true       -- cursor line hightlight
@@ -21,7 +22,7 @@ vim.opt.ignorecase = true       -- Case insensitive searching unless /C or capit
 vim.opt.inccommand = "split"    -- shows %s/// in split
 vim.opt.joinspaces = false      -- No double spaces with join after a dot
 vim.opt.number = true           -- line numbers
-vim.opt.relativenumber = false  -- relative line numbers
+vim.opt.relativenumber = true   -- relative line numbers
 vim.opt.shiftwidth = 4          -- shift 4 spaces when tab
 vim.opt.showmatch = true        -- highlight matching brackets
 vim.opt.showmode = false        -- no --INSERT--
@@ -37,6 +38,17 @@ vim.opt.undofile = true         -- undo
 vim.opt.updatetime = 300        -- speeds up autocompletion
 vim.opt.wrap = false            -- removes wrapping of lines
 -- vim.o.conceallevel = 2
+vim.opt.shada = "!,'20,f1,<50,s10,h" -- oldfiles config
+
+-- netrw config
+vim.g.netrw_banner          = 0
+vim.g.netrw_cursor          = 5
+vim.g.netrw_keepdir         = 0
+vim.g.netrw_keepj           = ''
+-- vim.g.netrw_list_hide       = [[\(^\|\s\s\)\zs\.\S\+]]
+vim.g.netrw_list_hide = "^\\.\\.\\=/\\=$"
+vim.g.netrw_liststyle       = 1
+vim.g.netrw_localcopydircmd = 'cp -r'
 
 vim.g["lsp-timeout-config"] = {
     stopTimeout  = 1000 * 60 * 5,  -- ms, timeout before stopping all LSP servers
@@ -52,4 +64,6 @@ vim.cmd([[set guicursor=n-v-sm:block,i-c-ci-ve:ver25,r-cr-o:hor20]])
 -- vim.cmd [[language en_US.UTF-8]]
 vim.cmd([[filetype indent plugin on]])
 vim.cmd([[syntax enable]])
+
+vim.cmd("set errorformat^=filepath:%f")
 

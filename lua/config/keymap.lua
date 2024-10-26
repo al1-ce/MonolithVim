@@ -159,7 +159,12 @@ noremap("n", "<leader>fe", "<cmd>enew<cr>", { desc = "[F]ile [E]dit" })
 noremap("n", "<leader>q", "<CMD>x<CR>", { desc = "[Q]uits buffer" })
 noremap("n", "<leader>w", "<CMD>update<CR>", { desc = "[W]rites buffer" })
 
-noremap("n", "<leader>cd", "<cmd>cd %:h<cr>", { desc = "[C]hanges [D]irectory to current file" })
+noremap("n", "<leader>cd", function ()
+    local cdir = vim.fn.expand("%:p:h")
+    vim.api.nvim_set_current_dir(cdir)
+    vim.notify(vim.fn.getcwd())
+end, { desc = "[C]hanges [D]irectory to current file" })
+
 noremap("n", "<leader>ce", "<cmd>edit $MYVIMRC <bar> tcd %:h<cr>", { desc = "[C]onfig [E]dit" })
 
 noremap("n", "<leader>tn", "<cmd>tabnew<cr>", { desc = "[T]ab [N]ew" })

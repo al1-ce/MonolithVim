@@ -23,7 +23,7 @@ return {
         ft = 'rasi',
     },
     {
-        -- dir = "/g/jsl/jsl.vim"
+        -- dir = "/g/al1-ce/jsl/jsl.vim"
         "jsl-lang/jsl.vim"
     },
     {

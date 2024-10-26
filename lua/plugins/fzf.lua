@@ -131,18 +131,6 @@ return {
                 },
                 diagnostics = { prompt = " " }
             })
-
-            vim.api.nvim_create_user_command("FzfLuaProjects", function ()
-                require("utils.fzf").FzfProjects()
-            end, {})
-
-            vim.api.nvim_create_user_command("Colorschemes", function ()
-                require("fzf-lua.providers.colorschemes").colorschemes({
-                    actions = {
-                        ["default"] = require("utils.fzf").set_colorscheme
-                    }
-                })
-            end, {})
         end,
         event = "VimEnter",
         keys = {

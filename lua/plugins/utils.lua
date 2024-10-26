@@ -31,8 +31,13 @@ return {
                 silent_chdir = true,
                 detection_methods = { "pattern" }, -- "lsp" makes it jump too much
                 patterns = {
+                    -- Home dir things
+                    "!.xinitrc",
+                    "!.bashrc",
+                    -- Special
                     "!.ignore_project",
                     "!>out",
+                    -- Language specific
                     ".git", ".gitignore",  -- git
                     "dub.json", "dub.sdl", -- d
                     "package.json",        -- js
@@ -160,7 +165,8 @@ return {
     'yssl/QFEnter',
     -- jet another buffer switcher
     {
-        'matbme/JABS.nvim',
+        'oredaze/myJABS.nvim', -- fork of a fork of a fork... of a fork
+        -- 'matbme/JABS.nvim',
         dependencies = { "nvim-tree/nvim-web-devicons" },
         opts = {
             keymap = {
@@ -170,6 +176,21 @@ return {
                 v_split = "v", -- Vertically split buffer. Default v
                 preview = "p", -- Open buffer preview. Default P
             },
+
+            symbols = {
+                current = "C", -- default 
+                split = "S", -- default 
+                alternate = "A", -- default 
+                hidden = "H", -- default ﬘
+                unlisted = "U", -- default 
+                locked = "L", -- default 
+                ro = "R",   -- default 
+                edited = "E", -- default 
+                terminal = "T", -- default 
+                default_file = "D", -- Filetype icon if not present in nvim-web-devicons. Default 
+            },
+
+            use_devicons = false,
 
             border = "none",
             relative = "cursor",
@@ -235,6 +256,10 @@ return {
             events = { "VimLeavePre" },
             session_filepath = vim.fn.stdpath("data") .. "/sessions",
             absolute = true,
+        },
+        keys = {
+            { "<leader>SS",    "<cmd>SessionsSave<cr>", mode = "n", noremap = true, silent = true, desc = "[S]ession [S]save" },
+            { "<leader>SL",    "<cmd>SessionsLoad<cr>", mode = "n", noremap = true, silent = true, desc = "[S]ession [L]oad" },
         }
     },
     -- remember last edited line
@@ -285,7 +310,7 @@ return {
     {
         'romainl/vim-devdocs',
         keys = {
-            { "<leader>gd", "<cmd>DD<cr>", mode = "n", noremap = true, silent = true, desc = "Opens [D]ev[D]ocs for symbol under cursor" },
+            { "<leader>od", "<cmd>DD<cr>", mode = "n", noremap = true, silent = true, desc = "Opens [D]ev[D]ocs for symbol under cursor" },
         }
     },
     -- better macros
@@ -504,7 +529,7 @@ return {
     },
     {
         -- "al1-ce/context-menu.nvim",
-        dir = "/g/context-menu.nvim",
+        dir = "/g/al1-ce/context-menu.nvim",
         opts = {
             menu_items = {
                 {
@@ -638,14 +663,15 @@ return {
     {
         "notomo/cmdbuf.nvim",
         config = function()
+            local cmdbuf = require("cmdbuf")
             vim.api.nvim_create_user_command("Cmdbuf", function()
-                require("cmdbuf").split_open(vim.o.cmdwinheight)
+                cmdbuf.split_open(vim.o.cmdwinheight)
             end, {})
             vim.api.nvim_create_user_command("Luabuf", function()
-                require("cmdbuf").split_open(vim.o.cmdwinheight, { type = "lua/cmd" })
+                cmdbuf.split_open(vim.o.cmdwinheight, { type = "lua/cmd" })
             end, {})
-            vim.keymap.set("ca", "cmdbuf", "Cmdbuf")
-            vim.keymap.set("ca", "luabuf", "Luabuf")
+            -- vim.keymap.set("ca", "cmdbuf", "Cmdbuf")
+            -- vim.keymap.set("ca", "luabuf", "Luabuf")
 
 
             -- Custom buffer mappings
@@ -653,24 +679,15 @@ return {
                 group = vim.api.nvim_create_augroup("cmdbuf_setting", {}),
                 pattern = { "CmdbufNew" },
                 callback = function(args)
-                    vim.bo.bufhidden = "wipe" -- if you don't need previous opened buffer state
+                    -- vim.bo.bufhidden = "wipe" -- if you don't need previous opened buffer state
                     vim.keymap.set("n", "q", [[<Cmd>quit<CR>]], { nowait = true, buffer = true })
                     vim.keymap.set("n", "dd", [[<Cmd>lua require('cmdbuf').delete()<CR>]], { buffer = true })
                     vim.keymap.set({ "n", "i" }, "<C-c>", function()
-                        return require("cmdbuf").cmdline_expr()
+                        return cmdbuf.cmdline_expr()
                     end, { buffer = true, expr = true })
-
-                    local typ = require("cmdbuf").get_context().type
-                    if typ == "vim/cmd" then
-                        -- you can filter buffer lines
-                        local lines = vim
-                            .iter(vim.api.nvim_buf_get_lines(args.buf, 0, -1, false))
-                            :filter(function(line)
-                                return line ~= "q"
-                            end)
-                            :totable()
-                        vim.api.nvim_buf_set_lines(args.buf, 0, -1, false, lines)
-                    end
+                    vim.keymap.set({ "n", "i" }, "<CR>", function()
+                        cmdbuf.execute({ quit = false })
+                    end, { buffer = true })
                 end,
             })
 
@@ -697,10 +714,10 @@ return {
                 },
                 -- Add new configuration for Racket
                 racket = {
-                    command = { "racket" }, -- Command to run interpreter
-                    language_code = "racket", -- Markdown language code
+                    command = { "racket" },    -- Command to run interpreter
+                    language_code = "racket",  -- Markdown language code
                     exec_type = "interpreted", -- compiled or interpreted
-                    extension = "rkt", -- File extension for temporary files
+                    extension = "rkt",         -- File extension for temporary files
                 },
             },
         }
@@ -727,4 +744,5 @@ return {
             },
         },
     },
+    { 'djoshea/vim-autoread' }
 } -- return
