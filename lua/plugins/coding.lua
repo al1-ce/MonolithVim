@@ -25,7 +25,6 @@ return {
         'numToStr/Comment.nvim',
         lazy = false,
         config = function()
-            local ft = require('Comment.ft')
             local cm = require('Comment')
 
             ---@diagnostic disable-next-line: missing-fields
@@ -38,11 +37,14 @@ return {
                 }
             }
 
+            local ft = require('Comment.ft')
             ft({ 'd' }, ft.get('c'))
             ft({ 'sdl' }, ft.get('c'))
             ft({ 'sdlang' }, ft.get('c'))
             ft({ 'kdl' }, ft.get('c'))
             ft({ 'vox' }, ft.get('c'))
+            ft({ 'zscript' }, ft.get('c'))
+            ft({ 'zdoomlump' }, ft.get('c'))
 
             -- local commentApi = require("Comment.api")
             -- vim.keycode is better option
@@ -271,11 +273,15 @@ return {
             }
         },
         keys = {
-            { "<leader>bd", "<cmd>JustDefault<cr>", mode = "n", noremap = true, silent = true, desc = "Run default task" },
-            { "<leader>bb", "<cmd>JustBuild<cr>",   mode = "n", noremap = true, silent = true, desc = "Run build task" },
-            { "<leader>br", "<cmd>JustRun<cr>",     mode = "n", noremap = true, silent = true, desc = "Run run task" },
-            { "<leader>ba", "<cmd>JustSelect<cr>",  mode = "n", noremap = true, silent = true, desc = "Open task selector" },
-            { "<leader>bs", "<cmd>JustStop<cr>",    mode = "n", noremap = true, silent = true, desc = "Stop current task" },
+            { "<leader>bd", "<cmd>Just default<cr>", mode = "n", noremap = true, silent = true, desc = "Run default task" },
+            { "<leader>bD", "<cmd>Just debug<cr>",   mode = "n", noremap = true, silent = true, desc = "Run debug task" },
+            { "<leader>bb", "<cmd>Just build<cr>",   mode = "n", noremap = true, silent = true, desc = "Run build task" },
+            { "<leader>br", "<cmd>Just run<cr>",     mode = "n", noremap = true, silent = true, desc = "Run run task" },
+            { "<leader>bR", "<cmd>Just release<cr>", mode = "n", noremap = true, silent = true, desc = "Run release task" },
+            { "<leader>bf", "<cmd>Just file<cr>",    mode = "n", noremap = true, silent = true, desc = "Run file task" },
+            { "<leader>bt", "<cmd>Just tags<cr>",    mode = "n", noremap = true, silent = true, desc = "Run tags task" },
+            { "<leader>ba", "<cmd>JustSelect<cr>",   mode = "n", noremap = true, silent = true, desc = "Open task selector" },
+            { "<leader>bs", "<cmd>JustStop<cr>",     mode = "n", noremap = true, silent = true, desc = "Stop current task" },
         },
 
     },

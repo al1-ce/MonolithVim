@@ -1,6 +1,68 @@
 local augroup = vim.api.nvim_create_augroup   -- Create/get autocommand group
 local autocmd = vim.api.nvim_create_autocmd   -- Create autocommand
 
+local function replace(str, pattern, replacement)
+	local search_start_idx = 1;
+	local idx_1, idx_2 = str:find(pattern, search_start_idx, true)
+	if not idx_1 then
+		return str
+	end;
+	local postfix = str:sub(idx_2 + 1);
+	str = string.format([=[%s%s%s]=], str:sub(1, idx_1 - 1), replacement, postfix);
+	return str
+end;
+
+local starts_with = function (this, pattern)
+    return this:sub(1, #pattern) == pattern
+end
+
+local ends_with = function (this, pattern)
+    return pattern == "" or this:sub(-#pattern) == pattern
+end
+
+local zdoomlumps = {}
+local runtimepaths = vim.api.nvim_list_runtime_paths()
+
+local function list_dir(dir)
+    return vim.split(vim.fn.glob(dir .. "/*"), '\n', { trimempty = true })
+end
+
+for _, path in ipairs(runtimepaths) do
+    local files = list_dir(path .. "/syntax/zdoomlumps")
+    for _, file in ipairs(files) do
+        file = vim.fn.fnamemodify(file, ":t")
+        if file ~= "template-file.vim" then
+            local name = replace(file, ".vim", "")
+            local lname = name:lower()
+            local cname = name:upper()
+            zdoomlumps[lname .. ".txt"] = "zdoomlump"
+            zdoomlumps[cname] = "zdoomlump"
+        end
+    end
+end
+
+vim.filetype.add({
+    extension = {
+        hx = 'haxe',
+        sdl = 'jsl',
+        jsl = 'jsl',
+        bf = 'brainfucs',
+        jpp = 'jspp',
+        jspp = 'jspp',
+        c3 = 'c3',
+        vs = 'glsl',
+        fs = 'glsl',
+        fu = 'fusion',
+        snippet = 'snippets',
+        snippets = 'snippets',
+        vx = 'vox',
+        zs = "zscript",
+        zsc = "zscript",
+        lmp = "zdoomlump"
+    },
+    filename = zdoomlumps
+})
+
 local function setft(ftype)
     vim.bo.filetype = ftype
 end
@@ -48,26 +110,6 @@ local function concat(arrays)
     end
     return nt
 end
-
-vim.filetype.add({
-    extension = {
-        hx = 'haxe',
-        sdl = 'jsl',
-        jsl = 'jsl',
-        bf = 'brainfucs',
-        jpp = 'jspp',
-        jspp = 'jspp',
-        c3 = 'c3',
-        vs = 'glsl',
-        fs = 'glsl',
-        fu = 'fusion',
-        snippet = 'snippets',
-        snippets = 'snippets',
-        vx = 'vox',
-        zs = "zscript",
-        zsc = "zscript",
-    }
-})
 
 -------------------- Autocmd --------------------------------------
 do -- start autocmd block

@@ -59,8 +59,8 @@ return {
     },
     -- Lazy nvim
     {
-        -- '2kabhishek/octohub.nvim',
-        dir = "/g/al1-ce/octohub.nvim",
+        '2kabhishek/octohub.nvim',
+        -- dir = "/g/al1-ce/octohub.nvim",
         -- event = "VimEnter",
         cmd = {
             'OctoRepos',
@@ -76,7 +76,7 @@ return {
             '2kabhishek/utils.nvim',
             'nvim-telescope/telescope.nvim'
         },
-        config = {
+        opts = {
             contrib_icons = { '', '', '', '', '', '', '' }, -- Icons for different contribution levels
             projects_dir = '/g', -- Directory where repositories are cloned
             per_user_dir = true, -- Create a directory for each user

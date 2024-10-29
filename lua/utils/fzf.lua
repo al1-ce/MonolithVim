@@ -1,6 +1,16 @@
+---@diagnostic disable: duplicate-set-field
+local can_load = require("module").can_load
+
+local M = {}
+
+M.setup = function () end
+
+if not can_load("fzf-lua") then return M end
+
 local fzf = require("fzf-lua")
 local fzfutil = require("fzf-lua.utils")
 local builtin = require("fzf-lua.previewer.builtin")
+local colsch = require("utils.colorscheme")
 
 -- global cool funcs
 require("jsfunc")
@@ -51,8 +61,6 @@ local function get_hl_group(group)
         ctermbg = vim.fn.synIDattr(gr_id, "ctermbg"),
     }
 end
-
-local M = {}
 
 ---@param actions table
 ---@param opts table?
@@ -168,31 +176,19 @@ local project_picker = M.create_picker_preview(
 )
 
 M.FzfProjects = function()
-    project_picker( reverse(require("project_nvim").get_recent_projects()) )
+    project_picker(reverse(require("project_nvim").get_recent_projects()))
 end
 
-M.set_colorscheme = function(selected, opts)
-    -- print(vim.inspect(selected[1]))
-    -- TODO: apply also to lualine
-    local colorscheme = selected[1]:match("^[^:]+")
-    pcall(function() vim.cmd("colorscheme " .. colorscheme) end)
-    local config_loc = vim.fn.fnamemodify(vim.fn.expand("$HOME"), ":p:h") .. "/.config/neovim-theme.lua"
-    vim.loop.fs_open(config_loc, "w", 432, function(err, fd)
-        ---@diagnostic disable-next-line: param-type-mismatch
-        vim.loop.fs_write(fd, "vim.cmd.colorscheme('" .. selected[1] .. "')", nil, function()
-            ---@diagnostic disable-next-line: param-type-mismatch
-            vim.loop.fs_close(fd)
-        end)
-    end)
-end
+M.setup = function()
+    vim.api.nvim_create_user_command("FzfLuaProjects", M.FzfProjects, {})
 
-M.source_colorscheme = function()
-    local config_loc = vim.fn.fnamemodify(vim.fn.expand("$HOME"), ":p:h") .. "/.config/neovim-theme.lua"
-    local f = io.open(config_loc, "r")
-    if f ~= nil then
-        io.close(f)
-        vim.cmd("source " .. config_loc)
-    end
+    vim.api.nvim_create_user_command("Colorschemes", function()
+        require("fzf-lua.providers.colorschemes").colorschemes({
+            actions = {
+                ["default"] = function(selected, opts) colsch.set(selected[1]) end
+            }
+        })
+    end, {})
 end
 
 return M

@@ -1,11 +1,14 @@
 -- nvim settings
 
 if vim.g.vim_distro == "despair.nvim" then
+    vim.opt.shortmess = "filnxtToOF"
     vim.loader.enable()
     vim.opt.cmdheight = 1 -- cmd height (set to 0 if no noice)
 elseif vim.g.vim_distro == "monolith.nvim" then
+    vim.opt.shortmess = "filnxtToOFI"
     vim.opt.cmdheight = 0 -- cmd height (set to 0 if no noice)
 else
+    vim.opt.shortmess = "filnxtToOF"
     vim.opt.cmdheight = 1 -- cmd height (set to 0 if no noice)
 end
 
@@ -17,7 +20,6 @@ vim.o.signcolumn            = "no" -- removes gutter
 vim.o.virtualedit           = "onemore" -- allow to go a single char after eol
 vim.o.linebreak             = true -- wraps lines by words (softbreak)
 
-vim.opt.shortmess           = "filnxtToOF"
 vim.opt.autoread            = true   -- default value, autoreload file
 vim.opt.colorcolumn         = '0'    -- 80 symbol split
 vim.opt.cursorcolumn        = false  -- show cursor column
@@ -44,7 +46,18 @@ vim.opt.undofile            = true   -- undo
 vim.opt.updatetime          = 300    -- speeds up autocompletion
 vim.opt.wrap                = false  -- removes wrapping of lines
 -- vim.o.conceallevel = 2
-vim.opt.shada               = "!,'20,f1,<50,s10,h" -- oldfiles config
+-- vim.opt.shada               = "!,'20,f1,<50,s10,h" -- oldfiles config
+
+local backup_dir = vim.fn.stdpath('data').."/.cache"
+vim.opt.backup = true                         -- make backups before writing
+vim.opt.undofile = false                      -- persistent undos - undo after you re-open the file
+vim.opt.writebackup = true                    -- Make backup before overwriting the current buffer
+vim.opt.backupcopy = 'yes'                    -- Overwrite the original backup file
+vim.opt.directory = backup_dir .. '/swap'     -- directory to place swap files in
+vim.opt.backupdir = backup_dir .. '/backedUP' -- where to put backup files
+vim.opt.undodir = backup_dir .. '/undos'      -- where to put undo files
+vim.opt.viewdir = backup_dir .. '/view'       -- where to store files for :mkview
+vim.opt.shada = "'100,<50,f50,n"..backup_dir.."/shada/shada"
 
 -- netrw config
 vim.g.netrw_banner          = 0

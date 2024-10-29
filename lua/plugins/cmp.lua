@@ -1,3 +1,4 @@
+---@diagnostic disable: duplicate-set-field
 local noremap = require("map").noremap
 return {
     -- A completion engine plugin for neovim written in Lua
@@ -15,10 +16,14 @@ return {
             'Jezda1337/nvim-html-css', -- html id completion
             -- 'jmbuhr/otter.nvim',    -- embedded complation (md)
             -- Popup snippets
-            { 'L3MON4D3/LuaSnip' },
-            'saadparwaiz1/cmp_luasnip',
+            -- { 'L3MON4D3/LuaSnip' },
+            -- 'saadparwaiz1/cmp_luasnip',
             -- luasnip snippets
-            "rafamadriz/friendly-snippets",
+            -- "rafamadriz/friendly-snippets",
+            -- better popup snippets?
+            'dcampos/cmp-snippy',
+            'dcampos/nvim-snippy',
+            'honza/vim-snippets',
             -- icons
             'onsails/lspkind.nvim',
             -- neovim conf
@@ -70,41 +75,60 @@ return {
             })
 
             local cmp = require('cmp')
-            local ls = require("luasnip")
+            local snippy = require("snippy")
+            snippy.setup({})
 
-            ls.config.set_config({ history = true, updateevents = "TextChanged,TextChangedI" })
-
-            require("luasnip.loaders.from_vscode").lazy_load()
-
-            -- TODO: remove when luasnip gets proper thing
-            vim.snippet.expand = ls.lsp_expand
-
-            ---@diagnostic disable-next-line: duplicate-set-field
-            vim.snippet.active = function(filter)
-                filter = filter or {}
-                filter.direction = filter.direction or 1
-
-                if filter.direction == 1 then
-                    return ls.expand_or_locally_jumpable()
-                else
-                    return ls.locally_jumpable(filter.direction)
-                end
-            end
-
-            ---@diagnostic disable-next-line: duplicate-set-field
+            vim.snippet.expand = snippy.expand_snippet
+            vim.snippet.active = snippy.is_active
+            vim.snippet.stop = function() end
             vim.snippet.jump = function(direction)
-                if direction == 1 then
-                    if ls.expandable() then
-                        return ls.expand_or_jump()
+                if direction == -1 then
+                    if snippy.can_expand() then
+                        return snippy.expand_or_advance()
                     else
-                        return ls.locally_jumpable(1) and ls.jump(1)
+                        return snippy.can_jump(1) and snippy.next()
                     end
                 else
-                    return ls.locally_jumpable(-1) and ls.jump(-1)
+                    return snippy.can_jump(-1) and snippy.previous()
                 end
             end
 
-            vim.snippet.stop = ls.unlink_current
+            -- local ls = require("luasnip")
+
+
+            -- ls.config.set_config({ history = true, updateevents = "TextChanged,TextChangedI" })
+
+            -- require("luasnip.loaders.from_vscode").lazy_load()
+
+            -- TODO: remove when luasnip gets proper thing
+            -- vim.snippet.expand = ls.lsp_expand
+            --
+            -- ---@diagnostic disable-next-line: duplicate-set-field
+            -- vim.snippet.active = function(filter)
+            --     filter = filter or {}
+            --     filter.direction = filter.direction or 1
+            --
+            --     if filter.direction == 1 then
+            --         return ls.expand_or_locally_jumpable()
+            --     else
+            --         return ls.locally_jumpable(filter.direction)
+            --     end
+            -- end
+            --
+            -- ---@diagnostic disable-next-line: duplicate-set-field
+            -- vim.snippet.jump = function(direction)
+            --     if direction == 1 then
+            --         if ls.expandable() then
+            --             return ls.expand_or_jump()
+            --         else
+            --             return ls.locally_jumpable(1) and ls.jump(1)
+            --         end
+            --     else
+            --         return ls.locally_jumpable(-1) and ls.jump(-1)
+            --     end
+            -- end
+            --
+            -- vim.snippet.stop = ls.unlink_current
 
             -- BUFFER COMPLETION SETUP
 
@@ -133,7 +157,9 @@ return {
                 },
                 sources = cmp.config.sources({
                     { name = 'nvim_lsp' },
-                    { name = 'luasnip' },
+                    -- { name = 'luasnip' },
+                    -- { name = "ultisnips" },
+                    { name = "snippy" },
                 }, {
                     { name = 'buffer' },
                     { name = 'calc' },

@@ -5,13 +5,19 @@ vim.g.mapleader = ";"
 
 load('config.options')
 load('config.filetypes')
-load('config.keymap')
 load('config.autocmd')
 load('config.commands')
+require('utils.colorscheme').source()
+
+-- notify on key override
+load('utils.keydup')
+
+-- load after because of big slowdown
+load('config.keymap')
 load('config.lazy')
 
--- persistent colorscheme
-require('utils.fzf').source_colorscheme()
+-- colorscheme and projects picker
+require('utils.fzf').setup()
 
 -- :DepsMissing command to get list of
 -- binaries that are needed on system

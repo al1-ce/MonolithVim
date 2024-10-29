@@ -178,15 +178,15 @@ return {
             },
 
             symbols = {
-                current = "C", -- default 
-                split = "S", -- default 
-                alternate = "A", -- default 
-                hidden = "H", -- default ﬘
-                unlisted = "U", -- default 
-                locked = "L", -- default 
-                ro = "R",   -- default 
-                edited = "E", -- default 
-                terminal = "T", -- default 
+                current = "C",      -- default 
+                split = "S",        -- default 
+                alternate = "A",    -- default 
+                hidden = "H",       -- default ﬘
+                unlisted = "U",     -- default 
+                locked = "L",       -- default 
+                ro = "R",           -- default 
+                edited = "E",       -- default 
+                terminal = "T",     -- default 
                 default_file = "D", -- Filetype icon if not present in nvim-web-devicons. Default 
             },
 
@@ -259,8 +259,8 @@ return {
         },
         event = "VimEnter",
         keys = {
-            { "<leader>SS",    "<cmd>SessionsSave<cr>", mode = "n", noremap = true, silent = true, desc = "[S]ession [S]save" },
-            { "<leader>SL",    "<cmd>SessionsLoad<cr>", mode = "n", noremap = true, silent = true, desc = "[S]ession [L]oad" },
+            { "<leader>SS", "<cmd>SessionsSave<cr>", mode = "n", noremap = true, silent = true, desc = "[S]ession [S]save" },
+            { "<leader>SL", "<cmd>SessionsLoad<cr>", mode = "n", noremap = true, silent = true, desc = "[S]ession [L]oad" },
         }
     },
     -- remember last edited line
@@ -517,7 +517,7 @@ return {
         }
     },
     -- Focus <cmd>number line
-    { "nacro90/numb.nvim", config = true },
+    { "nacro90/numb.nvim",   config = true },
     {
         "iamcco/markdown-preview.nvim",
         cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
@@ -733,8 +733,22 @@ return {
         opts = {
             popupWin = {
                 title = "rip-substitute",
-                border = require("utils.borders").normal
-            }
+                border = require("utils.borders").normal,
+                position = "top",
+            },
+            keymaps = { -- normal & visual mode, if not stated otherwise
+                abort = "q",
+                confirm = "<CR>",
+                insertModeConfirm = "<C-CR>",
+                prevSubst = "<Up>",
+                nextSubst = "<Down>",
+                toggleFixedStrings = "<C-f>", -- ripgrep's `--fixed-strings`
+                toggleIgnoreCase = "<C-c>",   -- ripgrep's `--ignore-case`
+                openAtRegex101 = "R",
+            },
+            prefill = {
+                normal = false
+            },
         },
         keys = {
             {
@@ -745,5 +759,35 @@ return {
             },
         },
     },
-    { 'djoshea/vim-autoread' }
+    { 'djoshea/vim-autoread' },
+    {
+        "selectnull/plugin-readme.nvim",
+        dependencies = {
+            "nvim-telescope/telescope.nvim",
+        },
+        config = function()
+            local readme = require "plugin-readme"
+            vim.keymap.set("n", "<leader>pr", readme.select_plugin, {})
+        end,
+    },
+    {
+        "ezechukwu69/tui.nvim",
+        config = function()
+            local tui = require("tui")
+            local function add_program(name, command)
+                tui.setup({
+                    name = name,
+                    command = command,
+                    width_margin = 5,
+                    height_margin = 5,
+                    border = require("utils.borders").normal,
+                })
+            end
+            add_program("Ranger", "ranger")
+        end,
+        event = "VimEnter",
+        keys = {
+            { "<leader>tr", "<cmd>Ranger<cr>", desc = "[T]ui [R]anger" },
+        }
+    }
 } -- return

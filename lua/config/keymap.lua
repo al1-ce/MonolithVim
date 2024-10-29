@@ -99,6 +99,8 @@ noremap("i", "<Del>", function() delete_char(0) end, { desc = "Delete but into b
 noremap("n", "<BS>", function() delete_char(1) end, { desc = "Deletes into black hole" });
 noremap("i", "<BS>", function() delete_char(1) end, { desc = "Deletes into black hole" });
 
+noremap("n", "U", "V:s/\\s\\+/\\r/g<cr>", { desc = "Unjoin lines (don't need really linewise undo)" })
+
 -- map delete to black hole yank
 -- noremap("", "<Del>", '"_x', { desc = "Delete but into black hole" })
 -- noremap("i", "<Del>", '<C-o>"_x', { desc = "Delete but into black hole" })
@@ -172,6 +174,9 @@ noremap("n", "<leader>tw", "<cmd>tabclose<cr>", { desc = "[T]ab [C]lose" })
 noremap("n", "<leader>to", "<cmd>tabonly<cr>", { desc = "[T]ab [O]nly" })
 
 noremap("n", "<leader>fF", vim.lsp.buf.format, { desc = "[F]ile [F]ormat" })
+
+noremap("n", "<leader>co", "<cmd>copen<cr>", { desc = "[C][O]pen" }) 
+noremap("n", "<leader>lo", "<cmd>lopen<cr>", { desc = "[L][O]pen" }) 
 -- noremap("n", "<leader>lI", function ()
 --     ---@diagnostic disable-next-line: missing-parameter
 --     vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
@@ -243,12 +248,20 @@ noremap('i', '<A-S-down>', '<Esc>"myy`]"mpi', { desc = "Duplicates line down" })
 noremap('v', '<A-S-up>', '"mY`["mP`[V`]v', { desc = "Duplicates lines up" })
 noremap('v', '<A-S-down>', '"mY`]"mp`[V`]v', { desc = "Duplicates lines down" })
 
+noremap('i', '<A-S-k>', '<Esc>"myy`["mPi', { desc = "Duplicates line up" })
+noremap('i', '<A-S-j>', '<Esc>"myy`]"mpi', { desc = "Duplicates line down" })
+
+noremap('v', '<A-S-k>', '"mY`["mP`[V`]v', { desc = "Duplicates lines up" })
+noremap('v', '<A-S-j>', '"mY`]"mp`[V`]v', { desc = "Duplicates lines down" })
 -- erase one tab
 noremap("i", "<S-Tab>", "<C-o><<", { desc = "Shifts line left" });
 
 noremap("v", "<S-down>", "<down>", { desc = "Prevent buffer scroll" })
 noremap("v", "<S-up>", "<up>", { desc = "Prevent buffer scroll" })
 
+noremap("n", "<leader>ST", "<cmd>TemplateSelect<cr>", { desc = "Select template with fzf and paste it under cursor" })
+noremap("n", "<leader>ow", "<cmd>Wrap<cr>", { desc = "Toggle [O]ption - [W]rap" })
+noremap("n", "<leader>os", "<cmd>Spell<cr>", { desc = "Toggle [O]ption - [S]pell" })
 -- -------------------------------------------------------------------------- --
 --                                 Visual Mode                                --
 -- -------------------------------------------------------------------------- --

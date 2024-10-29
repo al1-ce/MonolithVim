@@ -13,7 +13,7 @@ sy sync maxlines=500
 
 " Class Definitions ----------------------------------------------------------|
 
-sy keyword zscType int8 uint8 int16 uint16 int uint float double float32 float64 string vector2 vector3 bool textureid spriteid statelabel void array map voidptr color sound sbyte byte short ushort name dictionary
+sy keyword zscType int8 uint8 int16 uint16 int uint float double float32 float64 string vector2 vector3 vector4 bool textureid spriteid statelabel void array map voidptr color sound sbyte byte short ushort name dictionary
 sy   match zscType /@/
 
 sy keyword zscStorage class struct enum const property extend flagdef let mixin

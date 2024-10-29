@@ -25,12 +25,13 @@ end, {})
 -- vim.api.nvim_create_user_command('FixColors', function() dofile(vim.fn.stdpath('config') .. "/lua/config/theme.lua") end, {})
 
 local template = require("utils.template")
-local noremap = require("map").noremap
 
 vim.api.nvim_create_user_command('Template', template.paste_template, { range = false, nargs = '+', complete = template.autocomplete, })
 vim.api.nvim_create_user_command('TemplateSelect', template.select, {})
 
-noremap("n", "<leader>ST", template.select, { desc = "Select template with fzf and paste it under cursor" })
-noremap("n", "<leader>ow", "<cmd>Wrap<cr>", { desc = "Toggle [O]ption - [W]rap" })
-noremap("n", "<leader>os", "<cmd>Spell<cr>", { desc = "Toggle [O]ption - [S]pell" })
+vim.api.nvim_create_user_command("OpenWith", function (opts)
+    local args = opts.fargs
+    table.insert(args, vim.fn.expand("%:p"))
+    vim.system(args)
+end, { range = false, nargs = "+" })
 

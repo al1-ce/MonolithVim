@@ -179,7 +179,7 @@ return {
             enabled = true,
         },
         keys = {
-            { "<leader>os", "<cmd>CCToggle<cr>", mode = "n", noremap = true, silent = true, desc = "[O]ption [C]enter view toggle" },
+            { "<leader>oc", "<cmd>CCToggle<cr>", mode = "n", noremap = true, silent = true, desc = "[O]ption [C]enter view toggle" },
         },
     },
 }
