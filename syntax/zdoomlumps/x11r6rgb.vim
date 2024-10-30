@@ -1,0 +1,2 @@
+
+syn match lmpLineComment "^\s*!.*"

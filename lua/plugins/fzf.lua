@@ -1,4 +1,5 @@
-local sysdep = require("utils.sysdep")
+local sysdep = import "utils.sysdep" .sysdep
+local borders = import "var.borders" 
 
 return {
     -- FZF [ ;ff ;fr ;fp ;fg \ff ... ]
@@ -7,7 +8,7 @@ return {
         dependencies = { "nvim-tree/nvim-web-devicons" },
         cond = sysdep({ "fzf" }),
         config = function()
-            local fzf = require("fzf-lua")
+            local fzf = import "fzf-lua"
             -- List of what I usually wouldn't need to see in fzf
             local file_ignores = {
                 -- images
@@ -49,7 +50,7 @@ return {
                     -- height = 0.25,
                     -- row = 1,
                     -- column = 0,
-                    border = require("utils.borders").normal,
+                    border = borders.normal,
                     preview = {
                         -- default = "bat",
                         border = "noborder",
@@ -132,7 +133,6 @@ return {
                 diagnostics = { prompt = " " }
             })
         end,
-        event = "VimEnter",
         keys = {
             { "<leader>ff", "<cmd>FzfLua files<cr>",        mode = "n", noremap = true, silent = true, desc = "[F]ind [F]ile" },
             { "<leader>fr", "<cmd>FzfLua oldfiles<cr>",     mode = "n", noremap = true, silent = true, desc = "[F]ile [R]ecent" },

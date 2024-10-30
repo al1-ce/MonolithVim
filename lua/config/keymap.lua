@@ -1,6 +1,5 @@
 -- All primary keymaps. Some plugin-related or screen-local might be in other files
-local noremap = require("map").noremap
-local remap = require("map").remap
+local noremap = import "map" .noremap
 
 -- tip: o switches vis direction
 
@@ -175,8 +174,8 @@ noremap("n", "<leader>to", "<cmd>tabonly<cr>", { desc = "[T]ab [O]nly" })
 
 noremap("n", "<leader>fF", vim.lsp.buf.format, { desc = "[F]ile [F]ormat" })
 
-noremap("n", "<leader>co", "<cmd>copen<cr>", { desc = "[C][O]pen" }) 
-noremap("n", "<leader>lo", "<cmd>lopen<cr>", { desc = "[L][O]pen" }) 
+noremap("n", "<leader>co", "<cmd>copen<cr>", { desc = "[C][O]pen" })
+noremap("n", "<leader>lo", "<cmd>lopen<cr>", { desc = "[L][O]pen" })
 -- noremap("n", "<leader>lI", function ()
 --     ---@diagnostic disable-next-line: missing-parameter
 --     vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
@@ -205,7 +204,7 @@ local function open_link_vis()
     vim.fn.feedkeys(vim.keycode("<esc>"), "x")
     local s = vim.fn.getreg("v")
     vim.ui.open(vim.fn.expand(s))
-    require("notify")(s)
+    vim.notify(s)
 end
 
 local function open_link_norm()

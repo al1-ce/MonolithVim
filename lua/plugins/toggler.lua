@@ -1,8 +1,4 @@
-local sysdep = require("utils.sysdep")
-local noremap = require("map").noremap
-
 return {
-    -- Toggle tags [ \tp ]
     {
         "nat-418/boole.nvim",
         opts = {
@@ -47,8 +43,5 @@ return {
                 { 'enable', 'disable' }
             }
         },
-        -- keys = {
-        --     { '<C-`>', "<cmd>Boole increment<cr>", mode = "n", desc = "Increment value under cursor" },
-        -- }
     }
 }

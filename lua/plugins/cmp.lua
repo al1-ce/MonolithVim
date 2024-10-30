@@ -1,30 +1,17 @@
 ---@diagnostic disable: duplicate-set-field
-local noremap = require("map").noremap
+local noremap = import "map" .noremap
+-- TODO: cleanup
 return {
     -- A completion engine plugin for neovim written in Lua
     {
         'hrsh7th/nvim-cmp',
         dependencies = {
             'hrsh7th/cmp-nvim-lsp',    -- allows to use lsp
-            -- 'hrsh7th/cmp-path', -- allows to do paths
             'hrsh7th/cmp-buffer',      -- allows to use buffer text
             'hrsh7th/cmp-cmdline',     -- commandline!
-            'hrsh7th/cmp-calc',        -- calculator
-            -- 'hrsh7th/cmp-nvim-lsp-document-symbol', -- search symbols with @
-            'uga-rosa/cmp-dynamic',    -- dynamically define completions
-            'aca/cmp-function',        -- define function to execute instead of completion
-            'Jezda1337/nvim-html-css', -- html id completion
-            -- 'jmbuhr/otter.nvim',    -- embedded complation (md)
-            -- Popup snippets
-            -- { 'L3MON4D3/LuaSnip' },
-            -- 'saadparwaiz1/cmp_luasnip',
-            -- luasnip snippets
-            -- "rafamadriz/friendly-snippets",
-            -- better popup snippets?
             'dcampos/cmp-snippy',
             'dcampos/nvim-snippy',
             'honza/vim-snippets',
-            -- icons
             'onsails/lspkind.nvim',
             -- neovim conf
             {
@@ -44,7 +31,11 @@ return {
             }
         },
         config = function()
-            require('lspkind').init({
+
+            local cmp = import 'cmp'
+            local lspkind = import 'lspkind'
+
+            lspkind.init({
                 symbol_map = {
                     Text = "",
                     Method = "", -- 󰆧
@@ -74,8 +65,7 @@ return {
                 },
             })
 
-            local cmp = require('cmp')
-            local snippy = require("snippy")
+            local snippy = import "snippy"
             snippy.setup({})
 
             vim.snippet.expand = snippy.expand_snippet
@@ -92,45 +82,6 @@ return {
                     return snippy.can_jump(-1) and snippy.previous()
                 end
             end
-
-            -- local ls = require("luasnip")
-
-
-            -- ls.config.set_config({ history = true, updateevents = "TextChanged,TextChangedI" })
-
-            -- require("luasnip.loaders.from_vscode").lazy_load()
-
-            -- TODO: remove when luasnip gets proper thing
-            -- vim.snippet.expand = ls.lsp_expand
-            --
-            -- ---@diagnostic disable-next-line: duplicate-set-field
-            -- vim.snippet.active = function(filter)
-            --     filter = filter or {}
-            --     filter.direction = filter.direction or 1
-            --
-            --     if filter.direction == 1 then
-            --         return ls.expand_or_locally_jumpable()
-            --     else
-            --         return ls.locally_jumpable(filter.direction)
-            --     end
-            -- end
-            --
-            -- ---@diagnostic disable-next-line: duplicate-set-field
-            -- vim.snippet.jump = function(direction)
-            --     if direction == 1 then
-            --         if ls.expandable() then
-            --             return ls.expand_or_jump()
-            --         else
-            --             return ls.locally_jumpable(1) and ls.jump(1)
-            --         end
-            --     else
-            --         return ls.locally_jumpable(-1) and ls.jump(-1)
-            --     end
-            -- end
-            --
-            -- vim.snippet.stop = ls.unlink_current
-
-            -- BUFFER COMPLETION SETUP
 
             ---@diagnostic disable-next-line: missing-fields
             cmp.setup({
@@ -157,14 +108,9 @@ return {
                 },
                 sources = cmp.config.sources({
                     { name = 'nvim_lsp' },
-                    -- { name = 'luasnip' },
-                    -- { name = "ultisnips" },
                     { name = "snippy" },
                 }, {
                     { name = 'buffer' },
-                    { name = 'calc' },
-                    { name = 'dynamic' },
-                    { name = 'html-css' },
                     { name = 'lazydev', group_index = 0 }
                     -- { name = 'otter' },
                 }),
@@ -179,7 +125,7 @@ return {
                 formatting = {
                     fields = { "kind", "abbr", "menu" },
                     format = function(p_entry, p_vim_item)
-                        local kind = require('lspkind').cmp_format({
+                        local kind = lspkind.cmp_format({
                             mode = 'symbol_text',  -- show only symbol annotations
                             maxwidth = 50,         -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
                             ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
@@ -192,8 +138,9 @@ return {
                     end
                 },
                 enabled = function()
+                    local cmp_context = import 'cmp.config.context'
                     -- disable completion in comments
-                    local context = require 'cmp.config.context'
+                    local context = cmp_context
                     -- keep command mode completion enabled when cursor is in a comment
                     if vim.api.nvim_get_mode().mode == 'c' then
                         return true
@@ -234,13 +181,6 @@ return {
                 view = { entries = { name = "custom", selection_order = "near_cursor" } }
             })
 
-            -- OTHER SOURCES SETUP
-
-            -- LINK: https://github.com/uga-rosa/cmp-dynamic
-            require("cmp_dynamic").register({})
-
-            -- LINK: https://github.com/aca/cmp-function
-            require("cmp_function").register({})
         end
     }, -- autocompletion engine
 }

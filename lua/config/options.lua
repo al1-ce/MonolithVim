@@ -42,7 +42,6 @@ vim.opt.splitright          = true   -- vertical split right
 vim.opt.tabstop             = 4      -- 1 tab == 4 spaces
 vim.opt.termguicolors       = true   -- 24 -bit RGB colors
 vim.opt.undofile            = true   -- Save undo history
-vim.opt.undofile            = true   -- undo
 vim.opt.updatetime          = 300    -- speeds up autocompletion
 vim.opt.wrap                = false  -- removes wrapping of lines
 -- vim.o.conceallevel = 2
@@ -50,7 +49,6 @@ vim.opt.wrap                = false  -- removes wrapping of lines
 
 local backup_dir = vim.fn.stdpath('data').."/.cache"
 vim.opt.backup = true                         -- make backups before writing
-vim.opt.undofile = false                      -- persistent undos - undo after you re-open the file
 vim.opt.writebackup = true                    -- Make backup before overwriting the current buffer
 vim.opt.backupcopy = 'yes'                    -- Overwrite the original backup file
 vim.opt.directory = backup_dir .. '/swap'     -- directory to place swap files in

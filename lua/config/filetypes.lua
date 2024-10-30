@@ -1,24 +1,6 @@
+---@diagnostic disable: undefined-field
 local augroup = vim.api.nvim_create_augroup   -- Create/get autocommand group
 local autocmd = vim.api.nvim_create_autocmd   -- Create autocommand
-
-local function replace(str, pattern, replacement)
-	local search_start_idx = 1;
-	local idx_1, idx_2 = str:find(pattern, search_start_idx, true)
-	if not idx_1 then
-		return str
-	end;
-	local postfix = str:sub(idx_2 + 1);
-	str = string.format([=[%s%s%s]=], str:sub(1, idx_1 - 1), replacement, postfix);
-	return str
-end;
-
-local starts_with = function (this, pattern)
-    return this:sub(1, #pattern) == pattern
-end
-
-local ends_with = function (this, pattern)
-    return pattern == "" or this:sub(-#pattern) == pattern
-end
 
 local zdoomlumps = {}
 local runtimepaths = vim.api.nvim_list_runtime_paths()
@@ -32,7 +14,7 @@ for _, path in ipairs(runtimepaths) do
     for _, file in ipairs(files) do
         file = vim.fn.fnamemodify(file, ":t")
         if file ~= "template-file.vim" then
-            local name = replace(file, ".vim", "")
+            local name = file:replace(".vim", "")
             local lname = name:lower()
             local cname = name:upper()
             zdoomlumps[lname .. ".txt"] = "zdoomlump"

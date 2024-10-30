@@ -1,5 +1,5 @@
-local sysdep = require("utils.sysdep")
-local hlgroups = require("utils.hlgroups")
+local borders = import "var.borders"
+
 return {
     -- lsp progressbar
     {
@@ -25,7 +25,6 @@ return {
             render = "wrapped-compact",
             minimum_width = 0,
             level = 2,
-            -- require("notify")("My super important message", "warn", {title="Title"})
         }
     },
     -- override input handling (makes input pop up sometimes...)
@@ -44,84 +43,18 @@ return {
     -- Better quickfix
     -- { 'yorickpeterse/nvim-pqf', commit = "b2f1882" },
     {
-        'yorickpeterse/nvim-pqf',
-        enabled = true,
-        config = function()
-            require('pqf').setup({
-                signs = {
-                    error = { text = '', hl = "DiagnosticSignError" },
-                    warning = { text = '', hl = "DiagnosticSignWarn" },
-                    info = { text = '', hl = "DiagnosticSignInfo" },
-                    hint = { text = '', hl = "DiagnosticSignHint" } -- note
-                },
-                show_multiple_lines = true,
-                max_filename_length = 0,
-            })
-
-            -------------------- Quickfix --------------------------------------
-
-            -- LINK: https://reviewdog.github.io/errorformat-playground/
-            -- Clean because of %- error
-            vim.opt.errorformat = {}
-            -- D (dub)
-            -- Errors form -verrors=specs (ignored)
-            vim.opt.errorformat:append("%-G(spec:%*[0-9]) %m")
-            -- Uncaught exceptions (e.g. from unit tests)
-            vim.opt.errorformat:append("%*[^@]@%f(%l): %m")
-            -- Errors in string mixins
-            vim.opt.errorformat:append("%f-mixin-%*[0-9](%l\\,%c): %m")
-            vim.opt.errorformat:append("%f-mixin-%*[0-9](%l): %m")
-            -- Normal compile errors
-            vim.opt.errorformat:append("%f(%l\\,%c): %t%*[^:]: %m")
-            vim.opt.errorformat:append("%f(%l): %t%*[^:]: %m")
-            vim.opt.errorformat:append("%E%f:%l %m")
-            -- C (gcc)
-            vim.opt.errorformat:append("%f:%l:%c: %t%*[^:]: %m")
-            -- TS
-            vim.opt.errorformat:append("%f:%l:%c - %trror TS%n: %m")
-            vim.opt.errorformat:append("%f(%l\\,%c) %trror TS%n: %m")
-            -- DART
-            -- I give up
-            -- vim.opt.errorformat:append("%E%f:%l:%c:,%C%trror: %m\\.,%Z%m")
-            vim.opt.errorformat:append("%E%f:%l:%c:")
-            -- vim.opt.errorformat:append("%E%f:%l:%c:")
-            -- vim.opt.errorformat:append("%+CError:\\ %m")
-            -- vim.opt.errorformat:append("%+C%m")
-            -- vim.opt.errorformat:append("%+Z%*\\s%*\\^")
-
-            -- Most general error there could be
-            vim.opt.errorformat:append("%t%*[^:]: %m")
-            -- sily.logger log format
-
-            -- some nodejs
-            vim.opt.errorformat:append("\\[%l:%c\\] %m")
-        end
-    },
-    {
         "rachartier/tiny-devicons-auto-colors.nvim",
         dependencies = {
             "nvim-tree/nvim-web-devicons"
         },
         event = "VeryLazy",
-        config = function()
-            require('tiny-devicons-auto-colors').setup({
-                factors = {
-                    lightness = 1.35, -- 1.75
-                    chroma = 1,       -- 1
-                    hue = 1.25,       -- 1.25
-                },
-                autoreload = false,
-            })
-        end
-    },
-    {
-        "lukas-reineke/headlines.nvim",
-        dependencies = "nvim-treesitter/nvim-treesitter",
-        opts = {
-            markdown = { fat_headlines = false, },
-            rmd = { fat_headlines = false, },
-            norg = { fat_headlines = false, },
-            org = { fat_headlines = false, },
+        config = {
+            factors = {
+                lightness = 1.35,     -- 1.75
+                chroma = 1,           -- 1
+                hue = 1.25,           -- 1.25
+            },
+            autoreload = false,
         }
     },
     -- mode indicator in cursorline
@@ -145,41 +78,50 @@ return {
         event = "VimEnter"
     },
     {
-        'tummetott/reticle.nvim',
-        event = 'VeryLazy', -- optionally lazy load the plugin
-        opts = {
-            on_startup = { cursorline = true, cursorcolumn = false },
-            disable_in_insert = false,
-            disable_in_diff = true,
-            always_highlight_number = true,
-        },
-    },
-    {
         "nvim-zh/colorful-winsep.nvim",
         event = { "WinLeave" },
-        config = function()
-            -- have to call in config to get proper hl group
-            -- local hl = hlgroups("Normal")
-            require("colorful-winsep").setup({
+        config = {
                 hi = {
                     -- fg = hl.fg,
                     -- bg = hl.bg,
                     link = "Delimiter"
                 },
-                symbols = require("utils.borders").winsep,
+                symbols = borders.winsep,
                 only_line_seq = false,
                 smooth = false,
-            })
-        end
+            }
     },
     {
-        "confusedkernel/center-stage.nvim",
-        branch = "master",
+        'folke/todo-comments.nvim',
+        dependencies = { "nvim-lua/plenary.nvim" },
         opts = {
-            enabled = true,
+            keywords = {
+                FIX = {
+                    icon = " ", -- used for the sign, and search results
+                    -- can be a hex color, or a named color
+                    -- named colors definitions follow below
+                    color = "error",
+                    -- color = "#cc241d",
+                    -- a set of other keywords that all map to this FIX keywords
+                    alt = { "FIXME", "BUG", "FIXIT", "ISSUE" }
+                    -- signs = false -- configure signs for some keywords individually
+                },
+                TODO = { icon = " ", color = "info" },
+                LINK = { icon = " ", color = "info" },
+                HACK = { icon = " ", color = "warning" },
+                WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
+                PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+                NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
+                TEST = { icon = "⏲ ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
+            },
+            highlight = {
+                keyword = 'fg',
+                after = 'empty',
+            }
         },
+        event = "VimEnter",
         keys = {
-            { "<leader>oc", "<cmd>CCToggle<cr>", mode = "n", noremap = true, silent = true, desc = "[O]ption [C]enter view toggle" },
-        },
-    },
+            { "<leader>ft", "<cmd>TodoLocList<cr>", mode = "n", noremap = true, silent = true, desc = "[F]ind [T]odo" },
+        }
+    }
 }

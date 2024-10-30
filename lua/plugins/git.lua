@@ -1,11 +1,4 @@
-local noremap = require("map").noremap
-local sysdep = require("utils.sysdep")
-
 return {
-    {
-        'sindrets/diffview.nvim',
-        cond = sysdep({ "git" }),
-    },
     {
         'akinsho/git-conflict.nvim',
         version = "*",
@@ -18,43 +11,6 @@ return {
                 incoming = 'DiffAdd',
                 current = 'DiffText',
             }
-        },
-    },
-    {
-        'SuperBo/fugit2.nvim',
-        enabled = false,
-        opts = {
-            width = 70,
-        },
-        dependencies = {
-            'MunifTanjim/nui.nvim',
-            'nvim-tree/nvim-web-devicons',
-            'nvim-lua/plenary.nvim',
-            {
-                'chrisgrieser/nvim-tinygit', -- optional: for Github PR view
-                dependencies = { 'stevearc/dressing.nvim' }
-            },
-        },
-        cmd = { 'Fugit2', 'Fugit2Diff', 'Fugit2Graph' },
-    },
-    {
-        "moyiz/git-dev.nvim",
-        cond = sysdep({ "git" }),
-        event = "VeryLazy",
-        opts = {},
-    },
-    {
-        "NeogitOrg/neogit",
-        cond = sysdep({ "git" }),
-        opts = {},
-    },
-    {
-        "chrisgrieser/nvim-tinygit",
-        enabled = false,
-        dependencies = {
-            "stevearc/dressing.nvim",
-            "nvim-telescope/telescope.nvim", -- optional, but recommended
-            "rcarriga/nvim-notify",          -- optional, but recommended
         },
     },
     -- Lazy nvim

@@ -1,33 +1,28 @@
-local load = require("module").load
+require("setglobals")
 
-vim.g.vim_distro = "monolith.nvim"
-vim.g.mapleader = ";"
+vim.g.vim_distro     = "monolith.nvim"
+vim.g.mapleader      = ";"
+vim.g.maplocalleader = ","
 
-load('config.options')
-load('config.filetypes')
-load('config.autocmd')
-load('config.commands')
-require('utils.colorscheme').source()
 
--- notify on key override
-load('utils.keydup')
+-- options and local plugins
+include "config/options"
+include "config/autocmd"
+include "config/setup"
 
 -- load after because of big slowdown
-load('config.keymap')
-load('config.lazy')
+include "config/lazy"
+include "config/keymap"
 
--- colorscheme and projects picker
-require('utils.fzf').setup()
+-- some methods that are missing in lua
+include "jsfunc"
 
--- :DepsMissing command to get list of
--- binaries that are needed on system
-require('utils.sysdep-man').init_command()
+-- plugins and pluin accessories
+include "after/load"
 
--- improve cmdheight=0
-require('utils.messages').override_messages();
-
--- code::stats plugin
-load('utils.codestats.loader')
+-- so that all overrides are loaded
+include "config/filetypes"
+include "config/commands"
 
 -- todo
 -- check yukimemi/dvpm
