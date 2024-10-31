@@ -3,7 +3,7 @@ local keyfunc
 if vim.g.vim_distro == "monolith.nvim" then
     keyfunc = require("config.keyfunc")
 else
-    keyfunc = require("keyfinc")
+    keyfunc = require("keyfunc")
 end
 
 -- - ----------------------------------------------------------------------------- -
