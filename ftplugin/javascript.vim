@@ -1,0 +1,3 @@
+
+set omnifunc=javascriptComplete#CompleteJS
+

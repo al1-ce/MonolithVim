@@ -23,28 +23,6 @@ for _, path in ipairs(runtimepaths) do
     end
 end
 
-vim.filetype.add({
-    extension = {
-        hx = 'haxe',
-        sdl = 'jsl',
-        jsl = 'jsl',
-        bf = 'brainfucs',
-        jpp = 'jspp',
-        jspp = 'jspp',
-        c3 = 'c3',
-        vs = 'glsl',
-        fs = 'glsl',
-        fu = 'fusion',
-        snippet = 'snippets',
-        snippets = 'snippets',
-        vx = 'vox',
-        zs = "zscript",
-        zsc = "zscript",
-        lmp = "zdoomlump"
-    },
-    filename = zdoomlumps
-})
-
 local function setft(ftype)
     vim.bo.filetype = ftype
 end
