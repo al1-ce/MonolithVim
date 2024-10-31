@@ -80,8 +80,6 @@ noremap('i', '<A-S-j>', '<Esc>"myy`]"mpi', { desc = "Duplicates line down" })
 noremap('v', '<A-S-k>', '"mY`["mP`[V`]v', { desc = "Duplicates lines up" })
 noremap('v', '<A-S-j>', '"mY`]"mp`[V`]v', { desc = "Duplicates lines down" })
 
-noremap("i", "<S-Tab>", "<C-o><<", { desc = "Shifts line left" });
-
 noremap("n", "<Del>", function() keyfunc.delete_char(0) end, { desc = "Delete but into black hole" })
 noremap("i", "<Del>", function() keyfunc.delete_char(0) end, { desc = "Delete but into black hole" })
 noremap("n", "<BS>",  function() keyfunc.delete_char(1) end, { desc = "Deletes into black hole" });
