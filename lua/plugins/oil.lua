@@ -20,7 +20,7 @@ return {
                 ["gs"] = "actions.change_sort",
                 ["gx"] = "actions.open_external",
                 ["g."] = "actions.toggle_hidden",
-                ["gh"] = { desc = "Open home directory", callback = function(opts) import("oil").open("~")  end },
+                ["gh"] = { desc = "Open home directory", callback = function(opts) require("oil").open("~")  end },
                 ["gc"] = "actions.open_cwd",
             },
             use_default_keymaps = false,
@@ -32,7 +32,7 @@ return {
         event = "VimEnter",
         keys = {
             { "-",         "<cmd>Oil<cr>",                               mode = "n", noremap = true, silent = true, desc = "Opens parent directory" },
-            { "<leader>-", function() import("oil").toggle_float() end, mode = "n", noremap = true, silent = true, desc = "Opens parent directory in float" },
+            { "<leader>-", function() require("oil").toggle_float() end, mode = "n", noremap = true, silent = true, desc = "Opens parent directory in float" },
         },
     }
 }

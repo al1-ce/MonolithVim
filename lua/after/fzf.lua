@@ -1,6 +1,6 @@
-local fzfp         = import "pfunc.fzf"
-local colsch       = import "colorscheme"
-local colorschemes = import "fzf-lua.providers.colorschemes" .colorschemes
+local fzfp         = require("pfunc.fzf")
+local colsch       = require("colorscheme")
+local colorschemes = require("fzf-lua.providers.colorschemes").colorschemes
 
 vim.api.nvim_create_user_command("FzfLuaProjects", fzfp.FzfProjects, {})
 

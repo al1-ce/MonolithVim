@@ -1,5 +1,5 @@
 ---@diagnostic disable: missing-fields
-local sysdep = import "utils.sysdep" .sysdep
+local sysdep = require("utils.sysdep").sysdep
 return {
     -- show buffer diagnostic in top right corner
     {
@@ -15,7 +15,7 @@ return {
         cond = sysdep({ "tree-sitter", "node", "git", "cc" }),
         config = function()
             ---@diagnostic disable-next-line: missing-fields
-            local ts_config = import 'nvim-treesitter.configs' 
+            local ts_config = require("nvim-treesitter.configs")
             ts_config.setup({
                 -- A list of parser names, or 'all'
                 ensure_installed = {

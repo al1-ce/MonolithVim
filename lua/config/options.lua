@@ -19,6 +19,7 @@ vim.o.mousemodel            = "extend" -- sets right mouse click to extend selec
 vim.o.signcolumn            = "no" -- removes gutter
 vim.o.virtualedit           = "onemore" -- allow to go a single char after eol
 vim.o.linebreak             = true -- wraps lines by words (softbreak)
+vim.o.cursorlineopt         = "screenline"
 
 vim.opt.autoread            = true   -- default value, autoreload file
 vim.opt.colorcolumn         = '0'    -- 80 symbol split
@@ -82,4 +83,10 @@ vim.cmd([[set guicursor=n-v-sm:block,i-c-ci-ve:ver25,r-cr-o:hor20]])
 vim.cmd([[filetype indent plugin on]])
 vim.cmd([[syntax enable]])
 
+-- Enable plugins and load plugin for the detected file type.
+vim.cmd([[filetype plugin on]])
+-- Enable Omnicomplete features
+vim.cmd([[set omnifunc=syntaxcomplete#Complete]])
+
 vim.cmd("set errorformat^=filepath:%f")
+

@@ -1,5 +1,5 @@
-local sysdep  = import "utils.sysdep" .sysdep
-local borders = import "var.borders"
+local sysdep  = require("utils.sysdep").sysdep
+local borders = require("var.borders")
 
 return {
     -- FZF has priority over Telescope because Telescope often skips things
@@ -10,8 +10,8 @@ return {
         },
         cond = sysdep({ "rg", "fd" }),
         config = function()
-            local actions = import "telescope.actions"
-            local telescope = import "telescope"
+            local actions = require("telescope.actions")
+            local telescope = require("telescope")
 
             telescope.setup({
                 defaults = {
@@ -31,3 +31,4 @@ return {
         end
     },
 }
+

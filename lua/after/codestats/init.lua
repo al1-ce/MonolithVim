@@ -15,7 +15,7 @@ end
 
 local codestats = os.getenv("HOME") .. "/.config/codestats.lua"
 
-local codestats_setup = import 'after.codestats.setup'
+local codestats_setup = require("after.codestats.setup")
 
 local codestatsopts = {
     title="code::stats",

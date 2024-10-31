@@ -1,6 +1,6 @@
 ---@diagnostic disable: missing-fields
-local sysdep = import "utils.sysdep".sysdep
-local optdep = import "utils.sysdep".optdep
+local sysdep = require("utils.sysdep").sysdep
+local optdep = require("utils.sysdep").optdep
 return {
     {
         'williamboman/mason.nvim',
@@ -16,11 +16,11 @@ return {
             'tamago324/nlsp-settings.nvim'
         },
         config = function()
-            local mason        = import "mason"
-            local masonconf    = import 'mason-lspconfig'
-            local lspconfig    = import 'lspconfig'
-            local nlspsettings = import "nlspsettings"
-            local cmp_lsp      = import 'cmp_nvim_lsp'
+            local mason        = require("mason")
+            local masonconf    = require("mason-lspconfig")
+            local lspconfig    = require("lspconfig")
+            local nlspsettings = require("nlspsettings")
+            local cmp_lsp      = require("cmp_nvim_lsp")
 
             mason.setup({})
 

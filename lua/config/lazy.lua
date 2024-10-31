@@ -13,7 +13,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-local lazy = import 'lazy'
+local lazy = require("lazy")
 
 lazy.setup({
     spec = { import = "plugins" },
@@ -23,7 +23,7 @@ lazy.setup({
     }
 })
 
-local noremap = import "map" .noremap
+local noremap = require("map").noremap
 
 noremap("n", "<leader>pi", "<cmd>Lazy install<cr>", { desc = "[P]lugin [I]nstall" })
 noremap("n", "<leader>pc", "<cmd>Lazy clean<cr>", { desc = "[P]lugin [C]lean" })

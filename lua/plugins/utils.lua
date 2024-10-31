@@ -1,7 +1,7 @@
 ---@diagnostic disable: unused-local
-local sysdep  = import "utils.sysdep" .sysdep
-local noremap = import "map" .noremap
-local borders = import "var.borders"
+local sysdep  = require("utils.sysdep").sysdep
+local noremap = require("map").noremap
+local borders = require("var.borders")
 
 return {
     -- Move lines and characters [ A-Up A-Down ]
@@ -82,7 +82,7 @@ return {
     {
         "ezechukwu69/tui.nvim",
         config = function()
-            local tui = import "tui"
+            local tui = require("tui")
             local function add_program(name, command)
                 tui.setup({
                     name = name,

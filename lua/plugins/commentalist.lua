@@ -3,7 +3,7 @@ return {
         'numToStr/Comment.nvim',
         lazy = false,
         config = function()
-            local cm = import 'Comment'
+            local cm = require("Comment")
 
             ---@diagnostic disable-next-line: missing-fields
             cm.setup {
@@ -16,7 +16,7 @@ return {
                 }
             }
 
-            local ft = import 'Comment.ft'
+            local ft = require("Comment.ft")
             ft({ 'd'         }, ft.get('c'))
             ft({ 'sdl'       }, ft.get('c'))
             ft({ 'sdlang'    }, ft.get('c'))

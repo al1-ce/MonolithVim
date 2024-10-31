@@ -1,4 +1,4 @@
-local oil = import "oil"
+local oil = require("oil")
 
 local ends_with = function(this, pattern)
     return pattern == "" or this:sub(- #pattern) == pattern

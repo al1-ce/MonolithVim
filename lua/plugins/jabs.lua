@@ -1,4 +1,4 @@
-local borders = import "var.borders"
+local borders = require("var.borders")
 
 return {
     {
@@ -40,7 +40,7 @@ return {
         },
         event = "VimEnter",
         keys = {
-            { "<leader>l", "<cmd>JABSOpen<cr>", mode = "n", noremap = true, silent = true, desc = "[L]ist Buffers" },
+            { "<leader>j", "<cmd>JABSOpen<cr>", mode = "n", noremap = true, silent = true, desc = "[J]abs" },
         }
     }
 }

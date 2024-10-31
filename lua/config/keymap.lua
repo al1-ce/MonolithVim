@@ -1,5 +1,5 @@
 -- All primary keymaps. Some plugin-related or screen-local might be in other files
-local noremap = import "map" .noremap
+local noremap = require("map").noremap
 
 -- tip: o switches vis direction
 
@@ -172,7 +172,7 @@ noremap("n", "<leader>tn", "<cmd>tabnew<cr>", { desc = "[T]ab [N]ew" })
 noremap("n", "<leader>tw", "<cmd>tabclose<cr>", { desc = "[T]ab [C]lose" })
 noremap("n", "<leader>to", "<cmd>tabonly<cr>", { desc = "[T]ab [O]nly" })
 
-noremap("n", "<leader>fF", vim.lsp.buf.format, { desc = "[F]ile [F]ormat" })
+noremap("n", "<leader>lf", vim.lsp.buf.format, { desc = "[L]sp [F]ormat" })
 
 noremap("n", "<leader>co", "<cmd>copen<cr>", { desc = "[C][O]pen" })
 noremap("n", "<leader>lo", "<cmd>lopen<cr>", { desc = "[L][O]pen" })

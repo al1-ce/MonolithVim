@@ -25,14 +25,14 @@ return {
         config = true,
         event = "VimEnter",
         keys = {
-            { "<A-C-left>" , function() import('smart-splits').resize_left(2) end , mode = "n", noremap = true, silent = true, desc = "Resizes window to left" } ,
-            { "<A-C-right>", function() import('smart-splits').resize_right(2) end, mode = "n", noremap = true, silent = true, desc = "Resizes window to right" },
-            { "<A-C-up>"   , function() import('smart-splits').resize_up(2) end   , mode = "n", noremap = true, silent = true, desc = "Resizes window up" }      ,
-            { "<A-C-down>" , function() import('smart-splits').resize_down(2) end , mode = "n", noremap = true, silent = true, desc = "Resizes window down" }    ,
-            { "<A-C-h>"    , function() import('smart-splits').resize_left(2) end , mode = "n", noremap = true, silent = true, desc = "Resizes window to left" } ,
-            { "<A-C-l>"    , function() import('smart-splits').resize_right(2) end, mode = "n", noremap = true, silent = true, desc = "Resizes window to right" },
-            { "<A-C-k>"    , function() import('smart-splits').resize_up(2) end   , mode = "n", noremap = true, silent = true, desc = "Resizes window up" }      ,
-            { "<A-C-j>"    , function() import('smart-splits').resize_down(2) end , mode = "n", noremap = true, silent = true, desc = "Resizes window down" }    ,
+            { "<A-C-left>" , function() require('smart-splits').resize_left(2) end , mode = "n", noremap = true, silent = true, desc = "Resizes window to left" } ,
+            { "<A-C-right>", function() require('smart-splits').resize_right(2) end, mode = "n", noremap = true, silent = true, desc = "Resizes window to right" },
+            { "<A-C-up>"   , function() require('smart-splits').resize_up(2) end   , mode = "n", noremap = true, silent = true, desc = "Resizes window up" }      ,
+            { "<A-C-down>" , function() require('smart-splits').resize_down(2) end , mode = "n", noremap = true, silent = true, desc = "Resizes window down" }    ,
+            { "<A-C-h>"    , function() require('smart-splits').resize_left(2) end , mode = "n", noremap = true, silent = true, desc = "Resizes window to left" } ,
+            { "<A-C-l>"    , function() require('smart-splits').resize_right(2) end, mode = "n", noremap = true, silent = true, desc = "Resizes window to right" },
+            { "<A-C-k>"    , function() require('smart-splits').resize_up(2) end   , mode = "n", noremap = true, silent = true, desc = "Resizes window up" }      ,
+            { "<A-C-j>"    , function() require('smart-splits').resize_down(2) end , mode = "n", noremap = true, silent = true, desc = "Resizes window down" }    ,
         }
     },
 

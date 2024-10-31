@@ -1,6 +1,8 @@
 ---@diagnostic disable: undefined-field
 ---@diagnostic disable: param-type-mismatch
-local M = {}
+local M = { on_reload_listeners = {} }
+
+M.on_reload = function(func) table.insert(M.on_reload_listeners, func) end
 
 M.source = function()
     local config_loc = vim.fn.fnamemodify(vim.fn.expand("$HOME"), ":p:h") .. "/.config/neovim-theme.lua"
@@ -12,11 +14,16 @@ M.source = function()
 end
 
 M.set = function(name)
-    print(vim.inspect(name))
+    -- print(vim.inspect(name))
 
     -- TODO: apply also to lualine
     local colorscheme = name:match("^[^:]+")
     pcall(function() vim.cmd("colorscheme " .. colorscheme) end)
+
+    for _, f in ipairs(M.on_reload_listeners) do
+        pcall(f)
+        print(vim.inspect(f))
+    end
 
     local config_loc = vim.fn.fnamemodify(vim.fn.expand("$HOME"), ":p:h") .. "/.config/neovim-theme.lua"
     vim.loop.fs_open(config_loc, "w", 432, function(err, fd)

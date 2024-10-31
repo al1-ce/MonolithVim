@@ -1,6 +1,6 @@
-local list_dir = import "path/path" .list_dir
-local is_dir   = import "path/file" .is_dir
-local exists   = import "path/file" .exists
+local list_dir = require("path.path").list_dir
+local is_dir   = require("path.file").is_dir
+local exists   = require("path.file").exists
 
 -- normalize path:
 -- vim.fn.resolve(path)
@@ -13,7 +13,7 @@ for _, f in ipairs(flist) do
     if is_dir(f) then
         local finit = vim.fn.resolve(f .. "/" .. "init.lua")
         if exists(finit) then
-            require(cmod .. "." .. vim.fn.fnamemodify(finit, ":h:t") .. ".init")
+            require(cmod .. "." .. vim.fn.fnamemodify(finit, ":h:t").. ".init")
         end
     else
         if vim.fn.fnamemodify(f, ":e") == "lua" then

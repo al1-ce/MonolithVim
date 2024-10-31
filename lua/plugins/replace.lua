@@ -1,4 +1,4 @@
-local borders = import "var.borders"
+local borders = require("var.borders")
 
 return {
     {
@@ -31,7 +31,7 @@ return {
         keys = {
             {
                 "<leader>rg",
-                function() import("rip-substitute").sub()  end,
+                function() require("rip-substitute").sub()  end,
                 mode = { "n", "x" },
                 desc = "[R]ipgrep [S]ubstitute",
             },

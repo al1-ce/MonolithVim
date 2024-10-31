@@ -1,10 +1,10 @@
 local M = {}
 
-local can_load = import "module" .can_load
+local can_load = require("module").can_load
 
 if not can_load("fzf-lua") then return M end
 
-local fzf = import "fzf-lua"
+local fzf = require("fzf-lua")
 
 local function split(text, delimiter)
     local result               = {}

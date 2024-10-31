@@ -1,4 +1,4 @@
-local borders = import "var.borders"
+local borders = require("var.borders")
 
 return {
     -- lsp progressbar
@@ -56,26 +56,6 @@ return {
             },
             autoreload = false,
         }
-    },
-    -- mode indicator in cursorline
-    {
-        'mawkler/modicator.nvim',
-        init = function()
-            vim.o.cursorline = true
-            vim.o.number = true
-            vim.o.termguicolors = true
-        end,
-        opts = {
-            show_warnings = false,
-            integration = {
-                lualine = {
-                    enabled = true,
-                    mode_section = "a",
-                    highlight = "bg"
-                }
-            }
-        },
-        event = "VimEnter"
     },
     {
         "nvim-zh/colorful-winsep.nvim",

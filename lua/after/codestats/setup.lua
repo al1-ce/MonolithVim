@@ -1,12 +1,12 @@
 local vim         = vim
 local uv          = vim.loop
-local curl        = import "plenary.curl"
-local json        = import "utils.json"
+local curl        = require("plenary.curl")
+local json        = require("utils.json")
 -- Global variables
-local utils       = import 'after.codestats.utils'
-local filetypes   = import 'after.codestats.types'
-local async_utils = import 'plenary.async_lib.util'
-local a           = import 'plenary.async_lib.async'
+local utils       = require("after.codestats.utils")
+local filetypes   = require("after.codestats.types")
+local async_utils = require("plenary.async_lib.util")
+local a           = require("plenary.async_lib.async")
 
 -- Originally YannickFricke/codestats.nvim
 

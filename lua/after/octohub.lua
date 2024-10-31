@@ -1,12 +1,12 @@
 
 ---@diagnostic disable: lowercase-global
-local utils    = import "utils"
-local fzfutil  = import "pfunc.fzf"
-local fzf      = import "fzf-lua"
-local octoconf = import "octohub/config"
+local utils    = require("utils")
+local fzfutil  = require("pfunc.fzf")
+local fzf      = require("fzf-lua")
+local octoconf = require("octohub.config")
 
-local path_file = import "path/file"
-local path_path = import "path/path"
+local path_file = require("path.file")
+local path_path = require("path.path")
 local is_dir    = path_file.is_dir
 local list_dir  = path_path.list_dir
 

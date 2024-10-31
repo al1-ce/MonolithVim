@@ -1,5 +1,5 @@
-local sysdep = import "utils.sysdep" .sysdep
-local borders = import "var.borders" 
+local sysdep = require("utils.sysdep").sysdep
+local borders = require("var.borders")
 
 return {
     -- FZF [ ;ff ;fr ;fp ;fg \ff ... ]
@@ -8,7 +8,7 @@ return {
         dependencies = { "nvim-tree/nvim-web-devicons" },
         cond = sysdep({ "fzf" }),
         config = function()
-            local fzf = import "fzf-lua"
+            local fzf = require("fzf-lua")
             -- List of what I usually wouldn't need to see in fzf
             local file_ignores = {
                 -- images

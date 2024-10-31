@@ -5,7 +5,7 @@ return {
         'yorickpeterse/nvim-pqf',
         enabled = true,
         config = function()
-            local pqf = import 'pqf'
+            local pqf = require("pqf")
             pqf.setup({
                 signs = {
                     error = { text = '', hl = "DiagnosticSignError" },

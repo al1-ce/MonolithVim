@@ -1,4 +1,4 @@
-local noremap = import "map" .noremap
+local noremap = require("map").noremap
 return {
     -- Alisgn text [ glip= ]
     {
@@ -12,7 +12,7 @@ return {
         'ggandor/leap.nvim',
         enabled = true,
         config = function()
-            local leap = import "leap"
+            local leap = require("leap")
             leap.opts.safe_labels = ''
             leap.opts.labels = 'asdghklqwertyuiopzxcvbnmfj;'
             noremap("n", "s", "<Plug>(leap)", { desc = "Leap" })

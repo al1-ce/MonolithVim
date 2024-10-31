@@ -1,5 +1,5 @@
 ---@diagnostic disable: duplicate-set-field
-local can_load = import "module" .can_load
+local can_load = require("module").can_load
 
 local hl_group = {
     OFF = "Comment",
@@ -11,7 +11,7 @@ local hl_group = {
 }
 
 if can_load("notify") then
-    local notify = import "notify"
+    local notify = require("notify")
 
     local vim_notify = vim.notify
     local nvim_err_write = vim.api.nvim_err_write

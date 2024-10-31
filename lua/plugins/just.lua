@@ -1,5 +1,5 @@
-local sysdep = import "utils.sysdep" .sysdep
-local borders = import "var.borders"
+local sysdep = require("utils.sysdep").sysdep
+local borders = require("var.borders")
 
 return {
     -- {

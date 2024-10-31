@@ -13,8 +13,13 @@ augroup('FixColorScheme', { clear = true })
 autocmd("ColorScheme", {
     group = "FixColorScheme",
     callback = function ()
-    dofile(vim.fn.stdpath('config') .. "/lua/config/theme.lua")
-end
+        if vim.g.vim_distro == "monolith.nvim" then
+            dofile(vim.fn.stdpath('config') .. "/lua/config/theme.lua")
+        end
+        if vim.g.vim_distro == "despair.nvim" then
+            dofile(vim.fn.stdpath('config') .. "/lua/theme.lua")
+        end
+    end
 })
 
 vim.cmd([[

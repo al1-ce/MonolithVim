@@ -24,3 +24,8 @@ vim.api.nvim_create_user_command("OpenWith", function (opts)
     vim.system(args)
 end, { range = false, nargs = "+" })
 
+vim.api.nvim_create_user_command("SetColorscheme", function (opts)
+    local args = opts.fargs
+    require("colorscheme").set(args)
+end, { range = false, nargs = 1 })
+

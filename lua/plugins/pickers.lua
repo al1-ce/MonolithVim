@@ -3,7 +3,7 @@ return {
     {
         "al1-ce/project.nvim",
         config = function()
-            local project = import "project_nvim"
+            local project = require("project_nvim")
             project.setup({
                 show_hidden = true,
                 silent_chdir = true,

@@ -1,5 +1,5 @@
 ---@diagnostic disable: duplicate-set-field
-local noremap = import "map" .noremap
+local noremap = require("map").noremap
 -- TODO: cleanup
 return {
     -- A completion engine plugin for neovim written in Lua
@@ -32,8 +32,8 @@ return {
         },
         config = function()
 
-            local cmp = import 'cmp'
-            local lspkind = import 'lspkind'
+            local cmp = require("cmp")
+            local lspkind = require("lspkind")
 
             lspkind.init({
                 symbol_map = {
@@ -65,7 +65,7 @@ return {
                 },
             })
 
-            local snippy = import "snippy"
+            local snippy = require("snippy")
             snippy.setup({})
 
             vim.snippet.expand = snippy.expand_snippet
@@ -138,7 +138,7 @@ return {
                     end
                 },
                 enabled = function()
-                    local cmp_context = import 'cmp.config.context'
+                    local cmp_context = require("cmp.config.context")
                     -- disable completion in comments
                     local context = cmp_context
                     -- keep command mode completion enabled when cursor is in a comment

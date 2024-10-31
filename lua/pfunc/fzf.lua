@@ -1,15 +1,15 @@
 ---@diagnostic disable: duplicate-set-field
-local can_load = import "module" .can_load
+local can_load = require("module").can_load
 
 local M = {}
 
 if not can_load("fzf-lua") then return M end
 
-local fzf             = import "fzf-lua"
-local fzfutil         = import "fzf-lua.utils"
-local builtin         = import "fzf-lua.previewer.builtin"
-local project_history = import "project_nvim.utils.history"
-local project_nvim    = import "project_nvim"
+local fzf             = require("fzf-lua")
+local fzfutil         = require("fzf-lua.utils")
+local builtin         = require("fzf-lua.previewer.builtin")
+local project_history = require("project_nvim.utils.history")
+local project_nvim    = require("project_nvim")
 
 local function reverse(tab)
     for i = 1, #tab / 2, 1 do
