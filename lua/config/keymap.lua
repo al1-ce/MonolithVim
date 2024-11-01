@@ -87,7 +87,8 @@ noremap("n", "<Del>", function() keyfunc.delete_char(0) end, { desc = "Delete bu
 noremap("i", "<Del>", function() keyfunc.delete_char(0) end, { desc = "Delete but into black hole" })
 noremap("n", "<BS>",  function() keyfunc.delete_char(1) end, { desc = "Deletes into black hole" });
 noremap("i", "<BS>",  function() keyfunc.delete_char(1) end, { desc = "Deletes into black hole" });
-noremap("v", "<BS>", '"_X', { desc = "Deletes into black hole" });
+noremap("v", "<BS>",  '"_x', { desc = "Deletes into black hole" });
+noremap("v", "<Del>", '"_x', { desc = "Deletes into black hole" });
 
 -- - ----------------------------------------------------------------------------- -
 -- -                               Buffer management                               -

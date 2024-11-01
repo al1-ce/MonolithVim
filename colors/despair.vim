@@ -39,28 +39,32 @@ let g:colors_name = "despair"
 " c14 #73b8af
 " c15 #f7f7f7
 
-hi  Normal                   term=none               ctermfg=gray     cterm=none      guifg=#b9b9b9 gui=none      guibg=#101010
+" can set StatusLine's guibg to #252525 to have them pretty and colored
+
+hi  Normal                   term=none               ctermfg=white    cterm=none      guifg=#b9b9b9 gui=none      guibg=#101010
 hi  Comment                  term=none               ctermfg=darkgray cterm=none      guifg=#6e6e6e gui=none      guibg=#101010
 hi  CursorLine               term=none               ctermfg=gray     cterm=none      guifg=#e7e7e7 gui=none      guibg=#101010
 hi  CursorLineNr             term=none               ctermfg=gray     cterm=none      guifg=#f7f7f7 gui=none      guibg=#101010
 hi  LineNr                   term=none               ctermfg=gray     cterm=none      guifg=#b9b9b9 gui=none      guibg=#101010
 hi  Number                   term=bold               ctermfg=blue     cterm=none      guifg=#5f819d gui=bold      guibg=#101010
-hi  Operator                 term=bold               ctermfg=gray     cterm=bold      guifg=#b9b9b9 gui=bold      guibg=#101010
-hi  Pmenu                    term=none               ctermfg=gray     cterm=none      guifg=#b9b9b9 gui=none      guibg=#252525
-hi  PmenuSbar                term=none               ctermfg=gray     cterm=none      guifg=#b9b9b9 gui=none      guibg=#252525
-hi  PmenuSel                 term=bold               ctermfg=gray     cterm=bold      guifg=#f7f7f7 gui=bold      guibg=#252525
-hi  PmenuThumb               term=none               ctermfg=gray     cterm=none      guifg=#b9b9b9 gui=none      guibg=#101010
+hi  Operator                 term=bold               ctermfg=white    cterm=bold      guifg=#b9b9b9 gui=bold      guibg=#101010
+hi  Pmenu                    term=none               ctermfg=white    cterm=none      guifg=#b9b9b9 gui=none      guibg=#252525
+hi  PmenuSbar                term=none               ctermfg=white    cterm=none      guifg=#b9b9b9 gui=none      guibg=#252525
+hi  PmenuSel                 term=bold               ctermfg=white    cterm=bold      guifg=#f7f7f7 gui=bold      guibg=#252525
+hi  PmenuThumb               term=none               ctermfg=white    cterm=none      guifg=#b9b9b9 gui=none      guibg=#101010
 hi  SignColumn               term=none               ctermfg=darkgray cterm=none      guifg=#8e8e8e gui=none      guibg=#101010
-hi  Special                  term=none               ctermfg=gray     cterm=bold      guifg=#b9b9b9 gui=bold      guibg=#101010
-hi  Statement                term=bold               ctermfg=gray     cterm=bold      guifg=#b9b9b9 gui=bold      guibg=#101010
+hi  Special                  term=none               ctermfg=white    cterm=bold      guifg=#b9b9b9 gui=bold      guibg=#101010
+hi  Statement                term=bold               ctermfg=white    cterm=bold      guifg=#b9b9b9 gui=bold      guibg=#101010
 hi  String                   term=none               ctermfg=green    cterm=none      guifg=#9ca54e gui=none      guibg=#101010
-hi  Type                     term=bold               ctermfg=gray     cterm=none      guifg=#b9b9b9 gui=none      guibg=#101010
+hi  Type                     term=bold               ctermfg=white    cterm=none      guifg=#b9b9b9 gui=none      guibg=#101010
 hi  VertSplit                term=none               ctermfg=black    cterm=none      guifg=#101010 gui=none      guibg=#101010
 hi  Visual                   term=none               ctermfg=none     cterm=reverse   guifg=none    gui=reverse   guibg=none
-hi  VisualNOS                term=none               ctermfg=gray     cterm=none      guifg=#b9b9b9 gui=none      guibg=#252525
-hi  DiagnosticUnderlineError term=underline          ctermfg=gray     cterm=underline guifg=#b9b9b9 gui=underline guibg=#101010 guisp=none
+hi  VisualNOS                term=none               ctermfg=white    cterm=none      guifg=#b9b9b9 gui=none      guibg=#252525
+hi  DiagnosticUnderlineError term=underline          ctermfg=white    cterm=underline guifg=#b9b9b9 gui=underline guibg=#101010 guisp=none
 hi  ExtraWhitespace          term=underline          ctermfg=red      cterm=underline guifg=#ce5253 gui=underline guibg=#2f1515
 hi  Error                    term=reverse            ctermfg=red      cterm=reverse   guifg=#ce5252 gui=reverse   guibg=#101010
+hi  StatusLine               term=none               ctermfg=white    cterm=underline guifg=#b9b9b9 gui=underline guibg=#101010
+hi  StatusLineNC             term=none               ctermfg=darkgray cterm=underline guifg=#6e6e6e gui=underline guibg=#101010
 hi! link                     DiagnosticUnderlineHint DiagnosticUnderlineError
 hi! link                     DiagnosticUnderlineInfo DiagnosticUnderlineError
 hi! link                     DiagnosticUnderlineOk   DiagnosticUnderlineError
@@ -95,8 +99,6 @@ hi! link                     Repeat                  Normal
 hi! link                     Special                 Normal
 hi! link                     SpecialChar             Normal
 hi! link                     Statement               Normal
-hi! link                     StatusLine              Normal
-hi! link                     StatusLineNC            Normal
 hi! link                     StatusLineTerm          Normal
 hi! link                     StatusLineTermNC        Normal
 hi! link                     StorageClass            Normal

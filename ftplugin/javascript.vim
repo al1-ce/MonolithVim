@@ -1,3 +1,3 @@
-set omnifunc=javascriptComplete#CompleteJS
-so $VIMRUNTIME/autoload/javascriptComplete.vim
+set omnifunc=javascriptcomplete#CompleteJS
+so $VIMRUNTIME/autoload/javascriptcomplete.vim
 
