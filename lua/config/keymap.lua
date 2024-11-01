@@ -24,6 +24,7 @@ noremap("n", "<A-down>",  "<C-w>j", { desc = "Focuses lower pane" })
 noremap("n", "<leader>ss", "<CMD>split<CR>", { desc = "[S]plit [S]horisontaly" })
 noremap("n", "<leader>sv", "<CMD>vsplit<CR>", { desc = "[S]plit [V]ertically" })
 
+noremap("n", "<leader>gg", "<CMD>tab sp<CR>", { desc = "Opens current buffer in new tab" })
 
 -- - ----------------------------------------------------------------------------- -
 -- -                                    Scroll                                     -
@@ -41,6 +42,8 @@ noremap('i', '<S-ScrollWheelDown>', '<C-o>3zl', { desc = "Scrolls left" })
 noremap('i', '<Esc>', '<Esc>l', { desc = "Makes insert exit at correct spot" });
 noremap("n", "<C-i>", "<C-i>",  { desc = "Jump motion fix" })
 noremap("n", "U", "V:s/\\s\\+/\\r/g<cr>", { desc = "Unjoin lines (don't need really linewise undo)" })
+noremap("n", "<leader>tv", "<cmd>vsp term://$SHELL<cr>", { desc = "[T]erminal [V]split" })
+noremap("n", "<leader>ts", "<cmd>sp term://$SHELL<cr>",  { desc = "[T]erminal [S]plit" })
 
 -- - ----------------------------------------------------------------------------- -
 -- -                               Buffer navigation                               -
@@ -189,7 +192,7 @@ noremap("n", "<A-S-.>", "<cmd>tabmove +1<cr>", { desc = "Moves tab right" })
 noremap("n", "<A-S-,>", "<cmd>tabmove -1<cr>", { desc = "Moves tab left" })
 
 noremap("n", "<leader>tn", "<cmd>tabnew<cr>", { desc = "[T]ab [N]ew" })
-noremap("n", "<leader>tw", "<cmd>tabclose<cr>", { desc = "[T]ab [C]lose" })
+noremap("n", "<leader>tc", "<cmd>tabclose<cr>", { desc = "[T]ab [C]lose" })
 noremap("n", "<leader>to", "<cmd>tabonly<cr>", { desc = "[T]ab [O]nly" })
 
 noremap("n", "<leader>t1", "1gt", { desc = "Go to [t]ab [1]" })
