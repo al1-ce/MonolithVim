@@ -176,8 +176,8 @@ noremap("o", "0",  ":norm v0<cr>",   { desc = "To start of line text object" })
 -- -                                 Diff editing                                  -
 -- - ----------------------------------------------------------------------------- -
 
-noremap("n", "<leader>df", "/=======<cr><cmd>nohl<cr>", { desc = "[D]iff [F]ind" })
-noremap("n", "<leader>dF", "?=======<cr><cmd>nohl<cr>", { desc = "[D]iff [F]ind backwards" })
+noremap("n", "<leader>df", "/=======<cr><cmd>nohl<cr>zz", { desc = "[D]iff [F]ind" })
+noremap("n", "<leader>dF", "?=======<cr><cmd>nohl<cr>zz", { desc = "[D]iff [F]ind backwards" })
 noremap("n", "<leader>di", "mf/>>>>>>> <cr>mt?<<<<<<< <cr>mk'fV'tx'kdd<cmd>nohl<cr>", { desc = "[D]iff [I]ncomming" })
 noremap("n", "<leader>do", "mf?<<<<<<< <cr>mt/>>>>>>> <cr>mk'fV'tx'kdd<cmd>nohl<cr>", { desc = "[D]iff [O]utgoing" })
 noremap("n", "<leader>db", "dd?<<<<<<< <cr>dd/>>>>>>> <cr>dd<cmd>nohl<cr>", { desc = "[D]iff [K]eep both" })

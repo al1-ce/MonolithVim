@@ -63,11 +63,11 @@ return {
                             colored = false,
                             symbols = { added = '+', modified = '~', removed = '-' },
                         },
-                        {
-                            'diagnostics',
-                            colored = false,
-                            symbols = { error = 'e', warn = 'w', info = 'i', hint = 'h' },
-                        },
+                        -- {
+                        --     'diagnostics',
+                        --     colored = false,
+                        --     symbols = { error = 'e', warn = 'w', info = 'i', hint = 'h' },
+                        -- },
                         'filename',
                     },
                     lualine_x = {

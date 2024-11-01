@@ -1,14 +1,11 @@
 -- nvim settings
 
-if vim.g.vim_distro == "despair.nvim" then
-    vim.opt.shortmess = "filnxtToOF"
-    vim.loader.enable()
-    vim.opt.cmdheight = 1 -- cmd height (set to 0 if no noice)
-elseif vim.g.vim_distro == "monolith.nvim" then
+if vim.g.vim_distro == "monolith.nvim" then
     vim.opt.shortmess = "filnxtToOFI"
     vim.opt.cmdheight = 0 -- cmd height (set to 0 if no noice)
 else
     vim.opt.shortmess = "filnxtToOF"
+    vim.loader.enable()
     vim.opt.cmdheight = 1 -- cmd height (set to 0 if no noice)
 end
 
@@ -20,6 +17,7 @@ vim.o.signcolumn            = "no" -- removes gutter
 vim.o.virtualedit           = "onemore" -- allow to go a single char after eol
 vim.o.linebreak             = true -- wraps lines by words (softbreak)
 vim.o.cursorlineopt         = "screenline"
+vim.o.laststatus            = 3
 
 vim.opt.autoread            = true   -- default value, autoreload file
 vim.opt.colorcolumn         = '0'    -- 80 symbol split

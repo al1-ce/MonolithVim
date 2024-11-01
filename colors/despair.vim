@@ -63,8 +63,8 @@ hi  VisualNOS                term=none               ctermfg=white    cterm=none
 hi  DiagnosticUnderlineError term=underline          ctermfg=white    cterm=underline guifg=#b9b9b9 gui=underline guibg=#101010 guisp=none
 hi  ExtraWhitespace          term=underline          ctermfg=red      cterm=underline guifg=#ce5253 gui=underline guibg=#2f1515
 hi  Error                    term=reverse            ctermfg=red      cterm=reverse   guifg=#ce5252 gui=reverse   guibg=#101010
-hi  StatusLine               term=none               ctermfg=white    cterm=underline guifg=#b9b9b9 gui=underline guibg=#101010
-hi  StatusLineNC             term=none               ctermfg=darkgray cterm=underline guifg=#6e6e6e gui=underline guibg=#101010
+"hi  StatusLine               term=none               ctermfg=white    cterm=underline guifg=#b9b9b9 gui=underline guibg=#101010
+"hi  StatusLineNC             term=none               ctermfg=darkgray cterm=underline guifg=#6e6e6e gui=underline guibg=#101010
 hi! link                     DiagnosticUnderlineHint DiagnosticUnderlineError
 hi! link                     DiagnosticUnderlineInfo DiagnosticUnderlineError
 hi! link                     DiagnosticUnderlineOk   DiagnosticUnderlineError
@@ -99,6 +99,8 @@ hi! link                     Repeat                  Normal
 hi! link                     Special                 Normal
 hi! link                     SpecialChar             Normal
 hi! link                     Statement               Normal
+hi! link                     StatusLine              Normal
+hi! link                     StatusLineNC            Normal
 hi! link                     StatusLineTerm          Normal
 hi! link                     StatusLineTermNC        Normal
 hi! link                     StorageClass            Normal
