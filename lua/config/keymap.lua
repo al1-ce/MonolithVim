@@ -21,6 +21,24 @@ noremap("n", "<A-right>", "<C-w>l", { desc = "Focuses pane to the right" })
 noremap("n", "<A-up>",    "<C-w>k", { desc = "Focuses upper pane" })
 noremap("n", "<A-down>",  "<C-w>j", { desc = "Focuses lower pane" })
 
+noremap("n", "<A-C-h>",     "<C-w><", { desc = "Focuses pane to the left" })
+noremap("n", "<A-C-l>",     "<C-w>>", { desc = "Focuses pane to the right" })
+noremap("n", "<A-C-k>",     "<C-w>-", { desc = "Focuses upper pane" })
+noremap("n", "<A-C-j>",     "<C-w>+", { desc = "Focuses lower pane" })
+noremap("n", "<A-C-left>",  "<C-w><", { desc = "Focuses pane to the left" })
+noremap("n", "<A-C-right>", "<C-w>>", { desc = "Focuses pane to the right" })
+noremap("n", "<A-C-up>",    "<C-w>-", { desc = "Focuses upper pane" })
+noremap("n", "<A-C-down>",  "<C-w>+", { desc = "Focuses lower pane" })
+
+noremap("n", "<A-S-h>",     "<C-w>H", { desc = "Focuses pane to the left" })
+noremap("n", "<A-S-l>",     "<C-w>L", { desc = "Focuses pane to the right" })
+noremap("n", "<A-S-k>",     "<C-w>K", { desc = "Focuses upper pane" })
+noremap("n", "<A-S-j>",     "<C-w>J", { desc = "Focuses lower pane" })
+noremap("n", "<A-S-left>",  "<C-w>H", { desc = "Focuses pane to the left" })
+noremap("n", "<A-S-right>", "<C-w>L", { desc = "Focuses pane to the right" })
+noremap("n", "<A-S-up>",    "<C-w>K", { desc = "Focuses upper pane" })
+noremap("n", "<A-S-down>",  "<C-w>J", { desc = "Focuses lower pane" })
+
 noremap("n", "<leader>ss", "<CMD>split<CR>", { desc = "[S]plit [S]horisontaly" })
 noremap("n", "<leader>sv", "<CMD>vsplit<CR>", { desc = "[S]plit [V]ertically" })
 
@@ -63,11 +81,17 @@ noremap("n", "N", "Nzzzv", { desc = "Keep search centered" })
 -- -                                 Text editing                                  -
 -- - ----------------------------------------------------------------------------- -
 
-noremap("n", "<Tab>",   ">>", { desc = "Shifts line to right" })
-noremap("n", "<S-Tab>", "<<", { desc = "Shifts line to left" })
+-- noremap("n", "<Tab>",   ">>", { desc = "Shifts line to right" })
+-- noremap("n", "<S-Tab>", "<<", { desc = "Shifts line to left" })
 
-noremap("v", "<Tab>",   ">`<V`>", { desc = "Shifts lines right" })
-noremap("v", "<S-Tab>", "<`<V`>", { desc = "Shifts lines left" })
+noremap("n", ">", ">>", { desc = "Indent right" })
+noremap("n", "<", "<<", { desc = "Indent left" })
+
+noremap("v", ">", ">gv", { desc = "Indent right and reselect" })
+noremap("v", "<", "<gv", { desc = "Indent left and reselect" })
+
+-- noremap("v", "<Tab>",   ">`<V`>", { desc = "Shifts lines right" })
+-- noremap("v", "<S-Tab>", "<`<V`>", { desc = "Shifts lines left" })
 
 noremap("n", "yA", "<cmd>%y<cr>", { desc = "[Y]anks [A]ll file" })
 
@@ -111,7 +135,22 @@ noremap("n", "<leader>ce", "<cmd>edit $MYVIMRC <bar> tcd %:h<cr>", { desc = "[C]
 -- - ----------------------------------------------------------------------------- -
 
 noremap("n", "<leader>co", "<cmd>copen<cr>", { desc = "[C][O]pen" })
+noremap("n", "]c", "<cmd>cnext<cr>",         { desc = "Go next quickfix" })
+noremap("n", "[c", "<cmd>cprev<cr>",         { desc = "Go prev quickfix" })
+noremap("n", "]C", "<cmd>clast<cr>",         { desc = "Go last quickfix" })
+noremap("n", "[C", "<cmd>cfirst<cr>",        { desc = "Go first quickfix" })
+
 noremap("n", "<leader>lo", "<cmd>lopen<cr>", { desc = "[L][O]pen" })
+noremap("n", "]l", "<cmd>lnext<cr>",         { desc = "Go next loclist" })
+noremap("n", "[l", "<cmd>lprev<cr>",         { desc = "Go prev loclist" })
+noremap("n", "]L", "<cmd>llast<cr>",         { desc = "Go last loclist" })
+noremap("n", "[L", "<cmd>lfirst<cr>",        { desc = "Go first loclist" })
+
+noremap("n", "]b", "<cmd>bnext<cr>",         { desc = "Go to next buffer" })
+noremap("n", "[b", "<cmd>bprevious<cr>",     { desc = "Go to prev buffer" })
+noremap("n", "]B", "<cmd>blast<cr>",         { desc = "Go to first buffer" })
+noremap("n", "[B", "<cmd>bfirst<cr>",        { desc = "Go to last buffer" })
+-- noremap("n", "<leader>bc", "<cmd>bdelete<cr>", { desc = "Close current buffer" })
 
 -- - ----------------------------------------------------------------------------- -
 -- -                                   Remapping                                   -

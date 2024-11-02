@@ -1,8 +1,10 @@
 vim.cmd([[
-    set omnifunc=cComplete#Complete
-    so $VIMRUNTIME/autoload/ccomplete.vim
+    "set omnifunc=ccomplete#Complete
+    "so $VIMRUNTIME/autoload/ccomplete.vim
+    set complete=.,w,b,u,t
+    set omnifunc=syntaxcomplete#Complete
 
-    setlocal path=.,,..,../..,./*,./*/*,../*,~/,~/**,/usr/include/*
+    setlocal path=.,,..,../..,./*,./*/*,../*,~/,~/**,/usr/include/*,**
 ]])
 
 -- vim.api.nvim_buf_set_keymap(0, "n", "<leader>gh",  "<cmd>call Switch_To_Header_Source()<cr>",     { desc = "[G]o [H]eader",          silent = true, noremap = true })

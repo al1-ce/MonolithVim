@@ -1,9 +1,14 @@
-local noremap = require("map").noremap
-local nr = function(from, to)
-    noremap("n", from, to, { remap = true, buffer = true, nowait = true })
-end
+local bufnoremap = require("map").bufnoremap
+local bufremap = require("map").bufremap
 
-nr("o", "%")
-nr("r", "R")
-nr("x", "D")
-nr("q", "<C-^>")
+-- nr("s", "o")
+bufremap("n", ".", "gh")
+bufremap("n", "r", "R")
+bufremap("n", "x", "D")
+bufremap("n", "q", "<C-^>")
+bufremap("n", "fi", "qf")
+bufremap("n", "<C-cr>", "gn")
+bufremap("n", "h", "-")
+bufnoremap("n", "o", "<Plug>NetrwOpenFile")
+bufnoremap("n", "l", "<Plug>NetrwLocalBrowseCheck")
+

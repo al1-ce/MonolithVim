@@ -1,12 +1,4 @@
 return {
-    -- Auto-close brackets
-    {
-        "altermo/ultimate-autopair.nvim",
-        event = { "InsertEnter", "CmdlineEnter" },
-        branch = "v0.6", -- TODO: check later
-        config = true,
-        enabled = false,
-    },
     -- Colour picker and colour background
     {
         "uga-rosa/ccc.nvim",

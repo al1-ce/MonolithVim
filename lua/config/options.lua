@@ -18,6 +18,8 @@ vim.o.virtualedit           = "onemore" -- allow to go a single char after eol
 vim.o.linebreak             = true -- wraps lines by words (softbreak)
 vim.o.cursorlineopt         = "screenline"
 vim.o.laststatus            = 3
+vim.o.path                  = vim.o.path .. ",**"
+vim.o.completeopt            = "menuone,menu,longest,preview"
 
 vim.opt.autoread            = true   -- default value, autoreload file
 vim.opt.colorcolumn         = '0'    -- 80 symbol split
@@ -57,14 +59,17 @@ vim.opt.viewdir = backup_dir .. '/view'       -- where to store files for :mkvie
 vim.opt.shada = "'100,<50,f50,n"..backup_dir.."/shada/shada"
 
 -- netrw config
-vim.g.netrw_banner          = 0
 -- vim.g.netrw_cursor          = 5
-vim.g.netrw_keepdir         = 0
-vim.g.netrw_keepj           = ''
+-- vim.g.netrw_browse_split    = 4 -- make cr behave open vsplit prev
 -- vim.g.netrw_list_hide       = [[\(^\|\s\s\)\zs\.\S\+]]
+vim.g.netrw_banner          = 0
+vim.g.netrw_keepdir         = 1
+vim.g.netrw_keepj           = ''
+vim.g.netrw_altv            = 1
 vim.g.netrw_list_hide       = "^\\.\\.\\=/\\=$"
--- vim.g.netrw_liststyle       = 1
+vim.g.netrw_liststyle       = 0 -- 3 =  show as tree
 vim.g.netrw_localcopydircmd = 'cp -r'
+vim.g.netrw_clipboard       = 0
 
 vim.g["lsp-timeout-config"] = {
     stopTimeout  = 1000 * 60 * 5, -- ms, timeout before stopping all LSP servers
