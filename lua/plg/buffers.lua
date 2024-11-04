@@ -12,15 +12,6 @@ return {
             close_buffers_with_windows = false,
         }
     },
-    -- remember last edited line
-    {
-        'ethanholz/nvim-lastplace',
-        opts = {
-            lastplace_ignore_buftype = { "quickfix", "nofile", "help", "alpha" },
-            lastplace_ignore_filetype = { "gitcommit", "gitrebase", "svn", "hgcommit" },
-            lastplace_open_folds = true
-        }
-    },
     {
         'oredaze/myJABS.nvim', -- fork of a fork of a fork... of a fork
         -- 'matbme/JABS.nvim',

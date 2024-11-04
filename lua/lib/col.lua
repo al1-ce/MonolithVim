@@ -5,6 +5,7 @@ local M = { on_reload_listeners = {} }
 local is_setup = false
 
 M.on_reload = function(func) table.insert(M.on_reload_listeners, func) end
+M.on_reload_now = function(func) func(); table.insert(M.on_reload_listeners, func) end
 
 M.source = function()
     local config_loc = vim.fn.fnamemodify(vim.fn.expand("$HOME"), ":p:h") .. "/.config/neovim-theme.lua"

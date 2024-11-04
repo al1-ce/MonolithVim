@@ -250,5 +250,5 @@ local function colorscheme_set()
     ]])
 end
 
-vim.api.nvim_create_user_command("SilColorschemeSet", colorscheme_set, {})
+vim.api.nvim_create_user_command("PlugColorschemeSet", colorscheme_set, {})
 

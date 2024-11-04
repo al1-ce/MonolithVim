@@ -10,12 +10,12 @@ autocmd('TextYankPost', {
 })
 
 augroup('FixColorScheme', { clear = true })
+-- ColorScheme here is event
 autocmd("ColorScheme", {
     group = "FixColorScheme",
     callback = function ()
-    -- dofile(vim.fn.stdpath('config') .. "/lua/theme.lua")
-    vim.cmd("SilColorschemeSet")
-end
+        vim.cmd("PlugColorschemeSet")
+    end
 })
 
 vim.cmd([[
@@ -29,14 +29,16 @@ augroup reloadfileifchanged
 augroup END
 ]])
 
-if vim.g.vim_distro == "despair.nvim" then
     -- reopen at last edited place
-    vim.api.nvim_create_autocmd({ "BufReadPost" }, {
-        pattern = { "*" },
-        callback = function()
-            vim.api.nvim_exec('silent! normal! g`"zv', false)
-        end,
-    })
-end
+vim.api.nvim_create_autocmd({ "BufReadPost" }, {
+    pattern = { "*" },
+    callback = function()
+        vim.api.nvim_exec('silent! normal! g`"zv', false)
+    end,
+})
+
+augroup("ToggleCursorLine", { clear = true })
+autocmd({"WinEnter", "BufEnter"}, { group = "ToggleCursorLine", pattern = "*", command = "setlocal cursorline" })
+autocmd({"WinLeave", "BufLeave"}, { group = "ToggleCursorLine", pattern = "*", command = "setlocal nocursorline" })
 
 

@@ -208,26 +208,11 @@ noremap("n", "<leader>db", "dd?<<<<<<< <cr>dd/>>>>>>> <cr>dd<cmd>nohl<cr>", { de
 -- -                                Tab navigation                                -
 -- - ---------------------------------------------------------------------------- -
 
-noremap("n", "<A-.>", "<cmd>tabnext<cr>",     { desc = "Opens next tab" })
-noremap("n", "<A-,>", "<cmd>tabprevious<cr>", { desc = "Opens previous tab" })
+noremap("n", "]t", "<cmd>tabnext<cr>",     { desc = "Opens next tab" })
+noremap("n", "[t", "<cmd>tabprevious<cr>", { desc = "Opens previous tab" })
 
-noremap("n", "<A-S-.>", "<cmd>tabmove +1<cr>", { desc = "Moves tab right" })
-noremap("n", "<A-S-,>", "<cmd>tabmove -1<cr>", { desc = "Moves tab left" })
-
-noremap("n", "<leader>tn", "<cmd>tabnew<cr>", { desc = "[T]ab [N]ew" })
-noremap("n", "<leader>tc", "<cmd>tabclose<cr>", { desc = "[T]ab [C]lose" })
-noremap("n", "<leader>to", "<cmd>tabonly<cr>", { desc = "[T]ab [O]nly" })
-
-noremap("n", "<leader>t1", "1gt", { desc = "Go to [t]ab [1]" })
-noremap("n", "<leader>t2", "2gt", { desc = "Go to [t]ab [2]" })
-noremap("n", "<leader>t3", "3gt", { desc = "Go to [t]ab [3]" })
-noremap("n", "<leader>t4", "4gt", { desc = "Go to [t]ab [4]" })
-noremap("n", "<leader>t5", "5gt", { desc = "Go to [t]ab [5]" })
-noremap("n", "<leader>t6", "6gt", { desc = "Go to [t]ab [6]" })
-noremap("n", "<leader>t7", "7gt", { desc = "Go to [t]ab [7]" })
-noremap("n", "<leader>t8", "8gt", { desc = "Go to [t]ab [8]" })
-noremap("n", "<leader>t9", "9gt", { desc = "Go to [t]ab [9]" })
-noremap("n", "<leader>t0", "<cmd>tablast<cr>", { desc = "Go to last tab" })
+noremap("n", "]T", "<cmd>tabmove +1<cr>", { desc = "Moves tab right" })
+noremap("n", "[T", "<cmd>tabmove -1<cr>", { desc = "Moves tab left" })
 
 -- - ---------------------------------------------------------------------------- -
 -- -                                Tips and notes                                -

@@ -7,6 +7,8 @@ vim.cmd([[
     setlocal path=.,,..,../..,./*,./*/*,../*,~/,~/**,/usr/include/*,**
 ]])
 
+vim.opt_local.commentstring = "// %s"
+
 -- vim.api.nvim_buf_set_keymap(0, "n", "<leader>gh",  "<cmd>call Switch_To_Header_Source()<cr>",     { desc = "[G]o [H]eader",          silent = true, noremap = true })
 -- vim.api.nvim_buf_set_keymap(0, "n", "<leader>gsh", "<cmd>call Switch_To_Header_Source_SP()<cr>",  { desc = "[G]o [S]plit [H]eader",  silent = true, noremap = true })
 -- vim.api.nvim_buf_set_keymap(0, "n", "<leader>gvh", "<cmd>call Switch_To_Header_Source_VSP()<cr>", { desc = "[G]o [V]split [H]eader", silent = true, noremap = true })

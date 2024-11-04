@@ -2,6 +2,14 @@
 local augroup = vim.api.nvim_create_augroup   -- Create/get autocommand group
 local autocmd = vim.api.nvim_create_autocmd   -- Create autocommand
 
+local function setft(ftype)
+    vim.bo.filetype = ftype
+end
+
+-- - ---------------------------------------------------------------------------- -
+-- -                              ZDoom lump parsing                              -
+-- - ---------------------------------------------------------------------------- -
+
 local zdoomlumps = {}
 local runtimepaths = vim.api.nvim_list_runtime_paths()
 
@@ -9,6 +17,7 @@ local function list_dir(dir)
     return vim.split(vim.fn.glob(dir .. "/*"), '\n', { trimempty = true })
 end
 
+-- possible use in the future?
 for _, path in ipairs(runtimepaths) do
     local files = list_dir(path .. "/syntax/zdoomlumps")
     for _, file in ipairs(files) do
@@ -23,9 +32,9 @@ for _, path in ipairs(runtimepaths) do
     end
 end
 
-local function setft(ftype)
-    vim.bo.filetype = ftype
-end
+-- - ---------------------------------------------------------------------------- -
+-- -                                   Shebang                                    -
+-- - ---------------------------------------------------------------------------- -
 
 local shebangList = {
     ["node"] = "javascript",
@@ -73,9 +82,12 @@ local function concat(arrays)
     return nt
 end
 
--------------------- Autocmd --------------------------------------
 do -- start autocmd block
-    -- Languages
+    -- - ---------------------------------------------------------------------------- -
+    -- -                                   Autocmd                                    -
+    -- - ---------------------------------------------------------------------------- -
+
+    -- - -------------------------------- Languages --------------------------------- -
     local c = {"*.c", "*.h"}
     local cpp = {"*.cpp", "*.hpp"}
     local cs = {"*.cs"}
@@ -104,9 +116,8 @@ do -- start autocmd block
     local event_filetype = { "BufEnter", "BufNew" }
 
     augroup("SetCustomFiletypes", { clear = true })
-    augroup("ToggleCursorLine", { clear = true })
 
-        -- Templates
+    -- - -------------------------------- Templates --------------------------------- -
     -- D templates, template!val and template!(val)
     autocmd(event_filetype, { group = "SetCustomFiletypes", pattern = concat(bang_generics), callback = function() setCustomHighlight("d") end })
     -- C++ templates, template<val>, no need for custom
@@ -118,24 +129,6 @@ do -- start autocmd block
 
     -- Shebang
     autocmd(event_filetype, { group = "SetCustomFiletypes", pattern = {"*"}, callback = detectShebangPattern })
-
-    autocmd({"WinEnter", "BufEnter"}, { group = "ToggleCursorLine", pattern = "*", command = "setlocal cursorline" })
-    autocmd({"WinLeave", "BufLeave"}, { group = "ToggleCursorLine", pattern = "*", command = "setlocal nocursorline" })
-
-    -- Set filetypes
-    -- autocmd(event_filetype, { group = "SetCustomFiletypes", pattern = {"*.sdl"}, callback = function() setft("sdlang") end })
-    -- autocmd(event_filetype, { group = "SetCustomFiletypes", pattern = {"*.bf"}, callback = function() setft("brainfuck") end })
-    -- autocmd(event_filetype, { group = "SetCustomFiletypes", pattern = {"*.jpp", "*.jspp"}, callback = function() setft("jspp") end })
-    -- autocmd(event_filetype, { group = "SetCustomFiletypes", pattern = {"*.fasm"}, callback = function() setft("fasm") end })
-    -- autocmd(event_filetype, { group = "SetCustomFiletypes", pattern = {"*.c3"}, callback = function() setft("c3") end })
-    -- autocmd(event_filetype, { group = "SetCustomFiletypes", pattern = {"*.vs", "*.fs"}, callback = function() setft("glsl") end })
-
-    -- ;h - to edit c headers and source files faster
-    -- use :Ouroboros instead
-    -- vim.cmd([[au BufEnter,BufNew *.c nnoremap <silent> ;h :e %<.h<CR>]])
-    -- vim.cmd([[au BufEnter,BufNew *.h nnoremap <silent> ;h :e %<.c<CR>]])
-    -- vim.cmd([[au BufEnter,BufNew *.hpp nnoremap <silent> ;h :e %<.cpp<CR>]])
-    -- vim.cmd([[au BufEnter,BufNew *.cpp nnoremap <silent> ;h :e %<.hpp<CR>]])
 end -- end autocmd block
 
 

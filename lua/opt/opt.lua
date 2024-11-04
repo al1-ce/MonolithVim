@@ -1,12 +1,10 @@
 -- nvim settings
 
 if vim.g.vim_distro == "monolith.nvim" then
-    vim.opt.shortmess = "filnxtToOFI"
-    vim.opt.cmdheight = 0 -- cmd height (set to 0 if no noice)
+    vim.opt.cmdheight = 0
 else
-    vim.opt.shortmess = "filnxtToOF"
     vim.loader.enable()
-    vim.opt.cmdheight = 1 -- cmd height (set to 0 if no noice)
+    vim.opt.cmdheight = 1
 end
 
 vim.o.background            = "dark" -- or "light" for light mode
@@ -21,6 +19,7 @@ vim.o.laststatus            = 3
 vim.o.path                  = vim.o.path .. ",**"
 vim.o.completeopt            = "menuone,menu,longest,preview"
 
+vim.opt.shortmess           = "filnxtToOF"
 vim.opt.autoread            = true   -- default value, autoreload file
 vim.opt.colorcolumn         = '0'    -- 80 symbol split
 vim.opt.cursorcolumn        = false  -- show cursor column
