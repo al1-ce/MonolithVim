@@ -1,5 +1,7 @@
 # monolith.nvim
 
+A sister-project of [despair.nvim](https://github.com/al1-ce/despair.nvim).
+
 The original personal nvim distro. Many plugins (there were much more before, see old commits or [old readme](OLD-README.md)).
 
 This distro will still kind of be here but it won't be the main one since I found it nice to have it more minimal with my other personal distro [despair.nvim](https://github.com/al1-ce/despair.nvim).
