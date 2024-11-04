@@ -1,28 +1,21 @@
-require("setglobals")
+require("lib.glb")
 
 vim.g.vim_distro     = "monolith.nvim"
 vim.g.mapleader      = ";"
 vim.g.maplocalleader = ","
 
 -- options and local plugins
-include "config.options"
-include "config.autocmd"
-include "config.setup"
+include "opt.opt"
+include "lib.col"
+include "lib.sdp"
 
 -- load after because of big slowdown
-include "config.lazy"
-include "config.keymap"
+include "opt.key"
 
--- some methods that are missing in lua
-include "utils.tblfuncs"
-include "utils.strmethods"
+include "plf.lzy"
 
 -- plugins and pluin accessories
-include "after.load"
-
--- so that all overrides are loaded
-include "config.filetypes"
-include "config.commands"
+include "aft.src"
 
 -- todo
 -- check yukimemi/dvpm
