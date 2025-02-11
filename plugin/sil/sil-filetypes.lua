@@ -66,8 +66,8 @@ local function detectShebangPattern()
            sb:find("^#!/bin/env %-S " .. k) ~= nil or
            sb:find("^#!/usr/bin/env " .. k) ~= nil or
            sb:find("^#!/usr/bin/env %-S " .. k) ~= nil then
-            setft(v)
-            if vim.g.colors_name ~= 'despair' then setCustomHighlight(v) end
+              setft(v)
+              if vim.g.colors_name ~= 'despair' then setCustomHighlight(v) end
         end
     end
 end

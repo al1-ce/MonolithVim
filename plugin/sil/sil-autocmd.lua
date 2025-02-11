@@ -33,7 +33,6 @@ augroup END
 augroup("LastEditGoto", { clear = true })
 vim.api.nvim_create_autocmd({ "BufReadPost" }, {
     pattern = { "*" },
-    group = "LastEditGoto",
     callback = function()
         vim.api.nvim_exec('silent! normal! g`"zv', false)
     end,
@@ -42,17 +41,4 @@ vim.api.nvim_create_autocmd({ "BufReadPost" }, {
 augroup("ToggleCursorLine", { clear = true })
 autocmd({"WinEnter", "BufEnter"}, { group = "ToggleCursorLine", pattern = "*", command = "setlocal cursorline" })
 autocmd({"WinLeave", "BufLeave"}, { group = "ToggleCursorLine", pattern = "*", command = "setlocal nocursorline" })
-
--- augroup("FixTerminalOpts", { clear = true })
--- autocmd({"BufWinEnter", "WinEnter", "BufEnter"},  {
---     group = "ToggleCursorLine",
---     pattern = "*",
---     -- command = "setlocal nocursorline"
---     callback = function ()
---         if vim.bo.buftype == "terminal" then
---             vim.opt.number = false
---             vim.opt.relativenumber = false
---         end
---     end
--- } )
 
