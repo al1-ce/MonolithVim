@@ -32,11 +32,8 @@ noremap('i', '<S-ScrollWheelDown>', '<C-o>3zl', { desc = "Scrolls left" })
 -- -                                     Misc                                     -
 -- - ---------------------------------------------------------------------------- -
 
-noremap('i', '<Esc>', '<Esc>l', { desc = "Makes insert exit at correct spot" });
 noremap("n", "<C-i>", "<C-i>",  { desc = "Jump motion fix" })
-noremap("n", "U", "V:s/\\s\\+/\\r/g<cr>", { desc = "Unjoin lines (don't need really linewise undo)" })
-noremap("n", "<leader>tv", "<cmd>vsp term://$SHELL<cr>", { desc = "[T]erminal [V]split" })
-noremap("n", "<leader>ts", "<cmd>sp term://$SHELL<cr>",  { desc = "[T]erminal [S]plit" })
+noremap("n", "U", "V:s/\\s\\+/\\r/g<cr>:nohl<cr>", { desc = "Unjoin lines (don't need really linewise undo)" })
 
 -- - ---------------------------------------------------------------------------- -
 -- -                              Buffer navigation                               -
@@ -56,31 +53,11 @@ noremap("n", "N", "Nzzzv", { desc = "Keep search centered" })
 -- -                                 Text editing                                 -
 -- - ---------------------------------------------------------------------------- -
 
--- noremap("n", "<Tab>",   ">>", { desc = "Shifts line to right" })
--- noremap("n", "<S-Tab>", "<<", { desc = "Shifts line to left" })
-
 noremap("n", ">", ">>", { desc = "Indent right" })
 noremap("n", "<", "<<", { desc = "Indent left" })
 
 noremap("v", ">", ">gv", { desc = "Indent right and reselect" })
 noremap("v", "<", "<gv", { desc = "Indent left and reselect" })
-
--- noremap("v", "<Tab>",   ">`<V`>", { desc = "Shifts lines right" })
--- noremap("v", "<S-Tab>", "<`<V`>", { desc = "Shifts lines left" })
-
-noremap("n", "yA", "<cmd>%y<cr>", { desc = "[Y]anks [A]ll file" })
-
-noremap('i', '<A-S-up>',   '<Esc>"myy`["mPi', { desc = "Duplicates line up" })
-noremap('i', '<A-S-down>', '<Esc>"myy`]"mpi', { desc = "Duplicates line down" })
-
-noremap('v', '<A-S-up>',   '"mY`["mP`[V`]v', { desc = "Duplicates lines up" })
-noremap('v', '<A-S-down>', '"mY`]"mp`[V`]v', { desc = "Duplicates lines down" })
-
-noremap('i', '<A-S-k>', '<Esc>"myy`["mPi', { desc = "Duplicates line up" })
-noremap('i', '<A-S-j>', '<Esc>"myy`]"mpi', { desc = "Duplicates line down" })
-
-noremap('v', '<A-S-k>', '"mY`["mP`[V`]v', { desc = "Duplicates lines up" })
-noremap('v', '<A-S-j>', '"mY`]"mp`[V`]v', { desc = "Duplicates lines down" })
 
 noremap("n", "<Del>", function() keyfunc.delete_char(0) end, { desc = "Delete but into black hole" })
 noremap("i", "<Del>", function() keyfunc.delete_char(0) end, { desc = "Delete but into black hole" })
@@ -96,7 +73,7 @@ noremap("v", "<Del>", '"_x', { desc = "Deletes into black hole" });
 noremap("n", "<leader>fs", "<cmd>exe v:count ? v:count .. 'b' : 'b' .. (bufloaded(0) ? '#' : 'n')<cr>", { desc = "[F]ile [S]wap" })
 
 noremap("n", "<leader>fe", "<cmd>enew<cr>",  { desc = "[F]ile [E]dit" })
-noremap("n", "<leader>q", "<CMD>x<CR>",      { desc = "[Q]uits buffer" })
+noremap("n", "<leader>q", keyfunc.quit_buf,      { desc = "[Q]uits buffer" })
 noremap("n", "<leader>w", "<CMD>update<CR>", { desc = "[W]rites buffer" })
 
 -- - ---------------------------------------------------------------------------- -
@@ -146,16 +123,6 @@ noremap("v", "gx", keyfunc.open_link_vis,  { desc = "[G]oes into link with [X]DG
 -- -                                 Empty maps                                   -
 -- - ---------------------------------------------------------------------------- -
 
-noremap("i", "<S-up>",    "<C-o>v<up>",    { desc = "Selects text in visual mode" })
-noremap("i", "<S-down>",  "<C-o>v<down>",  { desc = "Selects text in visual mode" })
-noremap("i", "<S-left>",  "<C-o>v<left>",  { desc = "Selects text in visual mode" })
-noremap("i", "<S-right>", "<C-o>v<right>", { desc = "Selects text in visual mode" })
-
-noremap("i", "<C-S-up>",    "<C-o>v<C-up>",    { desc = "Selects text in visual mode" })
-noremap("i", "<C-S-down>",  "<C-o>v<C-down>",  { desc = "Selects text in visual mode" })
-noremap("i", "<C-S-left>",  "<C-o>v<C-left>",  { desc = "Selects text in visual mode" })
-noremap("i", "<C-S-right>", "<C-o>v<C-right>", { desc = "Selects text in visual mode" })
-
 noremap("v", "<S-down>", "<down>", { desc = "Prevent buffer scroll" })
 noremap("v", "<S-up>",   "<up>",   { desc = "Prevent buffer scroll" })
 
@@ -170,7 +137,12 @@ noremap("n", "<leader>os", "<cmd>Spell<cr>", { desc = "Toggle [O]ption - [S]pell
 -- -                                   Terminal                                   -
 -- - ---------------------------------------------------------------------------- -
 
-noremap("t", "<Esc>", [[<c-\><c-n>]], { desc = "Exits terminal insert mode" })
+noremap("n", "<leader>cv", ":vsp term://$SHELL<cr>:setlocal norelativenumber<cr>:setlocal nonumber<cr>", { desc = "[C]onsole [V]split" })
+noremap("n", "<leader>cs",  ":sp term://$SHELL<cr>:setlocal norelativenumber<cr>:setlocal nonumber<cr>", { desc = "[C]onsole [S]plit" })
+noremap("n", "<leader>ct",     ":term<cr>:setlocal norelativenumber<cr>:setlocal nonumber<cr>", { desc = "[C]urrent [T]erminal" })
+
+-- TODO: figure out better way
+noremap("t", "<c-v><c-v>", [[<c-\><c-n>]], { desc = "Exits terminal insert mode" })
 
 -- - ---------------------------------------------------------------------------- -
 -- -                                Code execution                                -
@@ -184,15 +156,18 @@ noremap("n", "<leader>xsl", "<cmd>vsplit /tmp/nvim-scratchpad.lua<cr><cmd>w<cr>"
 -- -                                 Textobjects                                  -
 -- - ---------------------------------------------------------------------------- -
 
-noremap("x", "il", "g_o^", { desc = "[I]n [L]ine text object" })
-noremap("x", "al", "$o^",  { desc = "[A]round [L]ine text object" })
+noremap("x", "il", "^og_",          { desc = "[I]n [L]ine text object" })
+noremap("x", "al", "0o$",           { desc = "[A]round [L]ine text object" })
 noremap("o", "il", ":norm vil<cr>", { desc = "[I]n [L]ine text object" })
 noremap("o", "al", ":norm val<cr>", { desc = "[A]round [L]ine text object" })
 
-noremap("o", "g$", ":norm vg$h<cr>", { desc = "To end of line text object" })
-noremap("o", "g_", ":norm vg_h<cr>", { desc = "To last char in line text object" })
-noremap("o", "^",  ":norm v^<cr>",   { desc = "To first char in line text object" })
-noremap("o", "0",  ":norm v0<cr>",   { desc = "To start of line text object" })
+noremap("x", "if", "gg0oG$",        { desc = "[I]n [F]ile" })
+noremap("o", "if", ":norm vif<cr>", { desc = "[I]n [F]ile" })
+
+noremap("o", "g$", ":norm vg$<cr>", { desc = "To end of line text object" })
+noremap("o", "g_", ":norm vg_<cr>", { desc = "To last char in line text object" })
+noremap("o", "^", ":norm v^<cr>",   { desc = "To first char in line text object" })
+noremap("o", "0", ":norm v0<cr>",   { desc = "To start of line text object" })
 
 -- - ---------------------------------------------------------------------------- -
 -- -                                 Diff editing                                 -
@@ -211,8 +186,8 @@ noremap("n", "<leader>db", "dd?<<<<<<< <cr>dd/>>>>>>> <cr>dd<cmd>nohl<cr>", { de
 noremap("n", "]t", "<cmd>tabnext<cr>",     { desc = "Opens next tab" })
 noremap("n", "[t", "<cmd>tabprevious<cr>", { desc = "Opens previous tab" })
 
-noremap("n", "]T", "<cmd>tabmove +1<cr>", { desc = "Moves tab right" })
-noremap("n", "[T", "<cmd>tabmove -1<cr>", { desc = "Moves tab left" })
+noremap("n", "]T", "<cmd>tabfirst<cr>", { desc = "Moves tab right" })
+noremap("n", "[T", "<cmd>tablast<cr>", { desc = "Moves tab left" })
 
 -- - ---------------------------------------------------------------------------- -
 -- -                                Tips and notes                                -
@@ -235,5 +210,4 @@ noremap("n", "[T", "<cmd>tabmove -1<cr>", { desc = "Moves tab left" })
 -- map to <nop> to disable
 
 -- Goal is to slowly move away from all those "normie" shortcuts
-
 

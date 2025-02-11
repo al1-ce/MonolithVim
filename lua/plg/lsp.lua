@@ -49,7 +49,7 @@ return {
             aggresive_mode = false,
             notification_engine = "fidget",
             excluded_lsp_clients = {
-                "null-ls", "jdtls", "marksman", "dartls"
+                "null-ls", "jdtls", "marksman", "dartls", "vtsls"
             }
         }
     },

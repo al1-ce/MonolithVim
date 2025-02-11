@@ -72,6 +72,15 @@ return {
                             lspconfig.lua_ls.setup({ capabilities = gen_default_capabilities() })
                         end
                     end,
+                    ['vtsls'] = function()
+                        lspconfig.vtsls.setup({
+                            init_options = {
+                                preferences = {
+                                    disableSuggestions = true,
+                                },
+                            },
+                        })
+                    end,
                 }
             })
 

@@ -145,5 +145,17 @@ M.comment_box = function()
     vim.fn.setpos(".", {0, vis_st, 1, 0})
 end
 
+M.quit_buf = function ()
+    if vim.bo.buftype == "terminal" then
+        if vim.fn.confirm("Do you want to delete terminal buffer?", "&Yes\n&No", 1) == 1 then
+            vim.cmd("bd!")
+        else
+            vim.cmd("x")
+        end
+    else
+        vim.cmd("x")
+    end
+end
+
 return M
 

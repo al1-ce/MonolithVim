@@ -30,9 +30,13 @@ vim.api.nvim_create_user_command("KeepCenter", function()
     if is_center then
         vim.keymap.del("n", "j")
         vim.keymap.del("n", "k")
+        vim.keymap.del("n", "<up>")
+        vim.keymap.del("n", "<down>")
     else
         vim.keymap.set("n", "j", "jzz", { silent = true, noremap = true })
         vim.keymap.set("n", "k", "kzz", { silent = true, noremap = true })
+        vim.keymap.set("n", "<down>", "jzz", { silent = true, noremap = true })
+        vim.keymap.set("n", "<up>", "kzz", { silent = true, noremap = true })
     end
     is_center = not is_center
 end, {})

@@ -250,5 +250,7 @@ local function colorscheme_set()
     ]])
 end
 
+colorscheme_set()
+
 vim.api.nvim_create_user_command("PlugColorschemeSet", colorscheme_set, {})
 

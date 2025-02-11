@@ -23,7 +23,7 @@ for _, path in ipairs(runtimepaths) do
     for _, file in ipairs(files) do
         file = vim.fn.fnamemodify(file, ":t")
         if file ~= "template-file.vim" then
-            local name = file:replace(".vim", "")
+            local name = file:gsub(".vim", "")
             local lname = name:lower()
             local cname = name:upper()
             zdoomlumps[lname .. ".txt"] = "zdoomlump"
@@ -67,7 +67,7 @@ local function detectShebangPattern()
            sb:find("^#!/usr/bin/env " .. k) ~= nil or
            sb:find("^#!/usr/bin/env %-S " .. k) ~= nil then
             setft(v)
-            if g.colors_name ~= 'despair' then setCustomHighlight(v) end
+            if vim.g.colors_name ~= 'despair' then setCustomHighlight(v) end
         end
     end
 end

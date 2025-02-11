@@ -21,8 +21,8 @@ return {
                     "package.json",        -- js
                     "*.sln",               -- c#
                     -- Generic:
-                    "src", "source",
-                    "justfile",
+                    -- "src", "source",
+                    -- "justfile",
                     "xmake.lua", "premake5.lua",
                     "meson.build", "build.ninja",
                     ".vscode",

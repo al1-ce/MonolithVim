@@ -43,15 +43,9 @@ vim.opt.tabstop             = 4      -- 1 tab == 4 spaces
 vim.opt.undofile            = true   -- Save undo history
 vim.opt.updatetime          = 300    -- speeds up autocompletion
 vim.opt.wrap                = false  -- removes wrapping of lines
+vim.opt.termguicolors       = true
 -- vim.o.conceallevel = 2
 -- vim.opt.shada               = "!,'20,f1,<50,s10,h" -- oldfiles config
-
-vim.g.is_tty = vim.fn.empty(os.getenv("DISPLAY")) == 1
-if vim.g.is_tty then
-    vim.opt.termguicolors = false
-else
-    vim.opt.termguicolors = true
-end
 
 local backup_dir = vim.fn.stdpath('data').."/.cache"
 vim.opt.backup = true                         -- make backups before writing

@@ -3,15 +3,6 @@ local borders = require("lib.bor")
 return {
     -- autoreload buffers
     { 'djoshea/vim-autoread' },
-    -- close inactive buffers
-    {
-        'axkirillov/hbac.nvim',
-        opts = {
-            autoclose = true,
-            threshold = 10,
-            close_buffers_with_windows = false,
-        }
-    },
     {
         'oredaze/myJABS.nvim', -- fork of a fork of a fork... of a fork
         -- 'matbme/JABS.nvim',
